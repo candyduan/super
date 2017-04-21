@@ -34,7 +34,7 @@ use Yii;
  * @property integer $versionCode
  * @property string $type
  */
-class BSimCard extends \yii\db\ActiveRecord
+class SimCard extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

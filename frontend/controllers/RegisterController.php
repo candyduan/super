@@ -8,7 +8,7 @@ use common\models\orm\extend\SimCard;
 /**
  * reg controller
  */
-class RegController extends Controller{
+class RegisterController extends Controller{
     /*
      * 请求注册
      */
@@ -24,7 +24,7 @@ class RegController extends Controller{
         $cid    = Utils::getParam('CID');
         $networkType    = Utils::getParam('networkType',0);
         //该接口特有参数
-        $regChannelId   = Utils::getParam('regChannelId',0);
+        $regChannelId   = Utils::getParam('rcid',0);
         
         $simcardModel   = SimCard::findByImsi($imsi);
         
@@ -58,11 +58,11 @@ class RegController extends Controller{
         
     }
     
-//     public function actionTest(){
-//         $out    = array(
-//             'a' => 1,
-//             'b' => 2,
-//         );
-//         Utils::jsonOut($out);
-//     }
+    public function actionTest(){
+        $out    = array(
+            'a' => 1,
+            'b' => 2,
+        );
+        Utils::jsonOut($out);
+    }
 }

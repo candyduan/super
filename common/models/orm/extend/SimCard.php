@@ -1,12 +1,14 @@
 <?php
 namespace common\models\orm\extend;
 
+use common\library\Utils;
 
-use common\models\orm\base\BSimCard;
-
-class SimCard extends BSimCard{
+class SimCard extends \common\models\orm\base\SimCard{
     public static function findByImsi($imsi){
+        if(!Utils::isValid($imsi)){
+            return NULL;
+        }
         $model  = self::find()->where(['imsi' => $imsi])->one();
-        var_dump($model);exit;
+        return $model;
     }
 }

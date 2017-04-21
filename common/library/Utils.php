@@ -57,4 +57,40 @@ class Utils{
         return $flag;
     }
     
+    
+    
+    public static function parseRequestContentToArray($postContent){
+        $res = array();
+        if (preg_match("/(\d).*/", $postContent, $mt)) {
+            $headerLength 	= intval($mt[1]);
+            $bodyStr 		= substr($postContent, $headerLength+1);
+            self::log(base64_decode($bodyStr));
+            $kvArr			= explode('&', base64_decode($bodyStr));
+            if ($kvArr) {
+                foreach ($kvArr as $kvStr) {
+                    if (preg_match('/(.*)=(.*)/', $kvStr, $kvMT)) {
+                        $res[$kvMT[1]] = urldecode($kvMT[2]);
+                    }
+                }
+            }
+        }
+        return $res;
+    }
+    
+    public static function postParamsValid($postContent){
+        $msa 			= isset($postContent['msa']) ? $postContent['msa'] : '';
+        $mediaSign 		= isset($postContent['cha']) ? $postContent['cha'] : '';
+        $versionCode 	= isset($postContent['ver']) ? $postContent['ver'] : '';
+        $tp				= isset($postContent['tp']) ? $postContent['tp'] : '';
+        $sign 			= isset($postContent['sign']) ? $postContent['sign'] : '';
+        return base64_encode(md5($msa . $mediaSign . $versionCode . $tp . MAI_SEC_KEY)) == $sign ? true : false;
+    }
+    
+    public static function log($contents){
+        $file   = '/tmp/super.log';
+        $handle = fopen($file, 'a+');
+        fwrite($handle, $contents."\n");
+        fclose($handle);
+    }
+    
 }
