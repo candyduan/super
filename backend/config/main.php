@@ -8,6 +8,7 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [

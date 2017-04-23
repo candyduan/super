@@ -15,35 +15,6 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function actions()
     {
         return [
@@ -60,7 +31,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (!Yii::$app->user->isGuest) {
+            return $this->render("/site/index");
+        } else {
+            $this->redirect("/site/login");
+        }
     }
 
     /**
@@ -71,14 +46,13 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->render("/site/index");
         }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+           $this->redirect("/site/index");
         } else {
-            return $this->render('login', [
+            return $this->renderAjax('/site/login', [
                 'model' => $model,
             ]);
         }
@@ -92,7 +66,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 }
