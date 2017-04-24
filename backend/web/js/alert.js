@@ -1,0 +1,2 @@
+var MESSAGE_ADD_SUCCESS = '新增成功';
+var MESSAGE_MODIFY_SUCCESS = '修改成功';

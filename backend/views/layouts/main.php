@@ -1,13 +1,10 @@
 <?php
 use backend\assets\AppAsset;
 use yii\helpers\Html;
-AppAsset::register($this);
-$this->beginPage();
 ?>
 <!doctype html>
 <html lang="zh-cn">
 <head>
-    <?php $this->head(); ?>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
     <title><?=Html::encode(Yii::$app->params['title']);?></title>
@@ -79,7 +76,7 @@ $this->beginPage();
         try{ace.settings.loadState('sidebar')}catch(e){}
     </script>
     <ul class="nav nav-list">
-        <li class="">
+        <li class="" id="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-wrench"></i>
                 <span class="menu-text"> SDK计费管理 </span>
@@ -95,7 +92,7 @@ $this->beginPage();
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="/test/index2">
                         <i class="menu-icon fa fa-caret-right"></i>
                         table2
                     </a>
@@ -112,14 +109,14 @@ $this->beginPage();
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="">
+                    <a href="1">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="2">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 2
                     </a>
@@ -136,14 +133,14 @@ $this->beginPage();
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="111">
+                    <a href="3">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="4">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 2
                     </a>
@@ -160,14 +157,14 @@ $this->beginPage();
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="">
+                    <a href="5">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="6">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 2
                     </a>
@@ -184,14 +181,14 @@ $this->beginPage();
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="">
+                    <a href="7">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="8">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 2
                     </a>
@@ -208,14 +205,14 @@ $this->beginPage();
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="">
+                    <a href="9">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="0">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 2
                     </a>
@@ -232,14 +229,14 @@ $this->beginPage();
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="">
+                    <a href="11">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="12">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 2
                     </a>
@@ -256,14 +253,14 @@ $this->beginPage();
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="">
+                    <a href="13">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="">
+                    <a href="14">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 2
                     </a>
@@ -329,12 +326,20 @@ $this->beginPage();
     $(document).ready(function(){
             var cookie_href =  $.cookie('url');
             if (typeof cookie_href != 'undefined') {
-                $('ul.submenu li').each(function(){
-                    $(this).removeClass('active');
-                    $(this).parent().parent().removeClass('active').removeClass('open');
-                    if (cookie_href == $(this).children('a').prop('href')) {
-                        $(this).addClass('active');
-                        $(this).parent().parent().addClass('active open');
+                $('ul.submenu li a').each(function(){
+                    if (cookie_href == $(this).prop('href')) {
+                        $(this).parent().addClass('active');
+                        $(this).parent().parent().parent().addClass('active open');
+                    }else{
+                        $(this).parent().removeClass('active');
+                   /*     $(this).siblings().each(function(that){
+                            if($(that).href == cookie_href){
+                               return;
+                            }
+                            $(this).parent().parent().parent().removeClass('active').remove('open');
+                        });*/
+
+                        //$(this).parent().parent().parent().removeClass('active').removeClass('open');
                     }
                 });
             }
@@ -348,7 +353,5 @@ $this->beginPage();
 
 </script>
 </body>
-<?php $this->endBody(); ?>
 
 </html>
-<?php $this->endPage();?>

@@ -16,11 +16,11 @@
                     <button class="btn btn-primary" type="submit" id="btn_search">
                         <span class="glyphicon glyphicon-search"></span>
                         <span>搜索</span>
-                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-danger" type="submit" id="btn_search">
+                    </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-danger" id="btn_add">
                         <span class="glyphicon glyphicon-plus"></span>
-                        <span>+SDK</span>
-                    </button>&nbsp;&nbsp;
+                        <span>SDK</span>
+                    </button>&nbsp;
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 text-right">
                 </div>
@@ -47,43 +47,55 @@
     <div class="panel-footer">
     </div>
 </div>
-
-<!--<div id="modal" class="modal fade" >
-    <div class="modal-dialog gclass_modal_md" >
+<div id="modalSdk" class="modal fade" >
+    <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
-                <span>拒绝原因</span>
+                <span>SDK详情:</span>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <form id="formRejectConvert" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+            <form id="formSdk" action="#" method="post" enctype="multipart/form-data">
                 <div class="modal-body" >
                     <div class="input-group">
-                        <span class="input-group-addon">1：</span>
-                        <textarea class="form-control gclass_textarea_full" name="reject_cause" id="reject_cause"></textarea>
+                        <span class="input-group-addon">sdk商:</span>
+                        <input type="text" name="sdk_partner" id="sdk_partner" class="form-control" width="1000px"/>
                     </div><br /><br />
                     <div class="input-group">
-                        <span class="input-group-addon">2：</span>
-                        <select id="reject_return" name="reject_return" class="form-control">
-                            <option value="0">3</option>
-                            <option value="1">4</option>
-                        </select>
-                    </div><br />
-                    <input type="hidden" id="reject_bcaid" name="reject_bcaid"/>
+                        <span class="input-group-addon">sdk名称:</span>
+                        <input type="text" name="sdk_name" id="sdk_name" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">分成比例:</span>
+                        <input type="text" name="sdk_proportion" id="sdk_proportion" class="form-control" placeholder ='请填写0-100的整数'"/>
+                        <span class="input-group-addon">%</span>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">优化比例:</span>
+                        <input type="text" name="sdk_percent" id="sdk_percent" class="form-control" placeholder ='请填写0-100的整数'/>
+                        <span class="input-group-addon">%</span>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">同步地址:</span>
+                        <input type="text" name="sdk_syn" id="sdy_syn" class="form-control"/>
+                    </div><br /><br />
+                    <input type="hidden" id="sdk_sdid" name="sdk_sdid" value=""/>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" id="btn_submit_reject">提交</button>
+                    <button type="submit" class="btn btn-success" id="btn_submit_sdk">提交</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                 </div>
             </form>
         </div>
     </div>
-</div>-->
+</div>
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
+<script src="/web/ace/assets/js/jquery-2.1.4.min.js"></script>
+<script src="/web/js/util.js/"></script>
+<script src="/web/js/alert.js/"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         _initDataTable();
-       // alert(1);
     });
 
     $('#btn_search').on('click', function(event){
@@ -125,6 +137,51 @@
                 }
             }
         });
+    }
+
+    $('#btn_add').on('click', function(event){
+        event.preventDefault();
+        window.formSdk.reset();
+        $('#sdk_sdid').val('');
+        $('#btn_submit_sdk').attr('disabled', false);
+        $('#modalSdk').modal('show');
+    });
+
+    $('#formIndianaCategory').on('submit', (function(event){
+        event.preventDefault();
+
+        var sdid = $('#sdk_sdid').val();
+        var type = (sdid == '') ? 'add' : 'modify';
+            $('#btn_submit_sdk').attr('disabled', true);
+            var post_url = '/sdk/'+ type +'-sdk';
+            var post_data = $('#formIndianaCategory').serializeArray();
+            var msg_success = (sdid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+            var msg_error = (sdid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
+            var method = 'post';
+            var successFunc = function (result) {
+                if (parseInt(result.code) != 0) {
+                    alert(msg_success);
+                } else {
+                    alert('');
+                }
+                $('#modalSdk').modal('hide');
+                _initDataTable();
+            callAjaxWithFunction(post_url, post_data, successFunc, method);
+        }
+    }));
+
+    function modifySdk(sdid){
+        var post_url = '/sdk/get-sdk';
+        var post_data = {
+            'sdid' : sdid
+        };
+        var method = 'get';
+        var success_function = function(result){
+            $('#sdk_icid').val(result.sdid);
+            $('#btn_submit_sdk').attr('disabled', false);
+            $('#modalSdk').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 
 </script>
