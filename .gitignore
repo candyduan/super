@@ -1,4 +1,11 @@
 .DS_Store
 
 /.idea
+backend/assets
+backend/runtime
+environments/dev/backend/web/assets
+frontend/assets
+frontend/runtime
+environments/dev/frontend/web/assets
+
 
