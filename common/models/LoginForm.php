@@ -27,7 +27,17 @@ class LoginForm extends Model
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
-            // ['password', 'validatePassword'],
+             ['password', 'validatePassword'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => '用户名',
+            // rememberMe must be a boolean value
+            'password' => '密码',
+            'rememberMe' => '记住我',
         ];
     }
 
