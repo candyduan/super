@@ -12,7 +12,7 @@ class RegisterController extends Controller{
     /*
      * 请求注册
      */
-    public function actionRg(){
+    public function actionRr(){
         //通用参数
         $imsi   = Utils::getParam('imsi');
         $imei   = Utils::getParam('imei');
