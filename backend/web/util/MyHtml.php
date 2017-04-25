@@ -12,14 +12,14 @@ class MyHtml
     }
 
     public static function iElement($class,$clickMethod, $clickMethodParameters){
-        return '<i class="' . $class . '", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
+        return '<i class=" pointer ' . $class . '", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
     }
 
     public static function iElements($clickMethod, $clickMethodParameters,$blue,$green,$black,$purple){
         return '<i class="glyphicon pointer ' .$blue. ' glyphicon-off" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
-               ' <i class="glyphicon pointer' .$green.' glyphicon-ok-sign", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
-               ' <i class="glyphicon pointer'.$black.' glyphicon-trash", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
-               ' <i class="glyphicon pointer' .$purple.' glyphicon-wrench", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
+               ' <i class="glyphicon pointer ' .$green.' glyphicon-ok-sign", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
+               ' <i class="glyphicon pointer '.$black.' glyphicon-trash", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
+               ' <i class="glyphicon pointer ' .$purple.' glyphicon-wrench", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
     }
 
     public static function aElement($href, $clickMethod, $clickMethodParameters, $text) {

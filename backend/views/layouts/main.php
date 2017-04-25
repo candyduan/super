@@ -86,7 +86,7 @@ use yii\helpers\Html;
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="/test/index">
+                    <a href="/sdk/index">
                         <i class="menu-icon fa fa-caret-right"></i>
                         table1
                     </a>

@@ -45,7 +45,7 @@ class SdkController extends Controller
             $tabledata[] = [
                 MyHtml::aElement('javascript:void(0);' ,'modifySdk', $value['sdid'],'[' .++$start.'] '.$value['name']),
                 MyHtml::aElement('javascript:void(0);' ,'setLimit', $value['sdid'], $limit),
-                MyHtml::iElement('glyphicon glyphicon-globe','setProvince',$value['sdid']),
+                MyHtml::iElement('glyphicon glyphicon-globe','setProvince',$value['sdid'] . ',1'),
                 MyHtml::iElement('glyphicon glyphicon-time','setTime',$value['sdid']),
                 MyHtml::iElements('setStatus',$value['sdid'], $blue,$green,$black,$purple)
             ];

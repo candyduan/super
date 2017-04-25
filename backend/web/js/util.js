@@ -140,3 +140,31 @@ function getAjaxErrorFunction()
         }
     };
 }
+
+function batchMute(obj, child_name)
+{
+    $('input[name="' + child_name + '"]').each(function(){
+        $(this).prop('checked', obj.checked);
+    });
+}
+
+function closeBatch(obj, parent_id)
+{
+    if (!obj.checked) {
+        $('#' + parent_id).prop('checked', false);
+    } else {
+        if ($('input[name="' + obj.name + '"]:checked').size() == $('input[name="' + obj.name + '"]').size()) {
+            $('#' + parent_id).prop('checked', true);
+        }
+    }
+}
+
+function getBatchIDs(child_name)
+{
+    var selected = [];
+    $("input[name='" + child_name + "']:checked").each(function(){
+        selected.push(this.value);
+    });
+
+    return selected;
+}
