@@ -22,6 +22,7 @@ use yii\helpers\Html;
     <script src="/web/ace/assets/js/html5shiv.min.js"></script>
     <script src="/web/ace/assets/js/respond.min.js"></script>
     <link rel="shortcut icon" href="/web/imgs/favicon.ico" />
+    <link rel="stylesheet" href="/web/css/site.css"></link>
 </head>
 <body>
 <?php $this->beginBody(); ?>

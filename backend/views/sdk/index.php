@@ -93,6 +93,66 @@
         </div>
     </div>
 </div>
+<div id="modalSdk" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>SDK详情:</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form id="formSdk" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" >
+                    <div class="panel panel-warning">
+                        <!-- panel heading -->
+                        <div class="page-header">
+                            <h1>
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                                黑白名单
+                            </h1>
+                        </div>
+                        <!-- panel body -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <form action="" method="get" id="SearchCampaign" class="form-inline">
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="活动名称"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-danger" id="btn_add">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                            <span>SDK</span>
+                                        </button>&nbsp;
+                                    </div>
+                                    <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+                                    </div>
+                                </form>
+                            </div><hr>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <table id="tbl" class="table table-striped table-bordered gclass_table text-center">
+                                        <thead>
+                                        <tr>
+                                            <td>活动</td>
+                                            <td>状态</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- panel footer -->
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btn_submit_sdk">提交</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
 <script src="/web/ace/assets/js/jquery-2.1.4.min.js"></script>
 <script src="/web/js/util.js"></script>
@@ -147,6 +207,8 @@
         event.preventDefault();
         window.formSdk.reset();
         $('#sdk_sdid').val('');
+        $('#sdk_name').prop('disabled',false);
+        $('#sdk_partner').prop('disabled',false);
         $('#btn_submit_sdk').attr('disabled', false);
         $('#modalSdk').modal('show');
     });
@@ -183,7 +245,13 @@
         };
         var method = 'get';
         var success_function = function(result){
-            $('#sdk_icid').val(result.sdid);
+            $('#sdk_partner').val(result.partner).prop('disabled', true);
+            $('#sdk_name').val(result.name).prop('disabled',true);
+            $('#sdk_proportion').val(result.proportion);
+            $('#sdk_optimization').val(result.optimization);
+            $('#sdk_syn').val(result.syn);
+            $('#sdk_remark').val(result.remark);
+            $('#sdk_sdid').val(result.sdid);
             $('#btn_submit_sdk').attr('disabled', false);
             $('#modalSdk').modal('show');
         };

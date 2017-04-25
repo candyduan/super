@@ -12,9 +12,15 @@ class SdkPartner extends \common\models\orm\base\SdkPartner {
         return $model;
     }
 
-    public static function findByPk($sdid){
+    public static function findByPk($spid){
 
-        $model  = self::find()->where(['spid' => $sdid])->one();
+        $model  = self::find()->where(['spid' => $spid])->one();
         return $model;
+    }
+
+    public static function getNameByPk($sdid){
+
+        $model = self::find()->select('name')->where(['spid' => $sdid])->one();
+        return  isset($model['name']) ? $model['name'] : '';
     }
 }
