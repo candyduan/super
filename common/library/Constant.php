@@ -18,4 +18,10 @@ class Constant{
     const RESP_FMT_XML      = 2;
     const RESP_FMT_TEXT     = 3;
     
+    /*
+     * 返回结果状态
+     */
+    const RESULT_CODE_EXCEPT    = 0;
+    const RESULT_CODE_SUCC  = 1;
+    const RESULT_CODE_SYSTEM_BUSY   = 5;
 }

@@ -97,4 +97,9 @@ class Utils{
         return date('Y-m-d H:i:s');
     }
     
+    public static function getClientIp(){
+        return (@$_SERVER["HTTP_X_REAL_IP"] != null) ? @$_SERVER["HTTP_X_REAL_IP"] : @$_SERVER["REMOTE_ADDR"];
+    }
+    
+    
 }

@@ -4,6 +4,8 @@ namespace frontend\controllers;
 use yii\web\Controller;
 use common\library\Utils;
 use common\models\orm\extend\SimCard;
+use common\models\orm\extend\RegChannel;
+use common\library\Constant;
 
 /**
  * reg controller
@@ -24,10 +26,26 @@ class RegisterController extends Controller{
         $cid    = Utils::getParam('CID');
         $networkType    = Utils::getParam('networkType',0);
         //该接口特有参数
-        $regChannelId   = Utils::getParam('rcid',0);
+        $rcid   = Utils::getParam('rcid',0);
         
-        $simcardModel   = SimCard::findByImsi($imsi);
-        
+        $simCardModel       = SimCard::findByImsi($imsi);
+        $regChannelModel    = RegChannel::findByPk($rcid);
+        if($simCardModel && $regChannelModel){
+            try {
+                $regOrderModel      = \frontend\library\regchannel\Utils::createOrder($rcid, $imsi);
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = 'success';
+                $out['roid']        = $regOrderModel->roid;
+                $out['tks']         = \frontend\library\regchannel\Utils::gotoRegister($regChannelModel, $regOrderModel, $simCardModel);
+            }catch (\Exception $e){
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = '系统繁忙';
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_EXCEPT;
+            $out['msg']         = '请求异常';
+        }
+        Utils::jsonOut($out);
     }
     
     /*
