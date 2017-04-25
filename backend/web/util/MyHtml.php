@@ -11,6 +11,17 @@ class MyHtml
         return '   ';
     }
 
+    public static function iElement($class,$clickMethod, $clickMethodParameters){
+        return '<i class="' . $class . '", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
+    }
+
+    public static function iElements($clickMethod, $clickMethodParameters,$blue,$green,$black,$purple){
+        return '<i class="glyphicon ' .$blue. ' glyphicon-off" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
+               ' <i class="glyphicon ' .$green.' glyphicon-ok-sign", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
+               ' <i class="glyphicon '.$black.' glyphicon-trash", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
+               ' <i class="glyphicon ' .$purple.' glyphicon-wrench", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
+    }
+
     public static function aElement($href, $clickMethod, $clickMethodParameters, $text) {
         if ($clickMethod != '') {
             return '<a href="' . $href . '" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');">' .$text . '</a>';

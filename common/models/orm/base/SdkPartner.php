@@ -1,0 +1,50 @@
+<?php
+
+namespace common\models\orm\base;
+
+use Yii;
+
+/**
+ * This is the model class for table "sdkPartner".
+ *
+ * @property integer $spid
+ * @property string $name
+ * @property integer $updateTime
+ * @property integer $recordTime
+ * @property integer $status
+ */
+class SdkPartner extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'sdkPartner';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['updateTime', 'recordTime', 'status'], 'integer'],
+            [['name'], 'string', 'max' => 45],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'spid' => 'Spid',
+            'name' => 'Name',
+            'updateTime' => 'Update Time',
+            'recordTime' => 'Record Time',
+            'status' => 'Status',
+        ];
+    }
+}

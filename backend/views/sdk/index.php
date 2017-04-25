@@ -71,12 +71,16 @@
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">优化比例:</span>
-                        <input type="text" name="sdk_percent" id="sdk_percent" class="form-control" placeholder ='请填写0-100的整数'/>
+                        <input type="text" name="sdk_optimization" id="sdk_optimization" class="form-control" placeholder ='请填写0-100的整数'/>
                         <span class="input-group-addon">%</span>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">同步地址:</span>
-                        <input type="text" name="sdk_syn" id="sdy_syn" class="form-control"/>
+                        <input type="text" name="sdk_syn" id="sdk_syn" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">备注:</span>
+                        <textarea type="text" cols="20" rows="10" name="sdk_remark" id="sdk_remark" class="form-control"></textarea>
                     </div><br /><br />
                     <input type="hidden" id="sdk_sdid" name="sdk_sdid" value=""/>
                 </div>
@@ -91,8 +95,8 @@
 </div>
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
 <script src="/web/ace/assets/js/jquery-2.1.4.min.js"></script>
-<script src="/web/js/util.js/"></script>
-<script src="/web/js/alert.js/"></script>
+<script src="/web/js/util.js"></script>
+<script src="/web/js/alert.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         _initDataTable();
@@ -131,7 +135,7 @@
             },
             "serverSide": true,
             "ajax": {
-                "url":'/test/ajax-index?' + $.param($('#formSearch').serializeArray()),
+                "url":'/sdk/ajax-index?' + $.param($('#formSearch').serializeArray()),
                 "dataSrc": function(json) {
                     return json.tableData;
                 }
@@ -147,27 +151,29 @@
         $('#modalSdk').modal('show');
     });
 
-    $('#formIndianaCategory').on('submit', (function(event){
+    $('#formSdk').on('submit', (function(event){
         event.preventDefault();
 
         var sdid = $('#sdk_sdid').val();
         var type = (sdid == '') ? 'add' : 'modify';
             $('#btn_submit_sdk').attr('disabled', true);
             var post_url = '/sdk/'+ type +'-sdk';
-            var post_data = $('#formIndianaCategory').serializeArray();
+            var post_data = new FormData(this);
             var msg_success = (sdid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
             var msg_error = (sdid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
             var method = 'post';
             var successFunc = function (result) {
-                if (parseInt(result.code) != 0) {
-                    alert(msg_success);
-                } else {
-                    alert('');
-                }
-                $('#modalSdk').modal('hide');
-                _initDataTable();
-            callAjaxWithFunction(post_url, post_data, successFunc, method);
-        }
+               if(parseInt(result) == 1){
+                   alert(msg_success);
+               }else if(parseInt(result) == 0){
+                   alert(msg_error);
+               } else if(parseInt(result) == -1){
+                   alert(NAME_EXIST_ERROR);
+               }
+               $('#modalSdk').modal('hide');
+               _initDataTable();
+        };
+        callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
     }));
 
     function modifySdk(sdid){

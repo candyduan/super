@@ -15,6 +15,7 @@ return [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'maimobzhousong',
+            "enableCsrfValidation"=>false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
