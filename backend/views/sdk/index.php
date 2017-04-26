@@ -164,22 +164,20 @@
     </div>
 </div>
 
-<div id="modalProvinceTime" class="modal fade" >
+<div id="modalProvinceTime" class="modal fade">
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
                 <span>SDK地域时间设置:</span>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <form id="formProvinceTime" action="#" method="post" enctype="multipart/form-data">
-                <div class="modal-body" id="province_time" >
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" id="btn_submit_time">提交</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                </div>
-            </form>
+            <div class="modal-body" id="div_time" style="height:500px">
+            <input type="hidden" id="hidden_prid" value = '-1'>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btn_submit_time">提交</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
         </div>
     </div>
 </div>
@@ -407,8 +405,9 @@
         $('#btn_comfirm_open').removeClass('btn-success');
         $('#hidden_status').val(0);
     });
-
+    <!-- --------地域时间设置---begin-------- -->
     function setProTime(prid){
+        $('#hidden_prid').val(-1);
         var provider = parseInt($('#hidden_tab_type').val());
         var sdid = parseInt($('#hidden_sdid').val());
         var url = '/sdk/get-province-time-limit';
@@ -419,20 +418,71 @@
         }
         var method = 'get';
         var success_function = function (result) {
-            // alert(result.join(''));
-
-         //   $('#modalProvinceTiime').modal('show');
+            var circle_buttons = [];
+            for(var i = 0 ; i < 24 ; i++) {
+                if (result.indexOf(i) == -1){ // 不存在在 unlimit 数组中
+                    circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-danger">'+i+'</button >');
+                }else{
+                    circle_buttons.push('<button   onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
+                }
+            }
+            $('#hidden_prid').val(prid); //后面提交的时候需要
+            $('#div_time').empty().append(circle_buttons.join(' '));
+            $('#modalProvinceTime').modal('show');
 
         }
         callAjaxWithFunction(url, data, success_function, method);
     }
 
-/* ------------------------------------------------------------------------javascript-------------------------------------*/
+    function timebtnClick(that){
+        if($(that).hasClass('btn-success')){
+            $(that).removeClass('btn-success').addClass('btn-danger');
+        }else{
+            $(that).removeClass('btn-danger').addClass('btn-success');
+        }
+    }
+
+    $('#btn_submit_time').on('click', function(){
+        var prid = parseInt($('#hidden_prid').val()); //-1为无效
+        if(confirm('确认修改')) {
+            var time = getLimitTime();  //需要屏蔽的时间点 0-23
+            var provider = parseInt($('#hidden_tab_type').val());
+            var sdid = parseInt($('#hidden_sdid').val());
+            var post_url = '/sdk/modify-privince-time-limit';
+            var post_data = {
+                'time': time,
+                'provider': provider,
+                'sdid': sdid,
+                'prid' :prid
+            };
+            var method = 'get';
+            var success_function = function (result) {
+                if (parseInt(result) > 0) {
+                    alert(MESSAGE_MODIFY_SUCCESS);
+                    $('#modalProvinceTime').modal('hide');
+                    $('#modalProvince').modal('hide');
+                    // setProvince(sdid, provider);
+                } else {
+                    alert(MESSAGE_MODIFY_ERROR);
+                }
+            }
+            callAjaxWithFunction(post_url, post_data, success_function, method);
+        }
+    })
+    /* ------------------------------------------------------------------------javascript-------------------------------------*/
     $('#all_prids').on('click', function(){
         batchMute(this, 'prid');
     });
     $('input[name="prid"]').on('click', function(){
         closeBatch(this, 'all_prids');
     });
+
+    function getLimitTime(){
+        var timelimit = [];
+        $('.btn-circle.btn-danger').each(function(){
+            timelimit.push($(this).text());
+        });
+        return timelimit;
+    }
 
 </script>

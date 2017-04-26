@@ -220,7 +220,7 @@ class SdkController extends Controller
         echo json_encode($resultState);
         exit;
     }
-
+    //获取没有屏蔽的时间点
     public function actionGetProvinceTimeLimit(){
         $provider = Yii::$app->request->get('provider');
         $sdid = Yii::$app->request->get('sdid');
@@ -232,10 +232,19 @@ class SdkController extends Controller
                 for($i = 0 ;$i < 24 ;$i++){
                     $unlimit = true;
                     foreach ($stimeetime as $value) {
-                        if ($i < intval($value['stime']) || $i >= intval($value['etime'])){
+                        if ($value['stime'] < $value['etime']) {
+                            if ($i < intval($value['stime']) || $i >= intval($value['etime'])) {
+                            } else {
+                                $unlimit = false;
+                                break;
+
+                            }
                         }else{
-                            $unlimit = false;
-                            break;
+                            if ($i < intval($value['stime']) && $i >= intval($value['etime'])) {
+                            } else {
+                                $unlimit = false;
+                                break;
+                            }
                         }
                     }
                     if($unlimit){
@@ -246,6 +255,7 @@ class SdkController extends Controller
                 $data = range(0,23);
             }
         }
+        $data = array_unique($data);
         echo json_encode($data);
         exit;
     }
