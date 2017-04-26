@@ -94,22 +94,18 @@
     </div>
 </div>
 
-<div id="modalPorvince" class="modal fade" >
+<div id="modalProvince" class="modal fade" >
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
-                <span>SDK地域管理</span>
+                <span>SDK地域管理 </span>
+                    <button class="btn btn-primary btn-sm" id="btn_setprovince">一键操作</button>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <form id="formProvince" action="#" method="post" enctype="multipart/form-data">
                 <div class="modal-body" >
                     <div class="panel ">
                         <!-- panel heading -->
-                        <div class="page-header">
-                            <h1>
-                                <button class="btn btn-primary small" id="btn_setprovince">一键操作</button>
-                            </h1>
-                        </div>
                         <!-- panel body -->
                         <div class="panel-body">
                             <div class="col-sm-12 col-md-12 col-lg-12">
@@ -120,13 +116,14 @@
                                             <li id="tab_type_2"><a href="#">联通</a></li>
                                             <li id="tab_type_3"><a href="#">电信</a></li>
                                             <input type="hidden" id='hidden_tab_type' value = '1'/>
+                                            <input type="hidden" id='hidden_sdid' value = '0'/>
                                         </ul>
                                     </div>
                                 </nav><br/>
                                 <table id="tblPprovince" class="table table-striped table-bordered gclass_table text-center">
                                     <thead>
                                     <tr>
-                                        <td><input type="checkbox" id="all_toids" name="all_toids"/> 全选</td>
+                                        <td><input type="checkbox" id="all_prids" name="all_prids"/> 全选</td>
                                         <td>省份</td>
                                         <td>状态</td>
                                         <td>时间限制</td>
@@ -272,28 +269,33 @@
     }
     <!-- --------地域设置---begin-------- -->
     function setProvince(sdid, provider){
-        $('#modalPorvince').modal('show');
-      /*  var post_url = '/sdk/get-sdk-provinces';
+        $('#hidden_sdid').val(sdid); //!! 重要 更改状态通过这个获取sdid
+        var post_url = '/sdk/get-province-limit';
         var post_data = {
             'sdid' : sdid,
             'provider' : provider
         };
         var method = 'get';
         var success_function = function(result){
-            $('#sdk_partner').val(result.partner).prop('disabled', true);
-            $('#sdk_name').val(result.name).prop('disabled',true);
-            $('#sdk_proportion').val(result.proportion);
-            $('#sdk_optimization').val(result.optimization);
-            $('#sdk_syn').val(result.syn);
-            $('#sdk_remark').val(result.remark);
-            $('#sdk_sdid').val(result.sdid);
-            $('#btn_submit_sdk').attr('disabled', false);
+            var content_str = '';
+            for(var i in result) {
+                var content_arr = [];
+                content_arr.push("<tr><td>"+result[i].checkbox+"</td>");
+                content_arr.push("<td>"+result[i].province+"</td>");
+                content_arr.push("<td>"+result[i].status+"</td>");
+                content_arr.push("<td>"+result[i].timelimit+"</td></tr>");
+                content_str  += content_arr.join(' ', content_arr);
+            }
+            $('#bodyProvince').empty().append(content_str);
+            $('#btn_setprovince').attr('disabled', false);
             $('#modalProvince').modal('show');
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);*/
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 
     $('#tab_type li').on('click', function(){
+        var sdid =  parseInt($('#hidden_sdid').val());
+        //var hidden_tab_type =  parseInt($('#hidden_sdid').val());
         var tab_type = parseInt($(this).attr('id').substr(-1));
         tab_type = isNaN(tab_type) ? 1 : tab_type;
         $('#hidden_tab_type').val(tab_type);
@@ -307,14 +309,40 @@
         $('#modalComfirmProvince').modal('show');
     });
 
-    <!-- --------地域设置----end------- -->
+    <!-- --------sdk省份限制的状态设置----start------- -->
+
+    function setDoubleStatus(prid , status){ //这个状态是要去修改成的状态
+        var comfirm_msg = status ==  0 ? "停止" : "开通" ;
+       // var final_class =  status ==  0 ? 'blue' :'green';
+        var provider = parseInt($('#hidden_tab_type').val());
+        var sdid =  parseInt($('#hidden_sdid').val());
+        if(confirm('确认省份开通情况调整为'+ comfirm_msg)) {
+            var url = '/sdk/modify-province-limit';
+            var data = {
+                'prid': prid,
+                'provider': provider,
+                'sdid': sdid,
+                'status': status
+            }
+            var method = 'get';
+            var success_func = function (result) {
+                if (parseInt(result) == 0) {
+                    alert(MESSAGE_MODIFY_ERROR);
+                } else {
+                    setProvince(sdid, provider); // 充新调ajax 刷新次页面
+                }
+            }
+            callAjaxWithFunction(url, data, success_func, method);
+        }
+    }
+
 /* ------------------------------------------------------------------------javascript-------------------------------------*/
-    $('#all_toids').on('click', function(){
-        batchMute(this, 'toid');
+    $('#all_prids').on('click', function(){
+        batchMute(this, 'prid');
     });
 
-    $('input[name="toid"]').on('click', function(){
-        closeBatch(this, 'all_toids');
+    $('input[name="prid"]').on('click', function(){
+        closeBatch(this, 'all_prids');
     });
 
 </script>

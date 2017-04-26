@@ -9,7 +9,9 @@ use backend\web\util\MyHtml;
 use backend\web\util\MyMail;
 use common\models\orm\extend\Sdk;
 use common\models\orm\extend\SdkPartner;
-
+use common\models\orm\extend\SdkProvinceLimit;
+use common\models\orm\extend\Province;
+use common\models\orm\extend\SdkProvinceTimeLimit;
 /**
  * Test controller
  */
@@ -63,7 +65,6 @@ class SdkController extends Controller
        exit;
     }
 
-
     public function actionAddSdk() {
         $resultState = 0;
         $name = Yii::$app->request->post('sdk_name');
@@ -85,6 +86,74 @@ class SdkController extends Controller
         exit;
     }
 
+    public function actionGetProvinceLimit() { //根据sdk 和 运营商拿到省份 1 移动 2 联通 3 电信
+        $provider = Yii::$app->request->get('provider');
+        $sdid = Yii::$app->request->get('sdid');
+        $allprovinces = Province::getAllProvinces();
+        $limitprids = SdkProvinceLimit::getlimitPrids($sdid, $provider);
+
+        $limitdata = [] ; $unlimitdata = [];
+        foreach($allprovinces as $prid => $name) {
+            $checkbox = '<input type="checkbox" name="prid" value="' . $prid . '" onclick="closeBatch(this, \'all_prids\');"/>';
+            $province = isset($allprovinces[$prid]) ? $allprovinces[$prid] : '';
+            //处理时间开始
+            $timelimit = MyHtml::aElement('javascript:void(0);', 'setProTime', $prid, '------');
+            $timelimit_arr = SdkProvinceTimeLimit::getTimtLimitsBySdidProviderPrid($sdid, $provider, $prid);
+            if (!empty($timelimit_arr)) {
+                $timelimit_arr2 = [];
+                foreach ($timelimit_arr as $v) {
+                    $timelimit_arr2[] = $v['stime'] . ':00' . '---' . $v['etime'] . ':00';
+                }
+                $timelimit = MyHtml::aElement('javascript:void(0);', 'setProTime', $prid, implode('<br/>', $timelimit_arr2));
+            }
+            //开通的放在前面
+            if (!in_array($prid, $limitprids)) {
+                $unlimitdata[] = [
+                    'checkbox' => $checkbox,
+                    'province' => $province,//开通的 要去 停止
+                    'status' => MyHtml::doubleiElements('setDoubleStatus', '' ,$prid . ', 0 ', '',' grey ', ' green '),
+                    'timelimit' => $timelimit
+                ];
+            } else { //屏蔽的放后面
+                $limitdata[] = [
+                    'checkbox' =>$checkbox,
+                    'province' =>  $province,//停止的要去开通
+                    'status' => MyHtml::doubleiElements('', 'setDoubleStatus', '', $prid . ',1 ',' blue ', ' grey '),
+                    'timelimit' => $timelimit
+                ];
+            }
+        }
+             echo json_encode(array_merge($unlimitdata, $limitdata));
+        exit;
+    }
+
+      /*  if($sdid && $provider)
+        {
+            //屏蔽的 存在表里并且status = 0
+
+            $data = [];
+            foreach ($provincelimit as $key => $value) {
+                //处理时间限制数据
+                $timelimits = [];
+                $timelimit = MyHtml::aElement('javascript:void(0);', 'setProTime', $value['splid'],'------');
+               // $provincetimelimit = SdkProvinceTimeLimit::getTimtLimitsBySplid($value['splid']);
+                if(!empty($provincetimelimit)){
+                    foreach($provincetimelimit as $v){
+                        $timelimits[] = $v['stime'] .':00' . '---' .$v['etime'] .':00';
+                    }
+                    $timelimit = MyHtml::aElement('javascript:void(0);', 'setProTime', $value['splid'], implode('<br/>' ,$timelimits));
+                }
+                //处理按钮颜色
+                list($blue,$green) = self::_getDoubleStatus($value['status']);
+                $data[$key]['checkbox'] =  '<input type="checkbox" name="splid" value="' . $value['splid'] . '" onclick="closeBatch(this, \'all_splids\');"/>';
+                $data[$key]['province'] =   Province::getProvinceById($value['prid']);
+                $data[$key]['status'] =   MyHtml::doubleElements('setDoubleStatus',$value['splid'], $blue,$green);
+                $data[$key]['timelimit'] =   $timelimit;
+            }
+
+            //没有屏蔽的 不存在表里 或者 states = 1
+        }*/
+
     public function actionModifySdk() {
         $resultState = 0;
         $name = Yii::$app->request->post('sdk_sdid');
@@ -94,9 +163,41 @@ class SdkController extends Controller
                 $resultState = $this->_modifySdk() == true ? 1 : 0;
                 $transaction->commit();
             } catch (ErrorException $e) {
-                $resultState = false;
+                $resultState = 0;
                 $transaction->rollBack();
                 MyMail::sendMail($e->getMessage(), 'Error From modify Sdk');
+            }
+        }
+
+        echo json_encode($resultState);
+        exit;
+    }
+
+    public function actionModifyProvinceLimit() {
+        $resultState = 0;
+        $prid = Yii::$app->request->get('prid');
+        $sdid = Yii::$app->request->get('sdid');
+        $provider = Yii::$app->request->get('provider');
+        $status = Yii::$app->request->get('status');
+        $A=1;
+        if (isset($prid) && isset($sdid) && isset($provider)) {
+            $transaction =  SdkProvinceLimit::getDb()->beginTransaction();
+            try {
+                SdkProvinceLimit::deleteByPridSdidProvider($prid,$sdid,$provider);
+                $model = new SdkProvinceLimit();
+                $model->sdid= $sdid;
+                $model->prid=$prid;
+                $model->provider =$provider;
+                $model->updateTime = time();
+                $model->recordTime =time();
+                $model->status = $status;
+                $result = $model->save();
+                $resultState = ($result == true) ? 1 : 0;
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify province limit');
             }
         }
 
@@ -159,13 +260,22 @@ class SdkController extends Controller
         return $resultState;
     }
 
-    private function _getStatusColor($status){
+    private function _getStatusColor($status){ //4种按钮颜色判断
         $arr = ['grey','grey','grey','grey'];
         switch ($status){
             case 0: $arr[2] = 'black'; break; //无效
             case 1: $arr[1] = 'green'; break; //运行
             case 2: $arr[3] = 'purple'; break; //测试
             case 3: $arr[0] = 'blue'; break; //暂停
+        }
+        return $arr;
+    }
+
+    private function _getDoubleStatus($status){ //2种按钮颜色判断
+        $arr = ['grey','grey'];
+        switch ($status){
+            case 0: $arr[0] = 'blue'; break; //停止
+            case 1: $arr[1] = 'green'; break; //开通
         }
         return $arr;
     }

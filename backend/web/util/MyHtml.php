@@ -22,6 +22,11 @@ class MyHtml
                ' <i class="glyphicon pointer ' .$purple.' glyphicon-wrench", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
     }
 
+    public static function doubleiElements($clickMethod1, $clickMethod2, $clickMethodParameters1, $clickMethodParameters2, $blue,$green){
+        return '<i class="glyphicon pointer ' .$blue. ' glyphicon-off" onclick="' . $clickMethod1. '(' . $clickMethodParameters1 . ');"></i> '.
+            ' <i class="glyphicon pointer ' .$green. ' glyphicon-ok-sign", onclick="' . $clickMethod2. '(' . $clickMethodParameters2 . ');"></i> ';
+    }
+
     public static function aElement($href, $clickMethod, $clickMethodParameters, $text) {
         if ($clickMethod != '') {
             return '<a class="pointer" href="' . $href . '" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');">' .$text . '</a>';
