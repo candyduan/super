@@ -9,15 +9,6 @@ use Yii;
  *
  * @property integer $ccuid
  * @property integer $rcid
- * @property string $regSpnumber
- * @property string $regKeywords
- * @property string $trgUrl
- * @property integer $trgSendMethod
- * @property integer $trgRespFmt
- * @property string $trgSuccKey
- * @property string $trgSuccValue
- * @property string $trgOrderIdKey
- * @property string $trgSmtKey
  * @property integer $smtType
  * @property string $smtKeywords
  * @property string $recordTime
@@ -41,10 +32,9 @@ class RegChannelCfgUrl extends \yii\db\ActiveRecord
     {
         return [
             [['rcid'], 'required'],
-            [['rcid', 'trgSendMethod', 'trgRespFmt', 'smtType', 'status'], 'integer'],
+            [['rcid', 'smtType', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['regSpnumber', 'regKeywords', 'trgSuccKey', 'trgSuccValue', 'trgOrderIdKey', 'trgSmtKey', 'smtKeywords'], 'string', 'max' => 128],
-            [['trgUrl'], 'string', 'max' => 512],
+            [['smtKeywords'], 'string', 'max' => 128],
             [['rcid'], 'unique'],
         ];
     }
@@ -57,15 +47,6 @@ class RegChannelCfgUrl extends \yii\db\ActiveRecord
         return [
             'ccuid' => 'Ccuid',
             'rcid' => 'Rcid',
-            'regSpnumber' => 'Reg Spnumber',
-            'regKeywords' => 'Reg Keywords',
-            'trgUrl' => 'Trg Url',
-            'trgSendMethod' => 'Trg Send Method',
-            'trgRespFmt' => 'Trg Resp Fmt',
-            'trgSuccKey' => 'Trg Succ Key',
-            'trgSuccValue' => 'Trg Succ Value',
-            'trgOrderIdKey' => 'Trg Order Id Key',
-            'trgSmtKey' => 'Trg Smt Key',
             'smtType' => 'Smt Type',
             'smtKeywords' => 'Smt Keywords',
             'recordTime' => 'Record Time',

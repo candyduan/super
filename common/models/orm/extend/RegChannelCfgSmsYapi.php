@@ -1,6 +1,6 @@
 <?php
 namespace common\models\orm\extend;
-class RegChannelCfgSmsNapi extends \common\models\orm\base\RegChannelCfgSmsNapi{
+class RegChannelCfgSmsYapi extends \common\models\orm\base\RegChannelCfgSmsYapi{
     public static function findByRcid($rcid){
         if(!is_numeric($rcid)){
             return null;

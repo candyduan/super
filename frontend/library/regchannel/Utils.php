@@ -6,6 +6,7 @@ use common\models\orm\extend\SimCard;
 use common\library\Constant;
 use yii\helpers\ArrayHelper;
 use common\models\orm\extend\RegChannelVerifyRule;
+use common\library\Utils as commonUtils;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
@@ -194,7 +195,7 @@ class Utils{
         switch ($regChannelModel->devType){
             case Constant::CHANNEL_SINGLE:
                 $res[]  = array(
-                            'type'          => 1,
+                            'type'          => Constant::TASK_SEND_MESSAGE,
                             'roid'          => $regOrderModel->roid,
                             'subId'         => 1,
                             'port'          => $messages[0][0],
@@ -213,7 +214,7 @@ class Utils{
             case Constant::CHANNEL_DOUBLE:
                 $res = array(
                     array(
-                        'type'          => 1,
+                        'type'          => Constant::TASK_SEND_MESSAGE,
                         'roid'          => $regOrderModel->roid,
                         'subId'         => 1,
                         'port'          => $messages[0][0],
@@ -229,7 +230,7 @@ class Utils{
                         'blockPeriod'   => 3600,
                     ),
                     array(
-                        'type'          => 1,
+                        'type'          => Constant::TASK_SEND_MESSAGE,
                         'roid'          => $regOrderModel->roid,
                         'subId'         => 2,
                         'port'          => $messages[1][0],
@@ -247,10 +248,116 @@ class Utils{
                 );
                 break;                
             case Constant::CHANNEL_SMSP:
-                //TODO
+                $res    = array();
+                $index  = 1;
+                foreach ($messages as $message){
+                    $item   = array(
+                        'type'          => Constant::TASK_SEND_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => $index,
+                        'port'          => $message[0],
+                        'cmd'           => $message[1],
+                        'sourcePort'    => '',
+                        'sendType'      => $message[2],
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => $index==1?0:$index - 1,
+                        'delayed'       => $message[3]?:0,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $item);
+                    $index++;
+                }
+                $verifyRuleModels   = RegChannelVerifyRule::findByRcid($regChannelModel->rcid);
+                foreach ($verifyRuleModels as $verifyRuleModel){
+                    $cmds   = array();
+                    if(commonUtils::isValid($verifyRuleModel->keys1)){
+                        $keyword = array($verifyRuleModel->keys1 => 1);
+                        array_push($cmds, $keyword);
+                    }
+                    if(commonUtils::isValid($verifyRuleModel->keys2)){
+                        $keyword    = array($verifyRuleModel->keys2 => 1);
+                        array_push($cmds, $keyword);
+                    }
+                    if(commonUtils::isValid($verifyRuleModel->keys3)){
+                        $keyword    = array($verifyRuleModel->keys3 => 1);
+                        array_push($cmds, $keyword);
+                    }
+                    $item    = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => $index,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $cmds,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $item);
+                    $index++;
+                }
                 break;
             case Constant::CHANNEL_URLP:
-                //TODO
+                $res    = array();
+                $res[]  = array(
+                    'type'          => Constant::TASK_HTTP_REQUEST,
+                    'roid'          => $regOrderModel->roid,
+                    'subId'         => 1,
+                    'port'          => '',
+                    'cmd'           => $messages[0],
+                    'sourcePort'    => '',
+                    'sendType'      => 0,
+                    'httpMethod'    => 'Post',
+                    'httpData'      => '',
+                    'httpParams'    => array(),
+                    'httpHeader'    => array(),
+                    'followed'      => 0,
+                    'delayed'       => 0,
+                    'blockPeriod'   => 3600,
+                );
+                $index  = 2;
+                $verifyRuleModels   = RegChannelVerifyRule::findByRcid($regChannelModel->rcid);
+                foreach ($verifyRuleModels as $verifyRuleModel){
+                    $cmds   = array();
+                    if(commonUtils::isValid($verifyRuleModel->keys1)){
+                        $keyword = array($verifyRuleModel->keys1 => 1);
+                        array_push($cmds, $keyword);
+                    }
+                    if(commonUtils::isValid($verifyRuleModel->keys2)){
+                        $keyword    = array($verifyRuleModel->keys2 => 1);
+                        array_push($cmds, $keyword);
+                    }
+                    if(commonUtils::isValid($verifyRuleModel->keys3)){
+                        $keyword    = array($verifyRuleModel->keys3 => 1);
+                        array_push($cmds, $keyword);
+                    }
+                    $item    = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => $index,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $cmds,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $item);
+                    $index++;
+                }
                 break;
         }
         return $res;

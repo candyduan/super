@@ -13,6 +13,7 @@ class RegChannelVerifyRule extends \common\models\orm\base\RegChannelVerifyRule{
             );
         $models = self::find()
                     ->where($condition)
+                    ->orderBy('type ASC')
                     ->all()
                     ;
         return $models;

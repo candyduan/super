@@ -24,4 +24,17 @@ class Constant{
     const RESULT_CODE_EXCEPT    = 0;
     const RESULT_CODE_SUCC  = 1;
     const RESULT_CODE_SYSTEM_BUSY   = 5;
+    
+    /*
+     * 任务类型
+     */
+    const TASK_SEND_MESSAGE = 1;
+    const TASK_HTTP_REQUEST = 2;
+    const TASK_BLOCK_MESSAGE= 3;
+    
+    
+    /*
+     * 域名
+     */
+    const DOMAIN_REGISTER   = 'frontend.super.com';
 }

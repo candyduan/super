@@ -7,7 +7,7 @@ use common\models\orm\extend\RegChannelCfgSd;
 use common\models\orm\extend\RegChannelCfgSdYapi;
 use common\models\orm\extend\RegChannelCfgSdNapi;
 use common\models\orm\extend\RegChannelCfgRegParams;
-use common\library\Utils as commonUtils;
+
 class SdRegister extends Register{
     protected $_regChannelModel             = null;
     protected $_regOrderModel               = null;
@@ -94,7 +94,7 @@ class SdRegister extends Register{
                 );
                 $solidResult    = array($solidResult1,$solidResult2);
             }
-            $messages = Utils::getMessagesFromSolidResult($this->_smsTransactionModel, $solidResult);
+            $messages = Utils::getMessagesFromSolidResult($solidResult);
             $res      = Utils::getGiveSdkRegisterResult($this->_regChannelModel,$this->_regOrderModel,$messages);
         }
         return $res;
