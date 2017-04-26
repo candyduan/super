@@ -19,7 +19,7 @@ class SdkProvinceLimit extends \common\models\orm\base\SdkProvinceLimit {
     }*/
 
     public static function deleteByPridSdidProvider($prid,$sdid,$provider){
-        $state = self::deleteAll(['prid' => $prid, 'sdid' => $sdid, 'provider' =>$provider]);//->where(['prid' => $prid, 'sdid' => $sdid, 'provider' =>$provider])->;
+        $state = self::deleteAll(['prid' => $prid, 'sdid' => $sdid, 'provider' =>$provider]);
         return $state;
     }
 

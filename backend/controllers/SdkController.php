@@ -179,20 +179,11 @@ class SdkController extends Controller
         $sdid = Yii::$app->request->get('sdid');
         $provider = Yii::$app->request->get('provider');
         $status = Yii::$app->request->get('status');
-        $A=1;
         if (isset($prid) && isset($sdid) && isset($provider)) {
             $transaction =  SdkProvinceLimit::getDb()->beginTransaction();
             try {
                 SdkProvinceLimit::deleteByPridSdidProvider($prid,$sdid,$provider);
-                $model = new SdkProvinceLimit();
-                $model->sdid= $sdid;
-                $model->prid=$prid;
-                $model->provider =$provider;
-                $model->updateTime = time();
-                $model->recordTime =time();
-                $model->status = $status;
-                $result = $model->save();
-                $resultState = ($result == true) ? 1 : 0;
+                $resultState = $this->_addProvinceLimit($sdid,$prid,$provider, $status);
                 $transaction->commit();
             } catch (ErrorException $e) {
                 $resultState = 0;
@@ -203,6 +194,73 @@ class SdkController extends Controller
 
         echo json_encode($resultState);
         exit;
+    }
+
+    public function actionBatchModifyProvinceLimit() {
+        $resultState = 0;
+        $prids = Yii::$app->request->get('prids');
+        $sdid = Yii::$app->request->get('sdid');
+        $provider = Yii::$app->request->get('provider');
+        $status = Yii::$app->request->get('status');
+        if (isset($prids) && isset($sdid) && isset($provider)) {
+            foreach($prids as $prid) {
+                $transaction = SdkProvinceLimit::getDb()->beginTransaction();
+                try {
+                    SdkProvinceLimit::deleteByPridSdidProvider($prid, $sdid, $provider);
+                    $resultState += $this->_addProvinceLimit($sdid, $prid, $provider, $status);
+                    $transaction->commit();
+                } catch (ErrorException $e) {
+                    $resultState = 0;
+                    $transaction->rollBack();
+                    MyMail::sendMail($e->getMessage(), 'Error From modify province limit');
+                }
+            }
+        }
+
+        echo json_encode($resultState);
+        exit;
+    }
+
+    public function actionGetProvinceTimeLimit(){
+        $provider = Yii::$app->request->get('provider');
+        $sdid = Yii::$app->request->get('sdid');
+        $prid = Yii::$app->request->get('prid');
+        $data = [];
+        if(!empty($provider) && $sdid && $prid){
+            $stimeetime = SdkProvinceTimeLimit::getTimtLimitsBySdidProviderPrid($sdid,$provider,$prid);
+            if(!empty($stimeetime)){ //有限制
+                for($i = 0 ;$i < 24 ;$i++){
+                    $unlimit = true;
+                    foreach ($stimeetime as $value) {
+                        if ($i < intval($value['stime']) || $i >= intval($value['etime'])){
+                        }else{
+                            $unlimit = false;
+                            break;
+                        }
+                    }
+                    if($unlimit){
+                        $data[] = $i;
+                    }
+                }
+            }else{
+                $data = range(0,23);
+            }
+        }
+        echo json_encode($data);
+        exit;
+    }
+
+    private function _addProvinceLimit($sdid,$prid,$provider, $status){
+        $model = new SdkProvinceLimit();
+        $model->sdid= $sdid;
+        $model->prid=$prid;
+        $model->provider =$provider;
+        $model->updateTime = time();
+        $model->recordTime =time();
+        $model->status = $status;
+        $result = $model->save();
+        $resultState = ($result == true) ? 1 : 0;
+        return $resultState;
     }
 
     public function actionGetSdk() {

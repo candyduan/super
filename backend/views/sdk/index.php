@@ -150,8 +150,9 @@
             <div class="modal-body">
                 <div class="inline">
                     <span> 省份屏蔽: </span>
-                    <button type="submit" class="btn" id="btn_comfirm_province"> 全省开通</button>
-                    <button type="submit" class="btn" id="btn_comfirm_province"> 全省屏蔽</button>
+                    <button type="submit" class="btn" id="btn_comfirm_open"> 全省开通</button>
+                    <button type="submit" class="btn" id="btn_comfirm_ban"> 全省屏蔽</button>
+                    <input type="hidden" id='hidden_status' value = "" />
                 </div>
                 <div class="inline" style="padding-left: 120px">
                     <button type="submit" class="btn btn-danger" id="btn_comfirm_province">更新地域设置</button>
@@ -162,6 +163,27 @@
         </div>
     </div>
 </div>
+
+<div id="modalProvinceTime" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>SDK地域时间设置:</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form id="formProvinceTime" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" id="province_time" >
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btn_submit_time">提交</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
 <script src="/web/ace/assets/js/jquery-2.1.4.min.js"></script>
@@ -284,10 +306,11 @@
                 content_arr.push("<td>"+result[i].province+"</td>");
                 content_arr.push("<td>"+result[i].status+"</td>");
                 content_arr.push("<td>"+result[i].timelimit+"</td></tr>");
-                content_str  += content_arr.join(' ', content_arr);
+                content_str  += content_arr.join(' ', content_arr);//要改
             }
             $('#bodyProvince').empty().append(content_str);
             $('#btn_setprovince').attr('disabled', false);
+            $('#all_prids').prop('checked',false);
             $('#modalProvince').modal('show');
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
@@ -306,10 +329,47 @@
 
     $('#btn_setprovince').on('click', function(event){
         event.preventDefault();
-        $('#modalComfirmProvince').modal('show');
+        var toids = getBatchIDs('prid');
+        if (toids.length > 0) {
+            //两个按钮的class 和 hidden status =0
+            $('#modalComfirmProvince').modal('show');
+        } else {
+            alert('请至少勾选一个选项!');
+        }
     });
 
-    <!-- --------sdk省份限制的状态设置----start------- -->
+    $('#btn_comfirm_province').on('click', function(){
+        var status = $('#hidden_status').val();
+        if(status !== '') {
+            var comfirm_msg = status == 0 ? '屏蔽' : '开通';
+            if(confirm('确认省份开通情况调整为'+ comfirm_msg)) {
+                var prids = getBatchIDs('prid');
+                var provider = parseInt($('#hidden_tab_type').val());
+                var sdid = parseInt($('#hidden_sdid').val());
+                var post_url = '/sdk/batch-modify-province-limit';
+                var post_data = {
+                    'prids': prids,
+                    'provider': provider,
+                    'sdid': sdid,
+                    'status': status
+                };
+                var method = 'get';
+                var success_function = function (result) {
+                    if (parseInt(result) > 0) {
+                        alert(MESSAGE_MODIFY_SUCCESS);
+                       $('#modalComfirmProvince').modal('hide');
+                       $('#modalProvince').modal('hide');
+                       // setProvince(sdid, provider);
+                    } else {
+                        alert(MESSAGE_MODIFY_ERROR);
+                    }
+                }
+                callAjaxWithFunction(post_url, post_data, success_function, method);
+            }
+        }else{
+            alert('请选择开通或者屏蔽')
+        }
+    })
 
     function setDoubleStatus(prid , status){ //这个状态是要去修改成的状态
         var comfirm_msg = status ==  0 ? "停止" : "开通" ;
@@ -329,18 +389,48 @@
                 if (parseInt(result) == 0) {
                     alert(MESSAGE_MODIFY_ERROR);
                 } else {
-                    setProvince(sdid, provider); // 充新调ajax 刷新次页面
+                    setProvince(sdid, provider); // 重新调ajax 刷新次页面
                 }
             }
             callAjaxWithFunction(url, data, success_func, method);
         }
     }
 
+    $('#btn_comfirm_open').on('click',function(){
+        $('#btn_comfirm_open').addClass('btn-success');
+        $('#btn_comfirm_ban').removeClass('btn-danger');
+        $('#hidden_status').val(1);
+    });
+
+    $('#btn_comfirm_ban').on('click',function(){
+        $('#btn_comfirm_ban').addClass('btn-danger');
+        $('#btn_comfirm_open').removeClass('btn-success');
+        $('#hidden_status').val(0);
+    });
+
+    function setProTime(prid){
+        var provider = parseInt($('#hidden_tab_type').val());
+        var sdid = parseInt($('#hidden_sdid').val());
+        var url = '/sdk/get-province-time-limit';
+        var data = {
+            'provider' : provider,
+            'sdid' : sdid,
+            'prid' :prid
+        }
+        var method = 'get';
+        var success_function = function (result) {
+            // alert(result.join(''));
+
+         //   $('#modalProvinceTiime').modal('show');
+
+        }
+        callAjaxWithFunction(url, data, success_function, method);
+    }
+
 /* ------------------------------------------------------------------------javascript-------------------------------------*/
     $('#all_prids').on('click', function(){
         batchMute(this, 'prid');
     });
-
     $('input[name="prid"]').on('click', function(){
         closeBatch(this, 'all_prids');
     });
