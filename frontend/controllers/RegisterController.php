@@ -6,6 +6,7 @@ use common\library\Utils;
 use common\models\orm\extend\SimCard;
 use common\models\orm\extend\RegChannel;
 use common\library\Constant;
+use common\models\orm\extend\RegOrder;
 
 /**
  * reg controller
@@ -52,7 +53,41 @@ class RegisterController extends Controller{
      * 触发url类型验证码下发
      */
     public function actionUrlPlus(){
+        //通用参数
+        $imsi   = Utils::getParam('imsi');
+        $imei   = Utils::getParam('imei');
+        $iccid  = Utils::getParam('iccid');
+        $cmcc   = Utils::getParam('CMCC');
+        $mcc    = Utils::getParam('MCC');
+        $mnc    = Utils::getParam('MNC');
+        $lac    = Utils::getParam('LAC');
+        $cid    = Utils::getParam('CID');
+        $networkType    = Utils::getParam('networkType',0);
+        //该接口特有参数
+        $roid   = Utils::getParam('roid',0);
         
+        if(!is_numeric($roid)){
+            $out['resultCode']  = Constant::RESULT_CODE_EXCEPT;
+            $out['msg']         = '参数异常';
+            Utils::jsonOut($out);
+            return ;
+        }
+        $regOrderModel  = RegOrder::findByPk($roid);
+        $regChannelModel= RegChannel::findByPk($regOrderModel->rcid);
+        if($regOrderModel && $regChannelModel){
+            $res = \frontend\library\regchannel\Utils::gotoTrigger($regChannelModel,$regOrderModel);
+            if($res){
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = 'success';
+            }else{
+                $out['resultCode']  = Constant::RESULT_CODE_EXCEPT;
+                $out['msg']         = '请求失败，请稍后重试！';
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_EXCEPT;
+            $out['msg']         = '未找到该订单';
+        }
+        Utils::jsonOut($out);
     }
     
     /*

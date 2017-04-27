@@ -4,9 +4,9 @@ use common\models\orm\extend\RegOrder;
 use common\models\orm\extend\RegChannel;
 use common\models\orm\extend\SimCard;
 use common\library\Constant;
-use yii\helpers\ArrayHelper;
 use common\models\orm\extend\RegChannelVerifyRule;
 use common\library\Utils as commonUtils;
+use common\models\orm\extend\RegChannelCfgUrlYapi;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
@@ -63,7 +63,13 @@ class Utils{
         return $res;
     }
     
-    public static function sendRegisterHttpResult($api,$format='json'){
+    public static function gotoTrigger(RegChannel $regChannelModel,RegOrder $regOrderModel){
+        $urlTrigger = new UrlTrigger();
+        $res    = $urlTrigger->trigger();
+        return $res;
+    }
+    
+    public static function sendHttpResultToSp($api,$format='json'){
         $response = self::httpRequest($api);
         $result = self::formatHttpResponseToArray($response,$format);
         return $result;
@@ -108,8 +114,8 @@ class Utils{
             }
             $response =  curl_exec($ch);
             $info = curl_getinfo($ch);
-            $totalTime = self::getValuesFromArray($info, 'total_time','');
-            $httpCode = self::getValuesFromArray($info, 'http_code','');
+            $totalTime = commonUtils::getValuesFromArray($info, 'total_time','');
+            $httpCode = commonUtils::getValuesFromArray($info, 'http_code','');
             if(curl_errno($ch)){
                 $result = curl_error($ch);
             }elseif ($httpCode < 500){
@@ -144,34 +150,15 @@ class Utils{
         return $result;
     }
     
-    public static function getValuesFromArray($result,$key,$defaultValue=null){
-        $value = null;
-        $key = trim($key);
-        try {
-            if($key === null){
-                $value = null;
-            }elseif($key === ''){
-                $value = null;
-            }elseif(substr($key, 0, 1) === '@'){
-                $value = substr($key, 1);
-            }else{
-                $value = ArrayHelper::getValue($result,$key,$defaultValue);
-            }
-        } catch (\Exception $e) {
-            Utils::log($e->getMessage());
-        }
-        return $value;
-    }
-    
     public static function getMessagesFromHttpResult($result, $successKey, $successValue,$messagesKey,$spOidKey=''){
-        if ($successValue == self::getValuesFromArray($result, $successKey)){
-            $pp1 = self::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.0'));
-            $pc1 = self::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.1'));
-            $b1 =  self::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.2'));
-            $pp2 = self::getValuesFromArray($result,  self::getValuesFromArray($messagesKey,'1.0'));
-            $pc2 = self::getValuesFromArray($result,  self::getValuesFromArray($messagesKey,'1.1'));
-            $b2 =  self::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'1.2'));
-            $pl = self::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'1.3'));
+        if ($successValue == commonUtils::getValuesFromArray($result, $successKey)){
+            $pp1    = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.0'));
+            $pc1    = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.1'));
+            $b1     =  commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.2'));
+            $pp2    = commonUtils::getValuesFromArray($result,  self::getValuesFromArray($messagesKey,'1.0'));
+            $pc2    = commonUtils::getValuesFromArray($result,  self::getValuesFromArray($messagesKey,'1.1'));
+            $b2     =  commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'1.2'));
+            $pl     = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'1.3'));
             if ($pp1 && $pc1){
                 $messages = [[$pp1,$pc1,$b1]];
             }else{
@@ -367,5 +354,13 @@ class Utils{
     public static function getMessagesFromSolidResult($solidResult,$spOid=''){
         $messages = $solidResult;
         return $messages;
+    }
+    
+    public static function getTriggerStatus($result,RegChannelCfgUrlYapi $regChannelCfgUrlYapiModel){        
+        if($regChannelCfgUrlYapiModel->succValue == commonUtils::getValuesFromArray($result, $regChannelCfgUrlYapiModel->succKey)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

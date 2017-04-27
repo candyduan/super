@@ -1,5 +1,6 @@
 <?php
 namespace common\library;
+use yii\helpers\ArrayHelper;
 class Utils{
     public static function jsonOut($out){
         \Yii::$app->getResponse()->format = \Yii\web\Response::FORMAT_JSON;
@@ -101,5 +102,23 @@ class Utils{
         return (@$_SERVER["HTTP_X_REAL_IP"] != null) ? @$_SERVER["HTTP_X_REAL_IP"] : @$_SERVER["REMOTE_ADDR"];
     }
     
+    public static function getValuesFromArray($result,$key,$defaultValue=null){
+        $value = null;
+        $key = trim($key);
+        try {
+            if($key === null){
+                $value = null;
+            }elseif($key === ''){
+                $value = null;
+            }elseif(substr($key, 0, 1) === '@'){
+                $value = substr($key, 1);
+            }else{
+                $value = ArrayHelper::getValue($result,$key,$defaultValue);
+            }
+        } catch (\Exception $e) {
+            Utils::log($e->getMessage());
+        }
+        return $value;
+    }
     
 }

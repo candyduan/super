@@ -49,7 +49,7 @@ class SdRegister extends Register{
                 $api['get'] = false;
             }
             $respFmt = Utils::getRespFmt($this->_regChannelCfgSdYapiModel->respFmt);
-            $result  = Utils::sendRegisterHttpResult($api,$respFmt);
+            $result  = Utils::sendHttpResultToSp($api,$respFmt);
             //判断是single还是double
             if($this->_regChannelModel->devType == 1){//single
                 $messageKey1       = array(
