@@ -7,6 +7,7 @@ use common\models\orm\extend\RegChannelCfgSms;
 use common\models\orm\extend\RegChannelCfgRegParams;
 use common\models\orm\extend\RegChannelCfgSmsYapi;
 use common\models\orm\extend\RegChannelCfgSmsNapi;
+use common\library\Utils as commonUtils;
 
 class SmsRegister extends Register{
     protected $_regChannelModel             = null;
@@ -35,6 +36,7 @@ class SmsRegister extends Register{
         if($this->_regChannelCfgSmsModel->api){//使用api
             //TODO
         }else{//不使用api
+            $result = [];
             $solidResult    = [];
             $smsContent1    = json_decode($this->_regChannelCfgSmsNapiModel->sms1,true);
             $smsContent2    = json_decode($this->_regChannelCfgSmsNapiModel->sms2,true);
@@ -52,7 +54,22 @@ class SmsRegister extends Register{
                 array_push($solidResult, $solidResult2);
             }
             $messages = Utils::getMessagesFromSolidResult($solidResult);
-            $res      = Utils::getGiveSdkRegisterResult($this->_regChannelModel,$this->_regOrderModel,$messages);
+           
+        }
+        $res      = Utils::getGiveSdkRegisterResult($this->_regChannelModel,$this->_regOrderModel,$messages);
+        $this->saveInfo($result);
+        return $res;
+    }
+    
+    public function saveInfo($result){
+        if($this->_regChannelCfgSmsModel->api){//使用api
+            if(commonUtils::isValid($this->_regChannelCfgSmsYapiModel->orderIdKey)){
+                $orderId = self::getValuesFromArray($result,$this->_regChannelCfgSmsYapiModel->orderIdKey);
+                $this->_regOrderModel->spOrderId = $orderId;
+                $this->_regOrderModel->save();
+            }
+        }else{
+            ;
         }
     }
     

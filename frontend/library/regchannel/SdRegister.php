@@ -7,6 +7,7 @@ use common\models\orm\extend\RegChannelCfgSd;
 use common\models\orm\extend\RegChannelCfgSdYapi;
 use common\models\orm\extend\RegChannelCfgSdNapi;
 use common\models\orm\extend\RegChannelCfgRegParams;
+use common\library\Utils as commonUtils;
 
 class SdRegister extends Register{
     protected $_regChannelModel             = null;
@@ -73,9 +74,10 @@ class SdRegister extends Register{
                 $messagesKey    = array($messageKey1,$messageKey2);
             }
             
-            $messages   = Utils::getMessagesFromHttpResult($result, $this->_regChannelCfgSdYapiModel->succKey, $this->_regChannelCfgSdYapiModel->succValue, $messagesKey,$this->_regChannelCfgSdYapiModel->orderIdKey);
-            $res        = Utils::getGiveSdkRegisterResult($this->_regChannelModel,$this->_regOrderModel,$messages);
+            $messages   = Utils::getMessagesFromHttpResult($result, $this->_regChannelCfgSdYapiModel->succKey, $this->_regChannelCfgSdYapiModel->succValue, $messagesKey);
+            
         }else{
+            $result = [];
             //判断是single还是double
             if($this->_regChannelModel->devType == 1){//single
                 $smsContent1    = json_decode($this->_regChannelCfgSdNapiModel->sms1,true);
@@ -95,8 +97,23 @@ class SdRegister extends Register{
                 $solidResult    = array($solidResult1,$solidResult2);
             }
             $messages = Utils::getMessagesFromSolidResult($solidResult);
-            $res      = Utils::getGiveSdkRegisterResult($this->_regChannelModel,$this->_regOrderModel,$messages);
+            
         }
+        $res        = Utils::getGiveSdkRegisterResult($this->_regChannelModel,$this->_regOrderModel,$messages);
+        $this->saveInfo($result);
         return $res;
+    }
+    
+    
+    public function saveInfo($result){
+        if($this->_regChannelCfgSdModel->api){//使用api
+            if(commonUtils::isValid($this->_regChannelCfgSdYapiModel->orderIdKey)){
+                $orderId = self::getValuesFromArray($result,$this->_regChannelCfgSdYapiModel->orderIdKey);
+                $this->_regOrderModel->spOrderId = $orderId;
+                $this->_regOrderModel->save();
+            }
+        }else{
+            ;
+        }
     }
 }

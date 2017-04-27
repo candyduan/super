@@ -47,12 +47,21 @@ class UrlTrigger extends Register{
         $respFmt = Utils::getRespFmt($this->_regChannelCfgUrlYapiModel->respFmt);
         $result  = Utils::sendHttpResultToSp($api,$respFmt);
         
+        $res = Utils::getTriggerStatus($result,$this->_regChannelCfgUrlYapiModel);
+        $this->saveInfo($result);
+        return $res;
+    }
+    
+    
+    public function saveInfo($result){
         if(commonUtils::isValid($this->_regChannelCfgUrlYapiModel->smtKey)){
             $smtUrl = commonUtils::getValuesFromArray($result, $this->_regChannelCfgUrlYapiModel->smtKey);
-            RegOrderUrl::saveUrl($this->_regChannelModel->rcid,$smtUrl);
+            RegOrderUrl::saveUrl($this->_regOrderModel->roid,$smtUrl);
         }
-        
-        $res = Utils::getTriggerStatus($result,$this->_regChannelCfgUrlYapiModel);
-        return $res;
+        if(commonUtils::isValid($this->_regChannelCfgUrlYapiModel->orderIdKey)){
+            $orderId = self::getValuesFromArray($result,$this->_regChannelCfgUrlYapiModel->orderIdKey);
+            $this->_regOrderModel->spOrderId = $orderId;
+            $this->_regOrderModel->save();
+        }
     }
 }

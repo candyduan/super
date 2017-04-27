@@ -29,5 +29,10 @@ class UrlRegister extends Register{
         $solidResult    = [$url];
         $messages = Utils::getMessagesFromSolidResult($solidResult);
         $res      = Utils::getGiveSdkRegisterResult($this->_regChannelModel,$this->_regOrderModel,$messages);
+        return $res;
+    }
+    
+    public function saveInfo($result){
+        ;
     }
 }

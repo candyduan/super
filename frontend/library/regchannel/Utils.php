@@ -36,7 +36,9 @@ class Utils{
         }
         return $respFmt;
     }
-    
+    /*
+     * @return register task list
+     */
     public static function gotoRegister(RegChannel $regChannelModel,RegOrder $regOrderModel,SimCard $simCardModel){
         $devType    = $regChannelModel->devType;
         switch ($devType){
@@ -53,19 +55,34 @@ class Utils{
                 $urlRegister             = new UrlRegister($regChannelModel, $regOrderModel, $simCardModel);
                 $res                = $urlRegister->register();
                 break;
-            case Constant::CHANNEL_MULTURL:
-                //TODO
-                break;
-            case Constant::CHANNEL_MULTSMS:
-                //TODO
-                break;
         }
         return $res;
     }
     
+    /*
+     * @return bool
+     */
     public static function gotoTrigger(RegChannel $regChannelModel,RegOrder $regOrderModel){
         $urlTrigger = new UrlTrigger();
         $res    = $urlTrigger->trigger();
+        return $res;
+    }
+    
+    /*
+     * @return submit task list 
+     */
+    public static function gotoSubmit(RegChannel $regChannelModel,RegOrder $regOrderModel,$port,$message){
+        $devType    = $regChannelModel->devType;
+        switch ($devType){
+            case Constant::CHANNEL_URLP:
+                $urlSubmit  = new UrlSubmit($regChannelModel,$regOrderModel,$port,$message);
+                $res    = $urlSubmit->submit();
+                break;
+            case Constant::CHANNEL_SMSP:
+                $smsSubmit  = new SmsSubmit($regChannelModel,$regOrderModel,$port,$message);
+                $res    = $smsSubmit->submit();
+                break;
+        }
         return $res;
     }
     
@@ -150,14 +167,14 @@ class Utils{
         return $result;
     }
     
-    public static function getMessagesFromHttpResult($result, $successKey, $successValue,$messagesKey,$spOidKey=''){
+    public static function getMessagesFromHttpResult($result, $successKey, $successValue,$messagesKey){
         if ($successValue == commonUtils::getValuesFromArray($result, $successKey)){
             $pp1    = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.0'));
             $pc1    = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.1'));
-            $b1     =  commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.2'));
+            $b1     = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'0.2'));
             $pp2    = commonUtils::getValuesFromArray($result,  self::getValuesFromArray($messagesKey,'1.0'));
             $pc2    = commonUtils::getValuesFromArray($result,  self::getValuesFromArray($messagesKey,'1.1'));
-            $b2     =  commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'1.2'));
+            $b2     = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'1.2'));
             $pl     = commonUtils::getValuesFromArray($result, self::getValuesFromArray($messagesKey,'1.3'));
             if ($pp1 && $pc1){
                 $messages = [[$pp1,$pc1,$b1]];
@@ -176,6 +193,34 @@ class Utils{
             $messages = [];
         }
         return $messages;
+    }
+    public static function getMessagesFromSolidResult($solidResult){
+        $messages = $solidResult;
+        return $messages;
+    }
+    public static function getGiveSdkSubmitResult(RegChannel $regChannelModel,RegOrder $regOrderModel,$messages){
+        $submitType = $messages[0];
+        if($submitType == Constant::SUBMIT_SERVER){
+            $res = [];
+        }else{
+            $res[] = array(
+                'type'          => Constant::TASK_SEND_MESSAGE,
+                'roid'          => $regOrderModel->roid,
+                'subId'         => 99,
+                'port'          => $messages[1],
+                'cmd'           => $messages[2],
+                'sourcePort'    => '',
+                'sendType'      => 0,
+                'httpMethod'    => '',
+                'httpData'      => '',
+                'httpParams'    => array(),
+                'httpHeader'    => array(),
+                'followed'      => 0,
+                'delayed'       => 0,
+                'blockPeriod'   => 3600,
+            );
+        }
+        return $res;
     }
     
     public static function getGiveSdkRegisterResult(RegChannel $regChannelModel,RegOrder $regOrderModel,$messages){
@@ -350,17 +395,65 @@ class Utils{
         return $res;
     }
     
-    
-    public static function getMessagesFromSolidResult($solidResult,$spOid=''){
-        $messages = $solidResult;
-        return $messages;
-    }
-    
     public static function getTriggerStatus($result,RegChannelCfgUrlYapi $regChannelCfgUrlYapiModel){        
         if($regChannelCfgUrlYapiModel->succValue == commonUtils::getValuesFromArray($result, $regChannelCfgUrlYapiModel->succKey)){
             return true;
         }else{
             return false;
         }
+    }
+    
+    private static function getReplyCodeFromMessage($message,$key='验证码'){
+        //利用正则匹配，获取回复内容
+        $result = '';
+        try {
+            if ( preg_match("/(?P<recode>[0-9a-zA-Z]+)为(本次|您的)(支付|字符|登录)?{$key}/", $message, $match)
+            || preg_match("/{$key}(是|为)?(:|：)?(【)?(?P<recode>\d{2,20})/", $message, $match)
+            || preg_match("/\({$key}\)(?P<recode>\d{2,10})/", $message, $match)
+            || preg_match("/{$key}\{(?P<recode>\d{2,10})\}/", $message, $match)
+            ){
+                $result = $match['recode'];
+            }
+        } catch (\Exception $e) {
+            commonUtils::log('验证码匹配失败2:'.$e->getMessage());
+        }
+        return $result;
+    }
+    public static function getVerifyCodeFromMessage($message = '',$key = '验证码'){
+        //利用正则匹配，获取验证码
+        $result = '';
+        try {
+            if (preg_match('/回复“是”/', $message)){
+                $result = "是";
+            }else if (preg_match('/回复"是"/', $message)){
+                $result = "是";
+            }else if (preg_match('/回复“1”/', $message)){
+                $result = "1";
+            }else if (preg_match('/回复"1"/', $message)){
+                $result = "1";
+            }else if (preg_match('/回复“Y”/', $message)){
+                $result = "Y";
+            }else if (preg_match('/回复"Y"/', $message)){
+                $result = "Y";
+            }else if (preg_match('/回复任意内容/', $message)){
+                $result = "是";
+            }else if (preg_match('/回复\s*Y/', $message)){
+                $result = "Y";
+            }else if (preg_match('/回复AQY/', $message)){
+                $result = "AQY";
+            }
+            if (!$result){
+                $result = self::getReplyCodeFromMessage($message,'回复');
+            }
+            if (!$result){
+                $result = self::getReplyCodeFromMessage($message,'验证码');
+            }
+            if (!$result){
+                $result = self::getReplyCodeFromMessage($message,'密码');
+            }
+        } catch (\Exception $e) {
+            commonUtils::log('验证码匹配失败1:'.$e->getMessage());
+        }
+        return $result;
     }
 }

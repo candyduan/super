@@ -3,24 +3,36 @@ namespace common\models\orm\extend;
 use common\library\Utils;
 
 class RegOrderUrl extends \common\models\orm\base\RegOrderUrl{
-    public static function saveUrl($rcid,$url){
-        if(!is_numeric($rcid) || !Utils::isValid($url)){
+    public static function saveUrl($roid,$url){
+        if(!is_numeric($roid) || !Utils::isValid($url)){
             return false;
         }
-        $model  = self::findByRcid($rcid);
+        $model  = self::findByRoid($roid);
         if(!$model){
             $model = new RegOrderUrl();
-            $model->rcid = $rcid;
+            $model->roid = $roid;
         }
         $model->url = $url;
-        $model->save();
+        return $model->save();
+    }
+    
+    public static function getUrl($roid){
+        if(!is_numeric($roid)){
+            return '';
+        }
+        $model  = self::findByRoid($roid);
+        $url = '';
+        if($model){
+            $url = $model->url;
+        }
+        return $url;
     }
     
     
-    public static function findByRcid($rcid){
+    public static function findByRoid($roid){
         $condition  = array(
-            'rcid'  => $rcid,
-        );
+                        'roid'  => $roid,
+                    );
         $model  = self::find()
                         ->where($condition)
                         ->one()

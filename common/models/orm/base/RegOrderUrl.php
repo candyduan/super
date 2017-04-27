@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "regOrderUrl".
  *
  * @property integer $ouid
- * @property integer $rcid
+ * @property integer $roid
  * @property string $url
  * @property string $recordTime
  * @property string $updateTime
@@ -30,11 +30,11 @@ class RegOrderUrl extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rcid'], 'required'],
-            [['rcid', 'status'], 'integer'],
+            [['roid'], 'required'],
+            [['roid', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['url'], 'string', 'max' => 512],
-            [['rcid'], 'unique'],
+            [['roid'], 'unique'],
         ];
     }
 
@@ -45,7 +45,7 @@ class RegOrderUrl extends \yii\db\ActiveRecord
     {
         return [
             'ouid' => 'Ouid',
-            'rcid' => 'Rcid',
+            'roid' => 'Roid',
             'url' => 'Url',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',

@@ -11,6 +11,7 @@ use Yii;
  * @property integer $imsi
  * @property integer $rcid
  * @property string $spSign
+ * @property string $spOrderId
  * @property string $recordTime
  * @property string $updateTime
  * @property integer $status
@@ -34,8 +35,9 @@ class RegOrder extends \yii\db\ActiveRecord
             [['roid', 'imsi', 'rcid'], 'required'],
             [['roid', 'imsi', 'rcid', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['spSign'], 'string', 'max' => 128],
+            [['spSign', 'spOrderId'], 'string', 'max' => 128],
             [['imsi', 'rcid'], 'unique', 'targetAttribute' => ['imsi', 'rcid'], 'message' => 'The combination of Imsi and Rcid has already been taken.'],
+            [['spSign'], 'unique'],
         ];
     }
 
@@ -49,6 +51,7 @@ class RegOrder extends \yii\db\ActiveRecord
             'imsi' => 'Imsi',
             'rcid' => 'Rcid',
             'spSign' => 'Sp Sign',
+            'spOrderId' => 'Sp Order ID',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
             'status' => 'Status',
