@@ -53,7 +53,7 @@ class SdkController extends Controller
                 MyHtml::aElement('javascript:void(0);' ,'setNameTable', $value['limit'].','.$value['limit'], $limit),
                 MyHtml::iElement('glyphicon glyphicon-globe ','setProvince',$value['sdid'] . ',1'),
                 MyHtml::iElement('glyphicon glyphicon-time ','setTime',$value['sdid']),
-                MyHtml::iElements('setStatus', 'this,'.$value['sdid'], $blue,$green,$red,$purple) //最后发先不能这样写
+                MyHtml::iElements('setStatus', 'this,'.$value['sdid'], $blue,$green,$red,$purple)
             ];
         }
 
@@ -131,60 +131,42 @@ class SdkController extends Controller
         exit;
     }
 
-    public function actionGetNameTable() { //根据sdk 和 运营商拿到省份 1 移动 2 联通 3 电信
+    public function actionGetNameTable() {
         $type = Yii::$app->request->get('type');
         $sdid = Yii::$app->request->get('sdid');
-        $allcampaigns = Campaign::getSdkCampaign();
+        $partnername = Yii::$app->request->get('partnername');
+        $allcampaigns = Campaign::getSdkCampaigns($partnername);
         $limitcaids = SdkCampaignLimit::getlimitCaids($sdid,$type);
         $limitdata = [] ; $unlimitdata = [];
         foreach($allcampaigns as $caid => $value) {
             $partner = $value['partner'];
             $campaign = $value['campaign'];
             //在这个黑名单或者白名单里的放在前面 并且是绿色的 点击了就变成红并且去删除
-            if (in_array($caid, $limitcaids)) {
-                $unlimitdata[] = [
-                    'partner' => $partner,
-                    'campaign' => $campaign,
-                    'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'removelimit'  , $caid . ', '.$sdid),
-                ];
-            } else {    //在这个黑名单或者白名单里的放在后面 并且是红色的 点击了就变成绿色并且去增加
-                $limitdata[] = [
-                    'partner' => $partner,
-                    'campaign' => $campaign,
-                    'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon red', 'addlimit' , $caid . ', '.$sdid),
-                ];
+            if($type == 0){
+                 $unlimitdata[] = [
+                     'partner' => $partner,
+                     'campaign' => $campaign,
+                     'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon red', '', '')
+                 ];
+            }else {
+                if (in_array($caid, $limitcaids)) {
+                    $limitdata[] = [
+                        'partner' => $partner,
+                        'campaign' => $campaign,
+                        'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'modifyNameTable', 'this' ),
+                    ];
+                } else {    //不在这个黑名单或者白名单里的放在后面 并且是红色的 点击了就变成绿色并且去增加
+                    $unlimitdata[] = [
+                        'partner' => $partner,
+                        'campaign' => $campaign,
+                        'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon red', 'modifyNameTable', 'this'),
+                    ];
+                }
             }
         }
-        echo json_encode(array_merge($unlimitdata, $limitdata));
+        echo json_encode(array_merge($limitdata, $unlimitdata));
         exit;
     }
-
-      /*  if($sdid && $provider)
-        {
-            //屏蔽的 存在表里并且status = 0
-
-            $data = [];
-            foreach ($provincelimit as $key => $value) {
-                //处理时间限制数据
-                $timelimits = [];
-                $timelimit = MyHtml::aElement('javascript:void(0);', 'setProTime', $value['splid'],'------');
-               // $provincetimelimit = SdkProvinceTimeLimit::getTimtLimitsBySplid($value['splid']);
-                if(!empty($provincetimelimit)){
-                    foreach($provincetimelimit as $v){
-                        $timelimits[] = $v['stime'] .':00' . '---' .$v['etime'] .':00';
-                    }
-                    $timelimit = MyHtml::aElement('javascript:void(0);', 'setProTime', $value['splid'], implode('<br/>' ,$timelimits));
-                }
-                //处理按钮颜色
-                list($blue,$green) = self::_getDoubleStatus($value['status']);
-                $data[$key]['checkbox'] =  '<input type="checkbox" name="splid" value="' . $value['splid'] . '" onclick="closeBatch(this, \'all_splids\');"/>';
-                $data[$key]['province'] =   Province::getProvinceById($value['prid']);
-                $data[$key]['status'] =   MyHtml::doubleElements('setDoubleStatus',$value['splid'], $blue,$green);
-                $data[$key]['timelimit'] =   $timelimit;
-            }
-
-            //没有屏蔽的 不存在表里 或者 states = 1
-        }*/
 
     public function actionModifySdk() {
         $resultState = 0;
