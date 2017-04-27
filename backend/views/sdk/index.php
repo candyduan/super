@@ -182,6 +182,24 @@
     </div>
 </div>
 
+<div id="modalSdkTime" class="modal fade">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>SDK时间设置:</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="div_sdktime" style="height:500px">
+            </div>
+            <input type="hidden" id='hidden_setime_sdid' value = "" />
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btn_submit_sdktime">提交</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
 <script src="/web/ace/assets/js/jquery-2.1.4.min.js"></script>
@@ -393,6 +411,46 @@
             callAjaxWithFunction(url, data, success_func, method);
         }
     }
+    //0-无效，1-暂停，2-测试，3-运行
+    function setStatus(that , sdid, status){ //这个状态是要去修改成的状态
+        var final_class = comfirm_msg = '';
+
+        switch(status){
+            case 0 :
+                comfirm_msg = '删除';
+                final_class = 'red'; break;
+            case 1 :
+                comfirm_msg = '暂停';
+                final_class = 'blue'; break;
+            case 2 :
+                comfirm_msg = '测试';
+                final_class = 'purple'; break;
+            case 3 :
+                comfirm_msg = '运行';
+                final_class = 'green'; break;
+        }
+
+        if($(that).hasClass('grey')) {
+            if (confirm('确认省份开通情况调整为' + comfirm_msg)) {
+
+                var url = '/sdk/modify-status';
+                var data = {
+                    'sdid': sdid,
+                    'status': status
+                }
+                var method = 'get';
+                var success_func = function (result) {
+                    if (parseInt(result) == 1) {
+                        alert(MESSAGE_MODIFY_SUCCESS);
+                    } else {
+                        alert(MESSAGE_MODIFY_ERROR);
+                    }
+                    _initDataTable();
+                }
+                callAjaxWithFunction(url, data, success_func, method);
+            }
+        }
+    }
 
     $('#btn_comfirm_open').on('click',function(){
         $('#btn_comfirm_open').addClass('btn-success');
@@ -423,7 +481,7 @@
                 if (result.indexOf(i) == -1){ // 不存在在 unlimit 数组中
                     circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-danger">'+i+'</button >');
                 }else{
-                    circle_buttons.push('<button   onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
+                    circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
                 }
             }
             $('#btn_submit_time').attr('disabled', false);
@@ -435,20 +493,12 @@
         callAjaxWithFunction(url, data, success_function, method);
     }
 
-    function timebtnClick(that){
-        if($(that).hasClass('btn-success')){
-            $(that).removeClass('btn-success').addClass('btn-danger');
-        }else{
-            $(that).removeClass('btn-danger').addClass('btn-success');
-        }
-    }
-
     $('#btn_submit_time').on('click', function(event){
         event.preventDefault();
         var prid = $('#hidden_prid').val(); //-1为无效
         if(confirm('确认修改')) {
-            //$('#btn_submit_time').attr('disabled', true);
-            var time = getLimitTime();  //需要屏蔽的时间点 0-23
+            $('#btn_submit_time').attr('disabled', true);
+            var time = getProvinceLimitTime();  //需要屏蔽的时间点 0-23
             var provider = parseInt($('#hidden_tab_type').val());
             var sdid = parseInt($('#hidden_sdid').val());
             var post_url = '/sdk/modify-privince-time-limit';
@@ -467,11 +517,62 @@
                     // setProvince(sdid, provider);
                 } else {
                     alert(MESSAGE_MODIFY_ERROR);
+                 $('#btn_submit_time').attr('disabled', false);
                 }
             }
             callAjaxWithFunction(post_url, post_data, success_function, method);
         }
-    })
+    });
+    <!-- --------sdk时间设置---begin-------- -->
+    function setTime(sdid){
+        var url = '/sdk/get-sdk-time-limit';
+        var data = {
+            'sdid' : sdid
+        }
+        var method = 'get';
+        var success_function = function (result) {
+            var circle_buttons = [];
+            for(var i = 0 ; i < 24 ; i++) {
+                if (result.indexOf(i) == -1){ // 不存在在 unlimit 数组中
+                    circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-danger">'+i+'</button >');
+                }else{
+                    circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
+                }
+            }
+            $('#hidden_setime_sdid').val(sdid);
+            $('#btn_submit_sdktime').attr('disabled', false);
+            $('#div_sdktime').empty().append(circle_buttons.join(' '));
+            $('#modalSdkTime').modal('show');
+
+        }
+        callAjaxWithFunction(url, data, success_function, method);
+    }
+
+
+    $('#btn_submit_sdktime').on('click', function(event){
+        event.preventDefault();
+        if(confirm('确认修改')) {
+            $('#btn_submit_sdktime').attr('disabled', true);
+            var time = getSdkLimitTime();  //需要屏蔽的时间点 0-23
+            var sdid = parseInt($('#hidden_setime_sdid').val());
+            var post_url = '/sdk/modify-sdk-time-limit';
+            var post_data = {
+                'time': time,
+                'sdid': sdid,
+            };
+            var method = 'get';
+            var success_function = function (result) {
+                if (parseInt(result) > 0) {
+                    alert(MESSAGE_MODIFY_SUCCESS);
+                    $('#modalSdkTime').modal('hide');
+                } else {
+                    alert(MESSAGE_MODIFY_ERROR);
+                    $('#btn_submit_sdktime').attr('disabled', false);
+                }
+            }
+            callAjaxWithFunction(post_url, post_data, success_function, method);
+        }
+    });
     /* ------------------------------------------------------------------------javascript-------------------------------------*/
     $('#all_prids').on('click', function(){
         batchMute(this, 'prid');
@@ -480,9 +581,25 @@
         closeBatch(this, 'all_prids');
     });
 
-    function getLimitTime(){
+    function getProvinceLimitTime(){ //地域时间设置
         var timelimit = [];
-        $('.btn-circle.btn-danger').each(function(){
+        $('#div_time').children(".btn-circle.btn-danger").each(function(){
+            timelimit.push($(this).text());
+        });
+        return timelimit;
+    }
+
+    function timebtnClick(that){
+        if($(that).hasClass('btn-success')){
+            $(that).removeClass('btn-success').addClass('btn-danger');
+        }else{
+            $(that).removeClass('btn-danger').addClass('btn-success');
+        }
+    }
+
+    function getSdkLimitTime(){ //sdk时间设置
+        var timelimit = [];
+        $('#div_sdktime').children(".btn-circle.btn-danger").each(function(){
             timelimit.push($(this).text());
         });
         return timelimit;

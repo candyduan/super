@@ -12,8 +12,9 @@ use common\models\orm\extend\SdkPartner;
 use common\models\orm\extend\SdkProvinceLimit;
 use common\models\orm\extend\Province;
 use common\models\orm\extend\SdkProvinceTimeLimit;
+use common\models\orm\extend\SdkTimeLimit;
 /**
- * Test controller
+ * Sdk controller
  */
 class SdkController extends Controller
 {
@@ -43,13 +44,14 @@ class SdkController extends Controller
                 2 =>  '黑名单'
             ];
             $limit = isset($limits[$value['limit']]) ? $limits[$value['limit']] : '';
-            list($blue,$green,$black,$purple) = self::_getStatusColor($value['status']);
+            list($blue,$green,$red,$purple) = self::_getStatusColor($value['status']);
+            //0-无效，1-暂停，2-测试，3-运行
             $tabledata[] = [
                 MyHtml::aElement('javascript:void(0);' ,'modifySdk', $value['sdid'],'[' .++$start.'] '.$value['name']),
                 MyHtml::aElement('javascript:void(0);' ,'setLimit', $value['sdid'], $limit),
-                MyHtml::iElement('glyphicon glyphicon-globe','setProvince',$value['sdid'] . ',1'),
-                MyHtml::iElement('glyphicon glyphicon-time','setTime',$value['sdid']),
-                MyHtml::iElements('setStatus',$value['sdid'], $blue,$green,$black,$purple)
+                MyHtml::iElement('glyphicon glyphicon-globe ','setProvince',$value['sdid'] . ',1'),
+                MyHtml::iElement('glyphicon glyphicon-time ','setTime',$value['sdid']),
+                MyHtml::iElements('setStatus', 'this,'.$value['sdid'], $blue,$green,$red,$purple) //最后发先不能这样写
             ];
         }
 
@@ -173,6 +175,30 @@ class SdkController extends Controller
         exit;
     }
 
+    public function actionModifyStatus(){
+        $status = intval(Yii::$app->request->get('status'));
+        $sdid = Yii::$app->request->get('sdid');
+        $resultState = 0;
+        if(isset($status) && isset($sdid)){
+            $transaction =  Sdk::getDb()->beginTransaction();
+            try {
+                $sdkmodel = Sdk::findByPk($sdid);
+                if($sdkmodel){
+                    $sdkmodel->status = $status;
+                    $sdkmodel->updateTime = time();
+                    $resultState = $sdkmodel->save() == true  ? 1 :0;
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify Sdk status');
+            }
+        }
+        echo json_encode($resultState);
+        exit;
+    }
+
     public function actionModifyProvinceLimit() {
         $resultState = 0;
         $prid = Yii::$app->request->get('prid');
@@ -261,8 +287,45 @@ class SdkController extends Controller
         echo json_encode($resultState);
         exit;
     }
-    //获取没有屏蔽的时间点
-    public function actionGetProvinceTimeLimit(){
+
+    public function actionModifySdkTimeLimit() {
+        $resultState = 0;
+        $time = Yii::$app->request->get('time');
+        $sdid = Yii::$app->request->get('sdid');
+        if (!empty($sdid)) {
+            try {
+                $transaction = SdkTimeLimit::getDb()->beginTransaction();
+                if (!empty($time)) {
+                    SdkTimeLimit::deleteBySdid($sdid);
+                    $duration = self::_getLimitDuration($time);
+                    foreach($duration as $dur){
+                        $model = new SdkTimeLimit();
+                        $model->sdid= $sdid;
+                        $model->stime = $dur[0];
+                        $model->etime = $dur[1];
+                        $model->updateTime = time();
+                        $model->recordTime =time();
+                        $model->status = 1;
+                        $result = $model->save();
+                        $resultState += ($result == true) ? 1 : 0;
+                    }
+                }else{
+                    SdkTimeLimit::deleteBySdid($sdid);
+                    $resultState = 1;
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify sdk time limit');
+            }
+        }
+
+        echo json_encode($resultState);
+        exit;
+    }
+
+    public function actionGetProvinceTimeLimit(){ //获取没有被屏蔽的省份下的时间点
         $provider = Yii::$app->request->get('provider');
         $sdid = Yii::$app->request->get('sdid');
         $prid = Yii::$app->request->get('prid');
@@ -270,7 +333,8 @@ class SdkController extends Controller
         if(!empty($provider) && $sdid && $prid){
             $stimeetime = SdkProvinceTimeLimit::getTimtLimitsBySdidProviderPrid($sdid,$provider,$prid);
             if(!empty($stimeetime)){ //有限制
-                for($i = 0 ;$i < 24 ;$i++){
+                $data = self::_getUnlimitTime($stimeetime);
+          /*      for($i = 0 ;$i < 24 ;$i++){
                     $unlimit = true;
                     foreach ($stimeetime as $value) {
                         if ($value['stime'] < $value['etime']) {
@@ -291,7 +355,7 @@ class SdkController extends Controller
                     if($unlimit){
                         $data[] = $i;
                     }
-                }
+                }*/
             }else{
                 $data = range(0,23);
             }
@@ -299,6 +363,49 @@ class SdkController extends Controller
         $data = array_unique($data);
         echo json_encode($data);
         exit;
+    }
+
+    public function actionGetSdkTimeLimit(){ //获取没有被屏蔽的省份下的时间点
+        $sdid = Yii::$app->request->get('sdid');
+        $data = [];
+        if(!empty($sdid)){
+            $stimeetime = SdkTimeLimit::getTimtLimitsBySdid($sdid);
+            if(!empty($stimeetime)){ //有限制
+                $data = self::_getUnlimitTime($stimeetime);
+            }else{
+                $data = range(0,23);
+            }
+        }
+        $data = array_unique($data);
+        echo json_encode($data);
+        exit;
+    }
+
+    private function _getUnlimitTime($stimeetime){ //获取没有被屏蔽的时间点
+        for($i = 0 ;$i < 24 ;$i++){
+            $unlimit = true;
+            foreach ($stimeetime as $value) {
+                if ($value['stime'] < $value['etime']) {
+                    if ($i < intval($value['stime']) || $i >= intval($value['etime'])) {
+                    } else {
+                        $unlimit = false;
+                        break;
+
+                    }
+                }else{
+                    if ($i < intval($value['stime']) && $i >= intval($value['etime'])) {
+                    } else {
+                        $unlimit = false;
+                        break;
+                    }
+                }
+            }
+            if($unlimit){
+                $data[] = $i;
+            }
+        }
+
+        return $data;
     }
 
     private function _getLimitDuration($time){//获得屏蔽时间区间
@@ -310,7 +417,7 @@ class SdkController extends Controller
             }else{
                 if($value - 1 == $duration1[count($duration1)-1]){ //如果是下一个数就推进小数组
                     $duration1[] = $value;
-                }else{ //如果不是下一个数就把小数组推进大数组 再清空小数组 把这个数推进去
+                }else{ //如果不是下一个数就把 (1)小数组推进大数组 (2)清空小数组 把这个数推进去
                     $duration[] = $duration1;
                     $duration1 = [];
                     $duration1[] = $value;
@@ -335,9 +442,9 @@ class SdkController extends Controller
             }
             if(!empty($arr1) && !empty($arr2)){  // 如果说含0和含23的数组都存在  组成新数组 获得区间
                 $duration[] = [min($arr2), max($arr1) + 1];
-            }else{ //如果不是 麻烦再把小数组arr1 arr2 给人家再推回去
-                $duration[] = $arr1;
-                $duration[] = $arr2;
+            }else{ //否则 麻烦再把小数组arr1 arr2 给人家再推回去
+                $duration[] = empty($arr1) ? [] : [min($arr1), max($arr1)+1];
+                $duration[] = empty($arr2) ? [] : [min($arr2), max($arr2)+1];
             }
             return array_filter($duration);
        // }
@@ -414,10 +521,10 @@ class SdkController extends Controller
     private function _getStatusColor($status){ //4种按钮颜色判断
         $arr = ['grey','grey','grey','grey'];
         switch ($status){
-            case 0: $arr[2] = 'black'; break; //无效
-            case 1: $arr[1] = 'green'; break; //运行
+            case 0: $arr[2] = 'red'; break; //无效
+            case 1: $arr[0] = 'blue'; break; //暂停
             case 2: $arr[3] = 'purple'; break; //测试
-            case 3: $arr[0] = 'blue'; break; //暂停
+            case 3: $arr[1] = 'green'; break; //运行
         }
         return $arr;
     }

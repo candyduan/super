@@ -14,12 +14,12 @@ class MyHtml
     public static function iElement($class,$clickMethod, $clickMethodParameters){
         return '<i class=" pointer ' . $class . '", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
     }
-
+    //0-无效，1-暂停，2-测试，3-运行
     public static function iElements($clickMethod, $clickMethodParameters,$blue,$green,$black,$purple){
-        return '<i class="glyphicon pointer ' .$blue. ' glyphicon-off" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
-               ' <i class="glyphicon pointer ' .$green.' glyphicon-ok-sign", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
-               ' <i class="glyphicon pointer '.$black.' glyphicon-trash", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i> '.
-               ' <i class="glyphicon pointer ' .$purple.' glyphicon-wrench", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
+        return '<i class="glyphicon pointer ' .$blue. ' glyphicon-off" onclick="' . $clickMethod. '(' . $clickMethodParameters . ',1);"></i> '.
+               ' <i class="glyphicon pointer ' .$green.' glyphicon-ok-sign", onclick="' . $clickMethod. '(' . $clickMethodParameters . ',3);"></i> '.
+               ' <i class="glyphicon pointer '.$black.' glyphicon-trash", onclick="' . $clickMethod. '(' . $clickMethodParameters . ',0);"></i> '.
+               ' <i class="glyphicon pointer ' .$purple.' glyphicon-wrench", onclick="' . $clickMethod. '(' . $clickMethodParameters . ',2);"></i>';
     }
 
     public static function doubleiElements($clickMethod1, $clickMethod2, $clickMethodParameters1, $clickMethodParameters2, $blue,$green){
