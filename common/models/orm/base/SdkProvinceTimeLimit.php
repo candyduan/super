@@ -8,7 +8,9 @@ use Yii;
  * This is the model class for table "sdkProvinceTimeLimit".
  *
  * @property integer $sptid
- * @property integer $splid
+ * @property integer $sdid
+ * @property integer $prid
+ * @property integer $provider
  * @property integer $stime
  * @property integer $etime
  * @property integer $updateTime
@@ -31,8 +33,7 @@ class SdkProvinceTimeLimit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sptid'], 'required'],
-            [['sptid', 'splid', 'stime', 'etime', 'updateTime', 'recordTime', 'status'], 'integer'],
+            [['sdid', 'prid', 'provider', 'stime', 'etime', 'updateTime', 'recordTime', 'status'], 'integer'],
         ];
     }
 
@@ -43,7 +44,9 @@ class SdkProvinceTimeLimit extends \yii\db\ActiveRecord
     {
         return [
             'sptid' => 'Sptid',
-            'splid' => 'Splid',
+            'sdid' => 'Sdid',
+            'prid' => 'Prid',
+            'provider' => 'Provider',
             'stime' => 'Stime',
             'etime' => 'Etime',
             'updateTime' => 'Update Time',

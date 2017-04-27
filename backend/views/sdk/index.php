@@ -172,8 +172,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" id="div_time" style="height:500px">
-            <input type="hidden" id="hidden_prid" value = '-1'>
             </div>
+            <input type="hidden" id='hidden_prid' value = "" />
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success" id="btn_submit_time">提交</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
@@ -426,6 +426,7 @@
                     circle_buttons.push('<button   onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
                 }
             }
+            $('#btn_submit_time').attr('disabled', false);
             $('#hidden_prid').val(prid); //后面提交的时候需要
             $('#div_time').empty().append(circle_buttons.join(' '));
             $('#modalProvinceTime').modal('show');
@@ -442,9 +443,11 @@
         }
     }
 
-    $('#btn_submit_time').on('click', function(){
-        var prid = parseInt($('#hidden_prid').val()); //-1为无效
+    $('#btn_submit_time').on('click', function(event){
+        event.preventDefault();
+        var prid = $('#hidden_prid').val(); //-1为无效
         if(confirm('确认修改')) {
+            //$('#btn_submit_time').attr('disabled', true);
             var time = getLimitTime();  //需要屏蔽的时间点 0-23
             var provider = parseInt($('#hidden_tab_type').val());
             var sdid = parseInt($('#hidden_sdid').val());
@@ -457,7 +460,7 @@
             };
             var method = 'get';
             var success_function = function (result) {
-                if (parseInt(result) > 0) {
+             if (parseInt(result) > 0) {
                     alert(MESSAGE_MODIFY_SUCCESS);
                     $('#modalProvinceTime').modal('hide');
                     $('#modalProvince').modal('hide');

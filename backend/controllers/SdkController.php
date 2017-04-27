@@ -220,6 +220,47 @@ class SdkController extends Controller
         echo json_encode($resultState);
         exit;
     }
+
+    public function actionModifyPrivinceTimeLimit() {
+        $resultState = 0;
+        $time = Yii::$app->request->get('time');
+        $sdid = Yii::$app->request->get('sdid');
+        $provider = Yii::$app->request->get('provider');
+        $prid = Yii::$app->request->get('prid');
+        if (!empty($sdid) && isset($provider) && isset($prid)) {
+            try {
+                $transaction = SdkProvinceTimeLimit::getDb()->beginTransaction();
+                if (!empty($time)) {
+                    SdkProvinceTimeLimit::deleteByPridSdidProvider($prid, $sdid, $provider);
+                    $duration = self::_getLimitDuration($time);
+                    foreach($duration as $dur){
+                     $model = new SdkProvinceTimeLimit();
+                    $model->sdid= $sdid;
+                    $model->prid=$prid;
+                    $model->provider =$provider;
+                    $model->stime = $dur[0];
+                    $model->etime = $dur[1];
+                    $model->updateTime = time();
+                    $model->recordTime =time();
+                    $model->status = 1;
+                    $result = $model->save();
+                    $resultState += ($result == true) ? 1 : 0;
+                    }
+                }else{
+                    SdkProvinceTimeLimit::deleteByPridSdidProvider($prid, $sdid, $provider);
+                    $resultState = 1;
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify province limit');
+            }
+        }
+
+        echo json_encode($resultState);
+        exit;
+    }
     //获取没有屏蔽的时间点
     public function actionGetProvinceTimeLimit(){
         $provider = Yii::$app->request->get('provider');
@@ -258,6 +299,48 @@ class SdkController extends Controller
         $data = array_unique($data);
         echo json_encode($data);
         exit;
+    }
+
+    private function _getLimitDuration($time){//获得屏蔽时间区间
+        $duration = [];
+        $duration1 = [];
+        foreach($time as $key => $value){
+            if(empty($duration1)){
+                $duration1[] = $value;
+            }else{
+                if($value - 1 == $duration1[count($duration1)-1]){ //如果是下一个数就推进小数组
+                    $duration1[] = $value;
+                }else{ //如果不是下一个数就把小数组推进大数组 再清空小数组 把这个数推进去
+                    $duration[] = $duration1;
+                    $duration1 = [];
+                    $duration1[] = $value;
+                }
+            }
+        }
+        $duration[] = $duration1; // 把最后的小数组推进去
+
+         //23 和 0都存在的情况 合并两个小数组
+      //  if(in_array(0, $time) && in_array(23, $time)){
+            $arr1 = [] ;$arr2= [];
+            foreach($duration as $k => $v){
+                if(in_array(0,$v)){ //拿到含0的数组
+                    $arr1 = $v;
+                    $duration[$k] = [];
+                } else if(in_array(23,$v)){ //拿到含23的数组
+                    $arr2 = $v;
+                    $duration[$k] = [];
+                } else{
+                    $duration[$k] = [min($v), max($v)+1]; //获得区间 注意最后都要+1
+                }
+            }
+            if(!empty($arr1) && !empty($arr2)){  // 如果说含0和含23的数组都存在  组成新数组 获得区间
+                $duration[] = [min($arr2), max($arr1) + 1];
+            }else{ //如果不是 麻烦再把小数组arr1 arr2 给人家再推回去
+                $duration[] = $arr1;
+                $duration[] = $arr2;
+            }
+            return array_filter($duration);
+       // }
     }
 
     private function _addProvinceLimit($sdid,$prid,$provider, $status){

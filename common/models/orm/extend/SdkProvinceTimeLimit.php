@@ -16,4 +16,9 @@ class SdkProvinceTimeLimit extends \common\models\orm\base\SdkProvinceTimeLimit 
         return $timelimits;
     }
 
+    public static function deleteByPridSdidProvider($prid,$sdid,$provider){
+        $state = self::deleteAll(['prid' => $prid, 'sdid' => $sdid, 'provider' =>$provider]);
+        return $state;
+    }
+
 }
