@@ -65,6 +65,10 @@
                         <input type="text" name="sdk_name" id="sdk_name" class="form-control"/>
                     </div><br /><br />
                     <div class="input-group">
+                        <span class="input-group-addon">sdk标识:</span>
+                        <input type="text" name="sdk_sign" id="sdk_sign" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
                         <span class="input-group-addon">分成比例:</span>
                         <input type="text" name="sdk_proportion" id="sdk_proportion" class="form-control" placeholder ='请填写0-100的整数'"/>
                         <span class="input-group-addon">%</span>
@@ -132,6 +136,54 @@
                                     <tbody id="bodyProvince"></tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalNameTable" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>SDK名单管理 </span>
+                <button  onclick = "changebtn(this)" class="btn-circle btn-lg"></button >
+                <i class="glyphicon glyphicon-remove grey" id='btn_close_name_table' style="float:right; margin-right:20px;"></i>
+                <i class="glyphicon glyphicon-ok grey" id='btn_submit_name_table' style="float:right; margin-right:10px;"></i>
+
+            </div>
+            <form id="formProvince" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" >
+                    <div class="panel ">
+                        <!-- panel heading -->
+                        <!-- panel body -->
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <nav class="nav-tabs" role="navigation">
+                                    <div>
+                                        <ul class="nav nav-tabs" id="tab">
+                                            <li id="tab_type"></li>
+                                            <input type="hidden" id='hidden_tab_type' value = '1'/>
+                                        </ul>
+                                    </div>
+                                </nav><br/>
+                                <table id="tblPprovince" class="table table-striped table-bordered gclass_table text-center">
+                                    <thead>
+                                    <tr>
+                                        <td><input type="text" id="" name="" placeholder="内容商"/></td>
+                                        <td>应用</td>
+                                        <td>活动</td>
+                                        <td>时间</td>
+                                        <td>限制</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="bodyNameTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
                         </div>
                     </div>
                 </div>
@@ -257,6 +309,7 @@
         $('#sdk_sdid').val('');
         $('#sdk_name').prop('disabled',false);
         $('#sdk_partner').prop('disabled',false);
+        $('#sdk_sign').prop('disabled',false);
         $('#btn_submit_sdk').prop('disabled', false);
         $('#modalSdk').modal('show');
     });
@@ -295,6 +348,7 @@
         var success_function = function(result){
             $('#sdk_partner').val(result.partner).prop('disabled', true);
             $('#sdk_name').val(result.name).prop('disabled',true);
+            $('#sdk_sign').val(result.sign).prop('disabled',true);
             $('#sdk_proportion').val(result.proportion);
             $('#sdk_optimization').val(result.optimization);
             $('#sdk_syn').val(result.syn);
@@ -573,6 +627,34 @@
             callAjaxWithFunction(post_url, post_data, success_function, method);
         }
     });
+
+    <!-- --------设置黑白名单---begin-------- -->
+
+    function setNameTable(sdid, status){
+        $('#hidden_setime_sdid').val(sdid); //!! 重要 更改状态通过这个获取sdid
+        var post_url = '/sdk/get-name-table';
+        var post_data = {
+            'sdid' : sdid,
+            'status' : status
+        };
+        var method = 'get';
+        var success_function = function(result){
+            var content_str = '';
+            for(var i in result) {
+                var content_arr = [];
+                content_arr.push("<tr><td>"+result[i].province+"</td>");
+                content_arr.push("<td>"+result[i].province+"</td>");
+                content_arr.push("<td>"+result[i].status+"</td>");
+                content_arr.push("<td>"+result[i].timelimit+"</td></tr>");
+                content_str  += content_arr.join(' ', content_arr);//要改
+            }
+            $('#bodyNameTable').empty().append(content_str);
+            $('#btn_submit_nametable').attr('disabled', false);
+            $('#modalNameTable').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
     /* ------------------------------------------------------------------------javascript-------------------------------------*/
     $('#all_prids').on('click', function(){
         batchMute(this, 'prid');

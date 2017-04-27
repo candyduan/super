@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $sdid
  * @property integer $spid
- * @property string common$name
+ * @property string $name
  * @property integer $updateTime
  * @property integer $recordTime
  * @property integer $status
@@ -17,6 +17,8 @@ use Yii;
  * @property integer $optimization
  * @property string $syn
  * @property string $remark
+ * @property integer $limit
+ * @property string $sign
  */
 class Sdk extends \yii\db\ActiveRecord
 {
@@ -34,9 +36,11 @@ class Sdk extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['spid', 'updateTime', 'recordTime', 'status', 'proportion', 'optimization'], 'integer'],
+            [['spid', 'updateTime', 'recordTime', 'status', 'proportion', 'optimization', 'limit'], 'integer'],
             [['name', 'remark'], 'string', 'max' => 45],
             [['syn'], 'string', 'max' => 200],
+            [['sign'], 'string', 'max' => 10],
+            [['sign'], 'unique'],
         ];
     }
 
@@ -56,6 +60,8 @@ class Sdk extends \yii\db\ActiveRecord
             'optimization' => 'Optimization',
             'syn' => 'Syn',
             'remark' => 'Remark',
+            'limit' => 'Limit',
+            'sign' => 'Sign',
         ];
     }
 }

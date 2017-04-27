@@ -13,6 +13,8 @@ use common\models\orm\extend\SdkProvinceLimit;
 use common\models\orm\extend\Province;
 use common\models\orm\extend\SdkProvinceTimeLimit;
 use common\models\orm\extend\SdkTimeLimit;
+use common\models\orm\extend\Campaign;
+use common\models\orm\extend\SdkCampaignLimit;
 /**
  * Sdk controller
  */
@@ -48,7 +50,7 @@ class SdkController extends Controller
             //0-无效，1-暂停，2-测试，3-运行
             $tabledata[] = [
                 MyHtml::aElement('javascript:void(0);' ,'modifySdk', $value['sdid'],'[' .++$start.'] '.$value['name']),
-                MyHtml::aElement('javascript:void(0);' ,'setLimit', $value['sdid'], $limit),
+                MyHtml::aElement('javascript:void(0);' ,'setNameTable', $value['limit'].','.$value['limit'], $limit),
                 MyHtml::iElement('glyphicon glyphicon-globe ','setProvince',$value['sdid'] . ',1'),
                 MyHtml::iElement('glyphicon glyphicon-time ','setTime',$value['sdid']),
                 MyHtml::iElements('setStatus', 'this,'.$value['sdid'], $blue,$green,$red,$purple) //最后发先不能这样写
@@ -126,6 +128,34 @@ class SdkController extends Controller
             }
         }
              echo json_encode(array_merge($unlimitdata, $limitdata));
+        exit;
+    }
+
+    public function actionGetNameTable() { //根据sdk 和 运营商拿到省份 1 移动 2 联通 3 电信
+        $type = Yii::$app->request->get('type');
+        $sdid = Yii::$app->request->get('sdid');
+        $allcampaigns = Campaign::getSdkCampaign();
+        $limitcaids = SdkCampaignLimit::getlimitCaids($sdid,$type);
+        $limitdata = [] ; $unlimitdata = [];
+        foreach($allcampaigns as $caid => $value) {
+            $partner = $value['partner'];
+            $campaign = $value['campaign'];
+            //在这个黑名单或者白名单里的放在前面 并且是绿色的 点击了就变成红并且去删除
+            if (in_array($caid, $limitcaids)) {
+                $unlimitdata[] = [
+                    'partner' => $partner,
+                    'campaign' => $campaign,
+                    'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'removelimit'  , $caid . ', '.$sdid),
+                ];
+            } else {    //在这个黑名单或者白名单里的放在后面 并且是红色的 点击了就变成绿色并且去增加
+                $limitdata[] = [
+                    'partner' => $partner,
+                    'campaign' => $campaign,
+                    'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon red', 'addlimit' , $caid . ', '.$sdid),
+                ];
+            }
+        }
+        echo json_encode(array_merge($unlimitdata, $limitdata));
         exit;
     }
 
@@ -485,6 +515,7 @@ class SdkController extends Controller
             $sdkmodel = new Sdk();
             $sdkmodel->spid = $spid;
             $sdkmodel->name = trim($post['sdk_name']);
+            $sdkmodel->sign = trim($post['sdk_sign']);
             $sdkmodel->updateTime = time();
             $sdkmodel->recordTime = time();
             $sdkmodel->proportion = intval($post['sdk_proportion']);
