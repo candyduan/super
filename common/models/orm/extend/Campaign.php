@@ -5,10 +5,6 @@ use common\library\Utils;
 use yii\db\Query;
 
 class Campaign extends \common\models\orm\base\Campaign {
-  /*  public static function getProvinceById($prid){
-        $model  = self::find()->select(['name'])->where(['id' => $prid])->one();
-        return isset($model['name']) ? $model['name'] :'';
-    }*/
 
     public static function getSdkCampaigns($partner = ''){
 

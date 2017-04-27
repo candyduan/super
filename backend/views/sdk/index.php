@@ -684,11 +684,20 @@
     }
       //1 拼接的字符串
     function modifyNameTable(that){
+        if($(that).hasClass('green')){
+            $(that).removeClass('green').addClass('red');
+        }else if($(that).hasClass('red'))){
+            $(that).removeClass('red').addClass('green');
+        }
+
+
         //todo
         alert(1); //这步要做的就是 改变字体颜色 然后比对 如果比对成功的
         // 按钮变化  拼接字符串 然后 每次 onchange 就去比对  别忘记搜索框
 
     }
+
+
 
     //通过大按钮此时的颜色来判断名单类型 然后 拿到 状态为勾选的 然后就去 把表里的数据线全部删光  然后再插入 绿色那几条
     /* ------------------------------------------------------------------------javascript-------------------------------------*/

@@ -155,7 +155,7 @@ class SdkController extends Controller
                         'campaign' => $campaign,
                         'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'modifyNameTable', 'this' ),
                     ];
-                } else {    //不在这个黑名单或者白名单里的放在后面 并且是红色的 点击了就变成绿色并且去增加
+                } else {    //不在这个黑名单或者白名单里的放在后面 并且是红色的 点击了就变成绿色并且去增加 记得要去 更新sdk里的limite
                     $unlimitdata[] = [
                         'partner' => $partner,
                         'campaign' => $campaign,
