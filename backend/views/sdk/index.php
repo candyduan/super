@@ -254,8 +254,8 @@
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
 <script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
-<script src="/js/util.js"></script>
-<script src="/js/alert.js"></script>
+<script src="/js/sdk/util.js"></script>
+<script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         _initDataTable();
@@ -685,6 +685,7 @@
                         alert(MESSAGE_MODIFY_ERROR);
                     }
                     $('#modalNameTable').modal('hide');
+                    _initDataTable();
                 }
                 callAjaxWithFunction(post_url, post_data, success_function, method);
 

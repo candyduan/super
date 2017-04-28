@@ -51,7 +51,7 @@ use yii\helpers\Html;
                         <img class="nav-user-photo" src="/ace/assets/images/avatars/avatar2.png" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>Welcome,</small>
-                <!--            --><?php /*echo Yii::$app->user->identity->username;*/?>
+                         <?php echo Yii::$app->user->identity->username;?>
 								</span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
@@ -80,7 +80,7 @@ use yii\helpers\Html;
         <li class="" id="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-wrench"></i>
-                <span class="menu-text"> SDK计费管理 </span>
+                <span class="menu-text"> SDK管理 </span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <b class="arrow"></b>
@@ -88,14 +88,7 @@ use yii\helpers\Html;
                 <li class="">
                     <a href="/sdk/index">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        table1
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="/test/index2">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        table2
+                        SDK管理
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -110,16 +103,9 @@ use yii\helpers\Html;
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="1">
+                    <a href="/sort/index">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        data 1
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="2">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 2
+                        SDK计费排序
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -321,7 +307,7 @@ use yii\helpers\Html;
 <script src="/ace/assets/js/bootstrap.min.js"></script>
 <script src="/ace/assets/js/ace-elements.min.js"></script>
 <script src="/ace/assets/js/ace.min.js"></script>
-<script src="/js/jquery.cookie.js"></script>
+<script src="/js/common/jquery.cookie.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     $(document).ready(function(){
