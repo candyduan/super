@@ -156,7 +156,12 @@ class RegisterController extends Controller{
      * 日志上传
      */
     public function actionLp(){
-        
+        $data   = Utils::getParam('data');        
+        //日志后期会专门处理
+        Utils::log('lp'.$data);
+        $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+        $out['msg']         = Constant::RESULT_MSG_SUCC;
+        Utils::jsonOut($out);
     }
     
     /*
