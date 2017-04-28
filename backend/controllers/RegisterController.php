@@ -35,8 +35,13 @@ class RegisterController extends Controller{
         $channelId  = Utils::getBackendParam('channelId');
         $page       = Utils::getBackendParam('page',1);
         
-        
-        $res    = RegChannel::findByMerchantNeedPaginator($merchantId,$page);
+        if(is_numeric($channelId)){
+            
+        }elseif (is_numeric($merchantId)){
+            $res    = RegChannel::findByMerchantNeedPaginator($merchantId,$page);
+        }else{
+            $res    = RegChannel::findAllNeedPaginator($page);
+        }
         $pages  = $res['pages'];
         $models = $res['models'];
         if($pages >= $page && $pages > 0){
@@ -48,8 +53,10 @@ class RegisterController extends Controller{
             $list   = array();
             foreach ($models as $model){
                 $item   = RegChannel::getItemArrByModel($model);
+                array_push($list, $item);
             }
             
+            $out['list']    = $list;
         }else{
             if($page > 1){
                 $msg    = Constant::RESULT_MSG_NOMORE;

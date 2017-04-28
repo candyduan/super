@@ -16,7 +16,7 @@ class Merchant extends \common\models\orm\base\Merchant{
     
     public static function findByPk($id){
         $condition  = ['id' => $id];
-        $model  = self::find()->where()->one();
+        $model  = self::find()->where($condition)->one();
         return $model;
     }
     

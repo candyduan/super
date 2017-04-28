@@ -11,8 +11,8 @@
 </div>
 
 <!-- 数据栏 -->
-<div class="">
-	<table class="table table-bordered" id="data_list">
+<div class="databar">
+	<table class="table table-bordered table-hover" id="data_list">
 	</table>
 </div>
 
@@ -40,12 +40,12 @@ function setResult(page){
         var data = 'merchantId='+merchantId+'&channelId='+channelId+'&page='+page;
         //succ
         var succ        = function(resultJson){
-                if(parseInt(resultJson.errcode) == 1){
-                        var resultHtml = '<tr><td>用户ID</td><td>用户昵称</td><td>抽成金币</td><td>原因</td></tr>';
+                if(parseInt(resultJson.resultCode) == 1){
+                        var resultHtml = '<tr><td>通道商</td><td>通道</td><td>负责人</td><td>运营商</td><td>开发类型</td><td>状态</td></tr>';
                         $.each(resultJson.list,function(key,val){
-                                resultHtml = resultHtml + '<tr><td>'+val.urid+'</td><td>'+val.name+'</td><td>'+val.point+'</td><td>'+val.cause+'</td></tr>';
+                                resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td>'+val.channelName+'</td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td>'+val.status+'</td></tr>';
                         });
-                        $('#result-list').html(resultHtml);
+                        $('#data_list').html(resultHtml);
 
                 if(resultJson.pages > 1){
                     Utils.setPagination(page,resultJson.pages);
@@ -55,7 +55,7 @@ function setResult(page){
                 }
                 
                 }else{
-                        $('#result-list').html(resultJson.msg);
+                        $('#data_list').html(resultJson.msg);
                 }
         };
         //ajax
