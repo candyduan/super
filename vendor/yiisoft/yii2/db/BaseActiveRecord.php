@@ -16,6 +16,7 @@ use yii\base\NotSupportedException;
 use yii\base\UnknownMethodException;
 use yii\base\InvalidCallException;
 use yii\helpers\ArrayHelper;
+use common\library\Utils;
 
 /**
  * ActiveRecord is the base class for classes representing relational data in terms of objects.
@@ -632,6 +633,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
     public function save($runValidation = true, $attributeNames = null)
     {
         if ($this->getIsNewRecord()) {
+            $this->recordTime   = Utils::getNowTime();
             return $this->insert($runValidation, $attributeNames);
         } else {
             return $this->update($runValidation, $attributeNames) !== false;
