@@ -50,8 +50,8 @@ class SdkController extends Controller
             //0-无效，1-暂停，2-测试，3-运行
             $tabledata[] = [
                 MyHtml::aElement('javascript:void(0);' ,'modifySdk', $value['sdid'],'[' .++$start.'] '.$value['name']),
-                MyHtml::aElement('javascript:void(0);' ,'setNameTable', $value['limit'].','.$value['limit'], $limit),
-                MyHtml::iElement('glyphicon glyphicon-globe ','setProvince',$value['sdid'] . ',1'),
+                MyHtml::aElement('javascript:void(0);' ,'setNameTable', $value['sdid'].','.$value['limit'], $limit),
+                MyHtml::iElement('glyphicon glyphicon-globe ','setProvince',$value['sdid'] . ',1'), //默认是移动 所以传了1
                 MyHtml::iElement('glyphicon glyphicon-time ','setTime',$value['sdid']),
                 MyHtml::iElements('setStatus', 'this,'.$value['sdid'], $blue,$green,$red,$purple)
             ];
@@ -137,7 +137,7 @@ class SdkController extends Controller
         $partnername = Yii::$app->request->get('partnername');
         $allcampaigns = Campaign::getSdkCampaigns($partnername);
         $limitcaids = SdkCampaignLimit::getlimitCaids($sdid,$type);
-        $limitdata = [] ; $unlimitdata = [];
+        $limitdata = [] ; $unlimitdata = []; $cp_arr = []; //需要转换成str 用来比对
         foreach($allcampaigns as $caid => $value) {
             $partner = $value['partner'];
             $campaign = $value['campaign'];
@@ -150,21 +150,23 @@ class SdkController extends Controller
                  ];
             }else {
                 if (in_array($caid, $limitcaids)) {
+                    $cp_arr [] = $caid; //!! 把在黑名单或者白名单里caid 放到数组里 方便比对
                     $limitdata[] = [
                         'partner' => $partner,
                         'campaign' => $campaign,
-                        'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'modifyNameTable', 'this' ),
+                        'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'modifyNameTable', 'this', $caid ),
                     ];
                 } else {    //不在这个黑名单或者白名单里的放在后面 并且是红色的 点击了就变成绿色并且去增加 记得要去 更新sdk里的limite
                     $unlimitdata[] = [
                         'partner' => $partner,
                         'campaign' => $campaign,
-                        'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon red', 'modifyNameTable', 'this'),
+                        'status' => MyHtml::iElement('glyphicon-ok-sign glyphicon red', 'modifyNameTable', 'this',$caid),
                     ];
                 }
             }
         }
-        echo json_encode(array_merge($limitdata, $unlimitdata));
+        $data = [ array_merge($limitdata, $unlimitdata) , implode(',',$cp_arr)];
+        echo json_encode($data);
         exit;
     }
 
@@ -197,7 +199,7 @@ class SdkController extends Controller
                 $sdkmodel = Sdk::findByPk($sdid);
                 if($sdkmodel){
                     $sdkmodel->status = $status;
-                    $sdkmodel->updateTime = time();
+                    //$sdkmodel->updateTime = time();
                     $resultState = $sdkmodel->save() == true  ? 1 :0;
                 }
                 $transaction->commit();
@@ -278,8 +280,8 @@ class SdkController extends Controller
                     $model->provider =$provider;
                     $model->stime = $dur[0];
                     $model->etime = $dur[1];
-                    $model->updateTime = time();
-                    $model->recordTime =time();
+                //    $model->updateTime = time();
+                //    $model->recordTime =time();
                     $model->status = 1;
                     $result = $model->save();
                     $resultState += ($result == true) ? 1 : 0;
@@ -315,8 +317,8 @@ class SdkController extends Controller
                         $model->sdid= $sdid;
                         $model->stime = $dur[0];
                         $model->etime = $dur[1];
-                        $model->updateTime = time();
-                        $model->recordTime =time();
+                     //   $model->updateTime = time();
+                     //   $model->recordTime =time();
                         $model->status = 1;
                         $result = $model->save();
                         $resultState += ($result == true) ? 1 : 0;
@@ -390,6 +392,41 @@ class SdkController extends Controller
         }
         $data = array_unique($data);
         echo json_encode($data);
+        exit;
+    }
+
+    public function actionModifyNameTable() {
+        $resultState = 0;
+        $caids = Yii::$app->request->post('caid');//要再名单里新增的caid
+        $sdid = Yii::$app->request->post('sdid');
+        $type = Yii::$app->request->post('type');
+        if (!empty($sdid) && isset($caids) && isset($type)) {
+            try {
+                $transaction = SdkCampaignLimit::getDb()->beginTransaction();
+                $resultState += SdkCampaignLimit::deleteBySdid($sdid);
+                if (!empty($caids)) {
+                    foreach($caids as $caid){
+                        $model = new SdkCampaignLimit();
+                        $model->sdid = $sdid;
+                        $model->caid= $caid;
+                        $model->type = $type;
+                        $model->status = 1;
+                        $result = $model->save();
+                        $resultState += ($result == true) ? 1 : 0;
+                    }
+                }
+                $sdkmodel = Sdk::findByPk($sdid);
+                $sdkmodel->limit = $type;
+                $resultState += $sdkmodel->save() == true ? 1 :0;
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify campaign limit');
+            }
+        }
+
+        echo json_encode($resultState);
         exit;
     }
 
@@ -467,8 +504,8 @@ class SdkController extends Controller
         $model->sdid= $sdid;
         $model->prid=$prid;
         $model->provider =$provider;
-        $model->updateTime = time();
-        $model->recordTime =time();
+       // $model->updateTime = time();
+        //$model->recordTime =time();
         $model->status = $status;
         $result = $model->save();
         $resultState = ($result == true) ? 1 : 0;
@@ -498,8 +535,8 @@ class SdkController extends Controller
             $sdkmodel->spid = $spid;
             $sdkmodel->name = trim($post['sdk_name']);
             $sdkmodel->sign = trim($post['sdk_sign']);
-            $sdkmodel->updateTime = time();
-            $sdkmodel->recordTime = time();
+         //   $sdkmodel->updateTime = time();
+          //  $sdkmodel->recordTime = time();
             $sdkmodel->proportion = intval($post['sdk_proportion']);
             $sdkmodel->optimization = intval($post['sdk_optimization']);
             $sdkmodel->remark = trim($post['sdk_remark']);
@@ -519,7 +556,7 @@ class SdkController extends Controller
         if(!empty($sdid)) {
             $sdkmodel = Sdk::findByPk($sdid);
             if($sdkmodel) {
-                $sdkmodel->updateTime = time();
+              //  $sdkmodel->updateTime = time();
                 $sdkmodel->proportion = intval($post['sdk_proportion']);
                 $sdkmodel->optimization = intval($post['sdk_optimization']);
                 $sdkmodel->remark = trim($post['sdk_remark']);
@@ -570,8 +607,8 @@ class SdkController extends Controller
     private function _addPartner($partner){
         $partnerModel = New SdkPartner();
         $partnerModel->name = trim($partner);
-        $partnerModel->updateTime = time();
-        $partnerModel->recordTime = time();
+      //  $partnerModel->updateTime = time();
+       // $partnerModel->recordTime = time();
         $partnerModel->status = 1;
         $resultState = $partnerModel->save();
         return $resultState == true ? $partnerModel->spid : 0;

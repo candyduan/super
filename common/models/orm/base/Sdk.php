@@ -10,15 +10,15 @@ use Yii;
  * @property integer $sdid
  * @property integer $spid
  * @property string $name
- * @property integer $updateTime
- * @property integer $recordTime
- * @property integer $status
  * @property integer $proportion
  * @property integer $optimization
  * @property string $syn
  * @property string $remark
  * @property integer $limit
  * @property string $sign
+ * @property string $recordTime
+ * @property string $updateTime
+ * @property integer $status
  */
 class Sdk extends \yii\db\ActiveRecord
 {
@@ -36,7 +36,8 @@ class Sdk extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['spid', 'updateTime', 'recordTime', 'status', 'proportion', 'optimization', 'limit'], 'integer'],
+            [['spid', 'proportion', 'optimization', 'limit', 'status'], 'integer'],
+            [['recordTime', 'updateTime'], 'safe'],
             [['name', 'remark'], 'string', 'max' => 45],
             [['syn'], 'string', 'max' => 200],
             [['sign'], 'string', 'max' => 10],
@@ -53,15 +54,15 @@ class Sdk extends \yii\db\ActiveRecord
             'sdid' => 'Sdid',
             'spid' => 'Spid',
             'name' => 'Name',
-            'updateTime' => 'Update Time',
-            'recordTime' => 'Record Time',
-            'status' => 'Status',
             'proportion' => 'Proportion',
             'optimization' => 'Optimization',
             'syn' => 'Syn',
             'remark' => 'Remark',
             'limit' => 'Limit',
             'sign' => 'Sign',
+            'recordTime' => 'Record Time',
+            'updateTime' => 'Update Time',
+            'status' => 'Status',
         ];
     }
 }

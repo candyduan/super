@@ -150,9 +150,11 @@
             <div class="modal-header">
                 <span>SDK名单管理 </span>
                 <button  id='btn_search_time_table' onclick = "changebtn(this)" class="btn btn-lg"></button >
-                <i class="glyphicon glyphicon-remove grey" id='btn_close_name_table' style="float:right; margin-right:20px;"></i>
-                <i class="glyphicon glyphicon-ok grey" id='btn_submit_name_table' style="float:right; margin-right:10px;"></i>
+                <i class="glyphicon glyphicon-remove grey pointer" id='btn_close_name_table' style="float:right; margin-right:20px;"></i>
+                <i class="glyphicon glyphicon-ok grey pointer" id='btn_submit_name_table' style="float:right; margin-right:10px;"></i>
                 <input type="hidden" id='hidden_setnametable_sdid' value=""/>
+                <input type="hidden" id='hidden_setnametable_cpstr' value="-1"/>
+                <input type="hidden" id='hidden_setnametable_type' value="-1"/>
             </div>
             <form id="formProvince" action="#" method="post" enctype="multipart/form-data">
                 <div class="modal-body" >
@@ -628,6 +630,7 @@
 
     function setNameTable(sdid, type){
         $('#hidden_setnametable_sdid').val(sdid); //0 无限制 1 白 2 黑
+        $('#hidden_setnametable_type').val(type);
         switch (type){
             case 0: $('#btn_search_time_table').removeClass('btn-danger').removeClass('btn-success').addClass('btn-primary').html('无限制');
                 $('#tab_type a').text('无限制');
@@ -646,14 +649,16 @@
         };
         var method = 'get';
         var success_function = function(result){
+           // alert(result[1]);
             var content_str = '';
-            for(var i in result) {
+            for(var i in result[0]) {
                 var content_arr = [];
-                content_arr.push("<tr><td>"+result[i].partner+"</td>");
-                content_arr.push("<td>"+result[i].campaign+"</td>");
-                content_arr.push("<td>"+result[i].status+"</td>");
+                content_arr.push("<tr><td>"+result[0][i].partner+"</td>");
+                content_arr.push("<td>"+result[0][i].campaign+"</td>");
+                content_arr.push("<td>"+result[0][i].status+"</td>");
                 content_str  += content_arr.join(' ');
             }
+            $('#hidden_setnametable_cpstr').val(result[1]); //用来做比对
             $('#bodyNameTable').empty().append(content_str);
             $('#btn_submit_nametable').attr('disabled', false);
             $('#modalNameTable').modal('show');
@@ -661,8 +666,36 @@
         callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 
-    $('#btn_submit_name_table').on('click',function(event){
+    $('#btn_submit_name_table').on('click',function(event){ //提交修改ßßß
         event.preventDefault();
+        if($(this).hasClass('green')){
+            if(confirm('确认修改')){
+                var post_url =  '/sdk/modify-name-table';
+                var post_data = {
+                    'sdid' : $('#hidden_setnametable_sdid').val(),
+                    'caid' : getCpStr('arr'),
+                    'type' : $('#hidden_setnametable_type').val()
+                }
+
+                var method ='post';
+                var success_function = function(result) {
+                    if (parseInt(result) > 0) {
+                        alert(MESSAGE_MODIFY_SUCCESS);
+                    } else if (parseInt(result) == 0) {
+                        alert(MESSAGE_MODIFY_ERROR);
+                    }
+                    $('#modalNameTable').modal('hide');
+                }
+                callAjaxWithFunction(post_url, post_data, success_function, method);
+
+            }
+        }
+
+    });
+
+    $('#btn_close_name_table').on('click',function(event){
+        event.preventDefault();
+        $('#modalNameTable').modal('hide');
 
     });
 
@@ -680,24 +713,22 @@
             type = 0;
         }
         setNameTable(sdid, type);
-
     }
-      //1 拼接的字符串
-    function modifyNameTable(that){
+
+    function modifyNameTable(that){ //修改小钩
         if($(that).hasClass('green')){
             $(that).removeClass('green').addClass('red');
-        }else if($(that).hasClass('red'))){
+        }else if($(that).hasClass('red')){
             $(that).removeClass('red').addClass('green');
         }
 
-
-        //todo
-        alert(1); //这步要做的就是 改变字体颜色 然后比对 如果比对成功的
-        // 按钮变化  拼接字符串 然后 每次 onchange 就去比对  别忘记搜索框
-
+        var cp_str = getCpStr('str');
+        if(cp_str == $('#hidden_setnametable_cpstr').val()){
+            $('#btn_submit_name_table').removeClass('green').addClass('grey');
+        }else{
+            $('#btn_submit_name_table').removeClass('grey').addClass('green');
+        }
     }
-
-
 
     //通过大按钮此时的颜色来判断名单类型 然后 拿到 状态为勾选的 然后就去 把表里的数据线全部删光  然后再插入 绿色那几条
     /* ------------------------------------------------------------------------javascript-------------------------------------*/
@@ -715,6 +746,13 @@
             timelimit.push($(this).text());
         });
         return timelimit;
+    }
+    function getCpStr(type){ //获取绿色的
+        var cp_arr=[];
+        $('#bodyNameTable .green').each( function() {
+            cp_arr.push($(this).prop('title'));
+        });
+        return type == 'arr' ? cp_arr : cp_arr.join(',') ;
     }
 
     function timebtnClick(that){

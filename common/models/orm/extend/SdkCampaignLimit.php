@@ -18,8 +18,8 @@ class SdkCampaignLimit extends \common\models\orm\base\SdkCampaignLimit {
             return empty($model) ? false : true;
         }*/
 
-    public static function deleteByPridSdidProvider($prid,$sdid,$provider){
-        $state = self::deleteAll(['prid' => $prid, 'sdid' => $sdid, 'provider' =>$provider]);
+    public static function deleteBySdid($sdid){
+        $state = self::deleteAll([ 'sdid' => $sdid]);
         return $state;
     }
 

@@ -11,8 +11,8 @@ class MyHtml
         return '   ';
     }
 
-    public static function iElement($class,$clickMethod, $clickMethodParameters){
-        return '<i class=" pointer ' . $class . '", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
+    public static function iElement($class,$clickMethod, $clickMethodParameters, $caid =''){
+        return '<i title="'.$caid.'" class=" pointer ' . $class . '", onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
     }
     //0-无效，1-暂停，2-测试，3-运行
     public static function iElements($clickMethod, $clickMethodParameters,$blue,$green,$black,$purple){
