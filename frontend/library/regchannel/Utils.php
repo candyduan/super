@@ -45,15 +45,15 @@ class Utils{
             case Constant::CHANNEL_SINGLE:
             case Constant::CHANNEL_DOUBLE:
                 $sdRegister    = new SdRegister($regChannelModel, $regOrderModel, $simCardModel);
-                $res                = $sdRegister->register();
+                $res           = $sdRegister->register();
                 break;
             case Constant::CHANNEL_SMSP:
-                $smsRegister             = new SmsRegister($regChannelModel, $regOrderModel, $simCardModel);
-                $res                = $smsRegister->register();
+                $smsRegister   = new SmsRegister($regChannelModel, $regOrderModel, $simCardModel);
+                $res           = $smsRegister->register();
                 break;
             case Constant::CHANNEL_URLP:
-                $urlRegister             = new UrlRegister($regChannelModel, $regOrderModel, $simCardModel);
-                $res                = $urlRegister->register();
+                $urlRegister  = new UrlRegister($regChannelModel, $regOrderModel, $simCardModel);
+                $res          = $urlRegister->register();
                 break;
         }
         return $res;

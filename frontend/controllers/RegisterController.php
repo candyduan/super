@@ -17,17 +17,17 @@ class RegisterController extends Controller{
      */
     public function actionRr(){
         //通用参数
-        $imsi   = Utils::getParam('imsi');
-        $imei   = Utils::getParam('imei');
-        $iccid  = Utils::getParam('iccid');
-        $cmcc   = Utils::getParam('CMCC');
-        $mcc    = Utils::getParam('MCC');
-        $mnc    = Utils::getParam('MNC');
-        $lac    = Utils::getParam('LAC');
-        $cid    = Utils::getParam('CID');
-        $networkType    = Utils::getParam('networkType',0);
+        $imsi   = Utils::getFrontendParam('imsi');
+        $imei   = Utils::getFrontendParam('imei');
+        $iccid  = Utils::getFrontendParam('iccid');
+        $cmcc   = Utils::getFrontendParam('CMCC');
+        $mcc    = Utils::getFrontendParam('MCC');
+        $mnc    = Utils::getFrontendParam('MNC');
+        $lac    = Utils::getFrontendParam('LAC');
+        $cid    = Utils::getFrontendParam('CID');
+        $networkType    = Utils::getFrontendParam('networkType',0);
         //该接口特有参数
-        $rcid   = Utils::getParam('rcid',0);
+        $rcid   = Utils::getFrontendParam('rcid',0);
         
         if(!is_numeric($rcid)){
             $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
@@ -66,17 +66,17 @@ class RegisterController extends Controller{
      */
     public function actionUrlPlus(){
         //通用参数
-        $imsi   = Utils::getParam('imsi');
-        $imei   = Utils::getParam('imei');
-        $iccid  = Utils::getParam('iccid');
-        $cmcc   = Utils::getParam('CMCC');
-        $mcc    = Utils::getParam('MCC');
-        $mnc    = Utils::getParam('MNC');
-        $lac    = Utils::getParam('LAC');
-        $cid    = Utils::getParam('CID');
-        $networkType    = Utils::getParam('networkType',0);
+        $imsi   = Utils::getFrontendParam('imsi');
+        $imei   = Utils::getFrontendParam('imei');
+        $iccid  = Utils::getFrontendParam('iccid');
+        $cmcc   = Utils::getFrontendParam('CMCC');
+        $mcc    = Utils::getFrontendParam('MCC');
+        $mnc    = Utils::getFrontendParam('MNC');
+        $lac    = Utils::getFrontendParam('LAC');
+        $cid    = Utils::getFrontendParam('CID');
+        $networkType    = Utils::getFrontendParam('networkType',0);
         //该接口特有参数
-        $roid   = Utils::getParam('roid',0);
+        $roid   = Utils::getFrontendParam('roid',0);
         
         if(!is_numeric($roid)){
             $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
@@ -107,19 +107,19 @@ class RegisterController extends Controller{
      */
     public function actionGcmf(){
         //通用参数
-        $imsi   = Utils::getParam('imsi');
-        $imei   = Utils::getParam('imei');
-        $iccid  = Utils::getParam('iccid');
-        $cmcc   = Utils::getParam('CMCC');
-        $mcc    = Utils::getParam('MCC');
-        $mnc    = Utils::getParam('MNC');
-        $lac    = Utils::getParam('LAC');
-        $cid    = Utils::getParam('CID');
-        $networkType    = Utils::getParam('networkType',0);
+        $imsi   = Utils::getFrontendParam('imsi');
+        $imei   = Utils::getFrontendParam('imei');
+        $iccid  = Utils::getFrontendParam('iccid');
+        $cmcc   = Utils::getFrontendParam('CMCC');
+        $mcc    = Utils::getFrontendParam('MCC');
+        $mnc    = Utils::getFrontendParam('MNC');
+        $lac    = Utils::getFrontendParam('LAC');
+        $cid    = Utils::getFrontendParam('CID');
+        $networkType    = Utils::getFrontendParam('networkType',0);
         //该接口特有参数
-        $roid    = Utils::getParam('roid');
-        $port      = Utils::getParam('cp');
-        $message = Utils::getParam('content');
+        $roid    = Utils::getFrontendParam('roid');
+        $port    = Utils::getFrontendParam('cp');
+        $message = Utils::getFrontendParam('content');
         
         if(!is_numeric($roid) || !is_numeric($port) || !Utils::isValid($message)){
             $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
@@ -156,7 +156,7 @@ class RegisterController extends Controller{
      * 日志上传
      */
     public function actionLp(){
-        $data   = Utils::getParam('data');        
+        $data   = Utils::getFrontendParam('data');        
         //日志后期会专门处理
         Utils::log('lp'.$data);
         $out['resultCode']  = Constant::RESULT_CODE_SUCC;
@@ -168,9 +168,9 @@ class RegisterController extends Controller{
      * phr
      */
     public function actionPhr(){
-        $roid   = Utils::getParam('roid');
-        $url    = Utils::getParam('url');
-        $content= Utils::getParam('content');
+        $roid   = Utils::getFrontendParam('roid');
+        $url    = Utils::getFrontendParam('url');
+        $content= Utils::getFrontendParam('content');
         
         
         //由于目前暂未了解phr整个流程，暂时仅记录下来

@@ -32,7 +32,7 @@ class Utils{
         return $output;
     }
     
-    public static function getParam($key,$default = ''){
+    public static function getFrontendParam($key,$default = ''){
         $request    = \Yii::$app->getRequest();
         $value      = $request->get($key);
         if(!self::isValid($value)){
@@ -43,6 +43,19 @@ class Utils{
         }
         return $value;
     }
+    
+    public static function getBackendParam($key,$default = ''){
+        $request    = \Yii::$app->getRequest();
+        $value      = $request->get($key);
+        if(!self::isValid($value)){
+            $value  = $request->post($key);
+        }
+        if(!self::isValid($value)){
+            $value  = $default;
+        }
+        return $value;
+    }
+    
     
     /*
      * 判断字符串是否有效
