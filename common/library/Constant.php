@@ -31,6 +31,7 @@ class Constant{
      * 返回结果消息
      */
     const RESULT_MSG_NONE     = '未找到对应的数据';
+    const RESULT_MSG_NOMORE   = '没有更多了';
     const RESULT_MSG_SUCC     = 'success';
     const RESULT_MSG_SYSTEM_BUSY    = '系统异常，请稍后重试！';
     const RESULT_MSG_PARAMS_ERR     = '参数异常';

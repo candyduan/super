@@ -28,11 +28,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- jQuery -->
     <script src="/js/common/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
     <script src="/js/common/bootstrap.min.js"></script>
+    <script src="/js/register/Utils.js"></script>
 </head>
 
 <body>
@@ -94,7 +92,10 @@
 
     </div>
     <!-- /#wrapper -->
+<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;display:none;" id="loading" class=""><img src="/img/loading.gif" style="width:100%;"></div>
+</div>
 
+<div id="dialog" class="modal fade"></div>
 </body>
 
 </html>

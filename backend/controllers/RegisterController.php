@@ -3,6 +3,8 @@ namespace backend\controllers;
 
 use yii\base\Controller;
 use common\library\Utils;
+use common\models\orm\extend\RegChannel;
+use common\library\Constant;
 class RegisterController extends Controller{
     public $layout = "register";
     public function actionTest(){
@@ -26,6 +28,38 @@ class RegisterController extends Controller{
         return $this->render('channel-view');
         
         
+    }
+    
+    public function actionChannelResult(){
+        $merchantId = Utils::getBackendParam('merchantId');
+        $channelId  = Utils::getBackendParam('channelId');
+        $page       = Utils::getBackendParam('page',1);
+        
+        
+        $res    = RegChannel::findByMerchantNeedPaginator($merchantId,$page);
+        $pages  = $res['pages'];
+        $models = $res['models'];
+        if($pages >= $page && $pages > 0){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $out['pages']       = $pages;
+            $out['page']        = $page;
+            
+            $list   = array();
+            foreach ($models as $model){
+                $item   = RegChannel::getItemArrByModel($model);
+            }
+            
+        }else{
+            if($page > 1){
+                $msg    = Constant::RESULT_MSG_NOMORE;
+            }else{
+                $msg    = Constant::RESULT_MSG_NONE;
+            }
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = $msg;
+        }
+        Utils::jsonOut($out);
     }
     
     public function actionMutexView(){

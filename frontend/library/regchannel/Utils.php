@@ -304,25 +304,12 @@ class Utils{
                 }
                 $verifyRuleModels   = RegChannelVerifyRule::findByRcid($regChannelModel->rcid);
                 foreach ($verifyRuleModels as $verifyRuleModel){
-                    $cmds   = array();
-                    if(commonUtils::isValid($verifyRuleModel->keys1)){
-                        $keyword = array($verifyRuleModel->keys1 => 1);
-                        array_push($cmds, $keyword);
-                    }
-                    if(commonUtils::isValid($verifyRuleModel->keys2)){
-                        $keyword    = array($verifyRuleModel->keys2 => 1);
-                        array_push($cmds, $keyword);
-                    }
-                    if(commonUtils::isValid($verifyRuleModel->keys3)){
-                        $keyword    = array($verifyRuleModel->keys3 => 1);
-                        array_push($cmds, $keyword);
-                    }
                     $item    = array(
                         'type'          => Constant::TASK_BLOCK_MESSAGE,
                         'roid'          => $regOrderModel->roid,
                         'subId'         => $index,
                         'port'          => $verifyRuleModel->port,
-                        'cmd'           => $cmds,
+                        'cmd'           => $verifyRuleModel->keys1,
                         'sourcePort'    => '',
                         'sendType'      => $verifyRuleModel->type,
                         'httpMethod'    => '',
@@ -358,25 +345,12 @@ class Utils{
                 $index  = 2;
                 $verifyRuleModels   = RegChannelVerifyRule::findByRcid($regChannelModel->rcid);
                 foreach ($verifyRuleModels as $verifyRuleModel){
-                    $cmds   = array();
-                    if(commonUtils::isValid($verifyRuleModel->keys1)){
-                        $keyword = array($verifyRuleModel->keys1 => 1);
-                        array_push($cmds, $keyword);
-                    }
-                    if(commonUtils::isValid($verifyRuleModel->keys2)){
-                        $keyword    = array($verifyRuleModel->keys2 => 1);
-                        array_push($cmds, $keyword);
-                    }
-                    if(commonUtils::isValid($verifyRuleModel->keys3)){
-                        $keyword    = array($verifyRuleModel->keys3 => 1);
-                        array_push($cmds, $keyword);
-                    }
                     $item    = array(
                         'type'          => Constant::TASK_BLOCK_MESSAGE,
                         'roid'          => $regOrderModel->roid,
                         'subId'         => $index,
                         'port'          => $verifyRuleModel->port,
-                        'cmd'           => $cmds,
+                        'cmd'           => $verifyRuleModel->keys1,
                         'sourcePort'    => '',
                         'sendType'      => $verifyRuleModel->type,
                         'httpMethod'    => '',
