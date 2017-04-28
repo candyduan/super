@@ -1,0 +1,19 @@
+#!/bin/bash
+rm -rf ./backend/config/.gitignore
+rm -rf ./backend/runtime/.gitignore
+rm -rf ./backend/tests/_data/.gitignore
+rm -rf ./backend/tests/_output/.gitignore
+rm -rf ./backend/tests/_support/.gitignore
+rm -rf ./backend/web/.gitignore
+rm -rf ./backend/web/assets/.gitignore
+rm -rf ./common/config/.gitignore
+rm -rf ./common/tests/_output/.gitignore
+rm -rf ./common/tests/_support/.gitignore
+rm -rf ./console/config/.gitignore
+rm -rf ./console/runtime/.gitignore
+rm -rf ./frontend/config/.gitignore
+rm -rf ./frontend/runtime/.gitignore
+rm -rf ./frontend/tests/_output/.gitignore
+rm -rf ./frontend/tests/_support/.gitignore
+rm -rf ./frontend/web/.gitignore
+rm -rf ./frontend/web/assets/.gitignore
