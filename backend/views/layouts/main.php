@@ -10,17 +10,17 @@ use yii\helpers\Html;
     <title><?=Html::encode(Yii::$app->params['title']);?></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="stylesheet" href="/web/ace/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/web/ace/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/web/ace/assets/css/fonts.googleapis.com.css" />
-    <link rel="stylesheet" href="/web/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
-    <link rel="stylesheet" href="/web/ace/assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
-    <link rel="stylesheet" href="/web/ace/assets/css/ace-skins.min.css" />
-    <link rel="stylesheet" href="/web/ace/assets/css/ace-rtl.min.css" />
-    <link rel="stylesheet" href="/web/ace/assets/css/ace-ie.min.css" />
-    <script src="/web/ace/assets/js/ace-extra.min.js"></script>
-    <script src="/web/ace/assets/js/html5shiv.min.js"></script>
-    <script src="/web/ace/assets/js/respond.min.js"></script>
+    <link rel="stylesheet" href="/ace/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/ace/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/ace/assets/css/fonts.googleapis.com.css" />
+    <link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <link rel="stylesheet" href="/ace/assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+    <link rel="stylesheet" href="/ace/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="/ace/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/ace/assets/css/ace-ie.min.css" />
+    <script src="/ace/assets/js/ace-extra.min.js"></script>
+    <script src="/ace/assets/js/html5shiv.min.js"></script>
+    <script src="/ace/assets/js/respond.min.js"></script>
     <link rel="shortcut icon" href="/web/imgs/favicon.ico" />
     <link rel="stylesheet" href="/web/css/site.css"></link>
 </head>
@@ -48,7 +48,7 @@ use yii\helpers\Html;
             <ul class="nav ace-nav">
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="/web/ace/assets/images/avatars/avatar2.png" alt="Jason's Photo" />
+                        <img class="nav-user-photo" src="/ace/assets/images/avatars/avatar2.png" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>Welcome,</small>
 									<?php echo Yii::$app->user->identity->username;?>
@@ -312,15 +312,15 @@ use yii\helpers\Html;
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
     </a>
 </div>
-<script src="/web/ace/assets/js/jquery-2.1.4.min.js"></script>
-<script src="/web/ace/assets/js/jquery-1.11.3.min.js"></script>
-<script src="/web/ace/assets/js/jquery.dataTables.min.js"></script>
+<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
+<script src="/ace/assets/js/jquery-1.11.3.min.js"></script>
+<script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='web/ace/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
-<script src="/web/ace/assets/js/bootstrap.min.js"></script>
-<script src="/web/ace/assets/js/ace-elements.min.js"></script>
-<script src="/web/ace/assets/js/ace.min.js"></script>
+<script src="/ace/assets/js/bootstrap.min.js"></script>
+<script src="/ace/assets/js/ace-elements.min.js"></script>
+<script src="/ace/assets/js/ace.min.js"></script>
 <script src="/web/js/jquery.cookie.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
