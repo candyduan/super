@@ -5,12 +5,8 @@ use common\library\Utils;
 use yii\db\Query;
 
 class Campaign extends \common\models\orm\base\Campaign {
-  /*  public static function getProvinceById($prid){
-        $model  = self::find()->select(['name'])->where(['id' => $prid])->one();
-        return isset($model['name']) ? $model['name'] :'';
-    }*/
 
-    public static function getSdkCampaign($partner = ''){
+    public static function getSdkCampaigns($partner = ''){
 
 
         $query = new Query();
@@ -20,11 +16,13 @@ class Campaign extends \common\models\orm\base\Campaign {
                 'partner.name as partnername']
         )
             ->from('campaign')
-            ->join('inner join', '',
+            ->join('inner join', 'partner',
                 'campaign.partner = partner.id')
-            ->where(['campaign.belong' => 1]);
+            ->where(['campaign.belong' => 1,
+                    'campaign.status' =>1,
+                     'partner.belong' => 1]);
          if(!empty($partner)){
-             $query->where(['like', 'campaign.name',$partner]);
+             $query->where(['like', 'partner.name',$partner]);
          }
 
         $command = $query->createCommand();

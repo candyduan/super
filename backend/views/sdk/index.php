@@ -149,10 +149,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span>SDK名单管理 </span>
-                <button  onclick = "changebtn(this)" class="btn-circle btn-lg"></button >
+                <button  id='btn_search_time_table' onclick = "changebtn(this)" class="btn btn-lg"></button >
                 <i class="glyphicon glyphicon-remove grey" id='btn_close_name_table' style="float:right; margin-right:20px;"></i>
                 <i class="glyphicon glyphicon-ok grey" id='btn_submit_name_table' style="float:right; margin-right:10px;"></i>
-
+                <input type="hidden" id='hidden_setnametable_sdid' value=""/>
             </div>
             <form id="formProvince" action="#" method="post" enctype="multipart/form-data">
                 <div class="modal-body" >
@@ -164,18 +164,15 @@
                                 <nav class="nav-tabs" role="navigation">
                                     <div>
                                         <ul class="nav nav-tabs" id="tab">
-                                            <li id="tab_type"></li>
-                                            <input type="hidden" id='hidden_tab_type' value = '1'/>
+                                            <li id="tab_type" class="active"><a></a></li>
                                         </ul>
                                     </div>
                                 </nav><br/>
-                                <table id="tblPprovince" class="table table-striped table-bordered gclass_table text-center">
+                                <table id="tblNameTable" class="table table-striped table-bordered gclass_table text-center">
                                     <thead>
                                     <tr>
                                         <td><input type="text" id="" name="" placeholder="内容商"/></td>
-                                        <td>应用</td>
                                         <td>活动</td>
-                                        <td>时间</td>
                                         <td>限制</td>
                                     </tr>
                                     </thead>
@@ -602,7 +599,6 @@
         callAjaxWithFunction(url, data, success_function, method);
     }
 
-
     $('#btn_submit_sdktime').on('click', function(event){
         event.preventDefault();
         if(confirm('确认修改')) {
@@ -630,23 +626,33 @@
 
     <!-- --------设置黑白名单---begin-------- -->
 
-    function setNameTable(sdid, status){
-        $('#hidden_setime_sdid').val(sdid); //!! 重要 更改状态通过这个获取sdid
+    function setNameTable(sdid, type){
+        $('#hidden_setnametable_sdid').val(sdid); //0 无限制 1 白 2 黑
+        switch (type){
+            case 0: $('#btn_search_time_table').removeClass('btn-danger').removeClass('btn-success').addClass('btn-primary').html('无限制');
+                $('#tab_type a').text('无限制');
+                break;
+            case 1: $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-primary').addClass('btn-success').text('指定');
+                $('#tab_type a').text('白名单');
+                break;
+            case 2: $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-primary').addClass('btn-danger').text('屏蔽');
+                $('#tab_type a').text('黑名单');
+                break;
+        }
         var post_url = '/sdk/get-name-table';
         var post_data = {
             'sdid' : sdid,
-            'status' : status
+            'type' : type
         };
         var method = 'get';
         var success_function = function(result){
             var content_str = '';
             for(var i in result) {
                 var content_arr = [];
-                content_arr.push("<tr><td>"+result[i].province+"</td>");
-                content_arr.push("<td>"+result[i].province+"</td>");
+                content_arr.push("<tr><td>"+result[i].partner+"</td>");
+                content_arr.push("<td>"+result[i].campaign+"</td>");
                 content_arr.push("<td>"+result[i].status+"</td>");
-                content_arr.push("<td>"+result[i].timelimit+"</td></tr>");
-                content_str  += content_arr.join(' ', content_arr);//要改
+                content_str  += content_arr.join(' ');
             }
             $('#bodyNameTable').empty().append(content_str);
             $('#btn_submit_nametable').attr('disabled', false);
@@ -655,10 +661,50 @@
         callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 
+    $('#btn_submit_name_table').on('click',function(event){
+        event.preventDefault();
+
+    });
+
+    function changebtn(that){//0 蓝色 => 无限制 1 绿色 => 白名单 2 红色 =》黑名单 //获取按钮点击以后下一个的状态
+        var type;
+        var sdid = $('#hidden_setnametable_sdid').val();
+        if($(that).hasClass('btn-primary')){
+            $('#btn_search_time_table').removeClass('btn-danger').removeClass('btn-primary').addClass('btn-success').text('指定');
+            type = 1;
+        } else if($(that).hasClass('btn-success')){
+            $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-primary').addClass('btn-danger').text('屏蔽');
+            type = 2;
+        } else if($(that).hasClass('btn-danger')){
+            $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-danger').addClass('btn-primary').text('无限制');
+            type = 0;
+        }
+        setNameTable(sdid, type);
+
+    }
+      //1 拼接的字符串
+    function modifyNameTable(that){
+        if($(that).hasClass('green')){
+            $(that).removeClass('green').addClass('red');
+        }else if($(that).hasClass('red'))){
+            $(that).removeClass('red').addClass('green');
+        }
+
+
+        //todo
+        alert(1); //这步要做的就是 改变字体颜色 然后比对 如果比对成功的
+        // 按钮变化  拼接字符串 然后 每次 onchange 就去比对  别忘记搜索框
+
+    }
+
+
+
+    //通过大按钮此时的颜色来判断名单类型 然后 拿到 状态为勾选的 然后就去 把表里的数据线全部删光  然后再插入 绿色那几条
     /* ------------------------------------------------------------------------javascript-------------------------------------*/
     $('#all_prids').on('click', function(){
         batchMute(this, 'prid');
     });
+
     $('input[name="prid"]').on('click', function(){
         closeBatch(this, 'all_prids');
     });
