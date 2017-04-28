@@ -173,7 +173,7 @@
                                 <table id="tblNameTable" class="table table-striped table-bordered gclass_table text-center">
                                     <thead>
                                     <tr>
-                                        <td><input type="text" id="" name="" placeholder="内容商"/></td>
+                                        <td><input type="text" id="setnametable_partner" name="setnametable_partner" placeholder="内容商"/></td>
                                         <td>活动</td>
                                         <td>限制</td>
                                     </tr>
@@ -730,7 +730,7 @@
         }
     }
 
-    //通过大按钮此时的颜色来判断名单类型 然后 拿到 状态为勾选的 然后就去 把表里的数据线全部删光  然后再插入 绿色那几条
+    // 搜索那个$('#')
     /* ------------------------------------------------------------------------javascript-------------------------------------*/
     $('#all_prids').on('click', function(){
         batchMute(this, 'prid');

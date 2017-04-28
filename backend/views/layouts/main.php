@@ -51,7 +51,7 @@ use yii\helpers\Html;
                         <img class="nav-user-photo" src="/ace/assets/images/avatars/avatar2.png" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>Welcome,</small>
-
+                <!--            --><?php /*echo Yii::$app->user->identity->username;*/?>
 								</span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>

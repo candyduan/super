@@ -2,7 +2,7 @@
 
 /.idea
 
-
+backend/web/assets
 backend/assets
 backend/assets/*
 backend/runtime
