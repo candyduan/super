@@ -69,6 +69,8 @@
                             <li><a href="/register/merchant-view">通道商列表</a></li>
                             <li><a href="/register/channel-view">通道管理</a></li>
                             <li><a href="/register/mutex-view">通道组管理</a></li>
+                            
+                            <li>tttt</li>
                         </ul>
                     </li>
                 </ul>
