@@ -4,6 +4,7 @@
 
 
 backend/assets
+backend/assets/*
 backend/runtime
 environments/dev/backend/web/assets
 frontend/assets
