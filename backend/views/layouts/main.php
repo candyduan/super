@@ -21,8 +21,8 @@ use yii\helpers\Html;
     <script src="/ace/assets/js/ace-extra.min.js"></script>
     <script src="/ace/assets/js/html5shiv.min.js"></script>
     <script src="/ace/assets/js/respond.min.js"></script>
-    <link rel="shortcut icon" href="/web/imgs/favicon.ico" />
-    <link rel="stylesheet" href="/web/css/site.css"></link>
+    <link rel="shortcut icon" href="/imgs/favicon.ico" />
+    <link rel="stylesheet" href="/css/site.css"></link>
 </head>
 <body>
 <?php $this->beginBody(); ?>
@@ -51,7 +51,7 @@ use yii\helpers\Html;
                         <img class="nav-user-photo" src="/ace/assets/images/avatars/avatar2.png" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>Welcome,</small>
-									<?php echo Yii::$app->user->identity->username;?>
+
 								</span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
@@ -321,7 +321,7 @@ use yii\helpers\Html;
 <script src="/ace/assets/js/bootstrap.min.js"></script>
 <script src="/ace/assets/js/ace-elements.min.js"></script>
 <script src="/ace/assets/js/ace.min.js"></script>
-<script src="/web/js/jquery.cookie.js"></script>
+<script src="/js/jquery.cookie.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     $(document).ready(function(){
