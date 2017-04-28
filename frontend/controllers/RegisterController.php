@@ -163,6 +163,16 @@ class RegisterController extends Controller{
      * phr
      */
     public function actionPhr(){
+        $roid   = Utils::getParam('roid');
+        $url    = Utils::getParam('url');
+        $content= Utils::getParam('content');
         
+        
+        //由于目前暂未了解phr整个流程，暂时仅记录下来
+        Utils::log('phr:'.$url.'_'.$content);
+        
+        $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+        $out['msg']         = Constant::RESULT_MSG_SUCC;
+        Utils::jsonOut($out);
     }
 }
