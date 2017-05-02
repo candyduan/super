@@ -33,4 +33,13 @@ class SdkProvinceLimit extends \common\models\orm\base\SdkProvinceLimit {
         return $count;
     }
 
+    public static function getlimitSdidsByPridProvider($prid,$provider){
+        $data  = self::find()->select(['sdid'])->where(['prid' => $prid, 'provider' => $provider, 'status' => 0])->all();
+        $return_data = [];
+        foreach($data as $value){
+            $return_data[]= $value['sdid'];
+        }
+        return $return_data;
+    }
+
 }

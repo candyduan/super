@@ -58,8 +58,16 @@ class Sdk extends \common\models\orm\base\Sdk{
     }
 
     public static function getSdkCount(){
-
         $count = self::find()->where(['in', 'status', [1,2,3]])->count();
         return $count;
+    }
+
+    public static function getValidSdids(){
+        $data = self::find()->select(['sdid'])->where(['in', 'status', [1,2,3]])->all();
+        $return_data = [];
+        foreach($data as $value){
+           $return_data  [] = $value['sdid'];
+        }
+        return $return_data;
     }
 }
