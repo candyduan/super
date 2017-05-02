@@ -10,13 +10,13 @@ use common\models\orm\extend\RegChannelCfgUrlYapi;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
-        if(!is_numeric($rcid) || !Utils::isValid($imsi)){
+        if(!is_numeric($rcid) || !commonUtils::isValid($imsi)){
             return null;
         }
         $regOrderModel  = new RegOrder();
         $regOrderModel->imsi    = $imsi;
         $regOrderModel->rcid    = $rcid;
-        $regOrderModel->recordTime = Utils::getNowTime();
+        $regOrderModel->recordTime = commonUtils::getNowTime();
         $regOrderModel->save();
         return $regOrderModel;
     }

@@ -1,6 +1,6 @@
 <?php
 namespace frontend\library\regchannel;
-use common\library\Utils;
+use common\library\Utils as commonUtils;
 use common\models\orm\extend\Province;
 
 class Register{
@@ -9,32 +9,32 @@ class Register{
         $data   = array();
         
         //是否需要手机号
-        if(Utils::isValid($this->_channelCfgRegParamsModel->mobileKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->mobileKey)){
             $data[$this->_channelCfgRegParamsModel->mobileKey]   = $this->_simCardModel->mobile;
         }
         
         //是否需要imsi
-        if(Utils::isValid($this->_channelCfgRegParamsModel->imsiKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->imsiKey)){
             $data[$this->_channelCfgRegParamsModel->imsiKey] = $this->_simCardModel->imsi;
         }
         
         //是否需要imei
-        if(Utils::isValid($this->_channelCfgRegParamsModel->imeiKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->imeiKey)){
             $data[$this->_channelCfgRegParamsModel->imeiKey] = $this->_simCardModel->imei;
         }
         
         //是否需要iccid
-        if(Utils::isValid($this->_channelCfgRegParamsModel->iccidKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->iccidKey)){
             $data[$this->_channelCfgRegParamsModel->iccidKey] = $this->_simCardModel->iccid;
         }
         
         //是否需要ip
-        if(Utils::isValid($this->_channelCfgRegParamsModel->ipKey)){
-            $data[$this->_channelCfgRegParamsModel->ipKey]   = Utils::getClientIp();
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->ipKey)){
+            $data[$this->_channelCfgRegParamsModel->ipKey]   = commonUtils::getClientIp();
         }
         
         //是否需要provinceName
-        if(Utils::isValid($this->_channelCfgRegParamsModel->provinceNameKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->provinceNameKey)){
             $provinceName       = Province::getNameById($this->_simCardModel->province);
             $provinceName       = str_replace('省', '', $provinceName);
             $provinceName       = str_replace('市', '', $provinceName);
@@ -42,7 +42,7 @@ class Register{
         }
         
         //是否有透传参数
-        if(Utils::isValid($this->_channelCfgRegParamsModel->cpparamKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->cpparamKey)){
             $data[$this->_channelCfgRegParamsModel->cpparamKey]     = $this->_regOrderModel->spSign;
         }
         //特殊定制参数
@@ -53,7 +53,7 @@ class Register{
             }
         }
         //是否有省份映射
-        if(Utils::isValid($this->_channelCfgRegParamsModel->provinceMapKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->provinceMapKey)){
             $opid   = 0;
             $provinceMaps    = json_decode($this->_channelCfgRegParamsModel->provinceMap,true);
             if(is_array($provinceMaps) && count($provinceMaps) > 0){
@@ -66,7 +66,7 @@ class Register{
             $data[$this->_channelCfgRegParamsModel->provinceMapKey] = $opid;
         }
         //是否需要流水号
-        if(Utils::isValid($this->_channelCfgRegParamsModel->linkIdKey)){
+        if(commonUtils::isValid($this->_channelCfgRegParamsModel->linkIdKey)){
             $linkId = time().$this->_simCardModel->id;
             $data[$this->_channelCfgRegParamsModel->linkIdKey] = $linkId;
         }

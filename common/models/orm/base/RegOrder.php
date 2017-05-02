@@ -32,8 +32,8 @@ class RegOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['roid', 'imsi', 'rcid'], 'required'],
-            [['roid', 'imsi', 'rcid', 'status'], 'integer'],
+            [['imsi', 'rcid'], 'required'],
+            [['imsi', 'rcid', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['spSign', 'spOrderId'], 'string', 'max' => 128],
             [['imsi', 'rcid'], 'unique', 'targetAttribute' => ['imsi', 'rcid'], 'message' => 'The combination of Imsi and Rcid has already been taken.'],
