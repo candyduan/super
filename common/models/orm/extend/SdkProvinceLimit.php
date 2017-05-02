@@ -13,14 +13,24 @@ class SdkProvinceLimit extends \common\models\orm\base\SdkProvinceLimit {
         return $return_data;
     }
 
-/*    public static function getByPridSdidProvider($sdid,$provider,$prid){
-        $model  = self::find()->where(['sdid' => $sdid, 'provider' => $provider, 'prid' => $prid])->all();
-        return empty($model) ? false : true;
-    }*/
+    /*    public static function getByPridSdidProvider($sdid,$provider,$prid){
+            $model  = self::find()->where(['sdid' => $sdid, 'provider' => $provider, 'prid' => $prid])->all();
+            return empty($model) ? false : true;
+        }*/
 
     public static function deleteByPridSdidProvider($prid,$sdid,$provider){
         $state = self::deleteAll(['prid' => $prid, 'sdid' => $sdid, 'provider' =>$provider]);
         return $state;
+    }
+
+    public static function getLimitCountByProviderandPrid($provider,$prid){
+        $condition = [
+            'provider' => $provider,
+            'prid' => $prid,
+            'status' => 0 //表示屏蔽
+        ];
+        $count = self::find()->where($condition)->count();
+        return $count;
     }
 
 }

@@ -56,4 +56,10 @@ class Sdk extends \common\models\orm\base\Sdk{
         $models= $find->count();
         return $models;
     }
+
+    public static function getSdkCount(){
+
+        $count = self::find()->where(['in', 'status', [1,2,3]])->count();
+        return $count;
+    }
 }
