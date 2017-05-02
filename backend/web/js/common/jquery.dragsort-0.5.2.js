@@ -278,23 +278,6 @@
 					$(document).unbind("mouseup", list.dropItem);
 					if (opts.scrollContainer != window)
 						$(window).unbind("wheel", list.wheel);
-
-					// 以下为需要个性化改动内容 2015-11-05
-					 var tmpp = 0;
-                    $("#gridtbody").children().each(function () {
-                        tmpp++;
-                        $(this).attr('value', tmpp)
-                        $(this).find("td:first-child").html("<span class='badge'>" + (tmpp + 1) + "</span>");
-                    })
-
-                    var len = $('#field_list_table tr').length;
-                    for (var i = 1; i < len; i++) {
-
-                        $('#field_list_table tr:eq(' + i + ') td:first').html("<span class='badge'>" + i + "</span>");
-                    }
-                    //这个为php ajax 的一个函数
-                    my.saveDrag() 
-					// 结束
 					return false;
 				},
 

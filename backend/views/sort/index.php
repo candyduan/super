@@ -1,4 +1,3 @@
-
 <div class="panel panel-warning">
     <!-- panel heading -->
     <div class="page-header">
@@ -12,6 +11,7 @@
     <div class="panel-body">
         <div class="row">
             <input type="hidden" id='hidden_provider' value="1"/>
+            <input type="hidden" id='hidden_prid' value="0"/>
             <div class="col-sm-10 col-md-10 col-lg-10">
                 <button id='btn_yidong' onclick="changebtn(this)" class="btn btn-success">
                     <span>移动</span>
@@ -50,16 +50,7 @@
                 <span id="sort_title"></span>
             </div>
             <div class="modal-body" >
-                <table id="tblNameTable" class="table table-striped table-bordered gclass_table text-center">
-                    <thead>
-                    <tr>
-                        <td>sdk</td>
-                        <td>昨日转化</td>
-                        <td>排序</td>
-                    </tr>
-                    </thead>
-                    <tbody id="bodySort"></tbody>
-                </table>
+                <ul id="bodySort"><ul>
             </div>
             <div class="modal-footer" >
                 <button type="submit" class="btn btn-success" id="btn_submit_sort">提交</button>
@@ -68,20 +59,20 @@
         </div>
     </div>
 </div>
-</div>
+
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
-<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
+<!--<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>-->
 <script type="text/javascript" src="/js/sdk/util.js"></script>
 <script type="text/javascript" src="/js/sdk/alert.js"></script>
 <script type="text/javascript" src="/js/common/chinamapPath.js"></script>
 <script type="text/javascript" src="/js/common/raphael.js"></script>
-<script type="text/javascript" src="/js/common/jquery.dragsort.js"></script>
+<!--<script type="text/javascript" src="/js/common/jquery.dragsort-0.5.2.min.js"></script>-->
+<script type="text/javascript" src="/ace/assets/js/jquery-ui.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-        // sdkCount = [];
         getSdkCountAndDrawMap(1); //首页进来默认是移动
-     /*   $('#bodySort').dragsort({  itemSelector: "tr", dragSelector: "tr", dragBetween: true, dragEnd: saveOrder, placeHolderTemplate: "<tr></tr>" });
+      /*  $('#bodySort').dragsort({  itemSelector: "tr", dragSelector: "tr", dragBetween: false, dragEnd: saveOrder, placeHolderTemplate: "<tr></tr>" });
         function saveOrder() {
 
         }*/
@@ -250,25 +241,28 @@
 
     function showSortModal(provider, prid, province_name){
         var provider_name = getProviderName(parseInt(provider));
-        $('#sort_title').text(province_name+provider_name+'融合SDK排序');
+        $('#sort_title').text(province_name+provider_name+'融合SDK排序(拖动某一个行来排序)');
         var data = {
             'provider' : provider,
             'prid'     : prid
         }
-        // alert( $('#sort_title').text());
         var url = '/sort/get-sdk-sort';
         var method = 'get';
         var success_function = function(result){
             var content_str = '';
             for(var i in result) {
                 var content_arr = [];
-                content_arr.push("<tr><td>"+result[i].sdkname+"</td>");
-                content_arr.push("<td>"+result[i].ratio+"</td>");
-                content_arr.push("<td>"+result[i].item+"</td></tr>");
+                content_arr.push("<li id='"+result[i].sdid+"'>  sdk名称:  "+result[i].sdkname+" 昨日转化率:");
+                content_arr.push(result[i].ratio+"<span></li>");
+                //content_arr.push(result[i].item+"</span></li>");
                 content_str  += content_arr.join(' ');
             }
+            $('#hidden_prid').val(prid);
             $('#bodySort').empty().append(content_str);
             $('#btn_submit_sort').attr('disabled', false);
+          //  drag();
+            dragable();
+           // submit();
             $('#modalSort').modal('show');
         };
 
@@ -288,5 +282,50 @@
         }
         return provider_name
     }
+
+/*    function drag(){
+        $('#bodySort').dragsort({  itemSelector: "tr", dragSelector: "tr", dragBetween: true, dragEnd: saveOrder, placeHolderTemplate: "<tr></tr>" });
+        function saveOrder() {
+
+        }
+    }*/
+
+    function dragable(){
+        $( "ul" ).sortable({
+            connectWith: "ul"
+        });
+
+        $( "#bodySort" ).disableSelection();
+    }
+
+    $('#btn_show').on('click',function(){
+        var provider = $('#hidden_provider').val();
+        showSortModal(provider, 0, '')
+    })
+
+    $('#btn_submit_sort').on('click', function (event) {
+        event.preventDefault();
+        var sdids = [];
+        $('#bodySort li').each(function () {
+            sdids.push($(this).prop('id'));
+        });
+        var data = {
+          'sdids': sdids,
+          'prid' : $('#hidden_prid').val(),
+          'provider' : $('#hidden_provider').val()
+        }
+        var url = '/sort/add-sort';
+        var method='post';
+        var success_function = function(result){
+           if(parseInt(result) > 0){
+               alert(MESSAGE_MODIFY_SUCCESS);
+           }else{
+               alert(MESSAGE_MODIFY_ERROR);
+           }
+        }
+
+        callAjaxWithFunction(url, data, success_function, method);
+    });
+
 
 </script>

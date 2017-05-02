@@ -14,6 +14,7 @@ use common\models\orm\extend\SdkProvinceLimit;
 use common\models\orm\extend\Province;
 use common\models\orm\extend\SdkProvinceSort;
 use common\models\orm\extend\SdkSort;
+use common\models\orm\extend\SdkPayDay;
 use common\models\orm\extend\SdkProvinceTimeLimit;
 use common\models\orm\extend\SdkTimeLimit;
 use common\models\orm\extend\Campaign;
@@ -57,10 +58,10 @@ class SortController extends Controller
             $nosort = self::_getValidSdids($nosort, $limitSdids);//去掉屏蔽的
         }
         //根据运营商sort
-        $sortByProvider = SdkSort::getSortByProvider($provider);
+        $sortByProvider = json_decode(SdkSort::getSortByProvider($provider));
         //根据省份运营商sort
         if($prid > 0){
-            $sortByProviderPrid = SdkProvinceSort::getSortByPridProvider($prid,$provider);
+            $sortByProviderPrid = json_decode(SdkProvinceSort::getSortByPridProvider($prid,$provider));
         }
 
         //把原先排序里不valid的sdid 去除 然后再吧 不在noSort里的sdid 加到排序后面去
@@ -73,11 +74,12 @@ class SortController extends Controller
         }
 
         foreach($sort as $sdid){
+            $sdk = sdk::findByPk($sdid);
             $data[] = [
                 'sdid' => $sdid,
-                'sdkname'=> 'name',
-                'ratio' => rand(1,20),
-                'item' => MyHtml::iElement('glyphicon glyphicon-align-justify ','','',$sdid)
+                'sdkname'=> isset($sdk->name)?  $sdk->name : '',
+                'ratio' => self::_getRatio($prid,$provider),
+              //  'item' => MyHtml::iElement('glyphicon glyphicon-align-justify ','','',$sdid)
             ];
         }
 
@@ -100,19 +102,71 @@ class SortController extends Controller
         return  $validSdids;
     }
 
-    private function _getValidSort($sort, $nosort){
+    private function _getValidSort($oldsort, $nosort){
         $validSort = [];
-
-            foreach ($sort as $key => $sdid) {
-                if(in_array($sdid,$nosort)){
-                    $validSort[] = $sdid;
+            if(!empty($oldsort)) {
+                foreach ($oldsort as $key => $sdid) {
+                    if (in_array($sdid, $nosort)) {
+                        $validOldSort[] = $sdid;
+                    }
                 }
-            }
-            if(!empty($validSort)){
-                $validSort = array_merge($validSort, array_diff($nosort,$validSort));
+                if (!empty($validOldSort)) {
+                    $validSort = array_merge($validOldSort, array_diff($nosort, $validOldSort));
+                }
+            }else{
+                $validSort = $nosort;
             }
 
         return  $validSort;
+    }
+
+    private function _getRatio($prid,$provider){
+        $ratio = 0;
+        $date = date('Y-m-d', strtotime("-1 day"));
+        $yes_all_success = SdkPayDay::getTodayByPridProvider($prid, $provider, $date);
+        if(!empty($yes_all_success['sumallpay']) && !empty($yes_all_success['sumsuccesspay']) ){
+            $ratio = number_format($yes_all_success['sumallpay'] / $yes_all_success['sumallsuccess'], 2);
+        }
+        return $ratio;
+    }
+
+    public function actionAddSort(){
+        $provider = intval(Yii::$app->request->post('provider'));
+        $prid = Yii::$app->request->post('prid');
+        $sdids =  Yii::$app->request->post('sdids');
+        $resultState = 0;
+        if(isset($sdids) && isset($prid) && isset($provider)){
+            $transaction =  SdkSort::getDb()->beginTransaction();
+            try {
+                if(!empty($sdids)){
+                    SdkProvinceSort::deleteByProvider($provider); //无论有没有prid 重新排序 都要把sdkprovincesort 里对应记录删掉
+                    if($prid > 0){
+                       $sdkProvinceModel = new SdkProvinceSort();
+                       $sdkProvinceModel->provider = $provider;
+                       $sdkProvinceModel->prid = $prid;
+                       $sdkProvinceModel->sort = json_encode($sdids);
+                       $sdkProvinceModel->status = 1;
+                       $result = $sdkProvinceModel->save();
+                       $resultState = $result == true ? 1: 0;
+                    }else{
+                         SdkSort::deleteByProvider($provider);
+                        $sdkModel = new SdkSort();
+                        $sdkModel->provider = $provider;
+                        $sdkModel->sort = json_encode($sdids);
+                        $sdkModel->status = 1;
+                        $result = $sdkModel->save();
+                        $resultState = $result == true ? 1: 0;
+                    }
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From add sdk sort');
+            }
+        }
+        echo json_encode($resultState);
+        exit;
     }
 
 }

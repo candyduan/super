@@ -8,12 +8,12 @@ class SdkSort extends \common\models\orm\base\SdkSort {
     public static function getSortByProvider($provider){
         $data = self::find()->select(['sort'])
             ->where(['provider' => $provider,'status' => 1])
-            ->all();
+            ->one();
         return isset($data['sort']) ? $data['sort'] : '' ;
     }
 
-    public static function deleteBySdid($sdid){
-        $state = self::deleteAll(['sdid' => $sdid]);
+    public static function deleteByProvider($provider){
+        $state = self::deleteAll(['provider' => $provider]);
         return $state;
     }
 

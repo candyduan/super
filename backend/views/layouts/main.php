@@ -22,6 +22,7 @@ use yii\helpers\Html;
     <script src="/ace/assets/js/html5shiv.min.js"></script>
     <script src="/ace/assets/js/respond.min.js"></script>
     <link rel="shortcut icon" href="/imgs/favicon.ico" />
+    <script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" href="/css/site.css"></link>
 </head>
 <body>
@@ -298,8 +299,8 @@ use yii\helpers\Html;
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
     </a>
 </div>
-<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
-<script src="/ace/assets/js/jquery-1.11.3.min.js"></script>
+<!--<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>-->
+<!--<script src="/ace/assets/js/jquery-1.11.3.min.js"></script>-->
 <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='web/ace/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
