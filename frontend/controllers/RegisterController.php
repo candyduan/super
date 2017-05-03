@@ -52,7 +52,8 @@ class RegisterController extends Controller{
                 }
             }catch (\Exception $e){
                 $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
-                $out['msg']         = '系统繁忙';
+                //$out['msg']         = '系统繁忙';
+                $out['msg']         = $e->getMessage();
             }
         }else{
             $out['resultCode']  = Constant::RESULT_CODE_NONE;
