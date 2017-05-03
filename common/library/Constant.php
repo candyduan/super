@@ -46,7 +46,7 @@ class Constant{
     /*
      * 域名
      */
-    const DOMAIN_REGISTER   = 'frontend.super.com';
+    const DOMAIN_REGISTER   = 'paytest1.maimob.net';
     
     
     /*
