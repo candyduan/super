@@ -123,14 +123,14 @@ use yii\helpers\Html;
                 <li class="">
                     <a href="/partner/index">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        内容商
+                        内容商列表
                     </a>
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="4">
+                    <a href="/app/index">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        data 2
+                        应用列表
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -144,7 +144,7 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-                <li class="">
+           <!--     <li class="">
                     <a href="5">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
@@ -157,7 +157,7 @@ use yii\helpers\Html;
                         data 2
                     </a>
                     <b class="arrow"></b>
-                </li>
+                </li>-->
             </ul>
         </li>
         <li class="">
@@ -168,7 +168,7 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-                <li class="">
+               <!-- <li class="">
                     <a href="7">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
@@ -181,7 +181,7 @@ use yii\helpers\Html;
                         data 2
                     </a>
                     <b class="arrow"></b>
-                </li>
+                </li>-->
             </ul>
         </li>
         <li class="">
@@ -192,7 +192,7 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-                <li class="">
+             <!--   <li class="">
                     <a href="9">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
@@ -205,7 +205,7 @@ use yii\helpers\Html;
                         data 2
                     </a>
                     <b class="arrow"></b>
-                </li>
+                </li>-->
             </ul>
         </li>
         <li class="">
@@ -216,7 +216,7 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-                <li class="">
+            <!--    <li class="">
                     <a href="11">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
@@ -229,7 +229,7 @@ use yii\helpers\Html;
                         data 2
                     </a>
                     <b class="arrow"></b>
-                </li>
+                </li>-->
             </ul>
         </li>
         <li class="">
@@ -240,7 +240,7 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-                <li class="">
+             <!--   <li class="">
                     <a href="13">
                         <i class="menu-icon fa fa-caret-right"></i>
                         data 1
@@ -253,7 +253,7 @@ use yii\helpers\Html;
                         data 2
                     </a>
                     <b class="arrow"></b>
-                </li>
+                </li>-->
             </ul>
         </li>
     </ul><!-- /.nav-list -->

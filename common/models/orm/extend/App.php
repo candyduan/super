@@ -3,15 +3,20 @@ namespace common\models\orm\extend;
 
 use common\library\Utils;
 
-class Partner extends \common\models\orm\base\Partner {
+class App extends \common\models\orm\base\App {
 
     public static function getIndexData($where, $start,$length){
-        $data= self::find()->where($where)->orderBy('id desc')->offset($start)->limit($length)->all();
+        $data= self::find()->join('inner join', 'partner', 'app.partner = partner.id')
+            ->where($where)->orderBy('id desc')
+            ->offset($start)
+            ->limit($length)
+            ->all();
         return $data;
     }
 
     public static function getIndexCount($where){
-        $count = self::find()->where($where)->count();
+        $count = self::find()->join('inner join', 'partner', 'app.partner = partner.id')
+            ->where($where)->count();
         return $count;
     }
 

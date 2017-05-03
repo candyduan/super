@@ -10,13 +10,7 @@ use backend\web\util\MyMail;
 use common\models\orm\extend\Sdk;
 use common\models\orm\extend\Admin;
 use common\models\orm\extend\Partner;
-use common\models\orm\extend\SdkPartner;
-use common\models\orm\extend\SdkProvinceLimit;
-use common\models\orm\extend\Province;
-use common\models\orm\extend\SdkProvinceTimeLimit;
-use common\models\orm\extend\SdkTimeLimit;
-use common\models\orm\extend\Campaign;
-use common\models\orm\extend\SdkCampaignLimit;
+use common\library\Utils;
 /**
  * Partner controller
  */
@@ -50,11 +44,12 @@ class PartnerController extends Controller
 
             ];
             $tabledata[] = [
-                MyHtml::aElement('javascript:void(0);' ,'showPartner', $value['id'],'[' .++$start.'] '.$value['name']),
+                MyHtml::aElement('javascript:void(0);' ,'showPartner', $value['id'],'[' .$value['id'].'] '.$value['name']),
                 isset($utypes[$value['utype']]) ? $utypes[$value['utype']] : '',
-                $value['belong'] == 1 ?  '支付SDK' : '融合SDK',
+                $value['belong'] == 1 ?  '融合SDK' : '支付SDK',
                 Admin::getNickById($value['holder']),
-                $value['payCircle'] == 1 ? '周结' : '月结'
+                $value['payCircle'] == 1 ? '周结' : '月结',
+                MyHtml::aElement("javascript:void(0);". $value['id'], '','','查看产品')
             ];
         }
 
@@ -66,7 +61,7 @@ class PartnerController extends Controller
             'recordsFiltered' => $count,
             'tableData' => $tabledata,
         ];
-        echo json_encode($data);
+        Utils::jsonOut($data);
         exit;
     }
 
@@ -81,11 +76,12 @@ class PartnerController extends Controller
         ];
         if(!empty($partner)){
             $partner['payType'] = $partner['payType'] == 1 ? '公司' : '个人';
+            $partner['uType'] = isset($uTypes[$partner['utype']]) ? $uTypes[$partner['utype']] : '';
             $partner['holder'] = Admin::getNickById($partner['holder']);
             $partner['payCircle'] = $partner['payCircle'] == 1 ? '周结' : '月结';
             $partner['needSync'] = $partner['needSync'] == 0 ? '不同步每日业绩' : '同步每日业绩';
         }
-        echo json_encode($partner);
+        Utils::jsonOut($partner);
         exit;
     }
 

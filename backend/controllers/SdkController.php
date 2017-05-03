@@ -47,7 +47,7 @@ class SdkController extends Controller
             list($blue,$green,$red,$purple) = self::_getStatusColor($value['status']);
             //0-无效，1-暂停，2-测试，3-运行
             $tabledata[] = [
-                MyHtml::aElement('javascript:void(0);' ,'modifySdk', $value['sdid'],'[' .++$start.'] '.$value['name']),
+                MyHtml::aElement('javascript:void(0);' ,'modifySdk', $value['sdid'],'[' .$value['sdid'].'] '.$value['name']),
                 MyHtml::aElement('javascript:void(0);' ,'setNameTable', $value['sdid'].','.$value['limit'], $limit),
                 MyHtml::iElement('glyphicon glyphicon-globe ','setProvince',$value['sdid'] . ',1'), //默认是移动 所以传了1
                 MyHtml::iElement('glyphicon glyphicon-time ','setTime',$value['sdid']),

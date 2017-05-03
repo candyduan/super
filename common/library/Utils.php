@@ -133,5 +133,21 @@ class Utils{
         }
         return $value;
     }
+
+    public static function formatNumToSize($number){
+        $res = '';
+        if (is_numeric($number)) {
+            if ($number >= 1073741824) {
+                $res = sprintf('%.2f', $number / 1073741824) . 'GB';
+            }elseif ($number >= 1048576){
+                $res = sprintf('%.2f', $number / 1048576) . 'MB';
+            }elseif ($number >= 1024){
+                $res = sprintf('%.2f', $number / 1024) . 'KB';
+            }else{
+                $res = sprintf('%.2f', $number) . 'B';
+            }
+        }
+        return $res;
+    }
     
 }

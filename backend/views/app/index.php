@@ -3,7 +3,7 @@
     <div class="page-header">
         <h1>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            内容商管理
+            应用管理
         </h1>
     </div>
     <!-- panel body -->
@@ -12,18 +12,7 @@
             <form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text" class="form-control" id="name" name="name" placeholder="内容商名称:模糊搜索"/>
-                    <select class="form-control" id="utype" name="utype">
-                        <option value="0">合作模式</option>
-                        <option value="1">内容供应</option>
-                        <option value="2">内容推广</option>
-                        <option value="3">综合</option>
-                    </select>
-                    <select class="form-control" id="holder" name="holder">
-                        <option value="0">选择负责人</option>
-                        <?php foreach($holders as $key => $value){
-                            echo "<option value='$key'> $value</option>";
-                        }?>
-                    </select>
+                <!--    <input type="text" id='id' name ='id' value="<?php /*echo $id*/?>"/>-->
                     <button class="btn btn-primary" type="submit" id="btn_search">
                         <span class="glyphicon glyphicon-search"></span>
                         <span>搜索</span>
@@ -38,12 +27,11 @@
                 <table id="tbl" class="table table-striped table-bordered gclass_table text-center">
                     <thead>
                     <tr>
-                        <td>内容商</td>
-                        <td>合作模式</td>
-                        <td>业务归属</td>
-                        <td>负责人</td>
-                        <td>结算周期</td>
-                        <td>查看产品</td>
+                        <td>应用名</td>
+                        <td>包名</td>
+                        <td>版本号</td>
+                        <td>大小</td>
+                        <td>管理活动</td>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -140,7 +128,7 @@
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [0, 1, 2, 3, 4,5]
+                'aTargets': [0, 1, 2, 3, 4]
             }],
             "displayLength": 100, //默认每页多少条数据
             "processing": true,
@@ -160,7 +148,7 @@
             },
             "serverSide": true,
             "ajax": {
-                "url":'/partner/ajax-index?' + $.param($('#formSearch').serializeArray()),
+                "url":'/app/ajax-index?' + $.param($('#formSearch').serializeArray()),
                 "dataSrc": function(json) {
                     return json.tableData;
                 }
