@@ -38,9 +38,7 @@ class Sdk extends \common\models\orm\base\Sdk{
     public static function getIndexData($where, $start,$length){
         $find = self::find();
         if(!empty($where)) {
-            foreach ($where as $key => $value) {
-                $find->where([$value['signal'], $value['column'], $value['value']]);
-            }
+            $find->where([$where['signal'], $where['column'], $where['value']]);
         }
         $models= $find->offset($start)->limit($length)->all();
         return $models;
@@ -49,9 +47,7 @@ class Sdk extends \common\models\orm\base\Sdk{
     public static function getIndexCount($where){
         $find = self::find();
         if(!empty($where)) {
-            foreach ($where as $key => $value) {
-                $find->where([$value['signal'], $value['column'], $value['value']]);
-            }
+            $find->where([$where['signal'], $where['column'], $where['value']]);
         }
         $models= $find->count();
         return $models;

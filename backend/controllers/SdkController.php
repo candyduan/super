@@ -32,10 +32,8 @@ class SdkController extends Controller
         $name = $request->get('name');
         $where = [];
         if($name !== '') {
-            $where[] = ['signal' => 'like', 'column' =>'name', 'value' =>$name];
+            $where = ['signal' => 'like', 'column' =>'name', 'value' =>$name];
         }
-       // $sdks = Sdk::findByName($name);
-       // $total = Sdk::countByName($name,$start,$length);
         $sdks = Sdk::getIndexData($where, $start,$length);
         $count = Sdk::getIndexCount($where);
         $tabledata = [];

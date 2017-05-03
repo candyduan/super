@@ -19,13 +19,13 @@ class Campaign extends \common\models\orm\base\Campaign {
             ->join('inner join', 'partner',
                 'campaign.partner = partner.id')
             ->where(['campaign.belong' => 1,
-                    'campaign.status' =>1,
+                    //'campaign.status' =>1,
                      'partner.belong' => 1]);
          if(!empty($partner)){
              $query->where(['like', 'partner.name',$partner]);
          }
 
-        $command = $query->createCommand();
+        $command = $query->orderBy('campaign.id desc')->createCommand();
         $data = $command->queryAll();
         $return_data = [];
         foreach($data as $value){

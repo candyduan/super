@@ -121,9 +121,9 @@ use yii\helpers\Html;
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="3">
+                    <a href="/partner/index">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        data 1
+                        内容商
                     </a>
                     <b class="arrow"></b>
                 </li>
