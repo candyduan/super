@@ -19,7 +19,7 @@ class UrlRegister extends Register{
         $this->_regChannelModel     = $regChannelModel;
         $this->_regOrderModel       = $regOrderModel;
         $this->_simCardModel        = $simCardModel;
-        $this->_regChannelCfgRegParamsModel = RegChannelCfgRegParams::findByRcid($$regChannelModel->rcid);
+        $this->_regChannelCfgRegParamsModel = RegChannelCfgRegParams::findByRcid($regChannelModel->rcid);
         $this->_regChannelCfgUrlModel       = RegChannelCfgUrl::findByRcid($regChannelModel->rcid);
         $this->_regChannelCfgUrlYapiModel   = RegChannelCfgUrlYapi::findByRcid($regChannelModel->rcid);
     }
