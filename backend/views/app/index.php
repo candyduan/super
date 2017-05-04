@@ -12,7 +12,7 @@
             <form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text" class="form-control" id="name" name="name" placeholder="内容商名称:模糊搜索"/>
-                <!--    <input type="text" id='id' name ='id' value="<?php /*echo $id*/?>"/>-->
+                    <input type="text"  class="form-control" id='id' name ='id' value="<?php echo $id?>"  placeholder="内容商id"/>
                     <button class="btn btn-primary" type="submit" id="btn_search">
                         <span class="glyphicon glyphicon-search"></span>
                         <span>搜索</span>
@@ -154,32 +154,6 @@
                 }
             }
         });
-    }
-
-    function showPartner(id){
-        var post_url = '/partner/get-partner';
-        var post_data = {
-            'id' : id
-        };
-        var method = 'get';
-        var success_function = function(result){
-            $('#partner_paytype').val(result.payType);
-            $('#partner_utype').val(result.utype);
-            $('#partner_bank').val(result.bank);
-            $('#partner_subbank').val(result.subBank);
-            $('#partner_holder').val(result.holder);
-            $('#partner_email').val(result.email);
-            $('#partner_accountname').val(result.accountName);
-            $('#partner_account').val(result.account);
-            $('#partner_name').val(result.name);
-            $('#partner_paycircle').val(result.payCircle);
-            $('#partner_utype').val(result.uType);
-            $('#partner_needsync').val(result.needSync);
-            $('#partner_syncurl').val(result.syncUrl);
-            $('#partner_memo').val(result.memo);
-            $('#modalPartner').modal('show');
-        };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 
 </script>

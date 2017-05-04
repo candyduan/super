@@ -17,7 +17,7 @@ class AppController extends Controller
 {
     public function actionIndex()
     {
-        $id = Yii::$app->request->get('id',0);
+        $id = Yii::$app->request->get('id','');
         return $this->render('index', ['id' => $id]);
     }
 
@@ -26,8 +26,8 @@ class AppController extends Controller
         $start = intval($request->get('start', 0));
         $length = intval($request->get('length', 100));
         $name = trim($request->get('name',''));
-      //  $id = intval($request->get('id',0));
-        $condition = self::_getCondition($name);
+        $id = $request->get('id','');//partner 的id
+        $condition = self::_getCondition($name,$id);
 
         $data = App::getIndexData($condition, $start,$length);
         $count = App::getIndexCount($condition);
@@ -38,14 +38,13 @@ class AppController extends Controller
                 $value['packageName'],
                 $value['versionName'],
                 Utils::formatNumToSize($value['size']),
-                MyHtml::aElement("javascript:void(0);". $value['id'], '','','活动管理')
+                MyHtml::aElement("/campaign/index?id=". $value['id'], '','','查看活动')
             ];
         }
 
-       // $partnerName = ($id > 0) ?  Partner::getNameById($id) : '';
         $data = [
             'searchData' => [
-                //'partnerName' => $partnerName
+
             ],
             'recordsTotal' => $count,
             'recordsFiltered' => $count,
@@ -55,7 +54,7 @@ class AppController extends Controller
         exit;
     }
 
-    private function _getCondition($name){
+    private function _getCondition($name,$id){
         $condition[] = 'and';
         $condition[] = [
             '=',
@@ -69,6 +68,13 @@ class AppController extends Controller
             1
         ];
 
+        if($id!== ''){
+            $condition[] = [
+                '=',
+                'partner.id',
+                $id
+            ];
+        }
 
         if($name!== ''){
             $condition[] = [

@@ -134,6 +134,13 @@ use yii\helpers\Html;
                     </a>
                     <b class="arrow"></b>
                 </li>
+                <li class="">
+                    <a href="/campaign/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        活动列表
+                    </a>
+                    <b class="arrow"></b>
+                </li>
             </ul>
         </li>
         <li class="">

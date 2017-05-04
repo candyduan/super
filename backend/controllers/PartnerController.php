@@ -49,7 +49,7 @@ class PartnerController extends Controller
                 $value['belong'] == 1 ?  '融合SDK' : '支付SDK',
                 Admin::getNickById($value['holder']),
                 $value['payCircle'] == 1 ? '周结' : '月结',
-                MyHtml::aElement("javascript:void(0);". $value['id'], '','','查看产品')
+                MyHtml::aElement("/app/index?id=". $value['id'], '','','查看产品')
             ];
         }
 
