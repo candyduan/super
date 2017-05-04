@@ -405,7 +405,7 @@
     function feeKeyUp() {
         $('input[name="fee"]').on('keyup', function () {
             if($(this).val() !== ''){
-             //  $(this).parent().siblings().eq(2).children().eq(0).addClass('green');
+                $(this).parent().next().children('i').removeClass('grey').addClass('green');
             }else{
                 alert('grey');
             }
