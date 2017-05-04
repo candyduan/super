@@ -10,6 +10,9 @@ use common\models\orm\extend\App;
 use common\models\orm\extend\Campaign;
 use common\models\orm\extend\Admin;
 use common\models\orm\extend\Partner;
+use common\models\orm\extend\Sdk;
+use common\models\orm\extend\Goods;
+use common\models\orm\extend\CampaignSdk;
 use common\library\Utils;
 use backend\web\util\MyMail;
 /**
@@ -27,7 +30,6 @@ class CampaignController extends Controller
         $request = Yii::$app->request;
         $start = intval($request->get('start', 0));
         $length = intval($request->get('length', 100));
-        //$name = trim($request->get('name',''));
         $id = $request->get('id','');//app 的id
         $condition = self::_getCondition($id);
 
@@ -55,7 +57,7 @@ class CampaignController extends Controller
                 sprintf('%.2f',$value['cutRate']) . ' % @' . date('Y-m-d', $value['cutDay']),
                 sprintf('%.2f',$value['mrate']) . ' %',
                 $value['sign'],
-                MyHtml::aElement("javascript:void(0);", 'modifyGoods',$value['id'],'关联SDK参数配置'). MyHtml::br().
+                MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'关联SDK参数配置'). MyHtml::br().
                 MyHtml::aElement("/campaign-package-list/index?cid=".$value['id'], '', '','活动包管理')
 
             ];
@@ -97,6 +99,31 @@ class CampaignController extends Controller
         exit;
     }
 
+    public function actionModifyStatus() {
+        $resultState = 0;
+        $caid = Yii::$app->request->get('caid');
+        $sdid = Yii::$app->request->get('sdid');
+        $status =  Yii::$app->request->get('status');
+        if (isset($caid)) {
+            $transaction =  CampaignSdk::getDb()->beginTransaction();
+            try {
+                $campaignSdkModel= CampaignSdk::findBySdidCaid($sdid,$caid);
+                if($campaignSdkModel){
+                    $campaignSdkModel->status = $status;
+                    $resultState  = $campaignSdkModel->save() == true ? 1: 0;
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify campaign sdk status');
+            }
+        }
+
+        echo json_encode($resultState);
+        exit;
+    }
+
     public function actionGetCampaign() {
         $id = Yii::$app->request->get('caid');
         $campaign = [];
@@ -130,6 +157,55 @@ class CampaignController extends Controller
             }
         }
         Utils::jsonOut($campaign);
+        exit;
+    }
+
+    public function actionGetSdks() {//活动下的SDK
+        $caid = Yii::$app->request->get('caid');
+        $sdks = [];
+        if(isset($caid)) {
+            $campaign = Campaign::findByPk($caid)->toArray();
+            if (!empty($campaign)) {
+                $sdks = CampaignSdk::getSdidAppidByCaid($caid);
+                $sdks[0]['campaignname'] = $campaign['name'];
+                foreach($sdks as $key => $value){
+                    $sdks[$key]['name'] = MyHtml::aElement('javascript:void(0);','showDetail', $value['sdid'], Sdk::getNameBySdid($value['sdid']));
+                    if($value['status'] == 1){
+                        $sdks[$key]['status'] =  MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'changeStatus',$value['sdid'].',0', $value['sdid']);
+                    }else{
+                        $sdks[$key]['status'] = MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $value['sdid'].',1', $value['sdid']);
+                    }
+                }
+            }
+        }
+        Utils::jsonOut($sdks);
+        exit;
+    }
+
+    public function actionGetAllSdks(){     //状态为123的SDK
+        $caid = Yii::$app->request->get('caid'); //
+        $data = [];
+        if(isset($caid)) {
+            $sdks = Sdk::getValidSdks();
+            $goods = Goods::getGoodsByCaid($caid);
+            $data['sdks'] =  $data['goods'] = '';
+            foreach ($sdks as $value) {
+                $data['sdks'] .= '<option value="' . $value['sdid'] . '" class=" form-control " >' . $value['name'] . '</option>';
+            }
+
+            foreach($goods as $value){
+                $line_arr = [
+                    '<tr>',
+                    '<td>'.$value['name'].'</td>',
+                    '<td>'.$value['fee'].'</td>',
+                    '<td>'.'<input name = "fee" class=" form-control " ></input></td>',
+                    '<td>'.MyHtml::iElement('glyphicon-ok-sign glyphicon grey', 'addGood', $value['id'], $caid.",".$value['id']).'</td>',
+                    '</tr>'
+                ];
+                $data['goods'] .= implode('',$line_arr);
+            }
+        }
+        Utils::jsonOut($data);
         exit;
     }
 

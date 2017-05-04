@@ -1,0 +1,28 @@
+<?php
+namespace common\models\orm\extend;
+
+use common\library\Utils;
+
+class CampaignSdk extends \common\models\orm\base\CampaignSdk {
+
+    public static function getSdidAppidByCaid($caid)
+    {
+        $data = self::find()->select(['sdid','appid','status'])->where(['caid' => $caid])->all();
+        $return_data = [];
+        foreach($data as $value){
+            $return_data[] = [
+                'sdid' => $value['sdid'],
+                'appid' =>$value['appid'],
+                'status' => $value['status']
+            ];
+        }
+        return $return_data;
+    }
+
+    public static function findBySdidCaid($sdid,$caid){
+
+        $model  = self::find()->where(['sdid' => $sdid,'caid' => $caid])->one();
+        return $model;
+    }
+
+}

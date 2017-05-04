@@ -117,6 +117,88 @@
     </div>
 </div>
 
+<div id="modalSdks" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="campaign_title"></span>
+                <button  id='btn_add_sdk'  class="btn btn-md">新增关联SDK</button >
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form id="formSdks" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" >
+                    <div class="panel ">
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <table id="tblNameTable" class="table table-striped table-bordered gclass_table text-center">
+                                    <thead>
+                                    <tr>
+                                        <td>名称</td>
+                                        <td>APPID</td>
+                                        <td>管理</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="bodySdks"></tbody>
+                                    <input type="hidden" id="hidden_caid" value="0"/>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalGoods" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="campaign_title_2"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form id="formGoods" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" >
+                    <div class="panel ">
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <table id="tblGoods" class="table table-striped table-bordered gclass_table text-center">
+                                    <thead>
+                                    <tr>
+                                        <td>SDK</td>
+                                        <td colspan="2">APPID</td>
+                                        <td>管理</td>
+                                    </tr>
+                                    <tr id="headGoods">
+                                        <td><select id='sdk_select'>
+
+                                            </select></td>
+                                        <td colspan="2"><input type="text" class="form-control" id="sdk_appid"></input></td>
+                                        <td><i id="sdk_icon" class="glyphicon-ok-sign glyphicon grey"><i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>名称</td>
+                                        <td>价格</td>
+                                        <td>计费点</td>
+                                        <td>管理</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="bodyGoods"></tbody>
+                                    <input type="hidden" id="hidden_sdid" value="0"/>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
 <script src="/js/sdk/util.js"></script>
 <script src="/js/sdk/alert.js"></script>
@@ -215,5 +297,120 @@
 
         callAjaxWithFunction(url,data,success_function,method);
     });
+
+    function getSdks(caid){
+        var post_url = '/campaign/get-sdks';
+        var post_data = {
+            'caid' : caid,
+        };
+        var method = 'get';
+        var success_function = function(result){
+            var content_str = '';
+            for(var i in result) {
+                var content_arr = [];
+                content_arr.push("<tr><td>"+result[i].name+"</td>");
+                content_arr.push("<td>"+result[i].appid+"</td>");
+                content_arr.push("<td>"+result[i].status+"</td>");
+                content_str  += content_arr.join(' ');
+            }
+            $('#campaign_title').empty().text('活动名称：'+result[0].campaignname);
+            $('#hidden_caid').val(caid);
+            $('#bodySdks').empty().append(content_str);
+            $('#modalSdks').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    function changeStatus(sdid,status){
+        var post_url = '/campaign/modify-status';
+        var caid = $('#hidden_caid').val();
+        var post_data = {
+            'sdid' : sdid,
+            'caid' : caid,
+            'status' : status
+        };
+        var method = 'get';
+        var success_function = function(result){
+            getSdks(caid);
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    function showDetail(sdid){
+        var post_url = '/campaign/get-detail';
+        var post_data = {
+            'caid' : $('#hidden_caid').val(),
+            'sdid'  : sdid
+        };
+        var method = 'get';
+        var success_function = function(result){
+            var content_str = '';
+            for(var i in result) {
+                var content_arr = [];
+                content_arr.push("<tr><td>"+result[i].name+"</td>");
+                content_arr.push("<td>"+result[i].appid+"</td>");
+                content_arr.push("<td>"+result[i].status+"</td>");
+                content_str  += content_arr.join(' ');
+            }
+            $('#campaign_title').empty().text('活动名称：'+result[0].campaignname);
+            $('#hidden_caid').val(caid);
+            $('#bodySdks').empty().append(content_str);
+            $('#modalSdks').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    $('#btn_add_sdk').on('click',function(event){
+        event.preventDefault();
+        var post_url = '/campaign/get-all-sdks';
+        var post_data = {
+            'caid' : $('#hidden_caid').val()
+        };
+        var method = 'get';
+        var success_function = function(result){
+            if(result.sdks !== ''){
+                $('#sdk_select').empty().append(result.sdks);
+            }
+            if(result.goods !==''){
+                $('#bodyGoods').empty().append(result.goods);
+            }
+            feeKeyUp();
+            $('#modalGoods').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    })
+/*
+    $('#sdk_icon').on('click',function(){
+        if($(this).hasClass('green')) {
+            var sdk = $('#sdk_select').val();
+            var appid = $('#sdk_appid').val();
+            var post_url = '/campaign/get-all-sdks';
+            var post_data = {
+                'caid' : $('#hidden_caid').val()
+            };
+            var method = 'get';
+            var success_function = function(result){
+
+             }
+    });*/
+
+    $('#sdk_appid').on('keyup',function(){
+        if($(this).val() !== ''){
+            $('#sdk_icon').removeClass('grey').addClass('green');
+        }else{
+            $('#sdk_icon').removeClass('green').addClass('grey');
+        }
+    })
+
+    function feeKeyUp() {
+        $('input[name="fee"]').on('keyup', function () {
+            if($(this).val() !== ''){
+             //  $(this).parent().siblings().eq(2).children().eq(0).addClass('green');
+            }else{
+                alert('grey');
+            }
+        })
+    }
+
 
 </script>

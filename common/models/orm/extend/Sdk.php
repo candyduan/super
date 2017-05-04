@@ -66,4 +66,22 @@ class Sdk extends \common\models\orm\base\Sdk{
         }
         return $return_data;
     }
+
+
+    public static function getValidSdks(){
+        $data = self::find()->select(['sdid','name'])->where(['in', 'status', [1,2,3]])->all();
+        $return_data = [];
+        foreach($data as $value){
+            $return_data[] = [
+                'sdid' => $value['sdid'],
+                'name' => $value['name']
+            ];
+        }
+        return $return_data;
+    }
+
+    public static function getNameBySdid($sdid){
+        $data = self::find()->select(['name'])->where(['sdid' => $sdid])->one();
+        return isset($data['name']) ? $data['name'] :'';
+    }
 }
