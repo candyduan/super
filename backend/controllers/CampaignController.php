@@ -59,7 +59,7 @@ class CampaignController extends Controller
                 sprintf('%.2f',$value['mrate']) . ' %',
                 $value['sign'],
                 MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'关联SDK参数配置'). MyHtml::br().
-                MyHtml::aElement("/package/index?cid=".$value['id'], '', '','活动包管理')
+                MyHtml::aElement("/package/index?caid=".$value['id'], '', '','活动包管理')
 
             ];
         }

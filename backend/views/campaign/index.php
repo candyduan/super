@@ -226,7 +226,7 @@
                                         <td rowspan="3" id="modifygoods_sdk"></td>
                                         <td colspan="2"><input type="text" class="form-control" id="modifygoods_appid" value="" name="modifygoods_appid"></input>
                                         </td>
-                                        <td><i  class="pointer canclick glyphicon-ok-sign glyphicon grey"><i>
+                                        <td><i id="icon_1" class="pointer canclick glyphicon-ok-sign glyphicon grey"><i>
                                         </td>
                                     </tr>
                                     <tr>
@@ -237,7 +237,7 @@
                                         <td colspan="2">
                                             <input type="text" class="form-control" id="modifygoods_sign" name="modifygoods_sign"  placeholder="秘钥" value=""></input>
                                         </td>
-                                        <td><i  class="pointer canclick glyphicon-ok-sign glyphicon grey"><i>
+                                        <td><i  id="icon_2" class="pointer canclick glyphicon-ok-sign glyphicon grey"><i>
                                         </td>
                                     </tr>
                                     <tr>
@@ -504,6 +504,8 @@
                 $('#bodyModifyGoods').empty().append(result.goods);
             }
             $('#hidden_sdid').val(sdid);
+            $('#icon_1').removeClass('green').addClass('grey');
+            $('#icon_2').removeClass('green').addClass('grey');
             inputKeyUp();
             changeReadOnly();
             iconClick();
