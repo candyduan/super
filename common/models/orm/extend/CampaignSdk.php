@@ -26,11 +26,15 @@ class CampaignSdk extends \common\models\orm\base\CampaignSdk {
     }
 
     public static function fetchAllByCaid($caid){
-        $data = self::find()->where(['caid' => $caid])->all();
-        if(count($data <= 0)){
-            return array();
+        $data = self::find()->select(['sdid','status'])->where(['caid' => $caid])->all();
+        $return_data = [];
+        foreach($data as $value){
+            $return_data[] = [
+                'sdid' => $value['sdid'],
+                'status' => $value['status']
+            ];
         }
-        return $data;
+        return $return_data;
     }
     public static function sdidCaidNotExist($sdid,$caid){
         if(!Utils::isValid($sdid) || !Utils::isValid($caid) ){

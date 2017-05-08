@@ -136,10 +136,14 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="panel-footer">
-                        </div>
+<!--                         <div class="panel-footer"> -->
+<!--                         </div> -->
                     </div>
                 </div>
+<!--                 <div class="modal-footer"> -->
+<!--                     <button type="submit" class="btn btn-success" id="btn_submit_sign">提交</button> -->
+<!--                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button> -->
+<!--                 </div> -->
             </form>
         </div>
     </div>
@@ -250,7 +254,7 @@
             for(var i in data) {
                 var content_arr = [];
                 content_arr.push("<tr><td>"+data[i].name+"</td>");
-                content_arr.push("<td>"+data[i].sign+"</td>");
+                content_arr.push("<td><input type='text' class='form-control' id='sdk_sign_" + data[i].sdid + "' name='sdk_sign' value='" + data[i].sign + "'></input></td>");
                 content_arr.push("<td>"+data[i].status+"</td>");
                 content_str  += content_arr.join(' ');
             }
@@ -262,53 +266,33 @@
         callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 
-//     function changeStatus(sdid,status){
-//         var post_url = '/campaign/modify-status';
-//         var caid = $('#hidden_caid').val();
-//         var post_data = {
-//             'sdid' : sdid,
-//             'caid' : caid,
-//             'status' : status
-//         };
-//         var method = 'get';
-//         var success_function = function(result){
-//             getSdks(caid);
-//         };
-//         callAjaxWithFunction(post_url, post_data, success_function, method);
-//     }
-
-/*
-    $('#sdk_icon').on('click',function(){
-        if($(this).hasClass('green')) {
-            var sdk = $('#sdk_select').val();
-            var appid = $('#sdk_appid').val();
-            var post_url = '/campaign/get-all-sdks';
-            var post_data = {
-                'caid' : $('#hidden_caid').val()
-            };
-            var method = 'get';
-            var success_function = function(result){
-
-             }
-    });*/
-
-    $('#sdk_appid').on('keyup',function(){
-        if($(this).val() !== ''){
-            $('#sdk_icon').removeClass('grey').addClass('green');
-        }else{
-            $('#sdk_icon').removeClass('green').addClass('grey');
-        }
-    })
-
-    function feeKeyUp() {
-        $('input[name="fee"]').on('keyup', function () {
-            if($(this).val() !== ''){
-                $(this).parent().next().children('i').removeClass('grey').addClass('green');
-            }else{
-                alert('grey');
-            }
-        })
+    function changeStatus(sdid,status){
+    	var post_url = '/package/modify-status';
+        var cpid = $('#hidden_cpid').val();
+        var post_data = {
+            'sdid' : sdid,
+            'cpid' : cpid,
+            'status' : status
+        };
+        var method = 'get';
+        var success_function = function(result){
+            getSdks(cpid);
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
-
-
+    function changeSign(cpid,sdid){
+   	 	var sign = $('#sdk_sign_' + sdid).val();
+    	var post_url = '/package/modify-sign';
+        var cpid = $('#hidden_cpid').val();
+        var post_data = {
+            'sdid' : sdid,
+            'cpid' : cpid,
+            'sign' : sign
+        };
+        var method = 'get';
+        var success_function = function(result){
+            getSdks(cpid);
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
 </script>

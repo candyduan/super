@@ -140,20 +140,88 @@ class PackageController extends Controller
             $package = CampaignPackage::findByPk($cpid);
             if (!empty($package)) {
                 $data['mediaSign'] = $package->mediaSign;
-                $campaignSdkmodels = CampaignSdk::fetchAllByCaid($package->campaign);
-                foreach($campaignSdkmodels as $key => $model){
-                    $sdks[$key]['name'] = Sdk::getNameBySdid($model->sdid);
-                    $sdks[$key]['sign'] = CampaignPackageSdk::getSignByCpidSdid($cpid,$model->sdid);
-                    if($model->status == 1){
-                        $sdks[$key]['status'] =  MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'changeStatus',$model->sdid.',0', $model->sdid);
+                $result = CampaignSdk::fetchAllByCaid($package->campaign);
+                foreach($result as $key => $value){
+                    $sdid = $value['sdid'];
+                    $sdks[$key]['sdid'] = $sdid;
+                    $sdks[$key]['name'] = Sdk::getNameBySdid($sdid);
+                    $sdks[$key]['status'] = MyHtml::iElement('glyphicon-ok-sign glyphicon grey ', 'changeSign',$cpid.','.$sdid, $sdid) .' ';
+                    
+                    $packageSdkModel = CampaignPackageSdk::findByCpidSdid($cpid,$sdid);
+                    $status = 1;
+                    $sign = '';
+                    if($packageSdkModel){
+                        $sign = $packageSdkModel->distSign;
+                        $status = $packageSdkModel->status;
+                    }
+                    $sdks[$key]['sign'] = $sign;
+                    if(1 == $status){
+                        $sdks[$key]['status'] .=  MyHtml::iElement('glyphicon-ok-sign glyphicon green ', 'changeStatus',$sdid.',0', $sdid);
                     }else{
-                        $sdks[$key]['status'] = MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $model->sdid.',1', $model->sdid);
+                        $sdks[$key]['status'] .= MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $sdid.',1', $sdid);
                     }
                 }
             }
         }
         $data['data'] = $sdks;
         Utils::jsonOut($data);
+        exit;
+    }
+    
+    public function actionModifyStatus() {
+        $resultState = 0;
+        $cpid = Yii::$app->request->get('cpid');
+        $sdid = Yii::$app->request->get('sdid');
+        $status =  Yii::$app->request->get('status');
+        if (isset($cpid)) {
+            $transaction =  CampaignSdk::getDb()->beginTransaction();
+            try {
+                $campaignSdkModel= CampaignPackageSdk::findByCpidSdid($cpid,$sdid);
+                if($campaignSdkModel){
+                    $campaignSdkModel->status = $status;
+                    $resultState  = $campaignSdkModel->save() == true ? 1: 0;
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify package sdk status');
+            }
+        }
+    
+        echo json_encode($resultState);
+        exit;
+    }
+    
+    public function actionModifySign() {
+        $resultState = 0;
+        $cpid = Yii::$app->request->get('cpid');
+        $sdid = Yii::$app->request->get('sdid');
+        $sign =  Yii::$app->request->get('sign');
+        if (isset($cpid)) {
+            $transaction =  CampaignPackageSdk::getDb()->beginTransaction();
+            try {
+                $campaignSdkModel= CampaignPackageSdk::findByCpidSdid($cpid,$sdid);
+                if($campaignSdkModel){
+                    $campaignSdkModel->distSign = $sign;
+                    $resultState  = $campaignSdkModel->save() == true ? 1: 0;
+                }else{
+                    $campaignSdkModel = new CampaignPackageSdk();
+                    $campaignSdkModel->cpid = $cpid;
+                    $campaignSdkModel->sdid = $sdid;
+                    $campaignSdkModel->distSign = $sign;
+                    $campaignSdkModel->status = 1;
+                    $resultState = $campaignSdkModel->insert() == true ?1:0;
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify package sdk status');
+            }
+        }
+    
+        echo json_encode($resultState);
         exit;
     }
 
