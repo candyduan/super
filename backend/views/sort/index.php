@@ -319,6 +319,7 @@
         var success_function = function(result){
            if(parseInt(result) > 0){
                alert(MESSAGE_MODIFY_SUCCESS);
+               $('#modalSort').modal('hide');
            }else{
                alert(MESSAGE_MODIFY_ERROR);
            }

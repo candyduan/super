@@ -175,7 +175,7 @@
                                         <td><select id='sdk_select' name='sdk_select'>
 
                                             </select></td>
-                                        <td colspan="2"><input type="text" class="form-control" id="sdk_appid" name="sdk_appid"></input>
+                                        <td colspan="2"><input type="text" class="form-control" id="sdk_appid" value="" name="sdk_appid"></input>
                                             <input type="hidden" class="form-control" id="sdk_sign" name="sdk_sign"  placeholder="秘钥" value=""></input>
                                          </td>
                                     <!--    <td><i id="sdk_icon" class="glyphicon-ok-sign glyphicon grey"><i></td>-->
@@ -198,6 +198,62 @@
                     <button type="submit" class="btn btn-success" id="btn_submit_goods">提交</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalModifyGoods" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="campaign_title_1"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form id="formModifyGoods" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" >
+                    <div class="panel ">
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <table id="tblModifyGoods" class="table table-striped table-bordered gclass_table text-center">
+                                    <thead>
+                                    <tr>
+                                        <td>SDK</td>
+                                        <td colspan="2">APPID</td>
+                                        <td>管理</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3" id="modifygoods_sdk"></td>
+                                        <td colspan="2"><input type="text" class="form-control" id="modifygoods_appid" value="" name="modifygoods_appid"></input>
+                                        </td>
+                                        <td><i id="icon_1" class="pointer canclick glyphicon-ok-sign glyphicon grey"><i>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">秘钥</td>
+                                        <td>管理</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="text" class="form-control" id="modifygoods_sign" name="modifygoods_sign"  placeholder="秘钥" value=""></input>
+                                        </td>
+                                        <td><i  id="icon_2" class="pointer canclick glyphicon-ok-sign glyphicon grey"><i>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>名称</td>
+                                        <td>价格</td>
+                                        <td>计费点</td>
+                                        <td>管理</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="bodyModifyGoods"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="hidden_sdid" name="hidden_sdid" value="0"/>
             </form>
         </div>
     </div>
@@ -370,7 +426,9 @@
         event.preventDefault();
         $('#formGoods').trigger("reset");
         var caid = $('#hidden_caid').val();
+        var title = $('#campaign_title').text();
         $('#hidden_caid_2').val(caid);
+        $('#campaign_title_2').empty().text(title);
         var post_url = '/campaign/get-all-sdks';
         var post_data = {
             'caid' : $('#hidden_caid').val()
@@ -420,40 +478,133 @@
         };
         callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
     }));
-/*
-    $('#sdk_icon').on('click',function(){
-        if($(this).hasClass('green')) {
-            var sdk = $('#sdk_select').val();
-            var appid = $('#sdk_appid').val();
-            var post_url = '/campaign/get-all-sdks';
-            var post_data = {
-                'caid' : $('#hidden_caid').val()
-            };
-            var method = 'get';
-            var success_function = function(result){
 
-             }
-    });*/
+    function showGoods(sdid){
+        var title = $('#campaign_title').text();
+        $('#campaign_title_1').empty().text(title);
 
-/*
-    $('#sdk_appid').on('keyup',function(){
-        if($(this).val() !== ''){
-            $('#sdk_icon').removeClass('grey').addClass('green');
-        }else{
-            $('#sdk_icon').removeClass('green').addClass('grey');
-        }
-    })
-
-    function feeKeyUp() {
-        $('input[name="fee"]').on('keyup', function () {
-            if($(this).val() !== ''){
-                $(this).parent().next().children('i').removeClass('grey').addClass('green');
-            }else{
-                alert('grey');
+        var post_url = '/campaign/get-goods';
+        var post_data = {
+            'caid' : $('#hidden_caid').val(),
+            'sdid'  : sdid
+        };
+        var method = 'get';
+        var success_function = function(result){
+            var content_str = '';
+            if(result.cs !== ''){
+                $('#modifygoods_appid').val(result.cs.appid).prop('readonly',true);
+                $('#modifygoods_sdk').empty().text(result.cs.name);
+                if(result.cs.name == '中至支付'){
+                    $('#modifygoods_sign').prop('disabled', false).val(result.cs.sec).prop('readonly','true');
+                }else{
+                    $('#modifygoods_sign').prop('disabled', true).val('');
+                }
             }
+            if(result.goods !==''){
+                $('#bodyModifyGoods').empty().append(result.goods);
+            }
+            $('#hidden_sdid').val(sdid);
+            $('#icon_1').removeClass('green').addClass('grey');
+            $('#icon_2').removeClass('green').addClass('grey');
+            inputKeyUp();
+            changeReadOnly();
+            iconClick();
+            $('#modalModifyGoods').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    function changeReadOnly(){
+    $('#formModifyGoods input').on('click',function(){
+        $(this).prop('readonly',false);
+    });
+    }
+
+    function inputKeyUp() {
+        $('#formModifyGoods input').on('keyup', function () {
+            $(this).parent().next().children('i').removeClass('grey').addClass('green');
         })
     }
-*/
+
+    function iconClick(){
+        $('#formModifyGoods i.canclick').on('click',function() {
+
+            if ($(this).hasClass('green')) {
+                var that = $(this);
+                var id = $(this).parent().prev().children('input').prop('id');
+                if($('#'+id).val() !== undefined){
+                    var post_url = '/campaign/modify-goods';
+                    var post_data = {
+                        'caid': $('#hidden_caid').val(),
+                        'sdid' : $('#hidden_sdid').val(),
+                        'inputid' : id,
+                        'value'   : $('#'+id).val()
+                    }
+                    var method = 'get';
+                    var success_function = function (result) {
+                        that.removeClass('green').addClass('grey');
+                        $('#'+id).prop('readonly',true);
+                        getSdks($('#hidden_caid').val())
+                    }
+                    callAjaxWithFunction(post_url, post_data, success_function, method);
+                }
+            }
+        });
+    }
+
+    function modifyGoodStatus(goid,csid,status){
+        var message = status == 1 ? '确认开通这个计费点?' : '确认禁用这个计费点?';
+        if(confirm(message))
+        {
+            var sdid = $('#hidden_sdid').val();
+            var post_url = '/campaign/modify-good-status';
+            var post_data = {
+                'csid': csid,
+                'goid': goid,
+                'status': status
+            };
+            var method = 'get';
+            var success_function = function (result) {
+
+                showGoods(sdid)
+            };
+            callAjaxWithFunction(post_url, post_data, success_function, method);
+        }
+    }
 
 
+    /*
+     $('#sdk_icon').on('click',function(){
+     if($(this).hasClass('green')) {
+     var sdk = $('#sdk_select').val();
+     var appid = $('#sdk_appid').val();
+     var post_url = '/campaign/get-all-sdks';
+     var post_data = {
+     'caid' : $('#hidden_caid').val()
+     };
+     var method = 'get';
+     var success_function = function(result){
+
+     }
+     });*/
+
+    /*
+     $('#sdk_appid').on('keyup',function(){
+     if($(this).val() !== ''){
+     $('#sdk_icon').removeClass('grey').addClass('green');
+     }else{
+     $('#sdk_icon').removeClass('green').addClass('grey');
+     }
+     })
+
+     function feeKeyUp() {
+     $('input[name="fee"]').on('keyup', function () {
+     if($(this).val() !== ''){
+     $(this).parent().next().children('i').removeClass('grey').addClass('green');
+     }else{
+     alert('grey');
+     }
+     })
+     }
+     */
 </script>

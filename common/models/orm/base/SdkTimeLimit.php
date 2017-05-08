@@ -11,8 +11,8 @@ use Yii;
  * @property integer $sdid
  * @property integer $stime
  * @property integer $etime
- * @property integer $updateTime
- * @property integer $recordTime
+ * @property string $recordTime
+ * @property string $updateTime
  * @property integer $status
  */
 class SdkTimeLimit extends \yii\db\ActiveRecord
@@ -31,7 +31,8 @@ class SdkTimeLimit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sdid', 'stime', 'etime', 'updateTime', 'recordTime', 'status'], 'integer'],
+            [['sdid', 'stime', 'etime', 'status'], 'integer'],
+            [['recordTime', 'updateTime'], 'safe'],
         ];
     }
 
@@ -45,8 +46,8 @@ class SdkTimeLimit extends \yii\db\ActiveRecord
             'sdid' => 'Sdid',
             'stime' => 'Stime',
             'etime' => 'Etime',
-            'updateTime' => 'Update Time',
             'recordTime' => 'Record Time',
+            'updateTime' => 'Update Time',
             'status' => 'Status',
         ];
     }
