@@ -233,11 +233,11 @@ class PackageController extends Controller
 //             0
 //         ];
 
-//         $condition[] = [
-//             '=',
-//             'campaign.belong',
-//             1
-//         ];
+        $condition[] = [
+            '=',
+            'campaign.belong',
+            1
+        ];
 
         if($id!== ''){
             $condition[] = [
