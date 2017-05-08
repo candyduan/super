@@ -1,0 +1,314 @@
+<div class="panel panel-warning">
+    <!-- panel heading -->
+    <div class="page-header">
+        <h1>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            活动包管理
+        </h1>
+    </div>
+    <!-- panel body -->
+    <div class="panel-body">
+        <div class="row">
+        	<form action="" method="get" id="formSearch" class="form-inline">
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                    <input type="text"  class="form-control" id='id' name ='id' value="<?php echo $id?>"  placeholder="活动id"/>
+                </div>
+            </form>
+        </div><hr>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <table id="tbl" class="table table-striped table-bordered gclass_table text-center">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>渠道</td>
+                        <td>渠道标识</td>
+                        <td>状态</td>
+                        <td>级别</td>
+                        <td>计费模式</td>
+                        <td>CP分成</td>
+                        <td>渠道方式</td>
+                        <td>渠道分成</td>
+                        <td>结算比例</td>
+                        <td>管理</td>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- panel footer -->
+    <div class="panel-footer">
+    </div>
+</div>
+
+<div id="modalPackage" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>活动包详情:</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form id="formCampaign" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" >
+                    <div class="input-group">
+                        <span class="input-group-addon">应用名:</span>
+                        <input type="text" id="package_campaign_app" readonly placeholder="应用" class="form-control"/>
+                        <span class="input-group-addon">cp分成比例:</span>
+                        <input type="text" id="package_rate" readonly placeholder="cp分成比例" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">包名:</span>
+                        <input type="text" id="package_name" readonly placeholder="包名" class="form-control"/>
+                        <span class="input-group-addon">cp优化比例:</span>
+                        <input type="text" id="package_cutrate" readonly placeholder="cp优化比例" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">版本号:</span>
+                        <input type="text"  id="package_version_code" readonly placeholder="版本号" class="form-control" />
+                        <span class="input-group-addon">cp优化开始:</span>
+                        <input type="text" id="package_cutday" readonly placeholder="cp优化开始" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">版本名:</span>
+                        <input type="text"  id="package_version_name" readonly placeholder="版本名" class="form-control" />
+                        <span class="input-group-addon">推广分成方式:</span>
+                        <input type="text" id="package_push_mode" readonly placeholder="推广分成方式" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">大小:</span>
+                        <input type="text" id="package_size" readonly placeholder="包大小" class="form-control"/>
+                        <span class="input-group-addon">推广分成比例:</span>
+                        <input type="text" id="package_push_rate" readonly placeholder="推广分成比例" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">渠道标识:</span>
+                        <input type="text"  id="package_sign" readonly placeholder="渠道标识" class="form-control" />
+                        <span class="input-group-addon">设置渠道:</span>
+                        <input type="text" id="set_package_dist" readonly placeholder="设置渠道" class="form-control"/>
+                    </div><br /><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">级别:</span>
+                        <input type="text" id="package_level" readonly placeholder="级别" class="form-control"/>
+                        <span class="input-group-addon">计费模式:</span>
+                        <select   id="package_paymode"  placeholder="计费模式" class="form-control">
+                            <option value='0'>Normal</option>
+                            <option value='1'>Hard</option>
+                        </select>
+                    </div><br /><br />
+                    <input type="hidden" id ='hidden_cpid' value="0">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btn_submit_package">提交</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalSdks" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>渠道关联配置</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="panel-body">
+            	 <span class="input-group-addon" id="package_mediaSign" >渠道标识:</span>
+            </div>
+            <form id="formSdks" action="#" method="post" enctype="multipart/form-data">
+                <div class="modal-body" >
+                    <div class="panel ">
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <table id="tblNameTable" class="table table-striped table-bordered gclass_table text-center">
+                                    <thead>
+                                    <tr>
+                                        <td>SDK</td>
+                                        <td>关联渠道号</td>
+                                        <td>管理</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="bodySdks"></tbody>
+                                    <input type="hidden" id="hidden_cpid" value="0"/>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
+<script src="/js/sdk/util.js"></script>
+<script src="/js/sdk/alert.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        _initDataTable();
+    });
+
+    function _initDataTable() {
+        $("#tbl").dataTable().fnDestroy();
+        $('#tbl').DataTable({
+            "pagingType": "simple_numbers",
+            "searching": false,
+            "scrollX": true,
+            //"order": [[ 5, "desc" ]],
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0, 1, 2, 3, 4,5,6,7,8,9]
+            }],
+            "displayLength": 100, //默认每页多少条数据
+            "processing": true,
+            "language": {
+                "processing": "数据加载中，请稍候......",
+                "search": "在结果中查找:",
+                "lengthMenu": " _MENU_ 每页",
+                "zeroRecords": "对不起,没有符合条件的数据",
+                "info": "第 _PAGE_ / _PAGES_ 页",
+                "infoEmpty": "对不起,没有符合条件的数据", //???
+                "paginate" : {
+                    "first" : "首页",
+                    "previous" : "上一页",
+                    "next" : "下一页",
+                    "last" : "尾页"
+                }
+            },
+            "serverSide": true,
+            "ajax": {
+                "url":'/package/ajax-index?' + $.param($('#formSearch').serializeArray()),
+                "dataSrc": function(json) {
+                    return json.tableData;
+                }
+            }
+        });
+    }
+
+    function showPackage(cpid){
+        var post_url = '/package/get-package';
+        var post_data = {
+            'cpid' : cpid
+        };
+        var method = 'get';
+        var success_function = function(result){
+            $('#package_campaign_app').val(result.appname);
+            $('#package_name').val(result.packagename);
+            $('#package_version_code').val(result.versioncode);
+            $('#package_version_name').val(result.versionname);
+            $('#package_size').val(result.size);
+            $('#package_rate').val(result.rate);
+            $('#package_cutrate').val(result.cutrate);
+            $('#package_cutday').val(result.cutday);
+            $('#package_push_mode').val(result.mtype);
+            $('#package_push_rate').val(result.mrate);
+            $('#package_sign').val(result.sign);
+            $('#set_package_dist').val(result.distname);
+            $('#package_level').val(result.grade);
+            $('#package_paymode').val(result.paymode);
+            $('#hidden_cpid').val(cpid);
+            $('#btn_submit_package').prop('disabled',false);
+            $('#modalPackage').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    $('#btn_submit_package').on('click',function(event){
+        $('#btn_submit_package').prop('disabled',true);
+        event.preventDefault();
+        var data = {
+            'cpid' : $('#hidden_cpid').val(),
+            'paymode' : $('#package_paymode').val()
+        }
+        var method = 'get';
+        var url = '/package/modify-paymode';
+        var success_function = function(result){
+            if(parseInt(result) > 0){
+                alert(MESSAGE_MODIFY_SUCCESS);
+            }else{
+                alert(MESSAGE_ADD_ERROR);
+            }
+            $('#modalPackage').modal('hide');
+        }
+        callAjaxWithFunction(url,data,success_function,method);
+    });
+
+    function getSdks(cpid){
+        var post_url = '/package/get-sdks';
+        var post_data = {
+            'cpid' : cpid,
+        };
+        var method = 'get';
+        var success_function = function(result){
+            var content_str = '';
+            var data = result.data;
+            for(var i in data) {
+                var content_arr = [];
+                content_arr.push("<tr><td>"+data[i].name+"</td>");
+                content_arr.push("<td>"+data[i].sign+"</td>");
+                content_arr.push("<td>"+data[i].status+"</td>");
+                content_str  += content_arr.join(' ');
+            }
+            $('#package_mediaSign').empty().text('渠道标识：'+result.mediaSign);
+            $('#hidden_cpid').val(cpid);
+            $('#bodySdks').empty().append(content_str);
+            $('#modalSdks').modal('show');
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+//     function changeStatus(sdid,status){
+//         var post_url = '/campaign/modify-status';
+//         var caid = $('#hidden_caid').val();
+//         var post_data = {
+//             'sdid' : sdid,
+//             'caid' : caid,
+//             'status' : status
+//         };
+//         var method = 'get';
+//         var success_function = function(result){
+//             getSdks(caid);
+//         };
+//         callAjaxWithFunction(post_url, post_data, success_function, method);
+//     }
+
+/*
+    $('#sdk_icon').on('click',function(){
+        if($(this).hasClass('green')) {
+            var sdk = $('#sdk_select').val();
+            var appid = $('#sdk_appid').val();
+            var post_url = '/campaign/get-all-sdks';
+            var post_data = {
+                'caid' : $('#hidden_caid').val()
+            };
+            var method = 'get';
+            var success_function = function(result){
+
+             }
+    });*/
+
+    $('#sdk_appid').on('keyup',function(){
+        if($(this).val() !== ''){
+            $('#sdk_icon').removeClass('grey').addClass('green');
+        }else{
+            $('#sdk_icon').removeClass('green').addClass('grey');
+        }
+    })
+
+    function feeKeyUp() {
+        $('input[name="fee"]').on('keyup', function () {
+            if($(this).val() !== ''){
+                $(this).parent().next().children('i').removeClass('grey').addClass('green');
+            }else{
+                alert('grey');
+            }
+        })
+    }
+
+
+</script>

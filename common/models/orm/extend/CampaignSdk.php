@@ -25,4 +25,11 @@ class CampaignSdk extends \common\models\orm\base\CampaignSdk {
         return $model;
     }
 
+    public static function fetchAllByCaid($caid){
+        $data = self::find()->where(['caid' => $caid])->all();
+        if(count($data <= 0)){
+            return array();
+        }
+        return $data;
+    }
 }
