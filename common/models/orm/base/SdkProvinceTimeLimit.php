@@ -13,8 +13,8 @@ use Yii;
  * @property integer $provider
  * @property integer $stime
  * @property integer $etime
- * @property integer $updateTime
- * @property integer $recordTime
+ * @property string $recordTime
+ * @property string $updateTime
  * @property integer $status
  */
 class SdkProvinceTimeLimit extends \yii\db\ActiveRecord
@@ -33,7 +33,8 @@ class SdkProvinceTimeLimit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sdid', 'prid', 'provider', 'stime', 'etime', 'updateTime', 'recordTime', 'status'], 'integer'],
+            [['sdid', 'prid', 'provider', 'stime', 'etime', 'status'], 'integer'],
+            [['recordTime', 'updateTime'], 'safe'],
         ];
     }
 
@@ -49,8 +50,8 @@ class SdkProvinceTimeLimit extends \yii\db\ActiveRecord
             'provider' => 'Provider',
             'stime' => 'Stime',
             'etime' => 'Etime',
-            'updateTime' => 'Update Time',
             'recordTime' => 'Record Time',
+            'updateTime' => 'Update Time',
             'status' => 'Status',
         ];
     }

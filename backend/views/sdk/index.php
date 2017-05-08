@@ -166,7 +166,7 @@
                                 <nav class="nav-tabs" role="navigation">
                                     <div>
                                         <ul class="nav nav-tabs" id="tab">
-                                            <li id="tab_type" class="active"><a></a></li>
+                                            <li id="tabtype" class="active"><a></a></li>
                                         </ul>
                                     </div>
                                 </nav><br/>
@@ -375,7 +375,7 @@
                 content_arr.push("<td>"+result[i].province+"</td>");
                 content_arr.push("<td>"+result[i].status+"</td>");
                 content_arr.push("<td>"+result[i].timelimit+"</td></tr>");
-                content_str  += content_arr.join(' ', content_arr);//要改
+                content_str  += content_arr.join(' ');//要改
             }
             $('#bodyProvince').empty().append(content_str);
             $('#btn_setprovince').attr('disabled', false);
@@ -633,13 +633,13 @@
         $('#hidden_setnametable_type').val(type);
         switch (type){
             case 0: $('#btn_search_time_table').removeClass('btn-danger').removeClass('btn-success').addClass('btn-primary').html('无限制');
-                $('#tab_type a').text('无限制');
+                $('#tabtype a').text('无限制');
                 break;
             case 1: $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-primary').addClass('btn-success').text('指定');
-                $('#tab_type a').text('白名单');
+                $('#tabtype a').text('白名单');
                 break;
             case 2: $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-primary').addClass('btn-danger').text('屏蔽');
-                $('#tab_type a').text('黑名单');
+                $('#tabtype a').text('黑名单');
                 break;
         }
         var post_url = '/sdk/get-name-table';
@@ -669,7 +669,7 @@
     $('#btn_submit_name_table').on('click',function(event){ //提交修改ßßß
         event.preventDefault();
         if($(this).hasClass('green')){
-            if(confirm('确认修改')){
+            if(confirm('确认修改?')){
                 var post_url =  '/sdk/modify-name-table';
                 var post_data = {
                     'sdid' : $('#hidden_setnametable_sdid').val(),

@@ -502,8 +502,6 @@ class SdkController extends Controller
         $model->sdid= $sdid;
         $model->prid=$prid;
         $model->provider =$provider;
-       // $model->updateTime = time();
-        //$model->recordTime =time();
         $model->status = $status;
         $result = $model->save();
         $resultState = ($result == true) ? 1 : 0;

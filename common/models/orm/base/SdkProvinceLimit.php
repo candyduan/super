@@ -11,8 +11,8 @@ use Yii;
  * @property integer $sdid
  * @property integer $prid
  * @property integer $provider
- * @property integer $updateTime
- * @property integer $recordTime
+ * @property string $recordTime
+ * @property string $updateTime
  * @property integer $status
  */
 class SdkProvinceLimit extends \yii\db\ActiveRecord
@@ -31,7 +31,8 @@ class SdkProvinceLimit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sdid', 'prid', 'provider', 'updateTime', 'recordTime', 'status'], 'integer'],
+            [['sdid', 'prid', 'provider', 'status'], 'integer'],
+            [['recordTime', 'updateTime'], 'safe'],
             [['sdid', 'prid', 'provider'], 'unique', 'targetAttribute' => ['sdid', 'prid', 'provider'], 'message' => 'The combination of Sdid, Prid and Provider has already been taken.'],
         ];
     }
@@ -46,8 +47,8 @@ class SdkProvinceLimit extends \yii\db\ActiveRecord
             'sdid' => 'Sdid',
             'prid' => 'Prid',
             'provider' => 'Provider',
-            'updateTime' => 'Update Time',
             'recordTime' => 'Record Time',
+            'updateTime' => 'Update Time',
             'status' => 'Status',
         ];
     }
