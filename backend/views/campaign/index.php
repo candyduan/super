@@ -169,30 +169,34 @@
                                     <tr>
                                         <td>SDK</td>
                                         <td colspan="2">APPID</td>
-                                        <td>管理</td>
+                                   <!--     <td>管理</td>-->
                                     </tr>
                                     <tr id="headGoods">
-                                        <td><select id='sdk_select'>
+                                        <td><select id='sdk_select' name='sdk_select'>
 
                                             </select></td>
-                                        <td colspan="2"><input type="text" class="form-control" id="sdk_appid"></input></td>
-                                        <td><i id="sdk_icon" class="glyphicon-ok-sign glyphicon grey"><i></td>
+                                        <td colspan="2"><input type="text" class="form-control" id="sdk_appid" name="sdk_appid"></input>
+                                            <input type="hidden" class="form-control" id="sdk_sign" name="sdk_sign"  placeholder="秘钥" value=""></input>
+                                         </td>
+                                    <!--    <td><i id="sdk_icon" class="glyphicon-ok-sign glyphicon grey"><i></td>-->
                                     </tr>
                                     <tr>
                                         <td>名称</td>
                                         <td>价格</td>
                                         <td>计费点</td>
-                                        <td>管理</td>
+                                   <!--     <td>管理</td>-->
                                     </tr>
                                     </thead>
                                     <tbody id="bodyGoods"></tbody>
-                                    <input type="hidden" id="hidden_sdid" value="0"/>
                                 </table>
                             </div>
                         </div>
-                        <div class="panel-footer">
-                        </div>
                     </div>
+                </div>
+                <input type="hidden" id="hidden_caid_2" name="hidden_caid_2" value="0"/>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btn_submit_goods">提交</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                 </div>
             </form>
         </div>
@@ -306,14 +310,16 @@
         var method = 'get';
         var success_function = function(result){
             var content_str = '';
-            for(var i in result) {
-                var content_arr = [];
-                content_arr.push("<tr><td>"+result[i].name+"</td>");
-                content_arr.push("<td>"+result[i].appid+"</td>");
-                content_arr.push("<td>"+result[i].status+"</td>");
-                content_str  += content_arr.join(' ');
+            if(result.sdks.length > 0) {
+                for (var i in result.sdks) {
+                    var content_arr = [];
+                    content_arr.push("<tr><td>" + result.sdks[i].name + "</td>");
+                    content_arr.push("<td>" + result.sdks[i].appid + "</td>");
+                    content_arr.push("<td>" + result.sdks[i].status + "</td>");
+                    content_str += content_arr.join(' ');
+                }
             }
-            $('#campaign_title').empty().text('活动名称：'+result[0].campaignname);
+            $('#campaign_title').empty().text('活动名称：'+result.campaignname);
             $('#hidden_caid').val(caid);
             $('#bodySdks').empty().append(content_str);
             $('#modalSdks').modal('show');
@@ -362,6 +368,9 @@
 
     $('#btn_add_sdk').on('click',function(event){
         event.preventDefault();
+        $('#formGoods').trigger("reset");
+        var caid = $('#hidden_caid').val();
+        $('#hidden_caid_2').val(caid);
         var post_url = '/campaign/get-all-sdks';
         var post_data = {
             'caid' : $('#hidden_caid').val()
@@ -374,11 +383,43 @@
             if(result.goods !==''){
                 $('#bodyGoods').empty().append(result.goods);
             }
-            feeKeyUp();
+            //feeKeyUp();
+            $('#btn_submit_goods').attr('disabled', false);
             $('#modalGoods').modal('show');
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
     })
+
+    $('#sdk_select').on('change',function(){
+        if($('#sdk_select option:selected').text() == '中至支付'){
+            $('#sdk_sign').val('').prop('type','text');
+        }else{
+            $('#sdk_sign').val('').prop('type','hidden');
+        }
+    });
+
+    $('#formGoods').on('submit', (function(event){
+        event.preventDefault();
+
+        $('#btn_submit_goods').attr('disabled', true);
+        var post_url = '/campaign/add-goods';
+        var post_data = new FormData(this);
+        var msg_success = MESSAGE_ADD_SUCCESS;
+        var msg_error = MESSAGE_ADD_ERROR;
+        var method = 'post';
+        var successFunc = function (result) {
+            if(parseInt(result) == 1){
+                alert(msg_success);
+            }else if(parseInt(result) == 0){
+                alert(msg_error);
+            } else if(parseInt(result) == -1){
+                alert('新增失败！该活动下已经存在这个SDK');
+            }
+            $('#modalGoods').modal('hide');
+            _initDataTable();
+        };
+        callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
+    }));
 /*
     $('#sdk_icon').on('click',function(){
         if($(this).hasClass('green')) {
@@ -394,6 +435,7 @@
              }
     });*/
 
+/*
     $('#sdk_appid').on('keyup',function(){
         if($(this).val() !== ''){
             $('#sdk_icon').removeClass('grey').addClass('green');
@@ -411,6 +453,7 @@
             }
         })
     }
+*/
 
 
 </script>
