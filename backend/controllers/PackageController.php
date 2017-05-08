@@ -145,7 +145,7 @@ class PackageController extends Controller
                     $sdid = $value['sdid'];
                     $sdks[$key]['sdid'] = $sdid;
                     $sdks[$key]['name'] = Sdk::getNameBySdid($sdid);
-                    $sdks[$key]['status'] = MyHtml::iElement('glyphicon-ok-sign glyphicon grey ', 'changeSign',$cpid.','.$sdid, $sdid) .' ';
+                    $sdks[$key]['status'] = MyHtml::iElement('glyphicon-ok-sign glyphicon grey ', 'changeSign',$cpid.','.$sdid, $sdid,'btn_sdk_sign_'.$sdid) .' ';
                     
                     $packageSdkModel = CampaignPackageSdk::findByCpidSdid($cpid,$sdid);
                     $status = 1;
@@ -154,7 +154,7 @@ class PackageController extends Controller
                         $sign = $packageSdkModel->distSign;
                         $status = $packageSdkModel->status;
                     }
-                    $sdks[$key]['sign'] = $sign;
+                    $sdks[$key]['sign'] = MyHtml::inputElement($sign, 'input_sdk_sign_'.$sdid, 'changeSaveBtn',$sdid);
                     if(1 == $status){
                         $sdks[$key]['status'] .=  MyHtml::iElement('glyphicon-ok-sign glyphicon green ', 'changeStatus',$sdid.',0', $sdid);
                     }else{

@@ -254,7 +254,7 @@
             for(var i in data) {
                 var content_arr = [];
                 content_arr.push("<tr><td>"+data[i].name+"</td>");
-                content_arr.push("<td><input type='text' class='form-control' id='sdk_sign_" + data[i].sdid + "' name='sdk_sign' value='" + data[i].sign + "'></input></td>");
+                content_arr.push("<td>" + data[i].sign+ "</td>");
                 content_arr.push("<td>"+data[i].status+"</td>");
                 content_str  += content_arr.join(' ');
             }
@@ -280,8 +280,20 @@
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
     }
+    function changeSaveBtn(sdid){
+        var newSign = $.trim($('#input_sdk_sign_' + sdid).val());
+        var sign = $.trim($('#input_sdk_sign_' + sdid).prop('title'));
+        if(newSign != sign){
+        	$('#btn_sdk_sign_' + sdid).removeClass('grey').addClass('green');
+        }else{
+        	$('#btn_sdk_sign_' + sdid).removeClass('green').addClass('grey');
+        }
+    }
     function changeSign(cpid,sdid){
-   	 	var sign = $('#sdk_sign_' + sdid).val();
+    	if($('#btn_sdk_sign_' + sdid).hasClass('grey')){
+        	return;
+    	}
+   	 	var sign = $('#input_sdk_sign_' + sdid).val();
     	var post_url = '/package/modify-sign';
         var cpid = $('#hidden_cpid').val();
         var post_data = {

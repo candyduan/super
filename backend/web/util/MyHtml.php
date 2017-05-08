@@ -1,6 +1,8 @@
 <?php
 namespace backend\web\util;
 
+use common\library\Utils;
+
 class MyHtml
 {
     public static function br() {
@@ -11,8 +13,12 @@ class MyHtml
         return '   ';
     }
 
-    public static function iElement($class,$clickMethod, $clickMethodParameters, $caid =''){
-        return '<i title="'.$caid.'" class=" pointer ' . $class . '" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"></i>';
+    public static function iElement($class,$clickMethod, $clickMethodParameters, $caid ='',$id = ''){
+        $idStr = "";
+        if(Utils::isValid($id)){
+            $idStr = ' id="'.$id.'" ';
+        }
+        return '<i title="'.$caid.'" class=" pointer ' . $class . '" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"'.$idStr.'></i>';
     }
     //0-无效，1-暂停，2-测试，3-运行
     public static function iElements($clickMethod, $clickMethodParameters,$blue,$green,$black,$purple){
@@ -71,5 +77,14 @@ class MyHtml
     public static function inputWeightElement($value, $id, $onChangeMethod) {
         return '<input type="text" value="' . $value . '" id="' . $id .
             '" onchange="' . $onChangeMethod . '(this.id);" class="text-center"/>';
+    }
+    public static function inputElement($value, $id, $onChangeMethod,$changeMethodParameters) {
+        if ($onChangeMethod != '') {
+            return '<input class="form-control" type="text" value="' . $value . '" title="'.$value.'" id="' . $id .
+            '" onchange="' . $onChangeMethod . '(' .$changeMethodParameters. ');" />';
+        } else {
+            return '<input class="form-control" type="text" value="' . $value . '" title="'.$value.'" id="' . $id .
+            '"/>';
+        }
     }
 }
