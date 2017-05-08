@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\orm\base\CampaignSdkGoods;
 use Yii;
 use yii\base\ErrorException;
 use yii\helpers\Html;
@@ -162,18 +163,21 @@ class CampaignController extends Controller
 
     public function actionGetSdks() {//活动下的SDK
         $caid = Yii::$app->request->get('caid');
-        $sdks = [];
+        $sdks = [
+            'sdks' => [],
+            'campaignname' => ''
+        ];
         if(isset($caid)) {
             $campaign = Campaign::findByPk($caid)->toArray();
             if (!empty($campaign)) {
-                $sdks = CampaignSdk::getSdidAppidByCaid($caid);
-                $sdks[0]['campaignname'] = $campaign['name'];
-                foreach($sdks as $key => $value){
-                    $sdks[$key]['name'] = MyHtml::aElement('javascript:void(0);','showDetail', $value['sdid'], Sdk::getNameBySdid($value['sdid']));
+                $sdks['sdks'] = CampaignSdk::getSdidAppidByCaid($caid);
+                $sdks['campaignname'] = $campaign['name'];
+                foreach($sdks['sdks'] as $key => $value){
+                    $sdks['sdks'][$key]['name'] = MyHtml::aElement('javascript:void(0);','showGoods', $value['sdid'], Sdk::getNameBySdid($value['sdid']));
                     if($value['status'] == 1){
-                        $sdks[$key]['status'] =  MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'changeStatus',$value['sdid'].',0', $value['sdid']);
+                        $sdks['sdks'][$key]['status'] =  MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'changeStatus',$value['sdid'].',0', $value['sdid']);
                     }else{
-                        $sdks[$key]['status'] = MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $value['sdid'].',1', $value['sdid']);
+                        $sdks['sdks'][$key]['status'] = MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $value['sdid'].',1', $value['sdid']);
                     }
                 }
             }
@@ -182,7 +186,7 @@ class CampaignController extends Controller
         exit;
     }
 
-    public function actionGetAllSdks(){     //状态为123的SDK
+    public function actionGetAllSdks(){     //状态为123的SDK 用来新增
         $caid = Yii::$app->request->get('caid'); //
         $data = [];
         if(isset($caid)) {
@@ -198,8 +202,8 @@ class CampaignController extends Controller
                     '<tr>',
                     '<td>'.$value['name'].'</td>',
                     '<td>'.$value['fee'].'</td>',
-                    '<td>'.'<input name = "fee" class=" form-control " ></input></td>',
-                    '<td>'.MyHtml::iElement('glyphicon-ok-sign glyphicon grey', 'addGood', $value['id'], $caid.",".$value['id']).'</td>',
+                    '<td>'.'<input name = "sign_'.$value["id"] .'" class=" form-control " ></input></td>',
+                 //   '<td>'.MyHtml::iElement('glyphicon-ok-sign glyphicon grey', 'addGood', $value['id'], $caid.",".$value['id']).'</td>',
                     '</tr>'
                 ];
                 $data['goods'] .= implode('',$line_arr);
@@ -207,6 +211,65 @@ class CampaignController extends Controller
         }
         Utils::jsonOut($data);
         exit;
+    }
+
+    public function actionAddGoods() {
+        $resultState = 0;
+        $caid = Yii::$app->request->post('hidden_caid_2');
+        $sdid = Yii::$app->request->post('sdk_select');
+        if (isset($caid) && isset($sdid) && CampaignSdk::sdidCaidNotExist($sdid,$caid)) {
+            $transaction =  CampaignSdk::getDb()->beginTransaction();
+            try {
+                $resultState = $this->_addCampaignSdk();
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = false;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From add CampaignSdk');
+            }
+        }else{
+            $resultState = -1;
+        }
+
+        echo json_encode($resultState);
+        exit;
+    }
+
+    private function _addCampaignSdk(){
+        $resultState = 0;
+        $post = Yii::$app->request->post();
+        $csmodel = new CampaignSdk();
+        $csmodel->caid = intval($post['hidden_caid_2']);
+        $csmodel->sdid = intval($post['sdk_select']);
+        $csmodel->appid = trim($post['sdk_appid']);
+        $csmodel->sec = trim($post['sdk_sign']);
+        $csmodel->status = 1;
+        $resultState = $csmodel->save() == true ?  1: 0;
+        if($resultState > 0){
+            $resultState += self::_addGoods($csmodel->csid);
+        }
+        return $resultState;
+    }
+
+    private function _addGoods($csid){
+        $resultState = 0;
+        $post = Yii::$app->request->post();
+        $caid = $post['hidden_caid_2'];
+        $goods = Goods::getGoodsByCaid($caid);
+        if(!empty($goods)) {
+            foreach($goods as $good) {
+                if(isset($post['sign_'.$good['id']])) {
+                    $csgmodel = new CampaignSdkGoods();
+                    $csgmodel->csid = $csid;
+                    $csgmodel->goid = $good['id'];
+                    $csgmodel->priceSign = trim($post['sign_'.$good['id']]);
+                    $csgmodel->status = 1;
+                    $resultState += $csgmodel->save() == true ? 1 : 0;
+                }
+            }
+        }
+
+        return $resultState;
     }
 
     private function _getCondition($id){

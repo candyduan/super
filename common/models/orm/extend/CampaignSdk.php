@@ -32,4 +32,13 @@ class CampaignSdk extends \common\models\orm\base\CampaignSdk {
         }
         return $data;
     }
+    public static function sdidCaidNotExist($sdid,$caid){
+        if(!Utils::isValid($sdid) || !Utils::isValid($caid) ){
+            return NULL;
+        }
+        $model  = self::find()->where(['caid' => $caid,'sdid' =>$sdid])->one();
+        return (empty($model)) ? true : false;
+
+    }
+
 }
