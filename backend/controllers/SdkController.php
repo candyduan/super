@@ -397,12 +397,12 @@ class SdkController extends Controller
         $resultState = 0;
         $caids = Yii::$app->request->post('caid');//要再名单里新增的caid
         $sdid = Yii::$app->request->post('sdid');
-        $type = Yii::$app->request->post('type');
-        if (!empty($sdid) && isset($caids) && isset($type)) {
+        $type = intval(Yii::$app->request->post('type'));
+        if (!empty($sdid)  && isset($type)) {
             try {
                 $transaction = SdkCampaignLimit::getDb()->beginTransaction();
                 $resultState += SdkCampaignLimit::deleteBySdid($sdid);
-                if (!empty($caids)) {
+                if (!empty($caids) && $type > 0) {
                     foreach($caids as $caid){
                         $model = new SdkCampaignLimit();
                         $model->sdid = $sdid;
@@ -515,7 +515,7 @@ class SdkController extends Controller
             $sdid = intval(Yii::$app->request->get('sdid'));
                 $data = Sdk::findByPk($sdid)->toArray();
                 if(isset($data['spid'])){
-                    $data['partner'] = SdkPartner::getNameByPk($sdid);
+                    $data['partner'] = SdkPartner::getNameByPk($data['spid']);
                 }
         }
         echo json_encode($data);
