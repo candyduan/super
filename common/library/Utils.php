@@ -168,7 +168,7 @@ class Utils{
         return $res;
     }
     public static function isAlpha(){
-        if(strstr($_SERVER['HTTP_HOST'], 'ilast.cc')){
+        if(!strstr($_SERVER['HTTP_HOST'], 'ilast.cc')){
             return true;
         }
         return false;
