@@ -11,7 +11,8 @@
         <div class="row">
         	<form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
-                    <input type="text"  class="form-control" id='id' name ='id' value="<?php echo $id?>"  placeholder="活动id"/>
+                    <input type="text"  class="form-control modal fade" id='id' name ='id' value="<?php echo $id?>"  placeholder="活动id"/>
+                    <span id ='partnerName' class="btn-primary"></span> > <span id = 'appName'  class="btn-primary"></span> > <span id = 'campaignName'  class="btn-primary"></span>
                 </div>
             </form>
         </div><hr>
@@ -188,6 +189,9 @@
             "ajax": {
                 "url":'/package/ajax-index?' + $.param($('#formSearch').serializeArray()),
                 "dataSrc": function(json) {
+                    $('#partnerName').empty().text(json.partnerName);
+                    $('#appName').empty().text(json.appName);
+                    $('#campaignName').empty().text(json.campaignName);
                     return json.tableData;
                 }
             }

@@ -24,7 +24,7 @@ class PackageController extends Controller
 {
     public function actionIndex()
     {
-        $id = Yii::$app->request->get('cid','');
+        $id = Yii::$app->request->get('caid','');
         return $this->render('index', ['id' => $id]);
     }
 
@@ -32,8 +32,8 @@ class PackageController extends Controller
         $request = Yii::$app->request;
         $start = intval($request->get('start', 0));
         $length = intval($request->get('length', 100));
-        $id = $request->get('id','');//campaign 的id
-        $condition = self::_getCondition($id);
+        $caid = $request->get('id','');//campaign 的id
+        $condition = self::_getCondition($caid);
 
         $data = CampaignPackage::getIndexData($condition, $start,$length);
         $count = CampaignPackage::getIndexCount($condition);
@@ -68,6 +68,22 @@ class PackageController extends Controller
             ];
         }
 
+        $partnerName = '';
+        $appName = '';
+        $campaignName = '';
+        $campaignModel = Campaign::findByPk($caid);
+        if($campaignModel){
+            $campaignName = '['.$campaignModel->id.']'.$campaignModel->name;
+            $appModel = App::findByPk($campaignModel->app);
+            if($appModel){
+                $appName = '['.$appModel->id.']'.$appModel->name;
+            }
+            $partnerModel = Partner::findByPk($campaignModel->partner);
+            if($partnerModel){
+                $partnerName = '['.$partnerModel->id.']'.$partnerModel->name;
+            }
+        }
+        
         $data = [
             'searchData' => [
 
@@ -75,6 +91,9 @@ class PackageController extends Controller
             'recordsTotal' => $count,
             'recordsFiltered' => $count,
             'tableData' => $tabledata,
+            'partnerName' => $partnerName,
+            'appName'    => $appName,
+            'campaignName' => $campaignName,
         ];
         Utils::jsonOut($data);
         exit;
