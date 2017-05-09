@@ -173,7 +173,8 @@
                                 <table id="tblNameTable" class="table table-striped table-bordered gclass_table text-center">
                                     <thead>
                                     <tr>
-                                        <td><input type="text" id="setnametable_partner" name="setnametable_partner" placeholder="内容商"/></td>
+                                        <td>内容商</td>
+                                        <!--<td><input type="text" id="setnametable_partner" name="setnametable_partner" placeholder="内容商"/></td>-->
                                         <td>活动</td>
                                         <td>限制</td>
                                     </tr>
