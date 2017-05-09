@@ -139,7 +139,7 @@ use yii\helpers\Html;
                 </li>
             </ul>
         </li>
-        <li class="">
+    <!--    <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-refresh"></i>
                 <span class="menu-text"> SDK计费转化 </span>
@@ -147,20 +147,6 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-           <!--     <li class="">
-                    <a href="5">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 1
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="6">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 2
-                    </a>
-                    <b class="arrow"></b>
-                </li>-->
             </ul>
         </li>
         <li class="">
@@ -171,20 +157,6 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-               <!-- <li class="">
-                    <a href="7">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 1
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="8">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 2
-                    </a>
-                    <b class="arrow"></b>
-                </li>-->
             </ul>
         </li>
         <li class="">
@@ -195,20 +167,6 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-             <!--   <li class="">
-                    <a href="9">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 1
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="0">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 2
-                    </a>
-                    <b class="arrow"></b>
-                </li>-->
             </ul>
         </li>
         <li class="">
@@ -219,20 +177,6 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-            <!--    <li class="">
-                    <a href="11">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 1
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="12">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 2
-                    </a>
-                    <b class="arrow"></b>
-                </li>-->
             </ul>
         </li>
         <li class="">
@@ -243,22 +187,8 @@ use yii\helpers\Html;
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
-             <!--   <li class="">
-                    <a href="13">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 1
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="14">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        data 2
-                    </a>
-                    <b class="arrow"></b>
-                </li>-->
             </ul>
-        </li>
+        </li>-->
     </ul><!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
         <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
