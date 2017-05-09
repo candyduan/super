@@ -76,6 +76,7 @@ class SdkController extends Controller
             try {
                 $resultState = $this->_addSdk() == true ? 1 : 0;
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = false;
                 $transaction->rollBack();
@@ -177,6 +178,7 @@ class SdkController extends Controller
             try {
                 $resultState = $this->_modifySdk() == true ? 1 : 0;
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -202,6 +204,7 @@ class SdkController extends Controller
                     $resultState = $sdkmodel->save() == true  ? 1 :0;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -224,6 +227,7 @@ class SdkController extends Controller
                 SdkProvinceLimit::deleteByPridSdidProvider($prid,$sdid,$provider);
                 $resultState = $this->_addProvinceLimit($sdid,$prid,$provider, $status);
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -248,6 +252,7 @@ class SdkController extends Controller
                     SdkProvinceLimit::deleteByPridSdidProvider($prid, $sdid, $provider);
                     $resultState += $this->_addProvinceLimit($sdid, $prid, $provider, $status);
                     $transaction->commit();
+                    SdkUtils::refreshFusionSdkCache();
                 } catch (ErrorException $e) {
                     $resultState = 0;
                     $transaction->rollBack();
@@ -290,6 +295,7 @@ class SdkController extends Controller
                     $resultState = 1;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -327,6 +333,7 @@ class SdkController extends Controller
                     $resultState = 1;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();

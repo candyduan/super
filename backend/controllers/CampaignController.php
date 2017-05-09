@@ -16,6 +16,7 @@ use common\models\orm\extend\Goods;
 use common\models\orm\extend\CampaignSdk;
 use common\library\Utils;
 use backend\web\util\MyMail;
+use backend\library\sdk\SdkUtils;
 /**
  * Campaign controller
  */
@@ -89,6 +90,7 @@ class CampaignController extends Controller
                     $resultState  = $campaignModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -114,6 +116,7 @@ class CampaignController extends Controller
                     $resultState  = $campaignSdkModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -139,6 +142,7 @@ class CampaignController extends Controller
                     $resultState  = $csgModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -292,6 +296,7 @@ class CampaignController extends Controller
             try {
                 $resultState = $this->_addCampaignSdk();
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = false;
                 $transaction->rollBack();
@@ -336,6 +341,7 @@ class CampaignController extends Controller
                    }
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();

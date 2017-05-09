@@ -19,6 +19,7 @@ use common\models\orm\extend\SdkProvinceTimeLimit;
 use common\models\orm\extend\SdkTimeLimit;
 use common\models\orm\extend\Campaign;
 use common\models\orm\extend\SdkCampaignLimit;
+use backend\library\sdk\SdkUtils;
 /**
  * Sort controller
  */
@@ -159,6 +160,7 @@ class SortController extends Controller
                     }
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
