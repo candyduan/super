@@ -17,11 +17,31 @@ use common\library\Utils;
 use backend\web\util\MyMail;
 use common\models\orm\extend\CampaignPackage;
 use common\models\orm\extend\CampaignPackageSdk;
+use yii\filters\AccessControl;
 /**
  * Campaign controller
  */
 class PackageController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+
+            'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index','create','update','view'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $id = Yii::$app->request->get('caid','');

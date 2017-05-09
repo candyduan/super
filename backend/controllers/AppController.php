@@ -10,11 +10,31 @@ use common\models\orm\extend\App;
 use common\models\orm\extend\Admin;
 use common\models\orm\extend\Partner;
 use common\library\Utils;
+use yii\filters\AccessControl;
 /**
  * App controller
  */
 class AppController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+
+            'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index','create','update','view'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $id = Yii::$app->request->get('id','');

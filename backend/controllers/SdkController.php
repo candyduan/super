@@ -16,11 +16,33 @@ use common\models\orm\extend\SdkTimeLimit;
 use common\models\orm\extend\Campaign;
 use common\models\orm\extend\SdkCampaignLimit;
 use backend\library\sdk\SdkUtils;
+use yii\filters\AccessControl;
+
 /**
  * Sdk controller
  */
 class SdkController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+
+            'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index','create','update','view'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->render('index');
