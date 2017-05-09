@@ -15,6 +15,7 @@ use common\models\orm\extend\SdkProvinceTimeLimit;
 use common\models\orm\extend\SdkTimeLimit;
 use common\models\orm\extend\Campaign;
 use common\models\orm\extend\SdkCampaignLimit;
+use backend\library\sdk\SdkUtils;
 /**
  * Sdk controller
  */
@@ -417,6 +418,7 @@ class SdkController extends Controller
                 $sdkmodel->limit = $type;
                 $resultState += $sdkmodel->save() == true ? 1 :0;
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
