@@ -1,5 +1,4 @@
 <?php
-use backend\assets\AppAsset;
 use yii\helpers\Html;
 ?>
 <!doctype html>
@@ -25,9 +24,6 @@ use yii\helpers\Html;
     <script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" href="/css/site.css"></link>
 </head>
-<body>
-<?php $this->beginBody(); ?>
-<body>
 <body class="no-skin">
 <div id="navbar" class="navbar navbar-default          ace-save-state">
     <div class="navbar-container ace-save-state" id="navbar-container">
@@ -38,7 +34,7 @@ use yii\helpers\Html;
             <span class="icon-bar"></span>
         </button>
         <div class="navbar-header pull-left">
-            <a href="index.html" class="navbar-brand">
+            <a href="/site/index" class="navbar-brand">
                 <small>
                     <i class="fa fa-leaf"></i>
                     融合SDK后台
