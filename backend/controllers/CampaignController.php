@@ -90,7 +90,6 @@ class CampaignController extends Controller
                     $resultState  = $campaignModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
-                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
