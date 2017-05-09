@@ -703,6 +703,7 @@
     function changebtn(that){//0 蓝色 => 无限制 1 绿色 => 白名单 2 红色 =》黑名单 //获取按钮点击以后下一个的状态
         var type;
         var sdid = $('#hidden_setnametable_sdid').val();
+        $('#btn_submit_name_table').removeClass('green').addClass('grey');
         if($(that).hasClass('btn-primary')){
             $('#btn_search_time_table').removeClass('btn-danger').removeClass('btn-primary').addClass('btn-success').text('指定');
             type = 1;
@@ -712,6 +713,7 @@
         } else if($(that).hasClass('btn-danger')){
             $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-danger').addClass('btn-primary').text('无限制');
             type = 0;
+            $('#btn_submit_name_table').removeClass('grey').addClass('green');
         }
         setNameTable(sdid, type);
     }

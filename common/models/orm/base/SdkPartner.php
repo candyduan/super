@@ -9,8 +9,8 @@ use Yii;
  *
  * @property integer $spid
  * @property string $name
- * @property integer $updateTime
- * @property integer $recordTime
+ * @property string $recordTime
+ * @property string $updateTime
  * @property integer $status
  */
 class SdkPartner extends \yii\db\ActiveRecord
@@ -29,7 +29,8 @@ class SdkPartner extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['updateTime', 'recordTime', 'status'], 'integer'],
+            [['recordTime', 'updateTime'], 'safe'],
+            [['status'], 'integer'],
             [['name'], 'string', 'max' => 45],
         ];
     }
@@ -42,8 +43,8 @@ class SdkPartner extends \yii\db\ActiveRecord
         return [
             'spid' => 'Spid',
             'name' => 'Name',
-            'updateTime' => 'Update Time',
             'recordTime' => 'Record Time',
+            'updateTime' => 'Update Time',
             'status' => 'Status',
         ];
     }

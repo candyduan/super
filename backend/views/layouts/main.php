@@ -309,6 +309,7 @@ use yii\helpers\Html;
 <!--<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>-->
 <!--<script src="/ace/assets/js/jquery-1.11.3.min.js"></script>-->
 <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
+<script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='web/ace/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
