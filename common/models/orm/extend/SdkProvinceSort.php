@@ -20,4 +20,13 @@ class SdkProvinceSort extends \common\models\orm\base\SdkProvinceSort {
         return $state;
     }
 
+    public static function deleteByProviderPrid($provider,$prid){
+        $condition = [
+            'provider' => $provider,
+            'prid' => $prid
+        ];
+        $state = self::deleteAll($condition);
+        return $state;
+    }
+
 }

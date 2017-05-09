@@ -140,8 +140,8 @@ class SortController extends Controller
             $transaction =  SdkSort::getDb()->beginTransaction();
             try {
                 if(!empty($sdids)){
-                    SdkProvinceSort::deleteByProvider($provider); //无论有没有prid 重新排序 都要把sdkprovincesort 里对应记录删掉
                     if($prid > 0){
+                       SdkProvinceSort::deleteByProviderPrid($provider,$prid);
                        $sdkProvinceModel = new SdkProvinceSort();
                        $sdkProvinceModel->provider = $provider;
                        $sdkProvinceModel->prid = $prid;
@@ -150,7 +150,8 @@ class SortController extends Controller
                        $result = $sdkProvinceModel->save();
                        $resultState = $result == true ? 1: 0;
                     }else{
-                         SdkSort::deleteByProvider($provider);
+                        SdkProvinceSort::deleteByProvider($provider);
+                        SdkSort::deleteByProvider($provider);
                         $sdkModel = new SdkSort();
                         $sdkModel->provider = $provider;
                         $sdkModel->sort = json_encode($sdids);
