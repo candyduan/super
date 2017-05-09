@@ -224,7 +224,7 @@ use yii\helpers\Html;
         <div class="footer-content">
 				<span class="bigger-120">
                     <span class="blue bolder"></span>
-							上海麦广网络科技有限公司 &copy; 2014-2017
+							上海麦广网络科技有限公司 &copy; 2011-2017
                 </span>
         </div>
     </div>
