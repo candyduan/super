@@ -11,11 +11,31 @@ use common\models\orm\extend\Sdk;
 use common\models\orm\extend\Admin;
 use common\models\orm\extend\Partner;
 use common\library\Utils;
+use yii\filters\AccessControl;
 /**
  * Partner controller
  */
 class PartnerController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+
+            'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index','create','update','view'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $holders = Admin::getAllAdmins();
