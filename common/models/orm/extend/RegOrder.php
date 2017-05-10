@@ -9,7 +9,7 @@ class RegOrder extends \common\models\orm\base\RegOrder{
             'roid'  => $id,
         );
         $model  = self::find()
-                        ->where()
+                        ->where($condition)
                         ->one()
                         ;
         return $model;
