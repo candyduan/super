@@ -139,7 +139,25 @@ use yii\helpers\Html;
                 </li>
             </ul>
         </li>
-    <!--    <li class="">
+<!--        <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="glyphicon glyphicon-paperclip"></i>
+                <span class="menu-text"> SDK成果录入 </span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="">
+                    <a href="/sdk-promotion-result/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        SDK成果录入
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>-->
+    <!--
+    <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-refresh"></i>
                 <span class="menu-text"> SDK计费转化 </span>
@@ -163,16 +181,6 @@ use yii\helpers\Html;
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-pencil"></i>
                 <span class="menu-text"> SDK计费分析 </span>
-                <b class="arrow fa fa-angle-down"></b>
-            </a>
-            <b class="arrow"></b>
-            <ul class="submenu">
-            </ul>
-        </li>
-        <li class="">
-            <a href="#" class="dropdown-toggle">
-                <i class="glyphicon glyphicon-paperclip"></i>
-                <span class="menu-text"> SDK成果录入 </span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <b class="arrow"></b>
