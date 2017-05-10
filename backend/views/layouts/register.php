@@ -74,6 +74,14 @@
                             <li><a href="/register/mutex-view">通道组管理</a></li>
                         </ul>
                     </li>
+                    
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#profit"><i class="fa fa-fw fa-dashboard"></i>数据中心<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="profit" class="collapse">
+                            <li><a href="/register/profit-channel-view">通道收益</a></li>
+                        </ul>
+                    </li>
+                                        
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -92,8 +100,7 @@
 
     </div>
     <!-- /#wrapper -->
-<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;display:none;" id="loading" class=""><img src="/img/loading.gif" style="width:100%;"></div>
-</div>
+<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="width:100%;"></div>
 
 <div id="dialog" class="modal fade"></div>
 </body>

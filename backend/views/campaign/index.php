@@ -437,9 +437,13 @@
         var success_function = function(result){
             if(result.sdks !== ''){
                 $('#sdk_select').empty().append(result.sdks);
+            }else{
+                $('#sdk_select').empty();
             }
-            if(result.goods !==''){
+            if(result.goods !== ''){
                 $('#bodyGoods').empty().append(result.goods);
+            }else{
+                $('#bodyGoods').empty();
             }
             //feeKeyUp();
             $('#btn_submit_goods').attr('disabled', false);
@@ -502,6 +506,8 @@
             }
             if(result.goods !==''){
                 $('#bodyModifyGoods').empty().append(result.goods);
+            }else{
+                $('#bodyModifyGoods').empty();
             }
             $('#hidden_sdid').val(sdid);
             $('#icon_1').removeClass('green').addClass('grey');
@@ -522,7 +528,7 @@
 
     function inputKeyUp() {
         $('#formModifyGoods input').on('keyup', function () {
-            $(this).parent().next().children('i').removeClass('grey').addClass('green');
+            $(this).parent().next().children('i.canclick').removeClass('grey').addClass('green');
         })
     }
 

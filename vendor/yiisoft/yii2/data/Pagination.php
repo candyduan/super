@@ -294,7 +294,7 @@ class Pagination extends Object implements Linkable
     {
         $pageSize = $this->getPageSize();
 
-        return $pageSize < 1 ? 0 : $this->getPage() * $pageSize;
+        return $pageSize < 1 ? 0 : ($this->getPage() - 1)* $pageSize;
     }
 
     /**
