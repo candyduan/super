@@ -354,7 +354,6 @@ class CampaignController extends Controller
                        $csgModel->csid= $csid;
                        $csgModel->goid = $id;
                        $csgModel->priceSign = $value;
-                       $csgModel->status = 1;
                        $resultState = $csgModel->save() == true ? 1 : 0;
 
                    }
