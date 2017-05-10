@@ -10,6 +10,6 @@ class SdkUtils{
         }
         $url = '/index.php/MC/RFSC';
 //         Utils::asyncRequest($host, $url);
-        Utils::zsCurl($host.$url);// TODO 后期待改为异步
+        Utils::zsCurl($host.$url,1);// TODO 后期待改为异步
     }
 }

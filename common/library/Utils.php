@@ -28,7 +28,7 @@ class Utils{
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
         if($timeout > 0){
-            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         }
         $output = curl_exec($ch);
         curl_close($ch);
