@@ -61,5 +61,22 @@ class Campaign extends \common\models\orm\base\Campaign {
     }
 
 
+    public static function getNameById($id){
+        $data = self::find()->select(['name'])->where(['id' => $id])->one();
+        return isset($data['name']) ? $data['name'] : '';
+
+    }
+
+    public static function getIdByName($name){
+        $data = self::find()->select(['id'])->where(['name' => $name])->one();
+        return isset($data['id']) ? $data['id'] : '';
+
+    }
+
+    public static function getMrateById($cpid){
+        $data = self::find()->select(['mrate'])->where(['id' => $id])->one();
+        return isset($data['mrate']) ? $data['mrate'] : '';
+
+    }
 
 }

@@ -37,5 +37,12 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
         $model  = self::find()->where(['id' => $id])->one();
         return $model;
     }
+
+    public static function getIdByCampaignMedaiSign($caid, $mediaSign){
+
+        $data  = self::find()->select('id')->where(['campaign' => $caid, 'mediaSign' => $mediaSign])->one();
+
+        return isset($data['id']) ? $data['id'] : '';
+    }
     
 }
