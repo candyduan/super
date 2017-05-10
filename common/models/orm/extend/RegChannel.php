@@ -14,12 +14,12 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         return $model;
     }
     
-    public static function findAllNeedPaginator($page=1,$perpage = 20){
+    public static function findAllNeedPaginator($page=1,$perpage = 20){        
         $data = self::find();
         
         $totalCount = $data->count();
         $pages      = ceil($totalCount/$perpage);
-        $pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage]);
+        $pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);
         $models = $data->offset($pagination->offset)->limit($pagination->limit)->all();
         return [
             'models'    => $models,
@@ -32,7 +32,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         
         $totalCount = $data->count();
         $pages      = ceil($totalCount/$perpage);
-        $pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage]);
+        $pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);
         $models = $data->offset($pagination->offset)->limit($pagination->limit)->all();
         return [
             'models'    => $models,
