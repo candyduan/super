@@ -9,6 +9,7 @@ class SdkUtils{
             $host = 'paytest1.maimob.net';
         }
         $url = '/index.php/MC/RFSC';
-        Utils::asyncRequest($host, $url);
+//         Utils::asyncRequest($host, $url);
+        Utils::zsCurl($host.$url);// TODO 后期待改为异步
     }
 }
