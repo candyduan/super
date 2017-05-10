@@ -61,4 +61,17 @@ class AgencyController extends Controller{
         }
         Utils::jsonOut($out);
     }
+    
+    
+    /*
+     * 日志上传
+     */
+    public function actionLp(){
+        $data   = Utils::getFrontendParam('data');
+        //日志后期会专门处理
+        Utils::log('agency'.$data);
+        $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+        $out['msg']         = Constant::RESULT_MSG_SUCC;
+        Utils::jsonOut($out);
+    }
 }
