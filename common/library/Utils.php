@@ -19,7 +19,7 @@ class Utils{
         return $arr;
     }
     
-    public static function zsCurl($url =  NULL,$timeout = 0){
+    public static function zsCurl($url =  NULL){
         if(empty($url)){
             return false;
         }
@@ -27,9 +27,6 @@ class Utils{
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
-        if($timeout > 0){
-            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        }
         $output = curl_exec($ch);
         curl_close($ch);
         return $output;
