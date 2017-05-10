@@ -42,10 +42,13 @@ class Utils{
         if(!$fp){
             Utils::log('async error no:'.$errno.' error msg:'.$errstr);
         }else{
+            stream_set_blocking($fp,0); //开启非阻塞模式
+            stream_set_timeout($fp, 3); //设置超时时间（s）
             $out = "GET $url HTTP/1.1\r\n";
             $out .= "Host: $host\r\n";
             $out .= "Connection: Close\r\n\r\n";
             fwrite($fp, $out);
+            usleep(300000); //等待300ms
             fclose($fp);
         }
     }
