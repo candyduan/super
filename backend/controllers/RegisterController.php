@@ -73,5 +73,17 @@ class RegisterController extends Controller{
         return $this->render('mutex-view');
     }
     
+    /*
+     * 通道收益
+     */
+    public function actionProfitChannelView(){
+        return $this->render('profit-channel-view');
+    }
+    
+    
+    public function actionProfitChannelResult(){
+        
+    }
+    
     
 }
