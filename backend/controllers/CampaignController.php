@@ -349,11 +349,14 @@ class CampaignController extends Controller
                        $resultState = $campaignSdkModel->save() == true ? 1 : 0;;
                    }else if(is_numeric($id)){
                        $csid = $campaignSdkModel->csid;
+                       $status = CampaignSdkGoods::getStatusByCsidGoid($csid,$id);
+                       $status = ($status === '') ? 1 : $status;
                        CampaignSdkGoods::deleteByCsidGoid($csid,$id);
                        $csgModel = new CampaignSdkGoods();
                        $csgModel->csid= $csid;
                        $csgModel->goid = $id;
                        $csgModel->priceSign = $value;
+                       $csgModel->status = $status;
                        $resultState = $csgModel->save() == true ? 1 : 0;
 
                    }
