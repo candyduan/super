@@ -41,14 +41,14 @@ class Utils{
         }else{
             $url = $url.'?inner=1';
         }
-        $fp = fsockopen($host,80,$errno,$errstr,1);
+        $fp = fsockopen($host,80,$errno,$errstr,30);
         if(!$fp){
             Utils::log('async error no:'.$errno.' error msg:'.$errstr);
         }else{
             $out = "GET $url HTTP/1.1\r\n";
             $out .= "Host: $host\r\n";
             $out .= "Connection: Close\r\n\r\n";
-            fputs($fp, $out);
+            fwrite($fp, $out);
             fclose($fp);
         }
     }
