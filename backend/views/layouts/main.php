@@ -156,37 +156,39 @@ use yii\helpers\Html;
                 </li>
             </ul>
         </li>-->
-    <!--
+    
     <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-refresh"></i>
-                <span class="menu-text"> SDK计费转化 </span>
+                <span class="menu-text"> 数据中心 </span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
+            	<li class="">
+                    <a href="/sdk-pay/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        融合SDK计费转化
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="/package-pay/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        融合SDK渠道收益
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="/package-pay/analysis">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        融合SDK渠道计费分析
+                    </a>
+                    <b class="arrow"></b>
+                </li>
             </ul>
         </li>
-        <li class="">
-            <a href="#" class="dropdown-toggle">
-                <i class="glyphicon glyphicon-usd"></i>
-                <span class="menu-text"> SDK渠道收益 </span>
-                <b class="arrow fa fa-angle-down"></b>
-            </a>
-            <b class="arrow"></b>
-            <ul class="submenu">
-            </ul>
-        </li>
-        <li class="">
-            <a href="#" class="dropdown-toggle">
-                <i class="glyphicon glyphicon-pencil"></i>
-                <span class="menu-text"> SDK计费分析 </span>
-                <b class="arrow fa fa-angle-down"></b>
-            </a>
-            <b class="arrow"></b>
-            <ul class="submenu">
-            </ul>
-        </li>
+        <!--
         <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-plus"></i>
