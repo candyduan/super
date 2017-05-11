@@ -5,6 +5,8 @@ use yii\base\Controller;
 use common\library\Utils;
 use common\models\orm\extend\RegChannel;
 use common\library\Constant;
+use common\models\orm\extend\RegChannelMutex;
+use common\models\orm\extend\RegChannelMutexList;
 class RegisterController extends Controller{
     public $layout = "register";
     public function actionTest(){
@@ -73,6 +75,98 @@ class RegisterController extends Controller{
         return $this->render('mutex-view');
     }
     
+    public function actionMutexResult(){
+    		$channelMutexId = Utils::getBackendParam('channelMutexId');
+    		$page       = Utils::getBackendParam('page',1);
+    		
+    		if(is_numeric($channelMutexId)){
+    			
+    		}else{
+    			$res = RegChannelMutex::findAllNeedPaginator($page);
+    		}
+    		$pages  = $res['pages'];
+    		$models = $res['models'];
+    		if($pages >= $page && $pages > 0){
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    			$out['pages']       = $pages;
+    			$out['page']        = $page;
+    		
+    			$list   = array();
+    			foreach ($models as $model){
+    				$item   = RegChannelMutex::getItemArrByModel($model);
+    				array_push($list, $item);
+    			}
+    		
+    			$out['list']    = $list;
+    		}else{
+    			if($page > 1){
+    				$msg    = Constant::RESULT_MSG_NOMORE;
+    			}else{
+    				$msg    = Constant::RESULT_MSG_NONE;
+    			}
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = $msg;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    public function actionMutexlistResult(){
+    		$channelMutexId = Utils::getBackendParam('rcmid');
+    		
+    		if(is_numeric($channelMutexId)){
+    			$res = RegChannelMutexList::findChannelMutexById($channelMutexId);
+    		}else{
+    			
+    		}
+    		if($res['models']){
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    			$list = [];
+    			foreach ($res['models'] as $model){
+    				$item = RegChannelMutexList::getItemArrByModel($model);
+    				array_push($list, $item);
+    			}
+    			$out['list']    = $list;
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = Constant::RESULT_MSG_NONE;
+    		}
+    		Utils::jsonOut($out);
+    }
+
+    /**
+     * 添加通道组
+     */
+    public function actionAddMutex(){
+    		 $mutexName = Utils::getBackendParam('mutexName');
+    		 $mutexStatus = Utils::getBackendParam('mutexStatus', 0);
+    		 if(empty($mutexName) || !is_numeric($mutexStatus)){
+    		 	$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		 	$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		 }else{
+    		 	$params = [
+    		 		'name' => $mutexName,
+    		 		'status' => $mutexStatus	
+    		 	];
+    		 	$res = RegChannelMutex::addMutex($params);
+    		 	if($res){
+    		 		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		 		$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		 	}else{
+    		 		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		 		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		 	}
+    		 }
+    		 Utils::jsonOut($out);
+    		 
+    }
+    
+    
+    
+    
+    
+
     /*
      * 通道收益
      */
