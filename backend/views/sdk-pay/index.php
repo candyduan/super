@@ -14,11 +14,19 @@
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text"  class="form-control " id='sdk' name ='SDK'  placeholder="SDK"/>
                     <input  type="text"   class="form-control date-picker" id="startDate" data-date-format="yyyy-mm-dd">
+                    ~
                     <input  type="text"   class="form-control date-picker" id="endDate" data-date-format="yyyy-mm-dd">
                      字段：
-                    <input type="checkbox" id="checkSDK" name="checkSDK"/> SDK 
-                    <input type="checkbox" id="checkProvince" name="checkProvince"/> 省份 
-                    <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商 
+                    <input type="checkbox" id="checkSDK" name="checkSDK" checked="true"/> SDK 
+                    <input type="checkbox" id="checkProvince" name="checkProvince" checked="true"/> 省份 
+                    <input type="checkbox" id="checkProvider" name="checkProvider" checked="true"/>运营商 
+                    
+                    <i class="glyphicon pointer green glyphicon-certificate" onclick="showDateType()" title="时间显示方式"></i> 
+                    <i class="glyphicon pointer green glyphicon-phone" onclick="showProvider()" title="运营商"></i> 
+                    <i class="glyphicon pointer green glyphicon-globe" onclick="showProvince()" title="省份"></i> 
+                    <i class="glyphicon pointer grey glyphicon-time" onclick="showTime()" title="小时时段"></i> 
+                    <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="查询"></i> 
+                    <i class="glyphicon pointer green glyphicon-cloud-download" onclick="downloadData()" title="下载"></i> 
                 </div>  
                 </div>
             </form>
@@ -47,6 +55,23 @@
     </div>
 </div>
 
+<div id="modalSdkTime" class="modal fade">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>SDK时间设置:</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="div_sdktime" style="height:500px">
+            </div>
+            <input type="hidden" id='hidden_setime_array' value = "[]" />
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btn_submit_sdktime">提交</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
 <!--<script src="/ace/assets/js/jquery-ui.custom.min.js"></script>-->
@@ -55,6 +80,9 @@
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        var now = getCurdate();
+        $("#startDate").val(now);
+        $("#endDate").val(now);
         _initDataTable();
     });
 
@@ -100,5 +128,59 @@
         });
     }
 
-   // $("#startDate").datetimepicker({format: 'yyyy-mm-dd'});
+    $('#btn_submit_sdktime').on('click', function(event){
+        event.preventDefault();
+        var timelimit = [];
+        $('#div_sdktime').children(".btn-circle.btn-danger").each(function(){
+            timelimit.push($(this).text());
+        });
+        $('#hidden_setime_array').val(timelimit.join(','));
+        $('#modalSdkTime').modal('hide');
+    });
+    
+    function showDateType(){
+        alert(1);
+    }
+    function showProvider(){
+        alert(2);
+    }
+    function showProvince(){
+    }
+    function showTime(){
+    	var circle_buttons = [];
+    	console.log($('#hidden_setime_array').val().split(','));
+    	var times = $('#hidden_setime_array').val().split(',');
+        for(var i = 0 ; i < 24 ; i++) {// TODO
+            if (times.in_array(i)){ // 不存在在 unlimit 数组中
+                circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
+            }else{
+                circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-danger">'+i+'</button >');
+            }
+        }
+        $('#btn_submit_sdktime').attr('disabled', false);
+        $('#div_sdktime').empty().append(circle_buttons.join(' '));
+        $('#modalSdkTime').modal('show');
+    }
+    
+    function searchData(){
+    }
+    function downloadData(){
+    }
+
+    function timebtnClick(that){
+        if($(that).hasClass('btn-success')){
+            $(that).removeClass('btn-success').addClass('btn-danger');
+        }else{
+            $(that).removeClass('btn-danger').addClass('btn-success');
+        }
+    }
+    function getCurdate(){
+    	var now=new Date();
+        var y=now.getFullYear();
+        var m=now.getMonth()+1;
+        var d=now.getDate();
+        var m=m<10?"0"+m:m;
+       	var d=d<10?"0"+d:d;
+        return y+"-"+m+"-"+d;
+    }
 </script>
