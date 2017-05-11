@@ -24,6 +24,7 @@ class Constant{
     const RESULT_CODE_NONE    = 0;
     const RESULT_CODE_SUCC  = 1;
     const RESULT_CODE_SYSTEM_BUSY   = 5;
+    const RESULT_CODE_AUTH_FAIL     = 6;
     const RESULT_CODE_PARAMS_ERR    = 255;
     
     
@@ -34,6 +35,7 @@ class Constant{
     const RESULT_MSG_NOMORE   = '没有更多了';
     const RESULT_MSG_SUCC     = 'success';
     const RESULT_MSG_SYSTEM_BUSY    = '系统异常，请稍后重试！';
+    const RESULT_MSG_AUTH_FAIL     = '鉴权失败';
     const RESULT_MSG_PARAMS_ERR     = '参数异常';
     /*
      * 任务类型
