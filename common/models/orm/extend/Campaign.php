@@ -73,10 +73,5 @@ class Campaign extends \common\models\orm\base\Campaign {
 
     }
 
-    public static function getMrateById($cpid){
-        $data = self::find()->select(['mrate'])->where(['id' => $id])->one();
-        return isset($data['mrate']) ? $data['mrate'] : '';
-
-    }
 
 }

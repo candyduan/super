@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/ace/assets/css/bootstrap-datetimepicker.min.css" class="ace-main-stylesheet" />
+<link rel="stylesheet" href="/ace/assets/css/bootstrap-datepicker3.min.css" />
 <div class="panel panel-warning">
     <!-- panel heading -->
     <div class="page-header">
@@ -13,8 +13,8 @@
         	<form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text"  class="form-control " id='sdk' name ='SDK'  placeholder="SDK"/>
-                    <input size="16" type="text" value="2017-05-10" readonly class="form_date" id="startDate">
-                    <input size="16" type="text" value="2017-05-10" readonly class="form_date" id="endDate">
+                    <input  type="text"   class="form-control date-picker" id="startDate" data-date-format="yyyy-mm-dd">
+                    <input  type="text"   class="form-control date-picker" id="endDate" data-date-format="yyyy-mm-dd">
                      字段：
                     <input type="checkbox" id="checkSDK" name="checkSDK"/> SDK 
                     <input type="checkbox" id="checkProvince" name="checkProvince"/> 省份 
@@ -49,14 +49,19 @@
 
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
-<script src="/ace/assets/js/moment.min.js"></script>
-<script src="/ace/assets/js/bootstrap-datetimepicker.min.js"></script>
+<!--<script src="/ace/assets/js/jquery-ui.custom.min.js"></script>-->
+<script src="/ace/assets/js/bootstrap-datepicker.min.js"></script>
 <script src="/js/sdk/util.js"></script>
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         _initDataTable();
     });
+
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
 
     function _initDataTable() {
         $("#tbl").dataTable().fnDestroy();

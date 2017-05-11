@@ -53,6 +53,11 @@
                         <span class="input-group-addon">文件:</span>
                         <input type="file" name="result_file" id="result_file"  class="form-control"/>
                     </div><br /><br />
+                    请上传csv文件,csv格式如下图:<br/><br/>
+                    <1>csv文件第一行必须如图填写<br/>
+                    <2>日期活动渠道标识成果数均不能为空,日期请填写日期格式<br/>
+                    <3>活动可以填写活动ID或者活动名称,建议填写活动ID<br/>
+                    <img src="/imgs/resultcsv.png" alt="csv格式图片"/><br/><br/>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" id="btn_submit_result">预览</button>
@@ -126,12 +131,11 @@
         var method = 'post';
         var successFunc = function (result) {
             if(parseInt(result) == 1){
-                alert('预览成功');
+                _initDataTable();
+                $('#modalResult').modal('hide');
             }else if(parseInt(result) == 0){
                 alert('预览失败');
             }
-           // $('#modalResult').modal('hide');
-            _initDataTable();
         };
         callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
     }));

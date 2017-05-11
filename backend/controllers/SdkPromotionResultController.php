@@ -61,8 +61,8 @@ class SdkPromotionResultController extends Controller
                 //$name = $partner.'_'.$media;
                 $status = MyHtml::iElement('glyphicon-remove-sign glyphicon red','','');
                 if($status == 0){
-                    $status = MyHtml::aElement('javascript:void(0);','changeStatus',$value[''],'确认提交');
-                    $status .= MyHtml::aElement('javascript:void(0);','delete',$value[''],'删除预览');
+                    $status = MyHtml::aElement('javascript:void(0);','changeStatus',$value['sprid'],'确认提交');
+                    $status .= MyHtml::aElement('javascript:void(0);','delete',$value['sprid'],'删除预览');
                 }
                 $tabledata[] = [
                     $value['date'],
@@ -92,29 +92,36 @@ class SdkPromotionResultController extends Controller
 
     public function actionUploadCsv() {//0 - 日期 1-活动 2-渠道标识 3-成果数
         $resultState = 0;
+        ini_set("auto_detect_line_endings", true);
+        setlocale(LC_ALL, 'zh_CN');
+        //  setlocale(LC_ALL, 'zh_CN.GBK');
+
+      //  setlocale(LC_ALL, 'en_US.UTF-8');
+     //   setlocale(LC_ALL,array('zh_CN.gbk','zh_CN.gb2312','en_US.utf8'));
         $handle = fopen($_FILES['result_file']['tmp_name'],'r');
-        if($handle ) {
-            while ($data = fgetcsv($handle)) {
-                if(self::_characet($data[0]) !== '日期'){
+        if($handle) {
+            while (!feof($handle)) {
+                $data = fgetcsv($handle,0 ,';');
+                $a=1;
+                if(self::_characet($data[0]) !== '日期'  && is_numeric($data[3])){
                     //获取cpid--------
                     $cpid = '';
                     if(is_numeric($data[1])) {
                         $caid = $data[1];
                     }else {
-                        $caid = Campaign::getIdByName($data[1]);
+                        $caid = Campaign::getIdByName(self::_characet($data[1]));
                     }
                     if($caid !== '') {
                         $cpid = CampaignPackage::getIdByCampaignMedaiSign($caid, $data[2]);
                     }
                     //----------------
-
                     if($cpid !== '') {
-                        $date =  $date = date('Y-m-d H:i:s', strtotime($data[0]));
+                        $date =  $date = date('Y-m-d', strtotime($data[0]));
                         $count = $data[3];
-                        $mrate = Campaign::getMrateById($cpid);
+                        $mrate = CampaignPackage::getMrateById($cpid);
                         $price = '';
                         if(is_numeric($count) && is_numeric($mrate)){
-                            $price = $mrate * intval($count);
+                            $price = $mrate * intval($count) * 100;
                         }
 
                         if(is_numeric($price)){
@@ -123,6 +130,7 @@ class SdkPromotionResultController extends Controller
                             $model->date = $date;
                             $model->count = $count;
                             $model->price = $price;
+                            $model->status = 0;
                             $resultState += $model->save() == true ? 1 : 0;
                         }
                     }
