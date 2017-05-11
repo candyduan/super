@@ -59,9 +59,9 @@ class SdkPromotionResultController extends Controller
                 $app = App::getNameById($campaignPackage['app']);
                 $campaign = Campaign::getNameById($campaignPackage['campaign']);
                 //$name = $partner.'_'.$media;
-                $status = MyHtml::iElement('glyphicon-remove-sign glyphicon red','','');
+                $status = MyHtml::iElement('glyphicon-ok-sign glyphicon green','','');
                 if($status == 0){
-                    $status = MyHtml::aElement('javascript:void(0);','changeStatus',$value['sprid'],'确认提交');
+                    $status = MyHtml::aElement('javascript:void(0);','changeStatus',$value['sprid'],'确认提交') . MyHtml::br();
                     $status .= MyHtml::aElement('javascript:void(0);','delete',$value['sprid'],'删除预览');
                 }
                 $tabledata[] = [
@@ -95,14 +95,12 @@ class SdkPromotionResultController extends Controller
         ini_set("auto_detect_line_endings", true);
         setlocale(LC_ALL, 'zh_CN');
         //  setlocale(LC_ALL, 'zh_CN.GBK');
-
-      //  setlocale(LC_ALL, 'en_US.UTF-8');
-     //   setlocale(LC_ALL,array('zh_CN.gbk','zh_CN.gb2312','en_US.utf8'));
+        //  setlocale(LC_ALL, 'en_US.UTF-8');
+        //   setlocale(LC_ALL,array('zh_CN.gbk','zh_CN.gb2312','en_US.utf8'));
         $handle = fopen($_FILES['result_file']['tmp_name'],'r');
         if($handle) {
             while (!feof($handle)) {
                 $data = fgetcsv($handle,0 ,';');
-                $a=1;
                 if(self::_characet($data[0]) !== '日期'  && is_numeric($data[3])){
                     //获取cpid--------
                     $cpid = '';

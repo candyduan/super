@@ -13,9 +13,9 @@ use Yii;
  * @property string $passwd
  * @property string $verifyPort
  * @property string $blockPort
- * @property string $sdkKeywords
+ * @property string $verifyKeywords
  * @property string $smtKeywords
- * @property string $bckKeywords
+ * @property string $blockKeywords
  * @property string $recordTime
  * @property string $updateTime
  * @property integer $status
@@ -41,7 +41,7 @@ class AgencyAccount extends \yii\db\ActiveRecord
             [['status'], 'integer'],
             [['name', 'account', 'passwd'], 'string', 'max' => 64],
             [['verifyPort', 'blockPort'], 'string', 'max' => 32],
-            [['sdkKeywords', 'smtKeywords', 'bckKeywords'], 'string', 'max' => 128],
+            [['verifyKeywords', 'smtKeywords', 'blockKeywords'], 'string', 'max' => 128],
         ];
     }
 
@@ -57,9 +57,9 @@ class AgencyAccount extends \yii\db\ActiveRecord
             'passwd' => 'Passwd',
             'verifyPort' => 'Verify Port',
             'blockPort' => 'Block Port',
-            'sdkKeywords' => 'Sdk Keywords',
+            'verifyKeywords' => 'Verify Keywords',
             'smtKeywords' => 'Smt Keywords',
-            'bckKeywords' => 'Bck Keywords',
+            'blockKeywords' => 'Block Keywords',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
             'status' => 'Status',
