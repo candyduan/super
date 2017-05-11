@@ -81,6 +81,15 @@
                             <li><a href="/register/profit-channel-view">通道收益</a></li>
                         </ul>
                     </li>
+                    
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#agency"><i class="fa fa-fw fa-dashboard"></i>注册中介<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="agency" class="collapse">
+                            <li><a href="/agency/account-list-view">中介列表</a></li>
+                            <li><a href="/agency/account-set-view">新增中介</a></li>
+                        </ul>
+                    </li>
+                                        
                                         
                 </ul>
             </div>

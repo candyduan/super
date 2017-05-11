@@ -28,34 +28,37 @@ class AgencyController extends Controller{
         $cid    = Utils::getFrontendParam('CID');
         $networkType    = Utils::getFrontendParam('networkType',0);
         //该接口特有参数
-        $aaid   = Utils::getFrontendParam('aaid',0);
-        if(!is_numeric($aaid)){
+        $aaids   = Utils::getFrontendParam('aaids',[]);
+        $aaidsArr   = json_decode($aaids,true);
+        
+        if(count($aaidsArr) == 0){
             $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
             $out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
             Utils::jsonOut($out);
             return;
         }
-        $simCardModel       = SimCard::findByImsi($imsi);
-        $accountModel = AgencyAccount::findByPk($aaid);
-        if($simCardModel && $accountModel){
+        
+        
+        $tks    = [];
+        foreach ($aaidsArr as $aaid){
+            $accountModel = AgencyAccount::findByPk($aaid);
             $stackModel = new AgencyStack();
             $stackModel->aaid = $aaid;
             $stackModel->imsi = $imsi;
             $stackModel->status = AgencyStack::STATUS_SDK;
             try{
                 $stackModel->save();
-                
+            
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
                 $out['msg']         = Constant::RESULT_MSG_SUCC;
                 $out['asid']        = $stackModel->asid;
-                
-                $tks    = [];
+
                 $itemVerify   = array(
                     'type'          => 3,
                     'asid'          => $stackModel->asid,
                     'subId'         => 1,
                     'port'          => $accountModel->verifyPort,
-                    'cmd'           => $accountModel->sdkKeywords,
+                    'cmd'           => $accountModel->verifyKeywords,
                     'sourcePort'    => '',
                     'sendType'      => 1,
                     'httpMethod'    => '',
@@ -71,7 +74,7 @@ class AgencyController extends Controller{
                     'asid'          => $stackModel->asid,
                     'subId'         => 2,
                     'port'          => $accountModel->blockPort,
-                    'cmd'           => $accountModel->bckKeywords,
+                    'cmd'           => $accountModel->blockKeywords,
                     'sourcePort'    => '',
                     'sendType'      => 0,
                     'httpMethod'    => '',
@@ -84,11 +87,14 @@ class AgencyController extends Controller{
                 );
                 array_push($tks, $itemVerify);
                 array_push($tks, $itemBlock);
-                $out['tks'] = $tks;
             }catch (\Exception $e){
-                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
-                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+               continue;
             }
+        }        
+        if(count($tks) > 0){
+           $out['resultCode']   = Constant::RESULT_CODE_SUCC;
+           $out['msg']          = Constant::RESULT_MSG_SUCC;
+           $out['tks']          = $tks;
         }else{
             $out['resultCode']  = Constant::RESULT_CODE_NONE;
             $out['msg']         = Constant::RESULT_MSG_NONE;
