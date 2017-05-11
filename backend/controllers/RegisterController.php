@@ -7,6 +7,7 @@ use common\models\orm\extend\RegChannel;
 use common\library\Constant;
 use common\models\orm\extend\RegChannelMutex;
 use common\models\orm\extend\RegChannelMutexList;
+use common\models\orm\extend\RegProfit;
 class RegisterController extends Controller{
     public $layout = "register";
     public function actionTest(){
@@ -167,16 +168,28 @@ class RegisterController extends Controller{
     
     
 
-    /*
+    /**
      * 通道收益
      */
     public function actionProfitChannelView(){
         return $this->render('profit-channel-view');
     }
-    
-    
+     
     public function actionProfitChannelResult(){
-        
+    	$stime 			= Utils::getBackendParam('stime');
+    	$etime 			= Utils::getBackendParam('etime');
+    	$checkChannel 	= Utils::getBackendParam('checkChannel');
+    	$data = RegProfit::findByTime($stime, $etime, $checkChannel);
+    	if($data){
+    		$res['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		$res['msg']         = Constant::RESULT_MSG_SUCC;
+    		$res['data']        = $data;
+    	}else{
+    		$res['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$res['msg']         = constant::RESULT_MSG_NONE;
+    		$res['data']        = '';
+    	}
+    	Utils::jsonOut($res);die();
     }
     
     
