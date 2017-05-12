@@ -68,15 +68,27 @@ class SdkPromotionResultController extends BController
                     $status .= MyHtml::aElement('javascript:void(0);','deleteRecord',$value['sprid'],'删除预览');
                 }
                 $tabledata[] = [
-                    $value['date'],
+                    str_replace('00:00:00','',$value['date']),
                     $partner,
                     $app,
                     $campaign,
                     $campaignPackage['mediaSign'],
                     $value['price'] / 100,
                     $value['count'],
-                    $value['amount'],
+                    $value['amount']/100,
                     $status
+                ];
+            }else{
+                $tabledata[] = [
+                    str_replace('00:00:00','',$value['date']),
+                    'x',
+                    'x',
+                    'x',
+                    'x',
+                    'x',
+                    $value['count'],
+                    'x',
+                    MyHtml::aElement('javascript:void(0);','deleteRecord',$value['sprid'],'删除预览')
                 ];
             }
         }
@@ -105,37 +117,48 @@ class SdkPromotionResultController extends BController
                     $data =  explode(',',$data[0]);
                 }
 
-                if(self::_characet($data[0]) !== '日期'  && is_numeric($data[3])){
+                if(trim(self::_characet($data[0])) !== '日期'  && is_numeric($data[3])){
                     //获取cpid--------
                     $cpid = '';
                     if(is_numeric($data[1])) {
                         $caid = $data[1];
                     }else {
-                        $caid = Campaign::getIdByName(self::_characet($data[1]));
+                        $caid = Campaign::getIdByName(trim(self::_characet($data[1])));
                     }
                     if($caid !== '') {
                         $cpid = CampaignPackage::getIdByCampaignMedaiSign($caid, $data[2]);
                     }
                     //----------------
+                    $date =  $date = date('Y-m-d', strtotime($data[0]));
+                    $count = $data[3];
                     if($cpid !== '') {
-                        $date =  $date = date('Y-m-d', strtotime($data[0]));
-                        $count = $data[3];
                         $mrate = CampaignPackage::getMrateById($cpid);
-                        $price = '';
+                        $amount = '';
                         if(is_numeric($count) && is_numeric($mrate)){
-                            $price = $mrate * intval($count) * 100;
+                            $amount = $mrate * intval($count) * 100;
                         }
 
-                        if(is_numeric($price)){
+                        if(is_numeric($amount)){
                             $model = new SdkPromotionResult();
                             $model->cpid = $cpid;
                             $model->date = $date;
                             $model->count = $count;
-                            $model->price = $price;
+                            $model->price = $mrate * 100;
+                            $model->amount = $amount;
                             $model->status = 0;
                             $resultState += $model->save() == true ? 1 : 0;
                         }
+                    }else{
+                        $model = new SdkPromotionResult();
+                        $model->cpid = 0;
+                        $model->date = $date;
+                        $model->count = $count;
+                        $model->price = 0 * 100;
+                        $model->amount = 0;
+                        $model->status = 0;
+                        $resultState += $model->save() == true ? 1 : 0;
                     }
+
                 }else{
                     continue;
                 }

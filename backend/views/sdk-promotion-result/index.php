@@ -28,7 +28,7 @@
                         <td>应用</td>
                         <td>活动包</td>
                         <td>渠道标识</td>
-                        <td>单价</td>
+                        <td>单价(元)</td>
                         <td>成果数</td>
                         <td>M成本</td>
                         <td>状态</td>
@@ -126,17 +126,19 @@
     $('#formResult').on('submit', (function(event){
         event.preventDefault();
 
-      //  $('#btn_submit_result').attr('disabled', true);
+        $('#btn_submit_result').attr('disabled', true);
         var post_url = '/sdk-promotion-result/upload-csv';
         var post_data = new FormData(this);
         var method = 'post';
         var successFunc = function (result) {
-            if(parseInt(result) == 1){
-                _initDataTable();
+            if(parseInt(result) > 0){
+                alert('预览成功');
                 $('#modalResult').modal('hide');
-            }else if(parseInt(result) == 0){
+                _initDataTable();
+            }else{
                 alert('预览失败');
             }
+            $('#btn_submit_result').attr('disabled', false);
         };
         callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
     }));
@@ -145,11 +147,11 @@
         if(confirm('确认提交?')) {
             var post_url = '/sdk-promotion-result/modify-status';
             var post_data = {
-                'sprid': sprid,
+                'sprid': sprid
             };
             var method = 'get';
             var success_function = function (result) {
-                if(parseInt(result)) {
+                if(parseInt(result) >0) {
                     alert('提交成功');
                     _initDataTable();
                 }else{
@@ -161,14 +163,14 @@
     }
 
     function deleteRecord(sprid){
-        if(confirm('确认删除')) {
+        if(confirm('确认删除预览?')) {
             var post_url = '/sdk-promotion-result/delete-record';
             var post_data = {
                 'sprid': sprid,
             };
             var method = 'get';
             var success_function = function (result) {
-                if(parseInt(result)) {
+                if(parseInt(result) > 0) {
                     alert('删除预览成功');
                     _initDataTable();
                 }else{
