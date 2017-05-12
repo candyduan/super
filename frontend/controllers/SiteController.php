@@ -2,12 +2,13 @@
 namespace frontend\controllers;
 
 use yii\web\Controller;
+use common\library\FController;
 
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends FController
 {
 
 

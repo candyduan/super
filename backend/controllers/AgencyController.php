@@ -1,15 +1,15 @@
 <?php
 namespace backend\controllers;
 
-use yii\web\Controller;
 use common\library\Utils;
 use common\models\orm\extend\AgencyAccount;
 use common\library\Constant;
+use common\library\BController;
 
 /**
  * App controller
  */
-class AgencyController extends Controller{
+class AgencyController extends BController{
     public $layout = "register";
     
     public function actionIndex(){

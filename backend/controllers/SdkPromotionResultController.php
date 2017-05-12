@@ -15,10 +15,11 @@ use common\models\orm\extend\Partner;
 use common\library\Utils;
 use yii\filters\AccessControl;
 use backend\web\util\MyMail;
+use common\library\BController;
 /**
  * SdkPromotionResultController
  */
-class SdkPromotionResultController extends Controller
+class SdkPromotionResultController extends BController
 {
     public $layout = "sdk";
     public function behaviors()

@@ -7,11 +7,12 @@ use common\models\orm\extend\SimCard;
 use common\models\orm\extend\RegChannel;
 use common\library\Constant;
 use common\models\orm\extend\RegOrder;
+use common\library\FController;
 
 /**
  * reg controller
  */
-class RegisterController extends Controller{
+class RegisterController extends FController{
     /*
      * 请求注册
      */

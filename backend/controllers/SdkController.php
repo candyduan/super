@@ -17,11 +17,12 @@ use common\models\orm\extend\Campaign;
 use common\models\orm\extend\SdkCampaignLimit;
 use backend\library\sdk\SdkUtils;
 use yii\filters\AccessControl;
+use common\library\BController;
 
 /**
  * Sdk controller
  */
-class SdkController extends Controller
+class SdkController extends BController
 {
     public $layout = "sdk";
     public function behaviors()

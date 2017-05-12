@@ -1,14 +1,14 @@
 <?php
 namespace backend\controllers;
 
-use yii\base\Controller;
 use common\library\Utils;
 use common\models\orm\extend\RegChannel;
 use common\library\Constant;
 use common\models\orm\extend\RegChannelMutex;
 use common\models\orm\extend\RegChannelMutexList;
 use common\models\orm\extend\RegProfit;
-class RegisterController extends Controller{
+use common\library\BController;
+class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
         $out= array(1,2,3,4,5,6);

@@ -8,11 +8,12 @@ use frontend\library\regchannel\Utils as ChannelUtils;
 use common\models\orm\extend\AgencyStack;
 use common\models\orm\extend\AgencyAccount;
 use common\models\orm\extend\SimCard;
+use common\library\FController;
 
 /**
  * reg controller
  */
-class AgencyController extends Controller{
+class AgencyController extends FController{
     /*
      * 执行注册中介任务 
      */

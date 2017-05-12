@@ -18,10 +18,11 @@ use backend\web\util\MyMail;
 use common\models\orm\extend\CampaignPackage;
 use common\models\orm\extend\CampaignPackageSdk;
 use yii\filters\AccessControl;
+use common\library\BController;
 /**
  * SdkPay controller
  */
-class SdkPayController extends Controller
+class SdkPayController extends BController
 {
     public $layout = "sdk";
     public function behaviors()

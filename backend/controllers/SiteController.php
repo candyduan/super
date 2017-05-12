@@ -6,11 +6,12 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\library\BController;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BController
 {
     public $layout = "sdk";
     /**

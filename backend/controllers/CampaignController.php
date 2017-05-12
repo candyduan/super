@@ -18,10 +18,11 @@ use common\library\Utils;
 use backend\web\util\MyMail;
 use backend\library\sdk\SdkUtils;
 use yii\filters\AccessControl;
+use common\library\BController;
 /**
  * Campaign controller
  */
-class CampaignController extends Controller
+class CampaignController extends BController
 {
     public $layout = "sdk";
     public function behaviors()

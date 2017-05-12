@@ -12,10 +12,11 @@ use common\models\orm\extend\Admin;
 use common\models\orm\extend\Partner;
 use common\library\Utils;
 use yii\filters\AccessControl;
+use common\library\BController;
 /**
  * Partner controller
  */
-class PartnerController extends Controller
+class PartnerController extends BController
 {
     public $layout = "sdk";
     public function behaviors()

@@ -18,10 +18,11 @@ use backend\web\util\MyMail;
 use common\models\orm\extend\CampaignPackage;
 use common\models\orm\extend\CampaignPackageSdk;
 use yii\filters\AccessControl;
+use common\library\BController;
 /**
  * Campaign controller
  */
-class PackageController extends Controller
+class PackageController extends BController
 {
     public $layout = "sdk";
     public function behaviors()

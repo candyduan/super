@@ -21,10 +21,11 @@ use common\models\orm\extend\Campaign;
 use common\models\orm\extend\SdkCampaignLimit;
 use backend\library\sdk\SdkUtils;
 use yii\filters\AccessControl;
+use common\library\BController;
 /**
  * Sort controller
  */
-class SortController extends Controller
+class SortController extends BController
 {
     public $layout = "sdk";
     public function behaviors()
