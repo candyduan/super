@@ -18,16 +18,16 @@ class SdkPromotionResult extends \common\models\orm\base\SdkPromotionResult {
         return $count;
     }
 
-   public static function findByPk($id){
+   public static function findByPk($sprid){
 
-        $model  = self::find()->where(['id' => $id])->one();
+        $model  = self::find()->where(['sprid' => $sprid])->one();
         return $model;
     }
 
-    public static function getNameById($id){
-        $data = self::find()->select(['name'])->where(['id' => $id])->one();
+ /*   public static function getNameById($id){
+        $data = self::find()->select(['name'])->where(['sprid' => $id])->one();
         return isset($data['name']) ? $data['name'] : '';
 
-    }
+    }*/
 
 }

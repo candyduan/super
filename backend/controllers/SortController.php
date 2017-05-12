@@ -26,6 +26,7 @@ use yii\filters\AccessControl;
  */
 class SortController extends Controller
 {
+    public $layout = "sdk";
     public function behaviors()
     {
         return [

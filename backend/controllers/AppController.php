@@ -16,6 +16,7 @@ use yii\filters\AccessControl;
  */
 class AppController extends Controller
 {
+    public $layout = "sdk";
     public function behaviors()
     {
         return [

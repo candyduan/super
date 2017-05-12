@@ -14,11 +14,13 @@ use common\models\orm\extend\Admin;
 use common\models\orm\extend\Partner;
 use common\library\Utils;
 use yii\filters\AccessControl;
+use backend\web\util\MyMail;
 /**
  * SdkPromotionResultController
  */
 class SdkPromotionResultController extends Controller
 {
+    public $layout = "sdk";
     public function behaviors()
     {
         return [
@@ -60,9 +62,9 @@ class SdkPromotionResultController extends Controller
                 $campaign = Campaign::getNameById($campaignPackage['campaign']);
                 //$name = $partner.'_'.$media;
                 $status = MyHtml::iElement('glyphicon-ok-sign glyphicon green','','');
-                if($status == 0){
-                    $status = MyHtml::aElement('javascript:void(0);','changeStatus',$value['sprid'],'确认提交') . MyHtml::br();
-                    $status .= MyHtml::aElement('javascript:void(0);','delete',$value['sprid'],'删除预览');
+                if($value['status'] == 0){
+                    $status = MyHtml::aElement('javascript:void(0);','modifyStatus',$value['sprid'],'确认提交') . MyHtml::br();
+                    $status .= MyHtml::aElement('javascript:void(0);','deleteRecord',$value['sprid'],'删除预览');
                 }
                 $tabledata[] = [
                     $value['date'],
@@ -93,14 +95,15 @@ class SdkPromotionResultController extends Controller
     public function actionUploadCsv() {//0 - 日期 1-活动 2-渠道标识 3-成果数
         $resultState = 0;
         ini_set("auto_detect_line_endings", true);
-        setlocale(LC_ALL, 'zh_CN');
-        //  setlocale(LC_ALL, 'zh_CN.GBK');
-        //  setlocale(LC_ALL, 'en_US.UTF-8');
-        //   setlocale(LC_ALL,array('zh_CN.gbk','zh_CN.gb2312','en_US.utf8'));
+        //setlocale(LC_ALL, 'zh_CN');
         $handle = fopen($_FILES['result_file']['tmp_name'],'r');
         if($handle) {
             while (!feof($handle)) {
-                $data = fgetcsv($handle,0 ,';');
+                $data = fgetcsv($handle,0,';');//
+                if(!isset($data[1])){//分隔符为逗号的状态
+                    $data =  explode(',',$data[0]);
+                }
+
                 if(self::_characet($data[0]) !== '日期'  && is_numeric($data[3])){
                     //获取cpid--------
                     $cpid = '';
@@ -138,6 +141,46 @@ class SdkPromotionResultController extends Controller
             }
         }
 
+        echo json_encode($resultState);
+        exit;
+    }
+
+    public function actionModifyStatus(){
+        $sprid = Utils::getBParam('sprid');
+        $resultState = 0;
+        if(isset($sprid)){
+            $transaction =  SdkPromotionResult::getDb()->beginTransaction();
+            try {
+                $model = SdkPromotionResult::findByPk($sprid);
+                if($model){
+                    $model->status = 1;
+                    $resultState = $model->save() == true  ? 1 :0;
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify Sdkpromition status');
+            }
+        }
+        echo json_encode($resultState);
+        exit;
+    }
+
+    public function actionDeleteRecord(){
+        $sprid = Utils::getBParam('sprid');
+        $resultState = 0;
+        if(isset($sprid)){
+            $transaction =  SdkPromotionResult::getDb()->beginTransaction();
+            try {
+                $resultState = SdkPromotionResult::findByPk($sprid)->delete() == true ? 1: 0 ;
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From delete Sdkpromition status');
+            }
+        }
         echo json_encode($resultState);
         exit;
     }

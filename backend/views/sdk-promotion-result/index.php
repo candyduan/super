@@ -140,4 +140,42 @@
         callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
     }));
 
+    function modifyStatus(sprid){
+        if(confirm('确认提交?')) {
+            var post_url = '/sdk-promotion-result/modify-status';
+            var post_data = {
+                'sprid': sprid,
+            };
+            var method = 'get';
+            var success_function = function (result) {
+                if(parseInt(result)) {
+                    alert('提交成功');
+                    _initDataTable();
+                }else{
+                    alert('提交失败');
+                }
+            };
+            callAjaxWithFunction(post_url, post_data, success_function, method);
+        }
+    }
+
+    function deleteRecord(sprid){
+        if(confirm('确认删除')) {
+            var post_url = '/sdk-promotion-result/delete-record';
+            var post_data = {
+                'sprid': sprid,
+            };
+            var method = 'get';
+            var success_function = function (result) {
+                if(parseInt(result)) {
+                    alert('删除预览成功');
+                    _initDataTable();
+                }else{
+                    alert('删除预览失败');
+                }
+            };
+            callAjaxWithFunction(post_url, post_data, success_function, method);
+        }
+    }
+
 </script>

@@ -23,7 +23,7 @@ use yii\filters\AccessControl;
  */
 class SdkController extends Controller
 {
-
+    public $layout = "sdk";
     public function behaviors()
     {
         return [

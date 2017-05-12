@@ -17,6 +17,7 @@ use yii\filters\AccessControl;
  */
 class PartnerController extends Controller
 {
+    public $layout = "sdk";
     public function behaviors()
     {
         return [

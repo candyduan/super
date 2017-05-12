@@ -23,6 +23,7 @@ use yii\filters\AccessControl;
  */
 class PackageController extends Controller
 {
+    public $layout = "sdk";
     public function behaviors()
     {
         return [

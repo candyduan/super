@@ -23,6 +23,7 @@ use yii\filters\AccessControl;
  */
 class SdkPayController extends Controller
 {
+    public $layout = "sdk";
     public function behaviors()
     {
         return [
