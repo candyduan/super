@@ -225,3 +225,4 @@ ul.alert-dropdown {
 .panel-yellow > a:hover {
     color: #df8a13;
 }
+.input-err{border:1px solid #ff2d2d !important;}

@@ -91,6 +91,39 @@ $(document).ready(function(){
 		Utils.ajax(url,data,succFunc);
 	}
 	$('.btn-save').click(function(){
+		if($('#account').val() == ''){
+			$('#account').addClass('input-err');
+			return;
+		}
+		if($('#passwd').val() == ''){
+			$('#passwd').addClass('input-err');
+			return;
+		}
+		if($('#name').val() == ''){
+			$('#name').addClass('input-err');
+			return;
+		}
+		if($('#verifyPort').val() == ''){
+			$('#verifyPort').addClass('input-err');
+			return;
+		}
+		if($('#verifyKeywords').val() == ''){
+			$('#verifyKeywords').addClass('input-err');
+			return;
+		}
+		if($('#blockPort').val() == ''){
+			$('#blockPort').addClass('input-err');
+			return;
+		}
+		if($('#blockKeywords').val() == ''){
+			$('#blockKeywords').addClass('input-err');
+			return;
+		}
+		if($('#smtKeywords').val() == ''){
+			$('#smtKeywords').addClass('input-err');
+			return;
+		}
+		
 		//url
 		var url = '/agency/account-set-save';
 		//data
