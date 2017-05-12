@@ -109,7 +109,7 @@
 
     </div>
     <!-- /#wrapper -->
-<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="width:100%;"></div>
+<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;text-align:center !important;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="margin-top:10%;"></div>
 
 <div id="dialog" class="modal fade"></div>
 </body>
