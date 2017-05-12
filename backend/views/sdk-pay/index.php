@@ -21,10 +21,10 @@
                     <input type="checkbox" id="checkProvince" name="checkProvince" checked="true"/> 省份 
                     <input type="checkbox" id="checkProvider" name="checkProvider" checked="true"/>运营商 
                     
-                    <i class="glyphicon pointer green glyphicon-certificate" onclick="showDateType()" title="时间显示方式"></i> 
-                    <i class="glyphicon pointer green glyphicon-phone" onclick="showProvider()" title="运营商"></i> 
-                    <i class="glyphicon pointer green glyphicon-globe" onclick="showProvince()" title="省份"></i> 
-                    <i class="glyphicon pointer grey glyphicon-time" onclick="showTime()" title="小时时段"></i> 
+                    <i class="glyphicon pointer green glyphicon-certificate" onclick="setDateType(this)" title="时段" value="3"></i> 
+                    <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider()" title="运营商"></i> 
+                    <i class="glyphicon pointer green glyphicon-globe" onclick="setProvince()" title="省份"></i> 
+                    <i class="glyphicon pointer grey glyphicon-time" onclick="setTime()" title="小时时段"></i> 
                     <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="查询"></i> 
                     <i class="glyphicon pointer green glyphicon-cloud-download" onclick="downloadData()" title="下载"></i> 
                 </div>  
@@ -138,15 +138,15 @@
         $('#modalSdkTime').modal('hide');
     });
     
-    function showDateType(){
+    function setDateType(){
         alert(1);
     }
-    function showProvider(){
+    function setProvider(){
         alert(2);
     }
-    function showProvince(){
+    function setProvince(){
     }
-    function showTime(){
+    function setTime(){
     	var circle_buttons = [];
     	var times = $('#hidden_setime_array').val().split(',');
         for(var i = 0 ; i < 24 ; i++) {
