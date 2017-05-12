@@ -96,6 +96,7 @@
         $('#tbl').DataTable({
             "pagingType": "simple_numbers",
             "searching": false,
+            "bAutoWidth": false,
             "scrollX": true,
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
