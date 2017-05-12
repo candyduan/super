@@ -148,10 +148,9 @@
     }
     function showTime(){
     	var circle_buttons = [];
-    	console.log($('#hidden_setime_array').val().split(','));
     	var times = $('#hidden_setime_array').val().split(',');
-        for(var i = 0 ; i < 24 ; i++) {// TODO
-            if (times.in_array(i)){ // 不存在在 unlimit 数组中
+        for(var i = 0 ; i < 24 ; i++) {
+            if (times.indexOf("" + i) == -1){ 
                 circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
             }else{
                 circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-danger">'+i+'</button >');
