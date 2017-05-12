@@ -28,7 +28,7 @@ class AgencyController extends Controller{
         $cid    = Utils::getFrontendParam('CID');
         $networkType    = Utils::getFrontendParam('networkType',0);
         //该接口特有参数
-        $aaids   = Utils::getFrontendParam('aaids',[]);
+        $aaids   = Utils::getFrontendParam('aaids','[]');
         $aaidsArr   = json_decode($aaids,true);
         
         if(count($aaidsArr) == 0){
