@@ -56,10 +56,10 @@ class Utils{
     public static function getFrontendParam($key,$default = ''){
         $request    = \Yii::$app->getRequest();
         $value      = $request->get($key);
-        if(!self::isValid($value)){
+        if(strlen($value) == 0){
             $value  = $request->post($key);
         }
-        if(!self::isValid($value)){
+        if(strlen($value) == 0){
             $value  = $default;
         }
         return $value;
@@ -68,10 +68,10 @@ class Utils{
     public static function getBackendParam($key,$default = ''){
         $request    = \Yii::$app->getRequest();
         $value      = $request->get($key);
-        if(!self::isValid($value)){
+        if(strlen($value) == 0){
             $value  = $request->post($key);
         }
-        if(!self::isValid($value)){
+        if(strlen($value) == 0){
             $value  = $default;
         }
         return $value;
