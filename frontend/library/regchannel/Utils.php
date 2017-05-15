@@ -108,6 +108,22 @@ class Utils{
         return $res;
     }
     
+    
+    /*
+     * 配置化通道数据同步入口
+     */
+    public static function gotoSync(RegChannel $regChannelModel,array $data){
+        $useCfg = RegChannelCfgMain::useCfgChannel($regChannelModel->rcid);
+        if($useCfg){
+            $dataSync   = new DataSync($regChannelModel,$data);
+            $res        = $dataSync->sync();
+        }else{
+            $className   = 'frontend\library\hndchannel\Channel_'.$regChannelModel->rcid;
+            $res         = $className::sync($regChannelModel,$data);
+        }
+        return $res;
+    }
+    
     public static function sendHttpResultToSp($api,$format='json'){
         $response = self::httpRequest($api);
         $result = self::formatHttpResponseToArray($response,$format);
@@ -449,6 +465,34 @@ class Utils{
             }
         } catch (\Exception $e) {
             commonUtils::log('验证码匹配失败1:'.$e->getMessage());
+        }
+        return $result;
+    }
+    
+    
+    public static function getSyncData(){
+        $result = array();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $message = trim(file_get_contents('php://input'));
+            if($message != ''){
+                $result = self::formatHttpResponseToArray($message,'json');
+                if (empty($result)){
+                    if (strtolower( substr($message,0,5)) == "<?xml"){
+                        $result = self::formatHttpResponseToArray($message,'xml');
+                    }
+                    if (empty($result)){
+                        if (preg_match('/\w*=\w*&/', $message)){
+                            parse_str($message,$result);
+                        }
+                        if (empty($result)){
+                            $result = self::formatHttpResponseToArray($message,'text');
+                        }
+                    }
+                }
+            }
+        }
+        if (empty($result)){
+            $result = $_REQUEST;
         }
         return $result;
     }

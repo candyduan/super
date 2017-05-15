@@ -190,6 +190,23 @@ class RegisterController extends FController{
      * 数据同步
      */
     public function actionSync(){
-        //TODO
+        $sign     = Utils::getFrontendParam('sign');
+        $data   = \frontend\library\regchannel\Utils::getSyncData();
+        if(!Utils::isValid($sign)){
+            $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
+            $out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+            Utils::jsonOut($out);
+            return;
+        }
+        $regChannelModel    = RegChannel::findBySign($sign);
+        if($regChannelModel){
+            $res = \frontend\library\regchannel\Utils::gotoSync($regChannelModel, $data);
+            echo $res;
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+            Utils::jsonOut($out);
+        }
+        
     }
 }
