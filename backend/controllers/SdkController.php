@@ -599,7 +599,7 @@ class SdkController extends BController
         switch ($status){
             case 0: $arr[2] = 'red'; break; //无效
             case 1: $arr[0] = 'blue'; break; //暂停
-            case 2: $arr[3] = 'purple'; break; //测试
+            case 2: $arr[3] = 'pink2'; break; //测试
             case 3: $arr[1] = 'green'; break; //运行
         }
         return $arr;
