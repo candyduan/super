@@ -56,17 +56,14 @@ class SdkPromotionResultController extends BController
         $tabledata = [];
         foreach($data as $value){
             $campaignPackage = CampaignPackage::findByPk($value['cpid']);
+            $status = MyHtml::iElement('glyphicon-ok-sign glyphicon green','','');
+            if($value['status'] == 0){
+                $status = MyHtml::iElement('glyphicon-ok-sign glyphicon grey','','');
+            }
             if($campaignPackage) {
                 $partner = Partner::getNameById($campaignPackage['partner']);
-                //$media = Partner::getNameById($campaignPackage['media']);
                 $app = App::getNameById($campaignPackage['app']);
                 $campaign = Campaign::getNameById($campaignPackage['campaign']);
-                //$name = $partner.'_'.$media;
-                $status = MyHtml::iElement('glyphicon-ok-sign glyphicon green','','');
-                if($value['status'] == 0){
-                    $status = MyHtml::aElement('javascript:void(0);','modifyStatus',$value['sprid'],'确认提交') . MyHtml::br();
-                    $status .= MyHtml::aElement('javascript:void(0);','deleteRecord',$value['sprid'],'删除预览');
-                }
                 $tabledata[] = [
                     str_replace('00:00:00','',$value['date']),
                     $partner,
@@ -88,7 +85,7 @@ class SdkPromotionResultController extends BController
                     'x',
                     $value['count'],
                     'x',
-                    MyHtml::aElement('javascript:void(0);','deleteRecord',$value['sprid'],'删除预览')
+                    $status
                 ];
             }
         }
@@ -112,6 +109,7 @@ class SdkPromotionResultController extends BController
         if(file_exists($_FILES['result_file']['tmp_name'])) {
             $handle = fopen($_FILES['result_file']['tmp_name'], 'r');
             if ($handle) {
+                $resultState = SdkPromotionResult::deleteAll(['status' => 0]);
                 while (!feof($handle)) {
                     $data = fgetcsv($handle, 0, ';');//
                     if (!isset($data[1])) {//分隔符为逗号的状态
@@ -172,41 +170,33 @@ class SdkPromotionResultController extends BController
     }
 
     public function actionModifyStatus(){
-        $sprid = Utils::getBParam('sprid');
         $resultState = 0;
-        if(isset($sprid)){
-            $transaction =  SdkPromotionResult::getDb()->beginTransaction();
-            try {
-                $model = SdkPromotionResult::findByPk($sprid);
-                if($model){
-                    $model->status = 1;
-                    $resultState = $model->save() == true  ? 1 :0;
-                }
-                $transaction->commit();
-            } catch (ErrorException $e) {
-                $resultState = 0;
-                $transaction->rollBack();
-                MyMail::sendMail($e->getMessage(), 'Error From modify Sdkpromotion status');
+        $transaction =  SdkPromotionResult::getDb()->beginTransaction();
+        try {
+            $resultState = SdkPromotionResult::updateAll(['status' => 1], ['status' => 0]);
+            $transaction->commit();
+        } catch (ErrorException $e) {
+            $resultState = 0;
+            $transaction->rollBack();
+            MyMail::sendMail($e->getMessage(), 'Error From modify Sdkpromotion status');
             }
-        }
+
         echo json_encode($resultState);
         exit;
     }
 
     public function actionDeleteRecord(){
-        $sprid = Utils::getBParam('sprid');
         $resultState = 0;
-        if(isset($sprid)){
-            $transaction =  SdkPromotionResult::getDb()->beginTransaction();
-            try {
-                $resultState = SdkPromotionResult::findByPk($sprid)->delete() == true ? 1: 0 ;
-                $transaction->commit();
-            } catch (ErrorException $e) {
-                $resultState = 0;
-                $transaction->rollBack();
-                MyMail::sendMail($e->getMessage(), 'Error From delete Sdkpromition status');
-            }
+        $transaction =  SdkPromotionResult::getDb()->beginTransaction();
+        try {
+            $resultState = SdkPromotionResult::deleteAll(['status' => 0]);
+            $transaction->commit();
+        } catch (ErrorException $e) {
+            $resultState = 0;
+            $transaction->rollBack();
+            MyMail::sendMail($e->getMessage(), 'Error From delete Sdkpromition status');
         }
+
         echo json_encode($resultState);
         exit;
     }

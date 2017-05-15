@@ -9,14 +9,23 @@
     <!-- panel body -->
     <div class="panel-body">
         <div class="row">
-                <div class="col-sm-10 col-md-10 col-lg-10">
-                    <button class="btn btn-primary" id="btn_add_result">
-                        <span class="glyphicon glyphicon-circle-arrow-up"></span>
-                        <span>上传文件</span>
-                    </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </div>
-                <div class="col-sm-2 col-md-2 col-lg-2 text-right">
-                </div>
+            <div class="col-sm-10 col-md-10 col-lg-10">
+                注:灰色小勾表示预览状态，绿色小勾表示已经提交,每次上传预览的时候，之前并未被提交的预览都会被覆盖 <br/><br/>
+                <button class="btn btn-primary" id="btn_add_result">
+                    <span class="glyphicon glyphicon-circle-arrow-up"></span>
+                    <span>上传预览</span>
+                </button>&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" id="btn_remove_result">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    <span>删除预览</span>
+                </button>&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-success" id="btn_submit_result">
+                    <span class="glyphicon glyphicon-ok-sign"></span>
+                    <span>提交预览</span>
+                </button>&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+            </div>
         </div><hr>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
@@ -60,7 +69,7 @@
                     <img src="/imgs/resultcsv.png" alt="csv格式图片"/><br/><br/>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" id="btn_submit_result">预览</button>
+                    <button type="submit" class="btn btn-success" id="btn_submit">预览</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                 </div>
             </form>
@@ -126,7 +135,7 @@
     $('#formResult').on('submit', (function(event){
         event.preventDefault();
 
-        $('#btn_submit_result').attr('disabled', true);
+        $('#btn_submit').attr('disabled', true);
         var post_url = '/sdk-promotion-result/upload-csv';
         var post_data = new FormData(this);
         var method = 'post';
@@ -138,16 +147,26 @@
             }else{
                 alert('预览失败');
             }
-            $('#btn_submit_result').attr('disabled', false);
+            $('#btn_submit').attr('disabled', false);
         };
         callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
     }));
 
-    function modifyStatus(sprid){
-        if(confirm('确认提交?')) {
+    $('#btn_submit_result').on('click', function(event){
+        event.preventDefault();
+        modifyStatus();
+    });
+
+    $('#btn_remove_result').on('click', function(event){
+        event.preventDefault();
+        deleteRecord();
+    });
+
+    function modifyStatus(){
+        if(confirm('确认文档内正确并提交?')) {
             var post_url = '/sdk-promotion-result/modify-status';
             var post_data = {
-                'sprid': sprid
+
             };
             var method = 'get';
             var success_function = function (result) {
@@ -162,11 +181,10 @@
         }
     }
 
-    function deleteRecord(sprid){
-        if(confirm('确认删除预览?')) {
+    function deleteRecord(){
+        if(confirm('确认删除全部预览?')) {
             var post_url = '/sdk-promotion-result/delete-record';
             var post_data = {
-                'sprid': sprid,
             };
             var method = 'get';
             var success_function = function (result) {
