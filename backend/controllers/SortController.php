@@ -101,7 +101,7 @@ class SortController extends BController
             $data[] = [
                 'sdid' => $sdid,
                 'sdkname'=> isset($sdk->name)?  $sdk->name : '',
-                'ratio' => self::_getRatio($prid,$provider),
+                'ratio' => self::_getRatio($sdid,$prid,$provider),
               //  'item' => MyHtml::iElement('glyphicon glyphicon-align-justify ','','',$sdid)
             ];
         }
@@ -143,12 +143,12 @@ class SortController extends BController
         return  $validSort;
     }
 
-    private function _getRatio($prid,$provider){
+    private function _getRatio($sdid, $prid,$provider){
         $ratio = 0;
-        $date = date('Y-m-d', strtotime("-1 day"));
-        $yes_all_success = SdkPayDay::getTodayByPridProvider($prid, $provider, $date);
-        if(!empty($yes_all_success['sumallpay']) && !empty($yes_all_success['sumsuccesspay']) ){
-            $ratio = number_format($yes_all_success['sumallpay'] / $yes_all_success['sumallsuccess'], 2);
+        $date = date('Y-m-d', strtotime("-1 day")) .' 00:00:00';
+        $yes_all_success = SdkPayDay::getTodayByPridProvider($sdid,$prid, $provider, $date);
+        if(!empty($yes_all_success['sumallPay']) && !empty($yes_all_success['sumsuccessPay']) ){
+            $ratio = number_format($yes_all_success['sumsuccessPay'] / $yes_all_success['sumallPay'], 2);
         }
         return $ratio;
     }
