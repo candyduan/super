@@ -44,5 +44,13 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
 
         return isset($data['id']) ? $data['id'] : '';
     }
+    public static function getMrateById($cpid){
+        $data = self::find()->select(['mrate'])->where(['id' => $cpid])->one();
+
+        $a =1 ;
+        return isset($data['mrate']) ? $data['mrate'] : '';
+
+    }
+
     
 }

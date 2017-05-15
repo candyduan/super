@@ -7,6 +7,7 @@ use common\library\Constant;
 use common\models\orm\extend\RegChannelVerifyRule;
 use common\library\Utils as commonUtils;
 use common\models\orm\extend\RegChannelCfgUrlYapi;
+use common\models\orm\extend\RegChannelCfgMain;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
@@ -40,22 +41,29 @@ class Utils{
      * @return register task list
      */
     public static function gotoRegister(RegChannel $regChannelModel,RegOrder $regOrderModel,SimCard $simCardModel){
-        $devType    = $regChannelModel->devType;
-        switch ($devType){
-            case Constant::CHANNEL_SINGLE:
-            case Constant::CHANNEL_DOUBLE:
-                $sdRegister    = new SdRegister($regChannelModel, $regOrderModel, $simCardModel);
-                $res           = $sdRegister->register();
-                break;
-            case Constant::CHANNEL_SMSP:
-                $smsRegister   = new SmsRegister($regChannelModel, $regOrderModel, $simCardModel);
-                $res           = $smsRegister->register();
-                break;
-            case Constant::CHANNEL_URLP:
-                $urlRegister  = new UrlRegister($regChannelModel, $regOrderModel, $simCardModel);
-                $res          = $urlRegister->register();
-                break;
+        $useCfg = RegChannelCfgMain::useCfgChannel($regChannelModel->rcid);
+        if($useCfg){
+            $devType    = $regChannelModel->devType;
+            switch ($devType){
+                case Constant::CHANNEL_SINGLE:
+                case Constant::CHANNEL_DOUBLE:
+                    $sdRegister    = new SdRegister($regChannelModel, $regOrderModel, $simCardModel);
+                    $res           = $sdRegister->register();
+                    break;
+                case Constant::CHANNEL_SMSP:
+                    $smsRegister   = new SmsRegister($regChannelModel, $regOrderModel, $simCardModel);
+                    $res           = $smsRegister->register();
+                    break;
+                case Constant::CHANNEL_URLP:
+                    $urlRegister  = new UrlRegister($regChannelModel, $regOrderModel, $simCardModel);
+                    $res          = $urlRegister->register();
+                    break;
+            }
+        }else{
+            $className   = 'frontend\library\hndchannel\Channel_'.$regChannelModel->rcid;
+            $res         = $className::register($regChannelModel, $regOrderModel, $simCardModel);
         }
+
         return $res;
     }
     
@@ -63,8 +71,15 @@ class Utils{
      * @return bool
      */
     public static function gotoTrigger(RegChannel $regChannelModel,RegOrder $regOrderModel){
-        $urlTrigger = new UrlTrigger();
-        $res    = $urlTrigger->trigger();
+        $useCfg = RegChannelCfgMain::useCfgChannel($regChannelModel->rcid);
+        if($useCfg){
+            $urlTrigger = new UrlTrigger($regChannelModel,$regOrderModel);
+            $res    = $urlTrigger->trigger();
+        }else{
+            $className   = 'frontend\library\hndchannel\Channel_'.$regChannelModel->rcid;
+            $res         = $className::trigger($regChannelModel,$regOrderModel);
+        }
+
         return $res;
     }
     
@@ -72,16 +87,39 @@ class Utils{
      * @return submit task list 
      */
     public static function gotoSubmit(RegChannel $regChannelModel,RegOrder $regOrderModel,$port,$message){
-        $devType    = $regChannelModel->devType;
-        switch ($devType){
-            case Constant::CHANNEL_URLP:
-                $urlSubmit  = new UrlSubmit($regChannelModel,$regOrderModel,$port,$message);
-                $res    = $urlSubmit->submit();
-                break;
-            case Constant::CHANNEL_SMSP:
-                $smsSubmit  = new SmsSubmit($regChannelModel,$regOrderModel,$port,$message);
-                $res    = $smsSubmit->submit();
-                break;
+        $useCfg = RegChannelCfgMain::useCfgChannel($regChannelModel->rcid);
+        if($useCfg){
+            $devType    = $regChannelModel->devType;
+            switch ($devType){
+                case Constant::CHANNEL_URLP:
+                    $urlSubmit  = new UrlSubmit($regChannelModel,$regOrderModel,$port,$message);
+                    $res    = $urlSubmit->submit();
+                    break;
+                case Constant::CHANNEL_SMSP:
+                    $smsSubmit  = new SmsSubmit($regChannelModel,$regOrderModel,$port,$message);
+                    $res    = $smsSubmit->submit();
+                    break;
+            }
+        }else{
+            $className   = 'frontend\library\hndchannel\Channel_'.$regChannelModel->rcid;
+            $res         = $className::submit($regChannelModel,$regOrderModel,$port,$message);
+        }
+
+        return $res;
+    }
+    
+    
+    /*
+     * 配置化通道数据同步入口
+     */
+    public static function gotoSync(RegChannel $regChannelModel,array $data){
+        $useCfg = RegChannelCfgMain::useCfgChannel($regChannelModel->rcid);
+        if($useCfg){
+            $dataSync   = new DataSync($regChannelModel,$data);
+            $res        = $dataSync->sync();
+        }else{
+            $className   = 'frontend\library\hndchannel\Channel_'.$regChannelModel->rcid;
+            $res         = $className::sync($regChannelModel,$data);
         }
         return $res;
     }
@@ -427,6 +465,34 @@ class Utils{
             }
         } catch (\Exception $e) {
             commonUtils::log('验证码匹配失败1:'.$e->getMessage());
+        }
+        return $result;
+    }
+    
+    
+    public static function getSyncData(){
+        $result = array();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $message = trim(file_get_contents('php://input'));
+            if($message != ''){
+                $result = self::formatHttpResponseToArray($message,'json');
+                if (empty($result)){
+                    if (strtolower( substr($message,0,5)) == "<?xml"){
+                        $result = self::formatHttpResponseToArray($message,'xml');
+                    }
+                    if (empty($result)){
+                        if (preg_match('/\w*=\w*&/', $message)){
+                            parse_str($message,$result);
+                        }
+                        if (empty($result)){
+                            $result = self::formatHttpResponseToArray($message,'text');
+                        }
+                    }
+                }
+            }
+        }
+        if (empty($result)){
+            $result = $_REQUEST;
         }
         return $result;
     }

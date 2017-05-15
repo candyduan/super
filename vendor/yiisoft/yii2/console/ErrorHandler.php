@@ -23,6 +23,7 @@ use yii\helpers\Console;
  */
 class ErrorHandler extends \yii\base\ErrorHandler
 {
+	public $errorAction;
     /**
      * Renders an exception using ansi format for console output.
      * @param \Exception $exception the exception to be rendered.

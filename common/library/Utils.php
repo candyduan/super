@@ -176,4 +176,16 @@ class Utils{
         }
         return false;
     }
+
+    public static function getBParam($key,$default = NULL){
+        $request    = \Yii::$app->getRequest();
+        $value      = $request->get($key);
+        if(!isset($value)){
+            $value  = $request->post($key);
+        }
+        if(!isset($value)){
+            $value  = $default;
+        }
+        return $value;
+    }
 }

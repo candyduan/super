@@ -7,11 +7,12 @@ use common\models\orm\extend\SimCard;
 use common\models\orm\extend\RegChannel;
 use common\library\Constant;
 use common\models\orm\extend\RegOrder;
+use common\library\FController;
 
 /**
  * reg controller
  */
-class RegisterController extends Controller{
+class RegisterController extends FController{
     /*
      * 请求注册
      */
@@ -180,5 +181,32 @@ class RegisterController extends Controller{
         $out['resultCode']  = Constant::RESULT_CODE_SUCC;
         $out['msg']         = Constant::RESULT_MSG_SUCC;
         Utils::jsonOut($out);
+    }
+    
+    
+    
+    
+    /*
+     * 数据同步
+     */
+    public function actionSync(){
+        $sign     = Utils::getFrontendParam('sign');
+        $data   = \frontend\library\regchannel\Utils::getSyncData();
+        if(!Utils::isValid($sign)){
+            $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
+            $out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+            Utils::jsonOut($out);
+            return;
+        }
+        $regChannelModel    = RegChannel::findBySign($sign);
+        if($regChannelModel){
+            $res = \frontend\library\regchannel\Utils::gotoSync($regChannelModel, $data);
+            echo $res;
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+            Utils::jsonOut($out);
+        }
+        
     }
 }

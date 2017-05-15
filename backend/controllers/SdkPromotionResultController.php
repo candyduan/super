@@ -14,11 +14,14 @@ use common\models\orm\extend\Admin;
 use common\models\orm\extend\Partner;
 use common\library\Utils;
 use yii\filters\AccessControl;
+use backend\web\util\MyMail;
+use common\library\BController;
 /**
  * SdkPromotionResultController
  */
-class SdkPromotionResultController extends Controller
+class SdkPromotionResultController extends BController
 {
+    public $layout = "sdk";
     public function behaviors()
     {
         return [
@@ -53,26 +56,35 @@ class SdkPromotionResultController extends Controller
         $tabledata = [];
         foreach($data as $value){
             $campaignPackage = CampaignPackage::findByPk($value['cpid']);
+            $status = MyHtml::iElement('glyphicon-ok-sign glyphicon green','','');
+            if($value['status'] == 0){
+                $status = MyHtml::iElement('glyphicon-ok-sign glyphicon grey','','');
+            }
             if($campaignPackage) {
                 $partner = Partner::getNameById($campaignPackage['partner']);
-                //$media = Partner::getNameById($campaignPackage['media']);
                 $app = App::getNameById($campaignPackage['app']);
                 $campaign = Campaign::getNameById($campaignPackage['campaign']);
-                //$name = $partner.'_'.$media;
-                $status = MyHtml::iElement('glyphicon-remove-sign glyphicon red','','');
-                if($status == 0){
-                    $status = MyHtml::aElement('javascript:void(0);','changeStatus',$value[''],'确认提交');
-                    $status .= MyHtml::aElement('javascript:void(0);','delete',$value[''],'删除预览');
-                }
                 $tabledata[] = [
-                    $value['date'],
+                    str_replace('00:00:00','',$value['date']),
                     $partner,
                     $app,
                     $campaign,
                     $campaignPackage['mediaSign'],
                     $value['price'] / 100,
                     $value['count'],
-                    $value['amount'],
+                    $value['amount']/100,
+                    $status
+                ];
+            }else{//错误数据展示
+                $tabledata[] = [
+                    str_replace('00:00:00','',$value['date']),
+                    'x',
+                    'x',
+                    'x',
+                    'x',
+                    'x',
+                    $value['count'],
+                    'x',
                     $status
                 ];
             }
@@ -90,46 +102,99 @@ class SdkPromotionResultController extends Controller
         exit;
     }
 
-    public function actionUploadCsv() {//0 - 日期 1-活动 2-渠道标识 3-成果数
+    public function actionUploadCsv() {//0 - 日期 1-活动 2-渠道标识 3-成果数  （这里上传 只是预览 当文档里的活动ID 写错时候 根据产品需求 插入错误数据）
         $resultState = 0;
-        $handle = fopen($_FILES['result_file']['tmp_name'],'r');
-        if($handle ) {
-            while ($data = fgetcsv($handle)) {
-                if(self::_characet($data[0]) !== '日期'){
-                    //获取cpid--------
-                    $cpid = '';
-                    if(is_numeric($data[1])) {
-                        $caid = $data[1];
-                    }else {
-                        $caid = Campaign::getIdByName($data[1]);
+        ini_set("auto_detect_line_endings", true);
+        //setlocale(LC_ALL, 'zh_CN');
+        if(file_exists($_FILES['result_file']['tmp_name'])) {
+            $handle = fopen($_FILES['result_file']['tmp_name'], 'r');
+            if ($handle) {
+                $resultState = SdkPromotionResult::deleteAll(['status' => 0]);
+                while (!feof($handle)) {
+                    $data = fgetcsv($handle, 0, ';');//
+                    if (!isset($data[1])) {//分隔符为逗号的状态
+                        $data = explode(',', $data[0]);
                     }
-                    if($caid !== '') {
-                        $cpid = CampaignPackage::getIdByCampaignMedaiSign($caid, $data[2]);
-                    }
-                    //----------------
 
-                    if($cpid !== '') {
-                        $date =  $date = date('Y-m-d H:i:s', strtotime($data[0]));
-                        $count = $data[3];
-                        $mrate = Campaign::getMrateById($cpid);
-                        $price = '';
-                        if(is_numeric($count) && is_numeric($mrate)){
-                            $price = $mrate * intval($count);
+                    if (trim(self::_characet($data[0])) !== '日期' && is_numeric($data[3])) {
+                        //获取cpid--------
+                        $cpid = '';
+                        if (is_numeric($data[1])) {
+                            $caid = $data[1];
+                        } else {
+                            $caid = Campaign::getIdByName(trim(self::_characet($data[1])));
                         }
+                        if ($caid !== '') {
+                            $cpid = CampaignPackage::getIdByCampaignMedaiSign($caid, $data[2]);
+                        }
+                        //----------------
+                        $date = $date = date('Y-m-d', strtotime($data[0]));
+                        $count = $data[3];
+                        if ($cpid !== '') {
+                            $mrate = CampaignPackage::getMrateById($cpid);
+                            $amount = '';
+                            if (is_numeric($count) && is_numeric($mrate)) {
+                                $amount = $mrate * intval($count) * 100;
+                            }
 
-                        if(is_numeric($price)){
+                            if (is_numeric($amount)) {
+                                $model = new SdkPromotionResult();
+                                $model->cpid = $cpid;
+                                $model->date = $date;
+                                $model->count = $count;
+                                $model->price = $mrate * 100;
+                                $model->amount = $amount;
+                                $model->status = 0;
+                                $resultState += $model->save() == true ? 1 : 0;
+                            }
+                        } else {//活动ID 或者标识符写错的时候插入 错误数据
                             $model = new SdkPromotionResult();
-                            $model->cpid = $cpid;
+                            $model->cpid = 0;
                             $model->date = $date;
                             $model->count = $count;
-                            $model->price = $price;
+                            $model->price = 0 * 100;
+                            $model->amount = 0;
+                            $model->status = 0;
                             $resultState += $model->save() == true ? 1 : 0;
                         }
+
+                    } else {
+                        continue;
                     }
-                }else{
-                    continue;
                 }
+                unlink($_FILES['result_file']['tmp_name']);
             }
+        }
+        echo json_encode($resultState);
+        exit;
+    }
+
+    public function actionModifyStatus(){
+        $resultState = 0;
+        $transaction =  SdkPromotionResult::getDb()->beginTransaction();
+        try {
+            $resultState = SdkPromotionResult::updateAll(['status' => 1], ['status' => 0]);
+            $transaction->commit();
+        } catch (ErrorException $e) {
+            $resultState = 0;
+            $transaction->rollBack();
+            MyMail::sendMail($e->getMessage(), 'Error From modify Sdkpromotion status');
+            }
+
+        echo json_encode($resultState);
+        exit;
+    }
+
+    public function actionDeleteRecord(){
+        $resultState = 0;
+        $transaction =  SdkPromotionResult::getDb()->beginTransaction();
+        try {
+            $resultState = SdkPromotionResult::deleteAll(['status' => 0]);
+            $transaction->commit();
+        } catch (ErrorException $e) {
+            $resultState = 0;
+            $transaction->rollBack();
+            MyMail::sendMail($e->getMessage(), 'Error From delete Sdkpromition status');
         }
 
         echo json_encode($resultState);

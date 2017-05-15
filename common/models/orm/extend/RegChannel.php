@@ -79,4 +79,15 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         );
         return $item;
     }
+    
+    public static function findBySign($sign){
+        $condition  = array(
+            'sign'  => $sign,
+        );
+        $model  = self::find()
+                        ->where($condition)
+                        ->one()
+                        ;
+        return $model;
+    }
 }

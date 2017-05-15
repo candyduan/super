@@ -142,4 +142,15 @@ a.desc:after {
     border-radius: 25px;
 }
 
+.gclass_table {
+    float : left;
+    width : 100%;
+    /*table-layout:fixed;*/
+    word-break:break-all;
+}
+
+table td {
+    vertical-align:middle !important;
+}
+
 
