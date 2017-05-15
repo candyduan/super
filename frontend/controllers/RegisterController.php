@@ -182,4 +182,14 @@ class RegisterController extends FController{
         $out['msg']         = Constant::RESULT_MSG_SUCC;
         Utils::jsonOut($out);
     }
+    
+    
+    
+    
+    /*
+     * 数据同步
+     */
+    public function actionSync(){
+        //TODO
+    }
 }
