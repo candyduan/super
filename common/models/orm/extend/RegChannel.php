@@ -13,6 +13,20 @@ class RegChannel extends \common\models\orm\base\RegChannel{
                         ;
         return $model;
     }
+   
+    public static function findAllToArray(){
+    		$datas = self::find()->all();
+    		$channelArr = [];
+    		if($datas){
+	    		foreach($datas as $data){
+	    			$channelArr[] =[
+	    					'rcid' => $data->rcid,
+	    					'name' => '【' . $data->rcid . '】' . $data->name,
+	    			];
+	    		}
+    		}
+    		return  $channelArr;
+    }
     
     public static function findAllNeedPaginator($page=1,$perpage = 20){        
         $data = self::find();
@@ -27,9 +41,9 @@ class RegChannel extends \common\models\orm\base\RegChannel{
             'count'     => $totalCount,
         ];
     }
+    
     public static function findByMerchantNeedPaginator($merchantId,$page=1,$perpage = 20){
         $data = self::find()->where(['merchant' => $merchantId]);
-        
         $totalCount = $data->count();
         $pages      = ceil($totalCount/$perpage);
         $pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);

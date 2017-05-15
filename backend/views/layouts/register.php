@@ -30,6 +30,7 @@
 
     <script src="/js/common/jquery.js"></script>
     <script src="/js/common/bootstrap.min.js"></script>
+  	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
     <script src="/js/register/Utils.js"></script>
 </head>
 

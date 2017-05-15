@@ -7,6 +7,7 @@ use common\models\orm\extend\RegChannel;
 use common\library\Constant;
 use common\models\orm\extend\RegChannelMutex;
 use common\models\orm\extend\RegChannelMutexList;
+use SebastianBergmann\CodeCoverage\Util;
 class RegisterController extends Controller{
     public $layout = "register";
     public function actionTest(){
@@ -115,7 +116,7 @@ class RegisterController extends Controller{
     		$channelMutexId = Utils::getBackendParam('rcmid');
     		
     		if(is_numeric($channelMutexId)){
-    			$res = RegChannelMutexList::findChannelMutexById($channelMutexId);
+    			$res = RegChannelMutexList::findChannelMutexByRcmid($channelMutexId);
     		}else{
     			
     		}
@@ -129,7 +130,7 @@ class RegisterController extends Controller{
     			}
     			$out['list']    = $list;
     		}else{
-    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     			$out['msg']         = Constant::RESULT_MSG_NONE;
     		}
     		Utils::jsonOut($out);
@@ -162,8 +163,66 @@ class RegisterController extends Controller{
     		 
     }
     
+    /**
+     * 停用/启用通道组
+     */
+    public function  actionChangeMutexStatus(){
+    		$rcmid = Utils::getBackendParam('rcmid');
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		if(is_numeric($rcmid)){
+    			$res = RegChannelMutex::changeMutexStatusById($rcmid);
+    			if($res){
+    				$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    				$out['msg']         = Constant::RESULT_MSG_SUCC;
+    			}
+    		}
+    		Utils::jsonOut($out);
+    }
     
+    /**
+     * 添加通道到通道组
+     */
+    public function actionAddChannelToMutex(){
+    		$rcid = Utils::getBackendParam('rcid');
+    		$rcmid = Utils::getBackendParam('rcmid');
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		$channelModel = RegChannel::findByPk($rcid);
+    		if($channelModel){
+    			$res = RegChannelMutexList::addChannelToMutex($rcid, $rcmid);
+    			if($res['resultCode']){
+    				$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    				$out['msg']         = Constant::RESULT_MSG_SUCC;
+    			}else{
+    				$out['msg']  =$res['msg'];
+    			}
+    		}
+    		Utils::jsonOut($out);
+    }
     
+    /**
+     * 改变通道组中通道的状态
+     * regChannelMutexList
+     */
+    public  function actionChangeMutexListStatus(){
+    		$rcmlid = Utils::getBackendParam('rcmlid');
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		if(is_numeric($rcmlid)){
+    			$res = RegChannelMutexList::changeStatusById($rcmlid);
+    			if($res){
+    				$item = RegChannelMutexList::getItemArrByModel(RegChannelMutexList::findByPk($rcmlid));
+    				$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    				$out['msg']         = Constant::RESULT_MSG_SUCC;
+    				$out['item'] = $item;
+    			}else{
+    				$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    			}
+    		}else{
+    			$out['msg']   = Constant::RESULT_MSG_PARAMS_ERR;
+    		}
+    		Utils::jsonOut($out);
+    }
     
     
 
