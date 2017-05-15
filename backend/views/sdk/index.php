@@ -57,16 +57,16 @@
             <form id="formSdk" action="#" method="post" enctype="multipart/form-data">
                 <div class="modal-body" >
                     <div class="input-group">
-                        <span class="input-group-addon"> sdk商  * :</span>
-                        <input type="text" name="sdk_partner" id="sdk_partner" class="form-control" width="1000px"/>
+                        <span class="input-group-addon"> sdk商  <span class="red">*</span> :</span>
+                        <input placeholder ='必填' type="text" name="sdk_partner" id="sdk_partner" class="form-control" width="1000px"/>
                     </div><br /><br />
                     <div class="input-group">
-                        <span class="input-group-addon">sdk名称  * :</span>
-                        <input type="text" name="sdk_name" id="sdk_name" class="form-control"/>
+                        <span class="input-group-addon">sdk名称  <span class="red">*</span>:</span>
+                        <input  placeholder ='必填' type="text" name="sdk_name" id="sdk_name" class="form-control"/>
                     </div><br /><br />
                     <div class="input-group">
-                        <span class="input-group-addon">sdk标识  * :</span>
-                        <input type="text" name="sdk_sign" id="sdk_sign" class="form-control"/>
+                        <span class="input-group-addon">sdk标识  <span class="red">*</span> :</span>
+                        <input  placeholder ='必填' type="text" name="sdk_sign" id="sdk_sign" class="form-control"/>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">分成比例:</span>
