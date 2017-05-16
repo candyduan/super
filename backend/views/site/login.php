@@ -29,7 +29,7 @@ AppAsset::register($this);
                 <div class="panel-heading">
                     <div class="inline">
                     <span class="glyphicon glyphicon-leaf"></span>
-                        <span class="panel-title">融合SDK后台登陆 </span>
+                        <span class="panel-title">后台登陆</span>
                     </div>
                 </div>
                 <div class="panel-body">

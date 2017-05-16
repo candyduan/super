@@ -92,10 +92,12 @@ class Utils{
             $devType    = $regChannelModel->devType;
             switch ($devType){
                 case Constant::CHANNEL_URLP:
+                case Constant::CHANNEL_MULTURL;
                     $urlSubmit  = new UrlSubmit($regChannelModel,$regOrderModel,$port,$message);
                     $res    = $urlSubmit->submit();
                     break;
                 case Constant::CHANNEL_SMSP:
+                case Constant::CHANNEL_MULTSMS;
                     $smsSubmit  = new SmsSubmit($regChannelModel,$regOrderModel,$port,$message);
                     $res    = $smsSubmit->submit();
                     break;
