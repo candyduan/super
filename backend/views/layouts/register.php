@@ -56,7 +56,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>周松<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="/site/logout"><i class="fa fa-fw fa-power-off"></i>退出</a>
+                            <a href="/auth/logout"><i class="fa fa-fw fa-power-off"></i>退出</a>
                         </li>
                     </ul>
                 </li>
