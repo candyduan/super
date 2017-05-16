@@ -9,4 +9,16 @@ class AdminAuthor extends \common\models\orm\base\AdminAuthor{
                     ;
         return $model;
     }
+
+    public static function getPowersByAuid($auid){
+        $data  = self::find()
+            ->where(['=','auid',$auid])
+            ->andwhere(['=','status',1])
+            ->all();
+        $return_data = [];
+        foreach($data as $value){
+            $return_data[] = $value['power'];
+        }
+        return $return_data;
+    }
 }

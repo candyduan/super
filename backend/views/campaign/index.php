@@ -465,6 +465,7 @@
         event.preventDefault();
 
         $('#btn_submit_goods').attr('disabled', true);
+        var  caid = $('#hidden_caid').val();
         var post_url = '/campaign/add-goods';
         var post_data = new FormData(this);
         var msg_success = MESSAGE_ADD_SUCCESS;
@@ -472,6 +473,7 @@
         var method = 'post';
         var successFunc = function (result) {
             if(parseInt(result) == 1){
+                getSdks(caid);
                 alert(msg_success);
             }else if(parseInt(result) == 0){
                 alert(msg_error);
