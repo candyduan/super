@@ -20,6 +20,7 @@ use common\models\orm\extend\CampaignPackageSdk;
 use yii\filters\AccessControl;
 use common\library\BController;
 use common\library\province\ProvinceUtils;
+use common\models\orm\extend\SdkPayDay;
 /**
  * SdkPay controller
  */
@@ -64,102 +65,107 @@ class SdkPayController extends BController
     }
 
     public function actionAjaxIndex(){
-        $request = Yii::$app->request;
-        $start = intval($request->get('start', 0));
-        $length = intval($request->get('length', 100));
+        $start = Utils::getBackendParam('start',0);
+        $length = Utils::getBackendParam('length',100);
         
-        Utils::jsonOut(array($length));
-                exit;
+        $sdk = Utils::getBackendParam('sdk','');
+        $stime = Utils::getBackendParam('startDate','');
+        $etime = Utils::getBackendParam('endDate','');
         
-//         $caid = $request->get('id','');//campaign 的id
-//         $condition = self::_getCondition($caid);
-
-//         $data = CampaignPackage::getIndexData($condition, $start,$length);
-//         $count = CampaignPackage::getIndexCount($condition);
-//         $status = [
-//             0 => '未启用',
-//             1 => '使用中',
-//         ];
-//         $grade = [
-//             0 => '普通',
-//             1 => 'A级',
-//         ];
-//         $payMode = [
-//             0 => 'Normal',
-//             1 => 'Hard',
-//         ];
-//         $tabledata = [];
-//         foreach($data as $value){
-//             $tabledata[] = [
-//                 MyHtml::aElement('javascript:void(0);' ,'showPackage', $value['id'],$value['id']),
-//                 isset($value['media']) ? '['.$value['media'].']'.Partner::getNameById($value['media']):'',
-//                 isset($value['mediaSign']) ? $value['mediaSign'] :'',
-//                 isset($grade[$value['grade']]) ? $grade[$value['grade']] :'',
-//                 isset($status[$value['opened']]) ? $grade[$value['opened']] :'',
-//                 isset($payMode[$value['payMode']]) ? $payMode[$value['payMode']] :'',
-//                 sprintf('%.2f',$value['rate']) . ' %',
-//                 isset($value['mtype']) ? CampaignPackage::getMTypeName($value['mtype']) :'',
-//                 sprintf('%.2f',$value['mrate']) . ' %',
-//                 sprintf('%.2f',$value['cutRate']) . ' % @' . date('Y-m-d', $value['cutDay']),
-//                 //MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'功能一'). MyHtml::br().
-//                 //MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'功能二'). MyHtml::br().
-//                 MyHtml::aElement('javascript:void(0);' ,'getSdks',$value['id'],'渠道关联配置')
-//             ];
-//         }
-
-//         $partnerName = '';
-//         $appName = '';
-//         $campaignName = '';
-//         $campaignModel = Campaign::findByPk($caid);
-//         if($campaignModel){
-//             $campaignName = '['.$campaignModel->id.']'.$campaignModel->name;
-//             $appModel = App::findByPk($campaignModel->app);
-//             if($appModel){
-//                 $appName = '['.$appModel->id.']'.$appModel->name;
-//             }
-//             $partnerModel = Partner::findByPk($campaignModel->partner);
-//             if($partnerModel){
-//                 $partnerName = '['.$partnerModel->id.']'.$partnerModel->name;
-//             }
-//         }
+        $dateType = Utils::getBackendParam('dateType',3);
+        $provider = Utils::getBackendParam('provider',0);
+        $province = json_decode(Utils::getBackendParam('province','[]'),true);
+        $time = json_decode(Utils::getBackendParam('time','[]'),true);
         
-//         $data = [
-//             'searchData' => [
-
-//             ],
-//             'recordsTotal' => $count,
-//             'recordsFiltered' => $count,
-//             'tableData' => $tabledata,
-//             'partnerName' => $partnerName,
-//             'appName'    => $appName,
-//             'campaignName' => $campaignName,
-//         ];
-//         Utils::jsonOut($data);
-//         exit;
-    }
-
-    private function _getCondition($id){
-        $condition[] = 'and';
-//         $condition[] = [
-//             '=',
-//             'campaign.deleted',
-//             0
-//         ];
-
-        $condition[] = [
-            '=',
-            'campaign.belong',
-            1
+        $checkSDK = Utils::getBackendParam('checkSDK',true);
+        $checkProvince = Utils::getBackendParam('checkProvince',true);
+        $checkProvider = Utils::getBackendParam('checkProvider',true);
+        
+        $condition = self::_getCondition($sdk,$stime,$etime,$dateType,$provider,$province,$time);
+        
+        $data = SdkPayDay::getIndexData($condition, $start,$length);
+        $count = SdkPayDay::getIndexCount($condition);
+        $providerName = [
+            0 => '-',
+            1 => '移动',
+            2 => '联通',
+            3 => '电信',
         ];
-
-        if($id!== ''){
-            $condition[] = [
-                '=',
-                'campaign.id',
-                $id
-            ];
+        $tabledata = [];
+        foreach($data as $value){
+            $item = array(date('Y-m-d',strtotime($value['date'])));
+            if($checkSDK){
+                array_push($item, $value['sdk']);
+            }
+            if($checkProvider){
+                array_push($item, $providerName[$value['provider']]);
+            }
+            if($checkProvince){
+                array_push($item, $value['provinceName']);
+            }
+            array_push($item, $value['provinceName']);
+            $tabledata[] = $item;
         }
 
+        $data = [
+            'searchData' => [
+
+            ],
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'tableData' => $tabledata,
+        ];
+        Utils::jsonOut($data);
+        exit;
+    }
+
+    private function _getCondition($sdk,$stime,$etime,$dateType,$provider,$province,$time){
+        $condition[] = 'and';
+        $condition[] = [
+            '=',
+            'sdkPayDay.status',
+            1
+        ];
+        if($sdk > 0){
+            $condition[] = [
+                '=',
+                'sdkPayDay.sdid',
+                $sdk
+            ];
+        }
+        
+        if(Utils::isDate($stime)){
+            $condition[] = [
+                '>=',
+                'sdkPayDay.date',
+                $stime.' 00:00:00'
+            ];
+        }
+        if(Utils::isDate($etime)){
+            $condition[] = [
+                '<=',
+                'sdkPayDay.date',
+                $etime.' 23:59:59'
+            ];
+        }
+        // TODO dateType
+
+        if($provider > 0){
+            $condition[] = [
+                '=',
+                'sdkPayDay.provider',
+                $provider
+            ];
+        }
+        if(count($province) > 0){
+            $condition[] = [
+                'in',
+                'sdkPayDay.prid',
+                $province
+            ];
+        }
+        if(count($time) > 0){// TODO
+        }
         return $condition;
     }
 }

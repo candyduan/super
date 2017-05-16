@@ -132,6 +132,17 @@ class Utils{
         return date('Y-m-d H:i:s');
     }
     
+    /**
+     * 是否是正确的日期
+     * yyyy-mm-dd HH:MM:ss 或者 yyyy-mm-dd
+     */
+    public static function isDate($date){
+        if (preg_match("/^\d\d\d\d-\d\d-\d\d\s\d\d\:\d\d:\d\d$/", $date) || preg_match("/^\d\d\d\d-\d\d-\d\d$/", $date)) {
+            return true;
+        }
+        return false;
+    }
+    
     public static function getClientIp(){
         return (@$_SERVER["HTTP_X_REAL_IP"] != null) ? @$_SERVER["HTTP_X_REAL_IP"] : @$_SERVER["REMOTE_ADDR"];
     }
