@@ -110,12 +110,10 @@ class SdkPromotionResultController extends BController
             $handle = fopen($_FILES['result_file']['tmp_name'], 'r');
             if ($handle) {
                 $resultState = SdkPromotionResult::deleteAll(['status' => 0]);
-                while (!feof($handle)) {
-                    $data = fgetcsv($handle, 0, ';');//
+                while ($data = fgetcsv($handle, 0, ';')) {
                     if (!isset($data[1])) {//分隔符为逗号的状态
                         $data = explode(',', $data[0]);
                     }
-
                     if (trim(self::_characet($data[0])) !== '日期' && is_numeric($data[3])) {
                         //获取cpid--------
                         $cpid = '';
@@ -150,9 +148,9 @@ class SdkPromotionResultController extends BController
                         } else {//活动ID 或者标识符写错的时候插入 错误数据
                             $model = new SdkPromotionResult();
                             $model->cpid = 0;
-                            $model->date = $date;
+                            $model->date = $date . ' 00:00:00';
                             $model->count = $count;
-                            $model->price = 0 * 100;
+                            $model->price = 0;
                             $model->amount = 0;
                             $model->status = 0;
                             $resultState += $model->save() == true ? 1 : 0;
@@ -162,10 +160,10 @@ class SdkPromotionResultController extends BController
                         continue;
                     }
                 }
-                unlink($_FILES['result_file']['tmp_name']);
             }
+            unlink($_FILES['result_file']['tmp_name']);
         }
-        echo json_encode($resultState);
+        Utils::jsonOut($resultState);
         exit;
     }
 
