@@ -67,6 +67,10 @@ class SdkPayController extends BController
         $request = Yii::$app->request;
         $start = intval($request->get('start', 0));
         $length = intval($request->get('length', 100));
+        
+        Utils::jsonOut(array($length));
+                exit;
+        
 //         $caid = $request->get('id','');//campaign 的id
 //         $condition = self::_getCondition($caid);
 

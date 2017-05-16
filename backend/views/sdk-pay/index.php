@@ -21,8 +21,8 @@
                     <input type="checkbox" id="checkProvince" name="checkProvince" checked="true"/> 省份 
                     <input type="checkbox" id="checkProvider" name="checkProvider" checked="true"/>运营商 
                     
-                    <i class="glyphicon pointer green glyphicon-certificate" onclick="setDateType(this)" title="时段" value="3"></i> 
-                    <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0"></i> 
+                    <i class="glyphicon pointer green glyphicon-certificate" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
+                    <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0" id="inputProvider"></i> 
                     <i class="glyphicon pointer green glyphicon-globe" onclick="setProvince()" title="省份"></i> 
                     <i class="glyphicon pointer grey glyphicon-time" onclick="setTime()" title="小时时段"></i> 
                     <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="查询"></i> 
@@ -110,6 +110,11 @@
     })
 
     function _initDataTable() {
+        var param = '&dateType='+ $("#inputDateType").attr("value");
+        param += '&provider=' + $("#inputProvider").attr("value");
+        param += '&province=' + $('#hidden_province_array').val().split(',');
+        param += '&time=' + $('#hidden_setime_array').val().split(',');
+        
         $("#tbl").dataTable().fnDestroy();
         $('#tbl').DataTable({
             "pagingType": "simple_numbers",
@@ -139,8 +144,9 @@
             },
             "serverSide": true,
             "ajax": {
-                "url":'/sdk-pay/ajax-index?' + $.param($('#formSearch').serializeArray()),
+                "url":'/sdk-pay/ajax-index?' + $.param($('#formSearch').serializeArray()) + param,
                 "dataSrc": function(json) {
+                    refreshColumn();
                     return json.tableData;
                 }
             }
@@ -168,6 +174,24 @@
             $('#hidden_province_array').val(provincelimit.join(','));
             $('#modalProvince').modal('hide');
         });
+    }
+
+    function refreshColumn(){
+        if($("#checkSDK").prop('checked')){
+        	$("#cloumn_sdk").show();
+        }else{
+        	$("#cloumn_sdk").hide();
+        }
+        if($("#checkProvince").prop('checked')){
+        	$("#cloumn_province").show();
+        }else{
+        	$("#cloumn_province").hide();
+        }
+        if($("#checkProvider").prop('checked')){
+        	$("#cloumn_provider").show();
+        }else{
+        	$("#cloumn_provider").hide();
+        }
     }
     
     function setDateType(that){
@@ -253,7 +277,7 @@
     }
     
     function searchData(){
-        alert('TODO');
+    	_initDataTable();
     }
     function downloadData(){
     	alert('TODO');
