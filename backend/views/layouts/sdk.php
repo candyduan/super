@@ -54,7 +54,7 @@ use yii\helpers\Html;
                     </a>
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
-                            <a href="/site/logout">
+                            <a href="/auth/logout">
                                 <i class="ace-icon fa fa-power-off"></i>
                                 退出
                             </a>

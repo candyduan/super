@@ -36,38 +36,12 @@ class SiteController extends BController
         if (!Yii::$app->user->isGuest) {
             return $this->render("/site/index");
         } else {
-            $this->redirect("/site/login");
+            $this->redirect("/auth/login");
         }
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->render("/site/index");
-        }
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-           $this->redirect("/site/index");
-        } else {
-            return $this->renderAjax('/site/login', [
-                'model' => $model,
-            ]);
-        }
-    }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-        return $this->goHome();
-    }
+
+
+    
 }
