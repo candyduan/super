@@ -22,7 +22,7 @@
                     <input type="checkbox" id="checkProvider" name="checkProvider" checked="true"/>运营商 
                     
                     <i class="glyphicon pointer green glyphicon-certificate" onclick="setDateType(this)" title="时段" value="3"></i> 
-                    <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider()" title="运营商"></i> 
+                    <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0"></i> 
                     <i class="glyphicon pointer green glyphicon-globe" onclick="setProvince()" title="省份"></i> 
                     <i class="glyphicon pointer grey glyphicon-time" onclick="setTime()" title="小时时段"></i> 
                     <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="查询"></i> 
@@ -36,10 +36,10 @@
                 <table id="tbl" class="table table-striped table-bordered gclass_table text-center">
                     <thead>
                     <tr>
-                        <td>日期</td>
-                        <td>SDK</td>
-                        <td>运营商</td>
-                        <td>省份</td>
+                        <td id="cloumn_date">日期</td>
+                        <td id="cloumn_sdk">SDK</td>
+                        <td id="cloumn_provider">运营商</td>
+                        <td id="cloumn_province">省份</td>
                         <td>请求金额</td>
                         <td>信息费</td>
                         <td>转化率</td>
@@ -67,6 +67,24 @@
             <input type="hidden" id='hidden_setime_array' value = "[]" />
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success" id="btn_submit_sdktime">提交</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalProvince" class="modal fade">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>省份设置:</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="div_province" style="height:500px">
+            </div>
+            <input type="hidden" id='hidden_province_array' value = "[]" />
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btn_submit_province">提交</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -138,14 +156,86 @@
         $('#hidden_setime_array').val(timelimit.join(','));
         $('#modalSdkTime').modal('hide');
     });
+
     
-    function setDateType(){
-        alert(1);
+    function saveProvince(){
+    	$('#btn_submit_province').on('click', function(event){
+            event.preventDefault();
+            var provincelimit = [];
+            $('#div_province td').children(".btn-success").each(function(){
+            	provincelimit.push($(this).attr('value'));
+            });
+            $('#hidden_province_array').val(provincelimit.join(','));
+            $('#modalProvince').modal('hide');
+        });
     }
-    function setProvider(){
-        alert(2);
+    
+    function setDateType(that){
+    	if($(that).hasClass('glyphicon-certificate')){
+            $(that).removeClass('glyphicon-certificate').addClass('glyphicon-music');
+            $(that).attr('title',"月份");
+            $(that).attr('value',"4");
+        }else if($(that).hasClass('glyphicon-music')){
+            $(that).removeClass('glyphicon-music').addClass('glyphicon-glass');
+            $(that).attr('title',"天");
+            $(that).attr('value',"1");
+        }else if($(that).hasClass('glyphicon-glass')){
+            $(that).removeClass('glyphicon-glass').addClass('glyphicon-time');
+            $(that).attr('title',"小时");
+            $(that).attr('value',"2");
+        }else if($(that).hasClass('glyphicon-time')){
+            $(that).removeClass('glyphicon-time').addClass('glyphicon-certificate');
+            $(that).attr('title',"时段");
+            $(that).attr('value',"3");
+        }
+    }
+    function setProvider(that){
+    	if($(that).hasClass('glyphicon-phone')){
+            $(that).removeClass('glyphicon-phone').addClass('glyphicon-signal');
+            $(that).attr('title',"移动");
+            $(that).attr('value',"1");
+        }else if($(that).hasClass('glyphicon-signal')){
+            $(that).removeClass('glyphicon-signal').addClass('glyphicon-magnet');
+            $(that).attr('title',"联通");
+            $(that).attr('value',"2");
+        }else if($(that).hasClass('glyphicon-magnet')){
+            $(that).removeClass('glyphicon-magnet').addClass('glyphicon-superscript');
+            $(that).attr('title',"电信");
+            $(that).attr('value',"3");
+        }else if($(that).hasClass('glyphicon-superscript')){
+            $(that).removeClass('glyphicon-superscript').addClass('glyphicon-phone');
+            $(that).attr('title',"运营商");
+            $(that).attr('value',"0");
+        }
     }
     function setProvince(){
+    	var province = $('#hidden_province_array').val().split(',');
+
+        var post_url = '/sdk-pay/get-province';
+        var post_data = {
+        };
+        var method = 'get';
+        var success_function = function(result){
+            var content_str = '';
+            for(var key in result) {
+                var content_arr = [];
+                content_arr.push("<tr><td>"+key+"</td>");
+                var subList= result[key];
+                for(var i in subList){
+                	if (province.indexOf("" + subList[i].id) == -1){ 
+                        content_arr.push('<td><button  onclick = "provincebtnClick(this)" class="btn-danger" value="'+subList[i].id+'">'+subList[i].name+'</button ></td>');
+                    }else{
+                        content_arr.push('<td><button  onclick = "provincebtnClick(this)" class="btn-success" value="'+subList[i].id+'">'+subList[i].name+'</button ></td>');
+                    }
+                }
+                content_str  += content_arr.join(' ');//要改
+            }
+            $('#div_province').empty().append(content_str);
+            $('#btn_submit_province').attr('disabled', false);
+            $('#modalProvince').modal('show');
+            saveProvince();
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
     function setTime(){
     	var circle_buttons = [];
@@ -163,11 +253,20 @@
     }
     
     function searchData(){
+        alert('TODO');
     }
     function downloadData(){
+    	alert('TODO');
     }
-
+    
     function timebtnClick(that){
+        if($(that).hasClass('btn-success')){
+            $(that).removeClass('btn-success').addClass('btn-danger');
+        }else{
+            $(that).removeClass('btn-danger').addClass('btn-success');
+        }
+    }
+    function provincebtnClick(that){
         if($(that).hasClass('btn-success')){
             $(that).removeClass('btn-success').addClass('btn-danger');
         }else{

@@ -19,6 +19,7 @@ use common\models\orm\extend\CampaignPackage;
 use common\models\orm\extend\CampaignPackageSdk;
 use yii\filters\AccessControl;
 use common\library\BController;
+use common\library\province\ProvinceUtils;
 /**
  * SdkPay controller
  */
@@ -47,6 +48,19 @@ class SdkPayController extends BController
     public function actionIndex()
     {
         return $this->render('index', []);
+    }
+    
+    public function actionGetProvince(){
+        $res = ProvinceUtils::getProvinceOrderByChart();
+        $sublist = array(
+            array(
+                'id' => 0,
+                'name' => '不限定'
+            )
+        );
+        array_unshift($res, $sublist);
+        Utils::jsonOut($res);
+        exit;
     }
 
     public function actionAjaxIndex(){
