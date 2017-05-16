@@ -19,5 +19,17 @@ class Merchant extends \common\models\orm\base\Merchant{
         $model  = self::find()->where($condition)->one();
         return $model;
     }
-    
+    public static function findMerchantList() {
+    	$condition  = ['deleted' => 0];
+        $model  = self::find()->where($condition)->all();
+        return $model;
+    }
+	public static function getTypeHeaderMerchantList(){
+		$res			= array();
+      	$merchantList 	= self::findMerchantList();
+      	foreach ($merchantList as $merchant){
+       		$res[]	= array('id'=>$merchant['id'],'name'=>$merchant['id']."-".$merchant['name']);
+       	}
+       	return $res;
+	}
 }

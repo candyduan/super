@@ -219,3 +219,35 @@ Utils.drawMapChart      = function(data){
     chart.setOption(option);
 };
 
+Utils.myTypeHeder	= function(jsonList,lableText,lableId,callback){
+	var tmpMap = {};
+	$("#"+lableText).typeahead({
+		source: function (query, process) {
+			var names = [];
+			$.each(jsonList, function (index, val) {
+				tmpMap[val.name] = val.id;
+				names.push(val.name);
+			});
+			process(names);
+		},
+		items: 10,
+		updater: function (item) {
+			return item;
+		},
+		displayText: function (item) {
+	    	return item;
+		},
+		afterSelect: function (item) {
+			$('#'+lableId).val(tmpMap[item]);
+			if(callback && typeof(callback) === "function"){
+				callback();
+	 		}
+		},
+		delay: 10
+	});
+	$('#'+lableText).blur(function(){
+		if(!$('#'+lableText).val()){
+			$('#'+lableId).val(0)
+		}
+	});
+}
