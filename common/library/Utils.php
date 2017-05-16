@@ -48,7 +48,7 @@ class Utils{
             $out .= "Host: $host\r\n";
             $out .= "Connection: Close\r\n\r\n";
             fwrite($fp, $out);
-            usleep(300000); //等待300ms
+            usleep(500000); //等待500ms
             fclose($fp);
         }
     }
