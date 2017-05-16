@@ -4,9 +4,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=192.168.199.6;dbname=pluto',
-            'username' => 'MiiEngineer',
-            'password' => 'W2*^f23lfw',
+            'dsn' => 'mysql:host=masterdb.maimob.cc;dbname=pluto',
+            'username' => 'newHorizon',
+            'password' => 'pnh20150714',
             'charset' => 'utf8',
         ],
         'cache' => [
