@@ -13,7 +13,7 @@
   <div class="form-group">
 
 <select class="form-control" id="status">
-<option value="0" selected>代码状态</option>
+<option value="-1" selected>代码状态</option>
 <?php foreach ($channelStatusList as $key => $channelStatus){?>
 <option value="<?php echo $key?>"><?php echo $channelStatus?></option>
 <?php }?>

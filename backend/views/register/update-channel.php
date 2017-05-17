@@ -13,6 +13,16 @@
 				</select>
 			</div>
 			<input type="hidden" id="rcid" value="<?php echo $regChannel['rcid'];?>">
+			
+			<div class="input-group" style="padding-top:10px;">
+				<span class="input-group-addon" style="width:120px">负责人</span>
+				<select class="form-control" id="holder">
+				<?php foreach ($adminList as $key => $val){?>
+					<option value="<?php echo $key?>" <?php echo $key==$regChannel['holder']?'selected':''?>><?php echo $val?></option>
+				<?php }?>
+				</select>
+			</div>
+			
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">代码名称</span>
 				<input type="text" class="form-control"  aria-describedby="basic-addon1" id="name" value="<?php echo $regChannel['name'];?>">
@@ -34,7 +44,10 @@
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">最低SDK版本</span>
 				<select class="form-control" id="sdkVersion">
-					<option value="3120" selected>V3120</option>
+					<option value="0" selected>无版本限制</option>
+					<?php foreach ($sdkVersionList as $val){?>
+					<option value="<?php echo $val['versionCode']?>" <?php echo $regChannel['sdkVersion'] == $val['versionCode'] ? 'selected' : ''; ?>><?php echo $val['versionName']?></option>
+					<?php }?>
 				</select>
 			</div>
 						
@@ -49,7 +62,7 @@
 						
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">拿价</span>
-				<input type="text" class="form-control"  placeholder="单位分"  aria-describedby="basic-addon1" id="inRate" value="<?php echo $regChannel['inRate'];?>">
+				<input type="text" class="form-control"  placeholder="单位分"  aria-describedby="basic-addon1" id="inPrice" value="<?php echo $regChannel['inRate'];?>">
 			</div>
 						
 			<div class="input-group" style="padding-top:10px;">
@@ -105,15 +118,16 @@ function doUpdateChannel(){
 	var  useTelecom 	= $('#useTelecom').val();
 	var  sdkVersion 	= $('#sdkVersion').val();
 	var  cutRate 		= $('#cutRate').val();
-	var  inRate 		= $('#inRate').val();
+	var  inPrice 		= $('#inPrice').val();
 	var  waitTime 		= $('#waitTime').val();
 	var  devType 		= $('#devType').val();
 	var  status 		= $('#status').val();
 	var  priorityRate 	= $('#priorityRate').val();
 	var  remark 		= $('#remark').val();
+	var  holder 		= $('#holder').val();
 	
-	var data = 'rcid='+rcid+'&merchant='+merchant+'&name='+name+'&useMobile='+useMobile+'&useUnicom='+useUnicom+'&useTelecom='+useTelecom+'&sdkVersion='+sdkVersion;
-	data = data +'&cutRate='+cutRate+'&inRate='+inRate+'&waitTime='+waitTime+'&devType='+devType+'&status='+status+'&priorityRate='+priorityRate+'&remark='+remark;
+	var data = 'holder='+holder+'&rcid='+rcid+'&merchant='+merchant+'&name='+name+'&useMobile='+useMobile+'&useUnicom='+useUnicom+'&useTelecom='+useTelecom+'&sdkVersion='+sdkVersion;
+	data = data +'&cutRate='+cutRate+'&inPrice='+inPrice+'&waitTime='+waitTime+'&devType='+devType+'&status='+status+'&priorityRate='+priorityRate+'&remark='+remark;
 	if(name != '' && merchant != ''){
 		var succ 	= function(resultJson){
 			alert(resultJson.msg);

@@ -54,21 +54,36 @@ function setResult(){
                 if(checkChannel!=0 || channel){
 					checkTitle+= '<td>通道</td>';
                 }
-                var resultHtml = '<tr><td>日期</td>'+checkTitle+'<td>请求次数</td><td>成功次数</td><td>收入(元)</td><td>转化率</td></tr>';
+                var htmlTitle = '<tr><td>日期</td>'+checkTitle+'<td>请求次数</td><td>成功次数</td><td>收入(元)</td><td>转化率</td></tr>';
+				var resultHtml		= '';
+                var countRequest	= 0;
+				var countSuccess	= 0;
+				var countInPrice	= 0;
+				var averageRate		= 0;
+				var itemNum			= 0;
 	                $.each(resultJson.data,function(key,val){
-	                	resultHtml = resultHtml + '<tr><td>'+val.day+'</td>';
+	                	itemNum++;
+	                	resultHtml 	= resultHtml + '<tr><td>'+val.day+'</td>';
+	                	htmlCount 	= '<tr style="color: orange"><td>总计</td>';
 	                    if(checkMerchant!=0 || merchant){
-	                    	resultHtml = resultHtml + '<td>'+val.merchantName+'</td>';
+	                    	resultHtml 	= resultHtml + '<td>'+val.merchantName+'</td>';
+	                    	htmlCount	= htmlCount + '<td>-</td>';
 	                    }
 	                    if(checkChannel!=0 || channel){
 	                        resultHtml = resultHtml + '<td>'+val.channelName+'</td>';
+	                        htmlCount	= htmlCount + '<td>-</td>';
 	                    }
 	                    var sumcount	= parseFloat(val.sumfail) + parseFloat(val.sumsucc);
 	                    var	rate		= parseFloat(val.sumsucc)/sumcount*100;
-	                    var inPrice		= parseFloat(val.sumsucc) * parseFloat(val.inRate) /100;
+	                    var inPrice		= parseFloat(val.sumsucc) * parseFloat(val.inPrice) /100;
 	                    resultHtml 		= resultHtml + '<td>'+sumcount+'</td><td>'+val.sumsucc+'</td><td>'+inPrice.toFixed(2)+'</td><td>'+rate.toFixed(2)+'%</td></tr>';
+	                    countRequest	= countRequest + sumcount;
+	                    countSuccess	= countSuccess + parseFloat(val.sumsucc);
+	                    countInPrice	= countInPrice + inPrice;
+	                    averageRate		= (averageRate + rate)/itemNum;
+	                    htmlCount		= htmlCount + '<td>'+countRequest+'</td><td>'+countSuccess+'</td><td>'+countInPrice+'</td><td>'+averageRate.toFixed(2)+'%</td></tr>';
 	                });
-                	$('#data_list').html(resultHtml);
+                	$('#data_list').html(htmlTitle+htmlCount+resultHtml);
                 }else{
                 	$('#data_list').html(resultJson.msg);
         	}

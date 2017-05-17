@@ -1,7 +1,8 @@
 <?php
 namespace common\models\orm\extend;
 use yii\data\Pagination;
-use yii\base\Object;
+use common\library\Utils;
+use common\models\orm\extend\Admin;
 
 class RegChannel extends \common\models\orm\base\RegChannel{
     public static function findByPk($id){
@@ -31,7 +32,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     
     public static function findAllNeedPaginator($status,$page=1,$perpage = 20){        
     	$condition	= array();
-    	if($status){
+    	if($status >= 0){
     		$condition['status'] =  $status;
     	}
     	$data = self::find()->where($condition);
@@ -51,7 +52,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	$condition  = array(
     		'rcid'  => $merchantId,
     	);
-    	if($status){
+    	if($status >= 0){
     		$condition['status'] =  $status;
     	}
         $data = self::find()->where($condition);
@@ -70,7 +71,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	$condition  = array(
     		'rcid'  => $channelId,
     	);
-    	if($status){
+    	if($status >= 0){
     		$condition['status'] =  $status;
     	}
     	$data = self::find()->where($condition);
@@ -88,6 +89,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     
     public static function getItemArrByModel(RegChannel $regChannelModel){
         $merchantName   = Merchant::getNameById($regChannelModel->merchant);
+        $holderName		= Admin::getNickById($regChannelModel->holder);
         $provider   = '';
         if($regChannelModel->useMobile){
             $provider .= '移动、';
@@ -104,7 +106,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
             'rcid'          => $regChannelModel->rcid,
             'merchantName'  => "[{$regChannelModel->merchant}]".$merchantName,
             'channelName'   => "[{$regChannelModel->rcid}]".$regChannelModel->name,
-            'holderName'    => $regChannelModel->holder,//TODO
+            'holderName'    => $holderName,//TODO
             'provider'      => $provider,
             'devType'       => $channelDevTypeList[$regChannelModel->devType],
             'status'        => $channelStatusList[$regChannelModel->status],
@@ -143,7 +145,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	);
     }
     
-    public static function addChannel($sign,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inRate,$waitTime,$devType,$status,$priorityRate,$remark){
+    public static function addChannel($sign,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inPrice,$waitTime,$devType,$status,$priorityRate,$remark,$holder){
     	$regChannel = new RegChannel();
     	$regChannel->sign			= $sign;
     	$regChannel->merchant		= $merchant;
@@ -153,12 +155,14 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	$regChannel->useTelecom		= $useTelecom;
     	$regChannel->sdkVersion		= $sdkVersion;
     	$regChannel->cutRate		= $cutRate;
-    	$regChannel->inRate			= $inRate;
+    	$regChannel->inPrice		= $inPrice;
     	$regChannel->waitTime		= $waitTime;
     	$regChannel->devType		= $devType;
     	$regChannel->status			= $status;
     	$regChannel->priorityRate	= $priorityRate;
     	$regChannel->remark			= $remark;
+    	$regChannel->holder			= $holder;
+    	$regChannel->updateTime		= Utils::getNowTime();
     	$res	= $regChannel->insert();
     	if($res){
     		return true;
@@ -166,7 +170,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	return false;
     }
     
-    public static function updateChannel($rcid,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inRate,$waitTime,$devType,$status,$priorityRate,$remark){
+    public static function updateChannel($rcid,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inPrice,$waitTime,$devType,$status,$priorityRate,$remark,$holder){
     	$regChannel = self::findByPk($rcid);
     	if($regChannel){
 	    	$regChannel->merchant		= $merchant;
@@ -176,12 +180,13 @@ class RegChannel extends \common\models\orm\base\RegChannel{
 	    	$regChannel->useTelecom		= $useTelecom;
 	    	$regChannel->sdkVersion		= $sdkVersion;
 	    	$regChannel->cutRate		= $cutRate;
-	    	$regChannel->inRate			= $inRate;
+	    	$regChannel->inPrice		= $inPrice;
 	    	$regChannel->waitTime		= $waitTime;
 	    	$regChannel->devType		= $devType;
 	    	$regChannel->status			= $status;
 	    	$regChannel->priorityRate	= $priorityRate;
 	    	$regChannel->remark			= $remark;
+	    	$regChannel->holder			= $holder;
 	    	$res	= $regChannel->save();
 	    	if($res){
 	    		return true;

@@ -10,6 +10,8 @@ use SebastianBergmann\CodeCoverage\Util;
 use common\models\orm\extend\RegProfit;
 use common\library\BController;
 use common\models\orm\extend\Merchant;
+use common\models\orm\extend\Admin;
+use common\models\orm\extend\SdkVersion;
 class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
@@ -77,11 +79,13 @@ class RegisterController extends BController{
     }
      
     public function actionAddChannel(){
+    	$adminList			= Admin::getAllAdmins();
     	$merchantId			= Utils::getBackendParam('merchantId');
     	$merchantList		= Merchant::findMerchantList();
     	$channelStatusList	= RegChannel::getAllChannelStatus();
     	$channelDevTypeList	= RegChannel::getAllChannelDevType();
-    	return $this->render('add-channel',array('merchantId'=>$merchantId,'merchantList'=>$merchantList,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
+    	$sdkVersionList		= SdkVersion::getSdkVersionList();
+    	return $this->render('add-channel',array('sdkVersionList'=>$sdkVersionList,'adminList'=>$adminList,'merchantId'=>$merchantId,'merchantList'=>$merchantList,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
     }
     
     public function actionAddChannelResult(){
@@ -93,18 +97,19 @@ class RegisterController extends BController{
     	$useTelecom	 	= Utils::getBackendParam('useTelecom');
     	$sdkVersion 	= Utils::getBackendParam('sdkVersion');
     	$cutRate 		= Utils::getBackendParam('cutRate');
-    	$inRate 		= Utils::getBackendParam('inRate');
+    	$inPrice 		= Utils::getBackendParam('inPrice');
     	$waitTime 		= Utils::getBackendParam('waitTime');
     	$devType 		= Utils::getBackendParam('devType');
     	$status 		= Utils::getBackendParam('status');
     	$priorityRate 	= Utils::getBackendParam('priorityRate');
     	$remark 		= Utils::getBackendParam('remark');
+    	$holder 		= Utils::getBackendParam('holder');
     	
     	if(empty($name) || empty($sign)){
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
     	}else{
-  			$res = RegChannel::addChannel($sign, $merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inRate, $waitTime, $devType, $status, $priorityRate, $remark);
+  			$res = RegChannel::addChannel($sign, $merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inPrice, $waitTime, $devType, $status, $priorityRate, $remark,$holder);
      		if($res){
     			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     			$out['msg']         = Constant::RESULT_MSG_SUCC;
@@ -120,11 +125,13 @@ class RegisterController extends BController{
     	if(!$rcid){
     		$this->redirect('channel-view');
     	}
+    	$adminList			= Admin::getAllAdmins();
     	$merchantList		= Merchant::findMerchantList();
     	$regChannel			= RegChannel::findByPk($rcid);
     	$channelStatusList	= RegChannel::getAllChannelStatus();
     	$channelDevTypeList	= RegChannel::getAllChannelDevType();
-     	return $this->render('update-channel',array('merchantList'=>$merchantList,'regChannel'=>$regChannel,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
+    	$sdkVersionList		= SdkVersion::getSdkVersionList();
+     	return $this->render('update-channel',array('sdkVersionList'=>$sdkVersionList,'adminList'=>$adminList,'merchantList'=>$merchantList,'regChannel'=>$regChannel,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
     }
     public function actionUpdateChannelResult(){
     	$rcid			= Utils::getBackendParam('rcid');
@@ -135,18 +142,19 @@ class RegisterController extends BController{
     	$useTelecom	 	= Utils::getBackendParam('useTelecom');
     	$sdkVersion 	= Utils::getBackendParam('sdkVersion');
     	$cutRate 		= Utils::getBackendParam('cutRate');
-    	$inRate 		= Utils::getBackendParam('inRate');
+    	$inPrice 		= Utils::getBackendParam('inPrice');
     	$waitTime 		= Utils::getBackendParam('waitTime');
     	$devType 		= Utils::getBackendParam('devType');
     	$status 		= Utils::getBackendParam('status');
     	$priorityRate 	= Utils::getBackendParam('priorityRate');
     	$remark 		= Utils::getBackendParam('remark');
+    	$holder 		= Utils::getBackendParam('holder');
     	 
     	if(empty($name) || empty($rcid)){
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
     	}else{
-    		$res = RegChannel::updateChannel($rcid, $merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inRate, $waitTime, $devType, $status, $priorityRate, $remark);
+    		$res = RegChannel::updateChannel($rcid, $merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inPrice, $waitTime, $devType, $status, $priorityRate, $remark,$holder);
     		if($res){
     			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     			$out['msg']         = Constant::RESULT_MSG_SUCC;

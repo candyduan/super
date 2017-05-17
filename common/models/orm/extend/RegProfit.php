@@ -30,7 +30,7 @@ class RegProfit extends \common\models\orm\base\RegProfit{
     		$groupBy.= ',m.id';
     	}
     	$connection  	= \Yii::$app->db;
-    	$sql     		= "select rc.inRate as inRate ,m.name as merchantName ,rc.name as channelName,sum(rp.succ) as sumsucc, sum(rp.fail) as sumfail, rp.day ,rp.rcid from regProfit rp
+    	$sql     		= "select rc.inPrice as inPrice ,m.name as merchantName ,rc.name as channelName,sum(rp.succ) as sumsucc, sum(rp.fail) as sumfail, rp.day ,rp.rcid from regProfit rp
     					left join  regChannel rc on rc.rcid = rp.rcid
     					left join merchant m on m.id = rc.merchant = m.id
     					where rp.day >= :stime and rp.day <=:etime {$whereStr} group by rp.day {$groupBy}";
