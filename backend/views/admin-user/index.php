@@ -59,7 +59,7 @@
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon"> 邮箱 <span class="red">*</span>:</span>
-                        <input  type="text" name="email" id="email" class="form-control"/>
+                        <input   placeholder ='必填' type="text" name="email" id="email" class="form-control"/>
                     </div><br /><br />
 
                         <span class="input-group-addon"> 权限:</span>
@@ -79,7 +79,7 @@
                             </label>
 
                             <label>
-                                <input type="checkbox"  name="app"  id="app">SDK内容中心(应用)
+                                <input type="checkbox"  name="app"  id="app">SDK内容中心(应用列表)
                             </label>
 
                             <label>
@@ -237,12 +237,16 @@
         var error_num = 0;
         var username = $('#username').val();
         var password  =  $('#password').val();
+        var email  =  $('#email').val();
         if (username == '') {
             error_num = error_num + 1;
             alert('请填写用户名')
         } else if (password == '') {
             error_num = error_num + 1;
             alert('请填写密码');
+        } else if (email == '') {
+            error_num = error_num + 1;
+            alert('请填写邮箱');
         }
         return error_num;
     }

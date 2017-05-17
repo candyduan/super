@@ -215,9 +215,13 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
     }
 
-
     public static function findByPk($auid){
         $model  = self::find()->where(['id' => $auid])->one();
         return $model;
+    }
+
+    public static function isPasswordValid($auid,$password_hash){
+        $model  = self::find()->where(['id' => $auid,'password_hash'=> $password_hash])->one();
+        return empty($model) ? false : true;
     }
 }
