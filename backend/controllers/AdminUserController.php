@@ -207,7 +207,8 @@ class AdminUserController extends BController
             'partner',
             'sdk-promotion-result',
             'modify-password',
-            'sdk-pay'
+            'sdk-pay',
+            'package'
         ];
     }
 
@@ -220,7 +221,8 @@ class AdminUserController extends BController
             'campaign/' => 'SDK内容中心(活动列表)',
             'sdk-promotion-result/' => 'SDK成果录入',
             'sdk-pay/' => '数据中心(计费转化)',
-            'modify-password/' => '修改密码'
+            'modify-password/' => '修改密码',
+            'package/' => 'SDK内容中心(活动包列表)'
         ];
     }
 

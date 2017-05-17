@@ -85,6 +85,10 @@
                             <label>
                                 <input type="checkbox"  name="campaign"  id="campaign">SDK内容中心(活动列表)
                             </label>
+
+                            <label>
+                                <input type="checkbox"  name="package"  id="package">SDK内容中心(活动包列表)
+                            </label>
                         </div>
                         <div class="checkbox">
                             <label>
