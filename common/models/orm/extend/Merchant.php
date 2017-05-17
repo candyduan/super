@@ -21,7 +21,7 @@ class Merchant extends \common\models\orm\base\Merchant{
         $model  = self::find()->where($condition)->one();
         return $model;
     }
-
+    
     public  static function findAllNeedPaginator($page,$perpage = '20'){
     		$data = self::find();
     		$totalCount = $data->count();
@@ -58,4 +58,18 @@ class Merchant extends \common\models\orm\base\Merchant{
     		return $model;
     		
     }
+
+    public static function findMerchantList() {
+    	$condition  = ['deleted' => 0];
+        $model  = self::find()->where($condition)->all();
+        return $model;
+    }
+	public static function getTypeHeaderMerchantList(){
+		$res			= array();
+      	$merchantList 	= self::findMerchantList();
+      	foreach ($merchantList as $merchant){
+       		$res[]	= array('id'=>$merchant['id'],'name'=>$merchant['id']."-".$merchant['name']);
+       	}
+       	return $res;
+	}
 }

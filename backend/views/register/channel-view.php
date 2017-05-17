@@ -1,12 +1,26 @@
 <ol class="breadcrumb">
 <li class="active"><i class="fa fa-dashboard"></i>通道管理</li>
+<li class="active" style="padding-left:20px"><a href="/register/add-channel">添加通道</a></li>
 </ol>
 <div class="main">
 
 <!-- 搜索栏 -->
 <div class="form-inline searchbar">
-  <div class="form-group"><input type="text" class="form-control searchbar_merchant"  placeholder="通道商"></div>
-  <div class="form-group"><input type="text" class="form-control searchbar_channel"  placeholder="通道"></div>
+  <div class="form-group"><input type="text"  data-provide="typeahead"  id="merchantText" class="form-control searchbar_merchant"  placeholder="通道商"></div>
+  <input type="hidden" id="merchant" value="">
+  <div class="form-group"><input type="text" class="form-control searchbar_channel" id="channelText"  placeholder="通道"></div>
+  <input type="hidden" id="channel" value="">
+  <div class="form-group">
+
+<select class="form-control" id="status">
+<option value="-1" selected>代码状态</option>
+<?php foreach ($channelStatusList as $key => $channelStatus){?>
+<option value="<?php echo $key?>"><?php echo $channelStatus?></option>
+<?php }?>
+</select>
+
+</div>
+  
   <button type="submit" class="btn btn-default searchbar_smt" id="search"> 搜索 </button>
 </div>
 
@@ -21,11 +35,11 @@
 <div class=""><nav><ul class="pager"></ul></nav></div>
 
 </div>
+ 
 
 <script>
 $(document).ready(function(){
         setResult(1);    
-        
         $('#search').click(function(){
             setResult(1);
     });
@@ -37,17 +51,18 @@ function setResult(page){
         //data
         var mid  = Utils.getQueryString('mid');
         if(mid != ''){
-			$('.searchbar_merchant').val(mid);
+			$('#merchant').val(mid);
         }
-      	var merchantId  = $('.searchbar_merchant').val();
-     	var channelId	= $('.searchbar_channel').val();
-        var data = 'merchantId='+merchantId+'&channelId='+channelId+'&page='+page;
+      	var merchantId  = $('#merchant').val();
+     	var channelId	= $('#channel').val();
+     	var status		= $("#status").val();
+        var data = 'merchantId='+merchantId+'&channelId='+channelId+'&page='+page+'&status='+status;
         //succ
         var succ        = function(resultJson){
                 if(parseInt(resultJson.resultCode) == 1){
                         var resultHtml = '<tr><td>通道商</td><td>通道</td><td>负责人</td><td>运营商</td><td>开发类型</td><td>状态</td></tr>';
                         $.each(resultJson.list,function(key,val){
-                                resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td>'+val.channelName+'</td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td>'+val.status+'</td></tr>';
+                                resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td><a href="/register/update-channel?rcid='+val.rcid+'">'+val.channelName+'</a></td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td>'+val.status+'</td></tr>';
                         });
                         $('#data_list').html(resultHtml);
 
@@ -59,12 +74,16 @@ function setResult(page){
                 }
                 
                 }else{
-                        $('#data_list').html(resultJson.msg);
+                	$('#data_list').html(resultJson.msg);
                 }
         };
-        //ajax
         Utils.ajax(url,data,succ);
-
 }
+
+var jsonList	= <?php echo json_encode(\common\models\orm\extend\Merchant::getTypeHeaderMerchantList())?>;
+Utils.myTypeHeder(jsonList,"merchantText","merchant",'');
+
+var jsonList	= <?php echo json_encode(\common\models\orm\extend\RegChannel::getTypeHeaderChannelList())?>;
+Utils.myTypeHeder(jsonList,"channelText","channel",'');
 </script>
 

@@ -19,6 +19,7 @@ use Yii;
  * @property integer $useUnicom
  * @property integer $cutRate
  * @property integer $inRate
+ * @property integer $inPrice
  * @property integer $priorityRate
  * @property integer $holder
  * @property string $remark
@@ -42,13 +43,14 @@ class RegChannel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['merchant', 'waitTime', 'devType', 'useTelecom', 'useMobile', 'useUnicom', 'cutRate', 'inRate', 'priorityRate', 'holder', 'status'], 'integer'],
+            [['merchant', 'waitTime', 'devType', 'useTelecom', 'useMobile', 'useUnicom', 'cutRate', 'inRate', 'inPrice', 'priorityRate', 'holder', 'status'], 'integer'],
             [['sdkVersion'], 'required'],
             [['recordTime', 'updateTime'], 'safe'],
             [['sign'], 'string', 'max' => 64],
             [['name'], 'string', 'max' => 128],
             [['sdkVersion'], 'string', 'max' => 45],
             [['remark'], 'string', 'max' => 512],
+            [['sign'], 'unique'],
         ];
     }
 
@@ -70,6 +72,7 @@ class RegChannel extends \yii\db\ActiveRecord
             'useUnicom' => 'Use Unicom',
             'cutRate' => 'Cut Rate',
             'inRate' => 'In Rate',
+            'inPrice' => 'In Price',
             'priorityRate' => 'Priority Rate',
             'holder' => 'Holder',
             'remark' => 'Remark',

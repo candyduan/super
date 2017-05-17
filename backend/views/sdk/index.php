@@ -57,16 +57,16 @@
             <form id="formSdk" action="#" method="post" enctype="multipart/form-data">
                 <div class="modal-body" >
                     <div class="input-group">
-                        <span class="input-group-addon">sdk商:</span>
-                        <input type="text" name="sdk_partner" id="sdk_partner" class="form-control" width="1000px"/>
+                        <span class="input-group-addon"> sdk商  <span class="red">*</span> :</span>
+                        <input placeholder ='必填' type="text" name="sdk_partner" id="sdk_partner" class="form-control" width="1000px"/>
                     </div><br /><br />
                     <div class="input-group">
-                        <span class="input-group-addon">sdk名称:</span>
-                        <input type="text" name="sdk_name" id="sdk_name" class="form-control"/>
+                        <span class="input-group-addon">sdk名称  <span class="red">*</span>:</span>
+                        <input  placeholder ='必填' type="text" name="sdk_name" id="sdk_name" class="form-control"/>
                     </div><br /><br />
                     <div class="input-group">
-                        <span class="input-group-addon">sdk标识:</span>
-                        <input type="text" name="sdk_sign" id="sdk_sign" class="form-control"/>
+                        <span class="input-group-addon">sdk标识  <span class="red">*</span> :</span>
+                        <input  placeholder ='必填' type="text" name="sdk_sign" id="sdk_sign" class="form-control"/>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">分成比例:</span>
@@ -317,9 +317,10 @@
 
     $('#formSdk').on('submit', (function(event){
         event.preventDefault();
-
-        var sdid = $('#sdk_sdid').val();
-        var type = (sdid == '') ? 'add' : 'modify';
+        var error_num = validInput();
+        if(error_num == 0) {
+            var sdid = $('#sdk_sdid').val();
+            var type = (sdid == '') ? 'add' : 'modify';
             $('#btn_submit_sdk').attr('disabled', true);
             var post_url = '/sdk/'+ type +'-sdk';
             var post_data = new FormData(this);
@@ -327,17 +328,18 @@
             var msg_error = (sdid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
             var method = 'post';
             var successFunc = function (result) {
-               if(parseInt(result) == 1){
-                   alert(msg_success);
-               }else if(parseInt(result) == 0){
-                   alert(msg_error);
-               } else if(parseInt(result) == -1){
-                   alert(NAME_EXIST_ERROR);
-               }
-               $('#modalSdk').modal('hide');
-               _initDataTable();
-        };
-        callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
+                if (parseInt(result) == 1) {
+                    alert(msg_success);
+                } else if (parseInt(result) == 0) {
+                    alert(msg_error);
+                } else if (parseInt(result) == -1) {
+                    alert(NAME_EXIST_ERROR);
+                }
+                $('#modalSdk').modal('hide');
+                _initDataTable();
+            };
+            callAjaxWithFormAndFunction(post_url, post_data, method, successFunc);
+        }
     }));
 
     function modifySdk(sdid){
@@ -737,7 +739,24 @@
         }
     }
 
-    // 搜索那个$('#')
+    function validInput()
+    {
+        var error_num = 0;
+        var partner = $('#sdk_partner').val();
+        var name  =  $('#sdk_name').val();
+        var sign = $('#sdk_sign').val();
+        if (partner == '') {
+            error_num = error_num + 1;
+            alert('请填写SDK商')
+        } else if (name == '') {
+            error_num = error_num + 1;
+            alert('请填写sdk名称');
+        }  else if (sign == '') {
+            error_num = error_num + 1;
+            alert('请填写sdk标识');
+        }
+        return error_num;
+    }
     /* ------------------------------------------------------------------------javascript-------------------------------------*/
     $('#all_prids').on('click', function(){
         batchMute(this, 'prid');

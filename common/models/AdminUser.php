@@ -17,14 +17,14 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $auth_key
  * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property string $recordTime
+ * @property string $updateTime
  * @property string $password write-only password
  */
 class AdminUser extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
+    const STATUS_ACTIVE = 1;
 
 
     /**
@@ -32,29 +32,29 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{%adminuser}}';
+        return '{{%adminUser}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function behaviors()
+  /*  public function behaviors()
     {
         return [
             TimestampBehavior::className(),
         ];
-    }
+    }*/
 
     /**
      * @inheritdoc
      */
-    public function rules()
+ /*   public function rules()
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
-    }
+    }*/
 
     /**
      * @inheritdoc
@@ -186,5 +186,42 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public static function getIndexData($where, $start,$length){
+        $data= self::find()
+            ->where($where)
+            ->offset($start)
+            ->limit($length)
+            ->all();
+        return $data;
+    }
+
+    public static function getIndexCount($where){
+        $count = self::find()
+            ->where($where)->count();
+        return $count;
+    }
+
+    public static function usernameNotExist($username){
+        $model  = self::find()->where(['username' => $username])->one();
+        return (empty($model)) ? true : false;
+
+    }
+
+    public static function emailNotExist($email){
+        $model  = self::find()->where(['email' => $email])->one();
+        return (empty($model)) ? true : false;
+
+    }
+
+    public static function findByPk($auid){
+        $model  = self::find()->where(['id' => $auid])->one();
+        return $model;
+    }
+
+    public static function isPasswordValid($auid,$password_hash){
+        $model  = self::find()->where(['id' => $auid,'password_hash'=> $password_hash])->one();
+        return empty($model) ? false : true;
     }
 }

@@ -225,9 +225,9 @@ class CampaignController extends BController
                 foreach($sdks['sdks'] as $key => $value){
                     $sdks['sdks'][$key]['name'] = MyHtml::aElement('javascript:void(0);','showGoods', $value['sdid'], Sdk::getNameBySdid($value['sdid']));
                     if($value['status'] == 1){
-                        $sdks['sdks'][$key]['status'] =  MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'changeStatus',$value['sdid'].',0', $value['sdid']);
+                        $sdks['sdks'][$key]['status'] =  MyHtml::iElement('glyphicon-ok-sign glyphicon green', 'changeStatus',$value['sdid'].',0', '点击禁用');
                     }else{
-                        $sdks['sdks'][$key]['status'] = MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $value['sdid'].',1', $value['sdid']);
+                        $sdks['sdks'][$key]['status'] = MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $value['sdid'].',1', '点击开启');
                     }
                 }
             }
