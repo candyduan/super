@@ -64,7 +64,7 @@
             </div>
             <div class="modal-body" id="div_sdktime" style="height:500px">
             </div>
-            <input type="hidden" id='hidden_setime_array' value = "[]" />
+            <input type="hidden" id='hidden_setime_array' value = "" />
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success" id="btn_submit_sdktime">提交</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
@@ -82,7 +82,7 @@
             </div>
             <div class="modal-body" id="div_province" style="height:500px">
             </div>
-            <input type="hidden" id='hidden_province_array' value = "[]" />
+            <input type="hidden" id='hidden_province_array' value = "" />
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success" id="btn_submit_province">提交</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>

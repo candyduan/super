@@ -74,8 +74,8 @@ class SdkPayController extends BController
         
         $dateType = Utils::getBackendParam('dateType',3);
         $provider = Utils::getBackendParam('provider',0);
-        $province = json_decode(Utils::getBackendParam('province','[]'),true);
-        $time = json_decode(Utils::getBackendParam('time','[]'),true);
+        $province = Utils::getBackendParam('province','');
+        $time = Utils::getBackendParam('time','');
         
         $checkSDK = Utils::getBackendParam('checkSDK');
         $checkSDK = $checkSDK?true:false;
@@ -168,14 +168,14 @@ class SdkPayController extends BController
                 $provider
             ];
         }
-        if(count($province) > 0){
+        if(Utils::isValid($province)){
             $condition[] = [
                 'in',
                 'sdkPayDay.prid',
-                $province
+                explode(',', $province)
             ];
         }
-        if(count($time) > 0){// TODO
+        if(Utils::isValid($time)){// TODO
         }
         return $condition;
     }
