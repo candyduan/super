@@ -35,6 +35,10 @@ function setResult(page){
         //url
         var url = '/register/channel-result';
         //data
+        var mid  = Utils.getQueryString('mid');
+        if(mid != ''){
+			$('.searchbar_merchant').val(mid);
+        }
       	var merchantId  = $('.searchbar_merchant').val();
      	var channelId	= $('.searchbar_channel').val();
         var data = 'merchantId='+merchantId+'&channelId='+channelId+'&page='+page;

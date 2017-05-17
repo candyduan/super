@@ -9,6 +9,10 @@ use common\models\orm\extend\RegChannelMutexList;
 use SebastianBergmann\CodeCoverage\Util;
 use common\models\orm\extend\RegProfit;
 use common\library\BController;
+use yii\base\Object;
+use common\models\orm\extend\Merchant;
+use common\models\orm\extend\Admin;
+use Behat\Gherkin\Exception\Exception;
 class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
@@ -27,6 +31,85 @@ class RegisterController extends BController{
     public function actionMerchantView(){
         return $this->render('merchant-view');
     }
+    
+    public  function actionHolderResult(){
+    	$holders = Admin::getAllAdmins();
+    	if($holders){
+    		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		$out['holders'] = $holders;
+    	}else{
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         =  Constant::RESULT_MSG_NONE;
+    	}
+    	Utils::jsonOut($out);
+    }
+  
+    public function actionGetMerchantInfo(){
+    		$mid = Utils::getBackendParam('mid');
+    		$merchantModel = Merchant::findByPk($mid);
+    		$holders = Admin::getAllAdmins();
+    		if($merchantModel && $holders){
+    			$out['item'] = Merchant::getItemArrByModel($merchantModel);
+    			$out['holders'] = $holders;
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         =  Constant::RESULT_MSG_NONE;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    public function actionMerchantSetSave(){
+    		$name =Utils::getBackendParam('name');
+    		$addr = Utils::getBackendParam('addr','0');
+    		$holder = Utils::getBackendParam('holder');
+    		$payCircle = Utils::getBackendParam('payCircle');
+    		$tax = Utils::getBackendParam('tax');
+    		$memo = Utils::getBackendParam('memo');
+    		$merchantId = Utils::getBackendParam('merchantId','');
+    		
+    		
+    		if(is_numeric($merchantId)){
+    			$model = Merchant::findByIdAndName($merchantId,$name);
+    			if($model){
+    				$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    				$out['msg']         =  '通道商已存在';
+    				Utils::jsonOut($out);
+    				return;
+    			}
+    			$merchantModel = Merchant::findByPk($merchantId);
+    			
+    		}else{
+    			$model = Merchant::findByName($name);
+    			if($model){
+    				$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    				$out['msg']         =  '通道商已存在';
+    				Utils::jsonOut($out);
+    				return;
+    			}
+    			$merchantModel = new Merchant();
+    		}
+    		$merchantModel->name = $name;
+    		$merchantModel->addr = $addr;
+    		$merchantModel->holder = $holder;
+    		$merchantModel->payCircle = $payCircle;
+    		$merchantModel->tax = $tax;
+    		$merchantModel->payer = 0;
+    		$merchantModel->memo = $memo;
+    		$merchantModel->updateTime = time();
+    		try{
+    			$merchantModel->oldSave();
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		}catch (Exception $e){
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         =  Constant::RESULT_MSG_NONE;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
     
     public function actionChannelView(){
         return $this->render('channel-view');
@@ -112,6 +195,23 @@ class RegisterController extends BController{
     		}
     		Utils::jsonOut($out);
     }
+
+    public function actionMutexDetail(){
+    		$rcmid = Utils::getBackendParam('rcmid');
+    		if(is_numeric($rcmid)){
+    			$model = RegChannelMutex::findByPk($rcmid);
+    			if($model){
+    				$item = RegChannelMutex::getItemArrByModel($model);
+    				$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    				$out['msg']         = Constant::RESULT_MSG_SUCC;
+    				$out['item'] = $item;
+    			}else{
+    				$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    				$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    			}
+    		}
+    		Utils::jsonOut($out);
+    }
     
     public function actionMutexlistResult(){
     		$channelMutexId = Utils::getBackendParam('rcmid');
@@ -138,28 +238,30 @@ class RegisterController extends BController{
     }
 
     /**
-     * 添加通道组
+     * 添加/修改通道组
      */
-    public function actionAddMutex(){
+    public function actionSaveMutex(){
+    		$rcmid = Utils::getBackendParam('rcmid');
     		 $mutexName = Utils::getBackendParam('mutexName');
     		 $mutexStatus = Utils::getBackendParam('mutexStatus', 0);
-    		 if(empty($mutexName) || !is_numeric($mutexStatus)){
-    		 	$out['resultCode']  = Constant::RESULT_CODE_NONE;
-    		 	$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		 if(is_numeric($rcmid)){
+    		 	$mutexModel = RegChannelMutex::findByPk($rcmid);
     		 }else{
-    		 	$params = [
-    		 		'name' => $mutexName,
-    		 		'status' => $mutexStatus	
-    		 	];
-    		 	$res = RegChannelMutex::addMutex($params);
-    		 	if($res){
-    		 		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
-    		 		$out['msg']         = Constant::RESULT_MSG_SUCC;
-    		 	}else{
-    		 		$out['resultCode']  = Constant::RESULT_CODE_NONE;
-    		 		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
-    		 	}
+    		 	$mutexModel = new RegChannelMutex();
     		 }
+    		 $mutexModel->name = $mutexName;
+    		 $mutexModel->status = $mutexStatus;
+    		 try{
+    		 	$mutexModel->save();
+    		 
+    		 	$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		 	$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		 	$out['rcmid']        = $mutexModel->rcmid;
+    		 }catch (\Exception $e){
+    		 	$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+    		 	$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    		 }
+    		 
     		 Utils::jsonOut($out);
     		 
     }
@@ -224,6 +326,47 @@ class RegisterController extends BController{
     		}
     		Utils::jsonOut($out);
     }
+
+    
+  /**
+   * 通道商
+   */  
+    public function actionMerchantResult(){
+    		$merchantId = Utils::getBackendParam('merchantId');
+    		$page = Utils::getBackendParam('page', 1);
+    		if(is_numeric($merchantId)){
+    			
+    		}else{
+    			$res = Merchant::findAllNeedPaginator($page);
+    		}
+    		if($res['pages'] >= $page && $res['pages'] >1){
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    			$out['pages']       = $res['pages'];
+    			$out['page']        = $page;
+    			
+    			$out['list'] = [];
+    			foreach($res['models'] as $model){
+    				$item = Merchant::getItemArrByModel($model);
+    				array_push($out['list'], $item);
+    			}
+    		}else{
+    			if($page > 1){
+    				$msg    = Constant::RESULT_MSG_NOMORE;
+    			}else{
+    				$msg    = Constant::RESULT_MSG_NONE;
+    			}
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = $msg;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    
+    
+ 
+    
+    
     
     
 

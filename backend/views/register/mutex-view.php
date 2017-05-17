@@ -11,7 +11,7 @@
 <div class="form-inline searchbar">
   <div class="form-group"><input type="text" class="form-control searchbar_channelMutex"  placeholder="通道组"></div>
   <button type="submit" class="btn btn-default searchbar_smt" id="search"> 搜索 </button>
-  <button type="submit" class="btn btn-default searchbar_smt danger" id="addChannelMutex" data-toggle="modal" data-target="#addMutexDiv"> 添加 </button>
+  <button type="submit" class="btn btn-default searchbar_smt danger"  id="addMutexBtn"> 添加 </button>
 </div>
 
 <!-- 数据栏 -->
@@ -52,7 +52,7 @@
 
 
 <!-- 添加通道组弹窗 -->
-<div class="modal fade" id="addMutexDiv">
+<div class="modal fade" id="saveMutexDiv">
 	<div class="modal-dialog">
 		<div class="modal-content circular">
 			<div class="modal-header" style="background-color:#f1f1f1;">
@@ -73,7 +73,8 @@
 								<option value="0">停用</option>
 							</select>
 						</div>
-						<button type="submit" class="btn btn-primary searchbar_smt" onclick="doAddChannelMutex()"> 添加 </button>
+						<input type='hidden' value='' id='mutexId'>
+						<button type="submit" class="btn btn-primary searchbar_smt" id="saveMutex"> 保存 </button>
 					</div>
 				</p>
 			</div>
@@ -107,20 +108,6 @@
 <!-- 分页 -->
 <div class=""><nav><ul class="pager"></ul></nav></div>
 
-</div>
-
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <div class="panel-title">页面js Object数组</div>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-4">
-                <input id="local_object_data" autocomplete="off" data-provide="typeahead" type="text" class="input-sm form-control" placeholder="请输入（本地Object数据）" />
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -160,12 +147,7 @@ function setResult(page){
                 if(parseInt(resultJson.resultCode) == 1){
                         var resultHtml = '<tr><td>通道组ID</td><td>通道组名称</td><td>通道组状态</td><td>通道组管理</td>/tr>';
                         $.each(resultJson.list,function(key,val){
-                                resultHtml = resultHtml + '<tr>'+
-	                                '<td>'+val.rcmid+'</td>'+
-	                                '<td onclick="editMutex('+val.rcmid+')" >'+val.name+'</td>'+
-	                                '<td>'+val.status+'</td>'+
-	                                '<td>'+
-	                               		'<button type="button" class="btn btn-default" aria-label="Left Align" onclick="setMutexListResult('+val.rcmid+',\''+val.name+'\')"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>';
+                                resultHtml = resultHtml + '<tr><td>'+val.rcmid+'</td><td>'+val.name+'</td><td>'+val.status+'</td><td><button type="button" class="btn btn-default" aria-label="Left Align" onclick="setMutexListResult('+val.rcmid+',\''+val.name+'\')"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button><button type="button" class="btn btn-default edit-Mutex" aria-label="Left Align" data_rcmid="'+val.rcmid+'" >修改</button>';
 	                               	 resultHtml += val.status == '可用' ? '<button type="button" class="btn btn-danger" aria-label="Left Align" onclick="stopMutex('+val.rcmid+',\''+val.name+'\')"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>' : 
 	                               		'<button type="button" class="btn btn-success" aria-label="Left Align" onclick="startMutex('+val.rcmid+',\''+val.name+'\')"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>';
 	                              resultHtml +=  '</td></tr>';
@@ -179,7 +161,22 @@ function setResult(page){
                     });
                 }
 
-                
+                $('.edit-Mutex').click(function(){
+					var rcmid = $(this).attr('data_rcmid');
+					var url = '/register/mutex-detail';
+					var data = 'rcmid='+rcmid;
+					var succ  = function(resultJson){
+		                if(parseInt(resultJson.resultCode) == 1){
+		                		$('#mutexName').val(resultJson.item.realName);
+		                		resultJson.item.status == '可用' ? $('#mutexStatus ').val(1) : $('#mutexStatus ').val(0);
+		                		$('#mutexId').val(rcmid);
+		                		$('#saveMutexDiv').modal('show');
+			            }else{
+							
+					    }
+		            	}
+					Utils.ajax(url,data,succ);
+                })
 
                 }else{
                         $('#data_list').html(resultJson.msg);
@@ -190,26 +187,35 @@ function setResult(page){
         
 }
 
-function doAddChannelMutex(){
-	var  url = '/register/add-mutex';
-	var  mutexName = $('.mutexName').val();
+$('#addMutexBtn').click(function(){
+	$('#mutexName').val('');
+	$('#mutexStatus').val('1');
+	$('#mutexId').val('');
+	$('#saveMutexDiv').modal('show');
+})
+
+$('#saveMutex').click(function(){
+	var  url = '/register/save-mutex';
+	var rcmid = $('#mutexId').val();
+	var  mutexName = $('#mutexName').val();
 	var mutexStatus = $('#mutexStatus').val();
-	var data = 'mutexName='+mutexName+'&mutexStatus='+mutexStatus;
-	if(mutexName != ''){
-		var succ        = function(resultJson){
-	         if(parseInt(resultJson.resultCode) == 1){
-	        	 	$('#addMutexDiv').modal('toggle');
-	         }else{
-	        	 	$('#addMutexDiv').modal('toggle');
-	            $('#data_list').html(resultJson.msg);
-	         }
+	var data = 'rcmid='+rcmid+'&mutexName='+mutexName+'&mutexStatus='+mutexStatus;
+	if(mutexName == ''){
+		return;
+	}
+	alert('-'+rcmid+'-'+mutexName+'-'+mutexStatus+'-');
+	var succ = function(resultJson){
+         if(parseInt(resultJson.resultCode) == 1){
+        	 	$('#saveMutexDiv').modal('toggle');
+         }else{
+        	 	$('#saveMutexDiv').modal('toggle');
+            $('#data_list').html(resultJson.msg);
+         }
 	 };
 	 Utils.ajax(url,data,succ);
-	}else{
-		alert('通道组不能为空');
-		
-	}
-}
+});
+	
+
 
 //停用一个通道组
 function stopMutex(mutexId,MutexName){
@@ -234,7 +240,6 @@ function doChangeMutex(){
 	var succ = function (resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
 			$('#changeMutexDiv').modal('hide');
-			alert($(".pager_number").attr('page'));
             setResult($(".pager_number").attr('page'));
     		}else{
     			$('#changeMutexDiv').modal('hide');
