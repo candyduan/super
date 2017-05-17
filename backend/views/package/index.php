@@ -282,6 +282,7 @@
         var method = 'get';
         var success_function = function(result){
             getSdks(cpid);
+            alert(MESSAGE_MODIFY_SUCCESS);
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
     }
@@ -309,6 +310,7 @@
         var method = 'get';
         var success_function = function(result){
             getSdks(cpid);
+            alert(MESSAGE_MODIFY_SUCCESS);
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
     }
