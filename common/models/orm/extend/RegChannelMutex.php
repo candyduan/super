@@ -33,25 +33,13 @@ class RegChannelMutex extends \common\models\orm\base\RegChannelMutex{
 	public static function getItemArrByModel(RegChannelMutex $regChannelMutexModel){
 		$item   = array(
 				'rcmid'          => $regChannelMutexModel->rcmid,
+				'realName' => $regChannelMutexModel->name,
 				'name'  => "[{$regChannelMutexModel->rcmid}]".$regChannelMutexModel->name,
 				'status'        => $regChannelMutexModel->status == 0 ? '禁用' : '可用',
 		);
 		return $item;
 	}
 	
-	/**
-	 * 添加通道组
-	 * @param unknown $params
-	 * @return boolean
-	 */
-	public static function addMutex($params){
-		$RegChannelMutex = new RegChannelMutex;
-		$RegChannelMutex->name = $params['name'];
-		$RegChannelMutex->status = $params['status'];
-		$RegChannelMutex->recordTime = Utils::getNowTime();
-		$RegChannelMutex->updateTime = Utils::getNowTime();
-		return $RegChannelMutex->insert();
-	}
 	
 	/**
 	 * 改变通道组状态

@@ -10,7 +10,7 @@ class BController extends Controller{
     public function beforeAction($action){
         $controllerName = $action->controller->id;
         $actionName     = $action->id;
-        if($controllerName != 'site' && $actionName !='login'){
+        if($controllerName != 'site' && $controllerName != 'auth' && $actionName !='login'){
             $adminUserModel   = \Yii::$app->user->identity;
             $flag   = 3;
             if($adminUserModel){
@@ -18,7 +18,7 @@ class BController extends Controller{
                 if($adminUserModel->username == 'admin'){
                     $flag   = 1;
                 }else{
-                    $power  = $controllerName;//先简单判断到功能模块
+                    $power  = $controllerName.'/';//先简单判断到功能模块 !!斜杠很重要
                     $adminAuthorModel  = AdminAuthor::findByAuidPower($adminUserModel->id,$power);
                     if($adminAuthorModel){
                         $flag   = 1;

@@ -156,38 +156,62 @@ use yii\helpers\Html;
                 </li>
             </ul>
         </li>
-    
-<!--     <li class=""> -->
-<!--             <a href="#" class="dropdown-toggle"> -->
-<!--                 <i class="glyphicon glyphicon-refresh"></i> -->
-<!--                 <span class="menu-text"> 数据中心 </span> -->
-<!--                 <b class="arrow fa fa-angle-down"></b> -->
-<!--             </a> -->
-<!--             <b class="arrow"></b> -->
-<!--             <ul class="submenu"> -->
-<!--             	<li class=""> -->
-<!--                     <a href="/sdk-pay/index"> -->
-<!--                         <i class="menu-icon fa fa-caret-right"></i> -->
-<!--                         融合SDK计费转化 -->
-<!--                     </a> -->
-<!--                     <b class="arrow"></b> -->
-<!--                 </li> -->
-<!--                 <li class=""> -->
-<!--                     <a href="/package-pay/index"> -->
-<!--                         <i class="menu-icon fa fa-caret-right"></i> -->
-<!--                         融合SDK渠道收益 -->
-<!--                     </a> -->
-<!--                     <b class="arrow"></b> -->
-<!--                 </li> -->
-<!--                 <li class=""> -->
-<!--                     <a href="/package-pay/analysis"> -->
-<!--                         <i class="menu-icon fa fa-caret-right"></i> -->
-<!--                         融合SDK渠道计费分析 -->
-<!--                     </a> -->
-<!--                     <b class="arrow"></b> -->
-<!--                 </li> -->
-<!--             </ul> -->
-<!--         </li> -->
+    <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="glyphicon glyphicon-refresh"></i>
+                <span class="menu-text"> 数据中心 </span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+            	<li class="">
+                    <a href="/sdk-pay/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        融合SDK计费转化
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="/package-pay/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        融合SDK渠道收益
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="/package-pay/analysis">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        融合SDK渠道计费分析
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+  <!--     <li class="">
+         <a href="#" class="dropdown-toggle">
+             <i class="glyphicon glyphicon-user"></i>
+             <span class="menu-text"> 用户管理 </span>
+             <b class="arrow fa fa-angle-down"></b>
+         </a>
+         <b class="arrow"></b>
+         <ul class="submenu">
+             <li class="">
+                 <a href="/admin-user/index">
+                     <i class="menu-icon fa fa-caret-right"></i>
+                     用户管理
+                 </a>
+                 <b class="arrow"></b>
+             </li>
+             <li class="">
+                 <a href="/modify-password/index">
+                     <i class="menu-icon fa fa-caret-right"></i>
+                     修改密码
+                 </a>
+                 <b class="arrow"></b>
+             </li>
+         </ul>
+       </li>-->
+
         <!--
         <li class="">
             <a href="#" class="dropdown-toggle">
