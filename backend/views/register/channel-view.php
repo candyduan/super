@@ -66,12 +66,12 @@ function setResult(page){
                         });
                         $('#data_list').html(resultHtml);
 
-                if(resultJson.pages > 1){
-                    Utils.setPagination(page,resultJson.pages);
-                    $(".pager_number").click(function(){
-                        setResult($(this).attr('page'));
-                    });
-                }
+
+
+                        Utils.setPagination(page,resultJson.pages);
+                        $(".pager_number").click(function(){
+                            setResult($(this).attr('page'));
+                        });
                 
                 }else{
                 	$('#data_list').html(resultJson.msg);

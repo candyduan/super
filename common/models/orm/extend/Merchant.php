@@ -35,6 +35,21 @@ class Merchant extends \common\models\orm\base\Merchant{
     		];
     }
     
+    public  static function findByIdNeedPaginator($id, $page, $perpage = '20'){
+    		$data = self::find()->where('id = :id',[':id' => $id]);
+    		$totalCount =$data->count();
+    		//echo $totalCount;die();
+    		$pages = ceil($totalCount/$perpage);
+    		$pagination = new Pagination(['totalCount' => $totalCount, 'pageSize' => $perpage, 'page' => $page ]);
+    		$models = $data->offset($pagination->offset)->limit($pagination->limit)->all();
+    		return [
+    				'models' => $models,
+    				'pages' => $pages,
+    				'count' => $totalCount,
+    		];
+    		
+    }
+    
     public static function getItemArrByModel(Merchant $merchantModel){
     		return [
     				'id' => $merchantModel->id,
@@ -72,4 +87,18 @@ class Merchant extends \common\models\orm\base\Merchant{
        	}
        	return $res;
 	}
+	
+	public static function findAllToArray(){
+    		$datas = self::find()->all();
+    		$channelArr = [];
+    		if($datas){
+	    		foreach($datas as $data){
+	    			$channelArr[] =[
+	    					'id' => $data->id,
+	    					'name' => '【' . $data->id . '】' . $data->name,
+	    			];
+	    		}
+    		}
+    		return  $channelArr;
+    }
 }

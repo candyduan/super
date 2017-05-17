@@ -427,11 +427,11 @@ class RegisterController extends BController{
     		$merchantId = Utils::getBackendParam('merchantId');
     		$page = Utils::getBackendParam('page', 1);
     		if(is_numeric($merchantId)){
-    			
+    			$res = Merchant::findByIdNeedPaginator($merchantId,$page);
     		}else{
     			$res = Merchant::findAllNeedPaginator($page);
     		}
-    		if($res['pages'] >= $page && $res['pages'] >1){
+    		if($res['pages'] >= $page && $res['pages'] >0){
     			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     			$out['msg']         = Constant::RESULT_MSG_SUCC;
     			$out['pages']       = $res['pages'];
