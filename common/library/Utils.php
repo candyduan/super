@@ -42,8 +42,8 @@ class Utils{
         if(!$fp){
             Utils::log('async error no:'.$errno.' error msg:'.$errstr);
         }else{
-            stream_set_blocking($fp,0); //开启非阻塞模式
-            stream_set_timeout($fp, 3); //设置超时时间（s）
+//             stream_set_blocking($fp,0); //开启非阻塞模式
+//             stream_set_timeout($fp, 3); //设置超时时间（s）
             $out = "GET $url HTTP/1.1\r\n";
             $out .= "Host: $host\r\n";
             $out .= "Connection: Close\r\n\r\n";
@@ -182,7 +182,7 @@ class Utils{
         return $res;
     }
     public static function isAlpha(){
-        if(!strstr($_SERVER['HTTP_HOST'], 'ilast.cc')){
+        if(!strstr($_SERVER['HTTP_HOST'], 'backend')){
             return true;
         }
         return false;
