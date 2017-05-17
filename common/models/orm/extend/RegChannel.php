@@ -50,7 +50,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     
     public static function findByMerchantNeedPaginator($status,$merchantId,$page=1,$perpage = 20){
     	$condition  = array(
-    		'rcid'  => $merchantId,
+    		'merchant'  => $merchantId,
     	);
     	if($status >= 0){
     		$condition['status'] =  $status;
@@ -198,7 +198,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	$res			= array();
     	$channelList 	= self::find()->all();
     	foreach ($channelList as $channel){
-    		$res[]	= array('id'=>$channel['rcid'],'name'=>$channel['rcid']."-".$channel['name']);
+    		$res[]	= array('id'=>$channel['rcid'],'name'=>"【".$channel['rcid']."】".$channel['name']);
     	}
     	return $res;
     }

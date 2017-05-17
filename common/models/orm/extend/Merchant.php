@@ -68,7 +68,7 @@ class Merchant extends \common\models\orm\base\Merchant{
 		$res			= array();
       	$merchantList 	= self::findMerchantList();
       	foreach ($merchantList as $merchant){
-       		$res[]	= array('id'=>$merchant['id'],'name'=>$merchant['id']."-".$merchant['name']);
+       		$res[]	= array('id'=>$merchant['id'],'name'=>"【".$merchant['id']."】".$merchant['name']);
        	}
        	return $res;
 	}
