@@ -58,34 +58,42 @@
                         <input  placeholder ='必填' type="text" name="password" id="password" class="form-control"/>
                     </div><br /><br />
                     <div class="input-group">
-                        <span class="input-group-addon"> 邮箱</span>
+                        <span class="input-group-addon"> 邮箱 <span class="red">*</span>:</span>
                         <input  type="text" name="email" id="email" class="form-control"/>
                     </div><br /><br />
 
-                        <span class="input-group-addon"> 权限  <span class="red">*</span>:</span>
+                        <span class="input-group-addon"> 权限:</span>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="sdk" >SDK管理
+                                <input type="checkbox" name="sdk" id="sdk" >SDK管理
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="sort">SDK计费排序
+                                <input type="checkbox" name="sort" id="sort">SDK计费排序
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"  name="app-partner-campaign">SDK内容中心
+                                <input type="checkbox"  name="partner"  id="partner">SDK内容中心(内容商列表)
+                            </label>
+
+                            <label>
+                                <input type="checkbox"  name="app"  id="app">SDK内容中心(应用)
+                            </label>
+
+                            <label>
+                                <input type="checkbox"  name="campaign"  id="campaign">SDK内容中心(活动列表)
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"  name="sdk-promotion-result"> SDK成果录入
+                                <input type="checkbox"  name="sdk-promotion-result" id="sdk-promotion-result"> SDK成果录入
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"  name="modify-password"> 密码修改
+                                <input type="checkbox"  name="modify-password" id="modify-password" > 修改密码
                             </label>
                         </div>
                     </div><br /><br />
@@ -148,21 +156,23 @@
     $('#btn_add').on('click', function(event){
         event.preventDefault();
         $('#auid').val('');
-        $('#formAdminUser').trigger("reset"); //window.formSdk.reset();
+        $('#username').prop('disabled',false);
+        $('#password').prop('disabled',false);
+        $('#formAdminUser').trigger("reset");
         $('#modalAdminUser').modal('show');
     });
 
     $('#formAdminUser').on('submit', (function(event){
         event.preventDefault();
-        var error_num = validInput();
+        var auid = $('#auid').val();
+        var error_num = auid == '' ? validInput() : 0;
         if(error_num == 0) {
-            var auid = $('#auid').val();
             var type = (auid == '') ? 'add' : 'modify';
             $('#btn_submit_adminuser').attr('disabled', true);
             var post_url = '/admin-user/'+type+'-user';
             var post_data = new FormData(this);
-            var msg_success = (sdid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-            var msg_error = (sdid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
+            var msg_success = (auid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+            var msg_error = (auid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
             var method = 'post';
             var successFunc = function (result) {
                 if (parseInt(result) == 1) {
@@ -172,7 +182,7 @@
                 } else if (parseInt(result) == 0) {
                     alert( msg_error);
                 } else if (parseInt(result) == -1) {
-                    alert('新增失败！用户名已经存在');
+                    alert('新增失败！用户名或者邮箱已经存在');
                 }
                 $('#btn_submit_adminuser').attr('disabled', false);
             };
@@ -180,25 +190,46 @@
         }
     }));
 
-    function modifySdk(sdid){
-        var post_url = '/sdk/get-sdk';
+    function modifyPowers(auid){
+        var post_url = '/admin-user/get-user-powers';
         var post_data = {
-            'sdid' : sdid
+            'auid' : auid
         };
         var method = 'get';
         var success_function = function(result){
-            $('#sdk_partner').val(result.partner).prop('disabled', true);
-            $('#sdk_name').val(result.name).prop('disabled',true);
-            $('#sdk_sign').val(result.sign).prop('disabled',true);
-            $('#sdk_proportion').val(result.proportion);
-            $('#sdk_optimization').val(result.optimization);
-            $('#sdk_syn').val(result.syn);
-            $('#sdk_remark').val(result.remark);
-            $('#sdk_sdid').val(result.sdid);
-            $('#btn_submit_sdk').attr('disabled', false);
-            $('#modalSdk').modal('show');
+            $('#username').val(result.user.username).prop('disabled', true);
+            $('#password').val('').prop('disabled',true);
+            $('#email').val(result.user.email);
+            if(result.powers !== []){
+                $("input[type='checkbox']").prop('checked',false);
+                for(var i in result.powers) {
+                    $('#'+result.powers[i]).prop('checked',true);
+                }
+            }
+            $('#auid').val(auid);
+            $('#btn_submit_adminuser').attr('disabled', false);
+            $('#modalAdminUser').modal('show');
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    function deleteAdminUser(auid){
+        if(confirm('确认删除该用户?')) {
+            var post_url = '/admin-user/delete-admin-user';
+            var post_data = {
+                'auid' : auid
+            };
+            var method = 'get';
+            var success_function = function(result) {
+                if(parseInt(result) > 0){
+                    alert(MESSAGE_DELETE_SUCCESS);
+                    _initDataTable();
+                }else{
+                    alert(MESSAGE_DELETE_ERROR);
+                }
+            };
+            callAjaxWithFunction(post_url, post_data, success_function, method);
+        }
     }
 
     function validInput()

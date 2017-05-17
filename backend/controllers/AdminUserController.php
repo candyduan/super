@@ -63,7 +63,7 @@ class AdminUserController extends BController
                     $powerNamesStr .= isset($powerNames[$v]) ?  $powerNames[$v] . MyHtml::br() : '';
                 }
                 $operation = MyHtml::aElement('javascript:void(0)', 'modifyPowers',$value['id'],'修改权限') . MyHtml::br();
-                $operation .=  MyHtml::aElement('javascript:void(0)', 'deleteUser',$value['id'],'删除用户');
+                $operation .=  MyHtml::aElement('javascript:void(0)', 'deleteAdminUser',$value['id'],'删除用户');
             }
 
             $tabledata[] = [
@@ -88,13 +88,14 @@ class AdminUserController extends BController
     public function actionAddUser() {
         $resultState = 0;
         $username = Utils::getBParam('username');
-        if (isset($username) && AdminUser::usernameNotExist($username)) {
+        $email = Utils::getBParam('email');
+        if (isset($username) && AdminUser::usernameNotExist($username)  && AdminUser::emailNotExist($email)) {
             $transaction =  AdminUser::getDb()->beginTransaction();
             try {
                 $resultState = $this->_addUser();
                 $transaction->commit();
             } catch (ErrorException $e) {
-                $resultState = false;
+                $resultState = 0;
                 $transaction->rollBack();
                 MyMail::sendMail($e->getMessage(), 'Error From add User');
             }
@@ -106,16 +107,74 @@ class AdminUserController extends BController
         exit;
     }
 
+    public function actionDeleteAdminUser(){
+        $resultState = 0;
+        $auid = Utils::getBParam('auid');
+        if(isset($auid)) {
+            $transaction = AdminUser::getDb()->beginTransaction();
+            try {
+                $resultState = AdminUser::deleteAll(['id'=>$auid]);
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = 0;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From delete admin user');
+            }
+        }
+        Utils::jsonOut($resultState);
+        exit;
+    }
+
+    public function actionModifyUser() {
+        $resultState = 0;
+        $auid = Utils::getBParam('auid');
+        if (isset($auid)) {
+            $transaction =  AdminUser::getDb()->beginTransaction();
+            try {
+                $model = AdminUser::findByPk($auid);
+                if($model){
+                    $model->email = Utils::getBParam('email','');
+                    $resultState = $model->save() == true ? 1:0;
+                    if($resultState  > 0 && $model->id){
+                        AdminAuthor::deleteAll(['auid' => $auid]);
+                        self::_addPower($model->id);
+                    }
+                }
+                $transaction->commit();
+            } catch (ErrorException $e) {
+                $resultState = false;
+                $transaction->rollBack();
+                MyMail::sendMail($e->getMessage(), 'Error From modify user power');
+            }
+        }
+        Utils::jsonOut($resultState);
+        exit;
+    }
+
+    public function actionGetUserPowers() {
+        $data = [
+            'user' => [],
+            'powers' => []
+        ];
+        $auid = Utils::getBParam('auid');
+        if ($auid > 0) {
+            $data['user'] = AdminUser::findByPK($auid)->toArray();
+            $data['powers'] = AdminAuthor::getPowersByAuid($auid);
+        }
+        Utils::jsonOut($data);
+        exit;
+    }
+
     private function _addUser(){
         $resultState = 0;
         $model = new AdminUser();
         $model->username = Utils::getBParam('username');
         $model->password_hash = md5(Utils::getBParam('password'));
-        $model->auth_key = '1';
-        $model->password_reset_token = '1';
-        $model->email = Utils::getBParam('email');;
+        $model->generateAuthKey();
+        $model->generatePasswordResetToken();
+        $model->email = Utils::getBParam('email');
         $model->status = 1;
-        $resultState = $model->save();
+        $resultState = $model->save() == true ? 1:0;
         if($resultState  > 0 && $model->getId()){
             self::_addPower($model->getId());
         }
@@ -139,9 +198,11 @@ class AdminUserController extends BController
         return [
             'sdk',
             'sort',
-            'app-partner-campaign',
+            'app',
+            'campaign',
+            'partner',
             'sdk-promotion-result',
-            'modify-passowrd'
+            'modify-password'
         ];
     }
 
@@ -149,9 +210,11 @@ class AdminUserController extends BController
         return [
             'sdk' => 'SDK管理',
             'sort' => 'SDK计费排序',
-            'app-partner-campaign' => 'SDK内容中心',
+            'partner' => 'SDK内容中心(内容商列表)',
+            'app' => 'SDK内容中心(应用列表)',
+            'campaign' => 'SDK内容中心(活动列表)',
             'sdk-promotion-result' => 'SDK成果录入',
-            'modify-passowrd' => '修改密码'
+            'modify-password' => '修改密码'
         ];
     }
 

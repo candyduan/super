@@ -10,7 +10,7 @@ class BController extends Controller{
     public function beforeAction($action){
         $controllerName = $action->controller->id;
         $actionName     = $action->id;
-        if($controllerName != 'site' && $actionName !='login'){
+        if($controllerName != 'site' && $controllerName != 'auth' && $actionName !='login'){
             $adminUserModel   = \Yii::$app->user->identity;
             $flag   = 3;
             if($adminUserModel){

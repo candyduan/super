@@ -208,4 +208,16 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         return (empty($model)) ? true : false;
 
     }
+
+    public static function emailNotExist($email){
+        $model  = self::find()->where(['email' => $email])->one();
+        return (empty($model)) ? true : false;
+
+    }
+
+
+    public static function findByPk($auid){
+        $model  = self::find()->where(['id' => $auid])->one();
+        return $model;
+    }
 }
