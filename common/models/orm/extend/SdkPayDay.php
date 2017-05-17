@@ -50,7 +50,10 @@ class SdkPayDay extends \common\models\orm\base\SdkPayDay {
         return $data;
     }
     public static function getIndexCount($where){
-        $count = self::find()->where($where)->count();
+        $count = self::find()->join('inner join', 'sdk',
+                'sdkPayDay.sdid = sdk.sdid')
+            ->join('inner join', 'province',
+                'sdkPayDay.prid = province.id')->where($where)->count();
         return $count;
     }
 }

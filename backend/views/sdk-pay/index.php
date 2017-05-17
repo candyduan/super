@@ -114,8 +114,25 @@
         param += '&provider=' + $("#inputProvider").attr("value");
         param += '&province=' + $('#hidden_province_array').val().split(',');
         param += '&time=' + $('#hidden_setime_array').val().split(',');
-        
+
+// 		var targetsCount  = 4;// TODO 动态变化列数
+// 		if($("#checkSDK").prop('checked')){
+// 			targetsCount += 1;
+// 		}
+// 		if($("#checkProvince").prop('checked')){
+// 			targetsCount += 1;
+// 		}
+// 		if($("#checkProvider").prop('checked')){
+// 			targetsCount += 1;
+// 		}
+
+//         var aTargets = [];
+//         for(var i = 0; i < targetsCount;i++){
+//         	aTargets.push(i);
+//         }
         $("#tbl").dataTable().fnDestroy();
+//         refreshColumn();// TODO 动态变化列数
+        
         $('#tbl').DataTable({
             "pagingType": "simple_numbers",
             "searching": false,
@@ -124,7 +141,7 @@
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [0, 1, 2, 3, 4,5,6,7,8,9]
+                'aTargets': [0,1,2,3,4,5,6],// TODO 动态变化列数
             }],
             "displayLength": 100, //默认每页多少条数据
             "processing": true,
@@ -146,7 +163,6 @@
             "ajax": {
                 "url":'/sdk-pay/ajax-index?' + $.param($('#formSearch').serializeArray()) + param,
                 "dataSrc": function(json) {
-                    refreshColumn();
                     return json.tableData;
                 }
             }
