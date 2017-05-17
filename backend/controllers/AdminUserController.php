@@ -114,6 +114,7 @@ class AdminUserController extends BController
             $transaction = AdminUser::getDb()->beginTransaction();
             try {
                 $resultState = AdminUser::deleteAll(['id'=>$auid]);
+                AdminAuthor::deleteAll(['auid' => $auid]);
                 $transaction->commit();
             } catch (ErrorException $e) {
                 $resultState = 0;
@@ -159,7 +160,10 @@ class AdminUserController extends BController
         $auid = Utils::getBParam('auid');
         if ($auid > 0) {
             $data['user'] = AdminUser::findByPK($auid)->toArray();
-            $data['powers'] = AdminAuthor::getPowersByAuid($auid);
+            $powers = AdminAuthor::getPowersByAuid($auid);
+            foreach($powers as $power){
+                $data['powers'][] = str_replace('/','',$power);
+            }
         }
         Utils::jsonOut($data);
         exit;
@@ -184,10 +188,10 @@ class AdminUserController extends BController
     private function _addPower($auid){
         $powers = self::_getPowers();
         foreach($powers as $power) {
-            if (Utils::getBParam($power) == 'on') {
+            if (Utils::getBParam($power) == "on") {
                 $model = new AdminAuthor();
                 $model->auid = $auid;
-                $model->power = $power;
+                $model->power = $power.'/';
                 $model->status = 1;
                 $model->save();
             }
@@ -202,19 +206,21 @@ class AdminUserController extends BController
             'campaign',
             'partner',
             'sdk-promotion-result',
-            'modify-password'
+            'modify-password',
+            'sdk-pay'
         ];
     }
 
     private function _getPowerNames(){
         return [
-            'sdk' => 'SDK管理',
-            'sort' => 'SDK计费排序',
-            'partner' => 'SDK内容中心(内容商列表)',
-            'app' => 'SDK内容中心(应用列表)',
-            'campaign' => 'SDK内容中心(活动列表)',
-            'sdk-promotion-result' => 'SDK成果录入',
-            'modify-password' => '修改密码'
+            'sdk/' => 'SDK管理',
+            'sort/' => 'SDK计费排序',
+            'partner/' => 'SDK内容中心(内容商列表)',
+            'app/' => 'SDK内容中心(应用列表)',
+            'campaign/' => 'SDK内容中心(活动列表)',
+            'sdk-promotion-result/' => 'SDK成果录入',
+            'sdk-pay/' => '数据中心(计费转化)',
+            'modify-password/' => '修改密码'
         ];
     }
 

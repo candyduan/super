@@ -91,6 +91,11 @@
                                 <input type="checkbox"  name="sdk-promotion-result" id="sdk-promotion-result"> SDK成果录入
                             </label>
                         </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"  name="sdk-pay" id="sdk-promotion-result">数据中心(计费转化)
+                        </label>
+                    </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox"  name="modify-password" id="modify-password" > 修改密码
