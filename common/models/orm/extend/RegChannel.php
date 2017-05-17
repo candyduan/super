@@ -1,6 +1,7 @@
 <?php
 namespace common\models\orm\extend;
 use yii\data\Pagination;
+use yii\base\Object;
 
 class RegChannel extends \common\models\orm\base\RegChannel{
     public static function findByPk($id){
@@ -28,8 +29,12 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     		return  $channelArr;
     }
     
-    public static function findAllNeedPaginator($page=1,$perpage = 20){        
-        $data = self::find();
+    public static function findAllNeedPaginator($status,$page=1,$perpage = 20){        
+    	$condition	= array();
+    	if($status){
+    		$condition['status'] =  $status;
+    	}
+    	$data = self::find()->where($condition);
         
         $totalCount = $data->count();
         $pages      = ceil($totalCount/$perpage);
@@ -42,8 +47,14 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         ];
     }
     
-    public static function findByMerchantNeedPaginator($merchantId,$page=1,$perpage = 20){
-        $data = self::find()->where(['merchant' => $merchantId]);
+    public static function findByMerchantNeedPaginator($status,$merchantId,$page=1,$perpage = 20){
+    	$condition  = array(
+    		'rcid'  => $merchantId,
+    	);
+    	if($status){
+    		$condition['status'] =  $status;
+    	}
+        $data = self::find()->where($condition);
         $totalCount = $data->count();
         $pages      = ceil($totalCount/$perpage);
         $pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);
@@ -53,6 +64,25 @@ class RegChannel extends \common\models\orm\base\RegChannel{
             'pages'     => $pages,
             'count'     => $totalCount,
         ];
+    }
+    
+    public static function findByChannelNeedPaginator($status,$channelId,$page=1,$perpage = 20){
+    	$condition  = array(
+    		'rcid'  => $channelId,
+    	);
+    	if($status){
+    		$condition['status'] =  $status;
+    	}
+    	$data = self::find()->where($condition);
+    	$totalCount = $data->count();
+    	$pages      = ceil($totalCount/$perpage);
+    	$pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);
+    	$models = $data->offset($pagination->offset)->limit($pagination->limit)->all();
+    	return [
+    		'models'    => $models,
+    		'pages'     => $pages,
+    		'count'     => $totalCount,
+    	];
     }
     
     
@@ -68,14 +98,16 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         if($regChannelModel->useUnicom){
             $provider .= '联通、';
         }
+        $channelStatusList 	= self::getAllChannelStatus();
+        $channelDevTypeList	= self::getAllChannelDevType();
         $item   = array(
             'rcid'          => $regChannelModel->rcid,
             'merchantName'  => "[{$regChannelModel->merchant}]".$merchantName,
             'channelName'   => "[{$regChannelModel->rcid}]".$regChannelModel->name,
             'holderName'    => $regChannelModel->holder,//TODO
             'provider'      => $provider,
-            'devType'       => '',
-            'status'        => $regChannelModel->status,
+            'devType'       => $channelDevTypeList[$regChannelModel->devType],
+            'status'        => $channelStatusList[$regChannelModel->status],
         );
         return $item;
     }
@@ -89,5 +121,80 @@ class RegChannel extends \common\models\orm\base\RegChannel{
                         ->one()
                         ;
         return $model;
+    }
+    
+    public static function getAllChannelStatus(){
+    	return array(
+    		3 => '测试',
+    		2 => '暂停',
+    		1 => '可用',
+    		0 => '删除'
+    	);
+    }
+    
+    public static function getAllChannelDevType(){
+    	return array(
+    		1 => 'single',
+    		2 => 'double',
+    		3 => 'sms+',
+    		4 => 'url+',
+    		5 => 'multiUrl',
+    		6 => 'multiSms'
+    	);
+    }
+    
+    public static function addChannel($sign,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inRate,$waitTime,$devType,$status,$priorityRate,$remark){
+    	$regChannel = new RegChannel();
+    	$regChannel->sign			= $sign;
+    	$regChannel->merchant		= $merchant;
+    	$regChannel->name			= $name;
+    	$regChannel->useMobile		= $useMobile;
+    	$regChannel->useUnicom		= $useUnicom;
+    	$regChannel->useTelecom		= $useTelecom;
+    	$regChannel->sdkVersion		= $sdkVersion;
+    	$regChannel->cutRate		= $cutRate;
+    	$regChannel->inRate			= $inRate;
+    	$regChannel->waitTime		= $waitTime;
+    	$regChannel->devType		= $devType;
+    	$regChannel->status			= $status;
+    	$regChannel->priorityRate	= $priorityRate;
+    	$regChannel->remark			= $remark;
+    	$res	= $regChannel->insert();
+    	if($res){
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public static function updateChannel($rcid,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inRate,$waitTime,$devType,$status,$priorityRate,$remark){
+    	$regChannel = self::findByPk($rcid);
+    	if($regChannel){
+	    	$regChannel->merchant		= $merchant;
+	    	$regChannel->name			= $name;
+	    	$regChannel->useMobile		= $useMobile;
+	    	$regChannel->useUnicom		= $useUnicom;
+	    	$regChannel->useTelecom		= $useTelecom;
+	    	$regChannel->sdkVersion		= $sdkVersion;
+	    	$regChannel->cutRate		= $cutRate;
+	    	$regChannel->inRate			= $inRate;
+	    	$regChannel->waitTime		= $waitTime;
+	    	$regChannel->devType		= $devType;
+	    	$regChannel->status			= $status;
+	    	$regChannel->priorityRate	= $priorityRate;
+	    	$regChannel->remark			= $remark;
+	    	$res	= $regChannel->save();
+	    	if($res){
+	    		return true;
+	    	}
+    	}
+    	return false;
+    }
+    public static function getTypeHeaderChannelList(){
+    	$res			= array();
+    	$channelList 	= self::find()->all();
+    	foreach ($channelList as $channel){
+    		$res[]	= array('id'=>$channel['rcid'],'name'=>$channel['rcid']."-".$channel['name']);
+    	}
+    	return $res;
     }
 }

@@ -4,19 +4,37 @@ namespace common\models\orm\extend;
 use common\library\Utils;
 
 class RegProfit extends \common\models\orm\base\RegProfit{
-    public static function findByTime($stime,$etime,$checkChannel){
+    public static function findProfitList($stime,$etime,$checkChannel,$checkMerchant, $channel, $merchant){
     	$groupBy	= '';
+    	$params		= array();
     	if(!$stime || !$etime || $stime > $etime){
     		return array();
     	}
-    	if($checkChannel){
-    		$groupBy = ',rcid';
+    	$params[":stime"]	= $stime;
+    	$params[":etime"]	= $etime;
+    	$whereStr	= '';
+    	if($channel){
+    		$whereStr	= 'and rc.rcid = :rcid';
+    		$params[":rcid"]	= $channel;
+    		$checkChannel		= 1;
     	}
-    	
+    	if($merchant){
+    		$whereStr	= 'and m.id = :merchant';
+    		$params[":merchant"]	= $merchant;
+    		$checkMerchant			= 1;
+    	}
+    	if($checkChannel){
+    		$groupBy.= ',rp.rcid';
+    	}
+    	if($checkMerchant){
+    		$groupBy.= ',m.id';
+    	}
     	$connection  	= \Yii::$app->db;
-    	$sql     		= "select sum(succ) as sumsucc, sum(fail) as sumfail, day ,rcid from regProfit
-    					where day >= :stime and day <=:etime group by day {$groupBy}";
-    	$command 		= $connection->createCommand($sql,array(':stime'=>$stime,':etime'=>$etime));
+    	$sql     		= "select rc.inRate as inRate ,m.name as merchantName ,rc.name as channelName,sum(rp.succ) as sumsucc, sum(rp.fail) as sumfail, rp.day ,rp.rcid from regProfit rp
+    					left join  regChannel rc on rc.rcid = rp.rcid
+    					left join merchant m on m.id = rc.merchant = m.id
+    					where rp.day >= :stime and rp.day <=:etime {$whereStr} group by rp.day {$groupBy}";
+    	$command 		= $connection->createCommand($sql,$params);
     	$data     		= $command->queryAll();
      	return $data;
     }

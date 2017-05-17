@@ -9,6 +9,7 @@ use common\models\orm\extend\RegChannelMutexList;
 use SebastianBergmann\CodeCoverage\Util;
 use common\models\orm\extend\RegProfit;
 use common\library\BController;
+use common\models\orm\extend\Merchant;
 class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
@@ -29,7 +30,8 @@ class RegisterController extends BController{
     }
     
     public function actionChannelView(){
-        return $this->render('channel-view');
+    	$channelStatusList	= RegChannel::getAllChannelStatus();
+        return $this->render('channel-view',array('channelStatusList'=>$channelStatusList));
         
         
     }
@@ -38,13 +40,14 @@ class RegisterController extends BController{
         $merchantId = Utils::getBackendParam('merchantId');
         $channelId  = Utils::getBackendParam('channelId');
         $page       = Utils::getBackendParam('page',1);
+        $status		= Utils::getBackendParam('status');
         
-        if(is_numeric($channelId)){
-            
-        }elseif (is_numeric($merchantId)){
-            $res    = RegChannel::findByMerchantNeedPaginator($merchantId,$page);
+        if(is_numeric($channelId) && $channelId){
+        	$res    = RegChannel::findByChannelNeedPaginator($status,$channelId,$page);
+        }elseif (is_numeric($merchantId) && $merchantId){
+            $res    = RegChannel::findByMerchantNeedPaginator($status,$merchantId,$page);
         }else{
-            $res    = RegChannel::findAllNeedPaginator($page);
+            $res    = RegChannel::findAllNeedPaginator($status,$page);
         }
         $pages  = $res['pages'];
         $models = $res['models'];
@@ -71,6 +74,88 @@ class RegisterController extends BController{
             $out['msg']         = $msg;
         }
         Utils::jsonOut($out);
+    }
+     
+    public function actionAddChannel(){
+    	$merchantId			= Utils::getBackendParam('merchantId');
+    	$merchantList		= Merchant::findMerchantList();
+    	$channelStatusList	= RegChannel::getAllChannelStatus();
+    	$channelDevTypeList	= RegChannel::getAllChannelDevType();
+    	return $this->render('add-channel',array('merchantId'=>$merchantId,'merchantList'=>$merchantList,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
+    }
+    
+    public function actionAddChannelResult(){
+    	$sign 			= Utils::getBackendParam('sign');
+    	$merchant 		= Utils::getBackendParam('merchant');
+    	$name 			= Utils::getBackendParam('name');
+    	$useMobile 		= Utils::getBackendParam('useMobile');
+    	$useUnicom 		= Utils::getBackendParam('useUnicom');
+    	$useTelecom	 	= Utils::getBackendParam('useTelecom');
+    	$sdkVersion 	= Utils::getBackendParam('sdkVersion');
+    	$cutRate 		= Utils::getBackendParam('cutRate');
+    	$inRate 		= Utils::getBackendParam('inRate');
+    	$waitTime 		= Utils::getBackendParam('waitTime');
+    	$devType 		= Utils::getBackendParam('devType');
+    	$status 		= Utils::getBackendParam('status');
+    	$priorityRate 	= Utils::getBackendParam('priorityRate');
+    	$remark 		= Utils::getBackendParam('remark');
+    	
+    	if(empty($name) || empty($sign)){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    	}else{
+  			$res = RegChannel::addChannel($sign, $merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inRate, $waitTime, $devType, $status, $priorityRate, $remark);
+     		if($res){
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		}
+    	}
+    	Utils::jsonOut($out);
+    }
+    public function actionUpdateChannel(){
+    	$rcid				= Utils::getBackendParam('rcid');
+    	if(!$rcid){
+    		$this->redirect('channel-view');
+    	}
+    	$merchantList		= Merchant::findMerchantList();
+    	$regChannel			= RegChannel::findByPk($rcid);
+    	$channelStatusList	= RegChannel::getAllChannelStatus();
+    	$channelDevTypeList	= RegChannel::getAllChannelDevType();
+     	return $this->render('update-channel',array('merchantList'=>$merchantList,'regChannel'=>$regChannel,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
+    }
+    public function actionUpdateChannelResult(){
+    	$rcid			= Utils::getBackendParam('rcid');
+    	$merchant 		= Utils::getBackendParam('merchant');
+    	$name 			= Utils::getBackendParam('name');
+    	$useMobile 		= Utils::getBackendParam('useMobile');
+    	$useUnicom 		= Utils::getBackendParam('useUnicom');
+    	$useTelecom	 	= Utils::getBackendParam('useTelecom');
+    	$sdkVersion 	= Utils::getBackendParam('sdkVersion');
+    	$cutRate 		= Utils::getBackendParam('cutRate');
+    	$inRate 		= Utils::getBackendParam('inRate');
+    	$waitTime 		= Utils::getBackendParam('waitTime');
+    	$devType 		= Utils::getBackendParam('devType');
+    	$status 		= Utils::getBackendParam('status');
+    	$priorityRate 	= Utils::getBackendParam('priorityRate');
+    	$remark 		= Utils::getBackendParam('remark');
+    	 
+    	if(empty($name) || empty($rcid)){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    	}else{
+    		$res = RegChannel::updateChannel($rcid, $merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inRate, $waitTime, $devType, $status, $priorityRate, $remark);
+    		if($res){
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		}
+    	}
+    	Utils::jsonOut($out);
     }
     
     public function actionMutexView(){
@@ -238,7 +323,10 @@ class RegisterController extends BController{
     	$stime 			= Utils::getBackendParam('stime');
     	$etime 			= Utils::getBackendParam('etime');
     	$checkChannel 	= Utils::getBackendParam('checkChannel');
-    	$data = RegProfit::findByTime($stime, $etime, $checkChannel);
+    	$checkMerchant 	= Utils::getBackendParam('checkMerchant');
+    	$channel 		= Utils::getBackendParam('channel');
+    	$merchant 		= Utils::getBackendParam('merchant');
+    	$data = RegProfit::findProfitList($stime, $etime, $checkChannel, $checkMerchant, $channel, $merchant);
     	if($data){
     		$res['resultCode']  = Constant::RESULT_CODE_SUCC;
     		$res['msg']         = Constant::RESULT_MSG_SUCC;
