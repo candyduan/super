@@ -156,7 +156,7 @@ use yii\helpers\Html;
                 </li>
             </ul>
         </li>
-    <li class="">
+<!--    <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-refresh"></i>
                 <span class="menu-text"> 数据中心 </span>
@@ -186,7 +186,7 @@ use yii\helpers\Html;
                     <b class="arrow"></b>
                 </li>
             </ul>
-        </li>
+        </li>-->
   <!--     <li class="">
          <a href="#" class="dropdown-toggle">
              <i class="glyphicon glyphicon-user"></i>
