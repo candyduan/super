@@ -94,6 +94,15 @@ class SdkPayController extends BController
             2 => '联通',
             3 => '电信',
         ];
+        
+        $totalItem = array(
+            'Total',
+            '-',
+            '-',
+            '-'
+        );
+        $totalAllPay = 0;
+        $totalSuccPay = 0;
         $tabledata = [];
         foreach($data as $value){
             $item = array(date('Y-m-d',strtotime($value['date'])));
@@ -114,9 +123,15 @@ class SdkPayController extends BController
             }
             array_push($item, $value['allPay']);
             array_push($item, $value['successPay']);
-            array_push($item, $value['ratio']);
+            array_push($item, $value['ratio'].'%');
             $tabledata[] = $item;
+            $totalAllPay += $value['allPay'];
+            $totalSuccPay += $value['successPay'];
         }
+        array_push($totalItem, $totalAllPay);
+        array_push($totalItem, $totalSuccPay);
+        array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');        
+        array_unshift($tabledata, $totalItem);
 
         $data = [
             'searchData' => [
