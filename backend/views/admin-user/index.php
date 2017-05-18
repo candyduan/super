@@ -61,51 +61,23 @@
                         <span class="input-group-addon"> 邮箱 <span class="red">*</span>:</span>
                         <input   placeholder ='必填' type="text" name="email" id="email" class="form-control"/>
                     </div><br /><br />
-
                         <span class="input-group-addon"> 权限:</span>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="sdk" id="sdk" >SDK管理
+                                <input type="checkbox" name="sdk" id="sdk" >融合sdk后台
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="sort" id="sort">SDK计费排序
+                                <input type="checkbox" name="register" id="register">主动上行后台
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"  name="partner"  id="partner">SDK内容中心(内容商列表)
-                            </label>
-
-                            <label>
-                                <input type="checkbox"  name="app"  id="app">SDK内容中心(应用列表)
-                            </label>
-
-                            <label>
-                                <input type="checkbox"  name="campaign"  id="campaign">SDK内容中心(活动列表)
-                            </label>
-
-                            <label>
-                                <input type="checkbox"  name="package"  id="package">SDK内容中心(活动包列表)
+                                <input type="checkbox"  name="agency" id="agency"> 注册中介后台
                             </label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"  name="sdk-promotion-result" id="sdk-promotion-result"> SDK成果录入
-                            </label>
-                        </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"  name="sdk-pay" id="sdk-promotion-result">数据中心(计费转化)
-                        </label>
-                    </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"  name="modify-password" id="modify-password" > 修改密码
-                            </label>
-                        </div>
-                    </div><br /><br />
+                  <br /><br />
                 <input type="hidden" value="" name="auid" id="auid"/>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" id="btn_submit_adminuser">提交</button>
