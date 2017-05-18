@@ -15,6 +15,7 @@ use common\models\orm\extend\Merchant;
 use common\models\orm\extend\Admin;
 use Behat\Gherkin\Exception\Exception;
 use common\models\orm\extend\SdkVersion;
+use common\models\orm\extend\RegChannelVerifyRule;
 class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
@@ -165,14 +166,16 @@ class RegisterController extends BController{
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
     	}else{
-    		$regChannel			= RegChannel::findByPk($rcid);
+    		$regChannel				= RegChannel::findByPk($rcid);
+    		$regChannelVerifyRule	= RegChannelVerifyRule::findAllByRcid($rcid);
     		if(!$regChannel){
     			 $out['resultCode']  = Constant::RESULT_CODE_NONE;
     			 $out['msg']         = Constant::RESULT_MSG_NONE;
     		}else{
      			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     			$out['msg']         = Constant::RESULT_MSG_SUCC;
-    			$out['item']        	= $regChannel->toArray();
+    			$out['item']        = $regChannel->toArray();
+    			$out['channelVerifyRule']	= $regChannelVerifyRule;
     		}
     		
     	}
@@ -180,14 +183,12 @@ class RegisterController extends BController{
     }
     
     public function actionSaveChannelView(){
-    	$rcid				= Utils::getBackendParam('rcid');
     	$adminList			= Admin::getAllAdmins();
     	$merchantList		= Merchant::findMerchantList();
      	$channelStatusList	= RegChannel::getAllChannelStatus();
     	$channelDevTypeList	= RegChannel::getAllChannelDevType();
     	$sdkVersionList		= SdkVersion::getSdkVersionList();
-    	$merchantId			= Utils::getBackendParam('merchantId');
-    	return $this->render('save-channel-view',array('sdkVersionList'=>$sdkVersionList,'adminList'=>$adminList,'merchantId'=>$merchantId,'merchantList'=>$merchantList,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
+    	return $this->render('save-channel-view',array('sdkVersionList'=>$sdkVersionList,'adminList'=>$adminList,'merchantList'=>$merchantList,'channelStatusList'=>$channelStatusList,'channelDevTypeList'=>$channelDevTypeList));
     }
     
     public function actionSaveChannelResult(){
@@ -208,11 +209,25 @@ class RegisterController extends BController{
     	$remark 		= Utils::getBackendParam('remark');
     	$holder 		= Utils::getBackendParam('holder');
     	
+    	$type0 			= Utils::getBackendParam('type0');
+    	$portType0 		= Utils::getBackendParam('portType0');
+    	$keys1Type0		= Utils::getBackendParam('keys1Type0');
+    	$keys2Type0		= Utils::getBackendParam('keys2Type0');
+    	$keys3Type0 	= Utils::getBackendParam('keys3Type0');
+    	$statusType0	= Utils::getBackendParam('statusType0');
+    	$type1			= Utils::getBackendParam('type1');
+    	$portType1 		= Utils::getBackendParam('portType1');
+    	$keys1Type1		= Utils::getBackendParam('keys1Type1');
+    	$keys2Type1		= Utils::getBackendParam('keys2Type1');
+    	$keys3Type1 	= Utils::getBackendParam('keys3Type1');
+    	$statusType1	= Utils::getBackendParam('statusType1');
+    	
     	if(empty($name) || empty($sign)){
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
     	}else{
     		$res = RegChannel::saveChannel($rcid, $sign,$merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inPrice, $waitTime, $devType, $status, $priorityRate, $remark,$holder);
+      		RegChannelVerifyRule::saveChannelVerifyRule($rcid, $type0, $portType0, $keys1Type0, $keys2Type0, $keys3Type0, $statusType0, $type1, $portType1, $keys1Type1, $keys2Type1, $keys3Type1, $statusType1);
       		if($res){
     			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     			$out['msg']         = Constant::RESULT_MSG_SUCC;
