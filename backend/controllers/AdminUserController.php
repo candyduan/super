@@ -205,6 +205,7 @@ class AdminUserController extends BController
                         'campaign',
                         'sdk-promotion-result',
                         'sdk-pay',
+                        'package-pay',
                         'modify-password' ,
                         'package',
                         'site'
