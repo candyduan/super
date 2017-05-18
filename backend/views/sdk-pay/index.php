@@ -131,7 +131,7 @@
 //         	aTargets.push(i);
 //         }
         $("#tbl").dataTable().fnDestroy();
-//         refreshColumn();// TODO 动态变化列数
+//         refreshColumn();
         
         $('#tbl').DataTable({
             "pagingType": "simple_numbers",
@@ -141,7 +141,7 @@
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [0,1,2,3,4,5,6],// TODO 动态变化列数
+                'aTargets': [0,1,2,3,4,5,6],
             }],
             "displayLength": 100, //默认每页多少条数据
             "processing": true,

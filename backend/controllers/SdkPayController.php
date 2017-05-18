@@ -83,11 +83,11 @@ class SdkPayController extends BController
         $checkProvince = $checkProvince?true:false;
         $checkProvider = Utils::getBackendParam('checkProvider');
         $checkProvider = $checkProvider?true:false;
+
+        $condition = self::_getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time);
         
-        $condition = self::_getCondition($sdk,$stime,$etime,$dateType,$provider,$province,$time);
-        
-        $data = SdkPayDay::getIndexData($condition, $start,$length);
-        $count = SdkPayDay::getIndexCount($condition);
+        $data = SdkPayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
+        $count = SdkPayDay::getIndexCount($condition['where'],$condition['group']);
         $providerName = [
             0 => '-',
             1 => '移动',
@@ -108,7 +108,7 @@ class SdkPayController extends BController
             $item = array(date('Y-m-d',strtotime($value['date'])));
             if($checkSDK){
                 array_push($item, $value['sdk']);
-            }else{// TODO 动态变化列数
+            }else{
                 array_push($item, '-');
             }
             if($checkProvider){
@@ -121,15 +121,17 @@ class SdkPayController extends BController
             }else{
                 array_push($item, '-');
             }
-            array_push($item, $value['allPay']);
-            array_push($item, $value['successPay']);
+            $allPay = number_format($value['allPay']/100,2);
+            $successPay = number_format($value['successPay']/100,2);
+            array_push($item, $allPay);
+            array_push($item, $successPay);
             array_push($item, $value['ratio'].'%');
             $tabledata[] = $item;
             $totalAllPay += $value['allPay'];
             $totalSuccPay += $value['successPay'];
         }
-        array_push($totalItem, $totalAllPay);
-        array_push($totalItem, $totalSuccPay);
+        array_push($totalItem, number_format($totalAllPay/100,2));
+        array_push($totalItem, number_format($totalSuccPay/100,2));
         array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');        
         array_unshift($tabledata, $totalItem);
 
@@ -144,54 +146,85 @@ class SdkPayController extends BController
         Utils::jsonOut($data);
         exit;
     }
-
-    private function _getCondition($sdk,$stime,$etime,$dateType,$provider,$province,$time){
-        $condition[] = 'and';
-        $condition[] = [
+    private function _getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time){
+        $select = [
+            'sdkPayDay.date as date',
+            'sdk.name as sdk',
+            'sdkPayDay.provider as provider',
+            'province.name as provinceName',
+            'sum(sdkPayDay.allPay) as allPay',
+            'sum(sdkPayDay.successPay) as successPay',
+            'sdkPayDay.ratio'
+            ];
+        
+        $where[] = 'and';
+        $where[] = [
             '=',
             'sdkPayDay.status',
             1
         ];
         if(Utils::isValid($sdk)){
-            $condition[] = [
+            $where[] = [
                 'like',
                 'sdk.name',
                 $sdk
             ];
         }
         
-        if(Utils::isDate($stime)){
-            $condition[] = [
-                '>=',
-                'sdkPayDay.date',
-                $stime.' 00:00:00'
-            ];
-        }
-        if(Utils::isDate($etime)){
-            $condition[] = [
-                '<=',
-                'sdkPayDay.date',
-                $etime.' 23:59:59'
-            ];
-        }
-        // TODO dateType
-
         if($provider > 0){
-            $condition[] = [
+            $where[] = [
                 '=',
                 'sdkPayDay.provider',
                 $provider
             ];
         }
         if(Utils::isValid($province)){
-            $condition[] = [
+            $where[] = [
                 'in',
                 'sdkPayDay.prid',
                 explode(',', $province)
             ];
         }
+        
+        switch ($dateType){
+            case 1:// 天
+            case 2://小时
+            case 3://时段
+                if(Utils::isDate($stime)){
+                    $where[] = [
+                        '>=',
+                        'sdkPayDay.date',
+                        $stime.' 00:00:00'
+                    ];
+                }
+                if(Utils::isDate($etime)){
+                    $where[] = [
+                        '<=',
+                        'sdkPayDay.date',
+                        $etime.' 23:59:59'
+                    ];
+                }
+                break;
+            case 4://月份
+                // TODO
+                break;
+        }
+        $group = [];
+        if($checkSDK){
+            $group[] = 'sdkPayDay.sdid';
+        }
+        if($checkProvider){
+            $group[] = 'sdkPayDay.provider';
+        }
+        if($checkProvince){
+            $group[] = 'sdkPayDay.prid';
+        }
+        
         if(Utils::isValid($time)){// TODO
         }
+        $condition['select'] = $select;
+        $condition['where'] = $where;
+        $condition['group'] = $group;
         return $condition;
     }
 }

@@ -30,26 +30,24 @@ class SdkPayDay extends \common\models\orm\base\SdkPayDay {
          return $return_data;
     }
     
-    public static function getIndexData($where, $start,$length){
+    public static function getIndexData($select,$where,$group, $start,$length){
         $query = new Query();
-        $query	->select([
-            'sdk.name as sdk',
-            'province.name as provinceName',
-            'sdkPayDay.*']
-            )
+        $query	->select($select)
             ->from('sdkPayDay')
             ->join('inner join', 'sdk',
                 'sdkPayDay.sdid = sdk.sdid')
             ->join('inner join', 'province',
                 'sdkPayDay.prid = province.id')
             ->where($where)
+            ->groupBy($group)
             ->offset($start)
             ->limit($length);
         $command = $query->orderBy('sdkPayDay.spdid desc')->createCommand();
         $data = $command->queryAll();
         return $data;
     }
-    public static function getIndexCount($where){
+    public static function getIndexCount($where,$group){
+        //TODO group
         $count = self::find()->join('inner join', 'sdk',
                 'sdkPayDay.sdid = sdk.sdid')
             ->join('inner join', 'province',
