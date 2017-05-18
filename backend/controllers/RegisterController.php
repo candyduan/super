@@ -233,7 +233,7 @@ class RegisterController extends BController{
     		$page       = Utils::getBackendParam('page',1);
     		
     		if(is_numeric($channelMutexId)){
-    			
+    			$res = RegChannelMutex::findByIdNeedPaginator($channelMutexId, $page);
     		}else{
     			$res = RegChannelMutex::findAllNeedPaginator($page);
     		}

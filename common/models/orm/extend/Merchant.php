@@ -38,7 +38,6 @@ class Merchant extends \common\models\orm\base\Merchant{
     public  static function findByIdNeedPaginator($id, $page, $perpage = '20'){
     		$data = self::find()->where('id = :id',[':id' => $id]);
     		$totalCount =$data->count();
-    		//echo $totalCount;die();
     		$pages = ceil($totalCount/$perpage);
     		$pagination = new Pagination(['totalCount' => $totalCount, 'pageSize' => $perpage, 'page' => $page ]);
     		$models = $data->offset($pagination->offset)->limit($pagination->limit)->all();
