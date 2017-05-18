@@ -6,7 +6,7 @@ use yii\helpers\Html;
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title><?=Html::encode(Yii::$app->params['title']);?></title>
+    <title>麦广互娱-融合SDK</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <link rel="stylesheet" href="/ace/assets/css/bootstrap.min.css" />
@@ -34,12 +34,7 @@ use yii\helpers\Html;
             <span class="icon-bar"></span>
         </button>
         <div class="navbar-header pull-left">
-            <a href="/site/index" class="navbar-brand">
-                <small>
-                    <i class="fa fa-leaf"></i>
-                    融合SDK后台
-                </small>
-            </a>
+        <?php echo backend\library\widgets\WidgetsUtils::getMainMenu();?>
         </div>
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
@@ -156,7 +151,7 @@ use yii\helpers\Html;
                 </li>
             </ul>
         </li>
-    <li class="">
+<!--    <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="glyphicon glyphicon-refresh"></i>
                 <span class="menu-text"> 数据中心 </span>
@@ -186,31 +181,31 @@ use yii\helpers\Html;
                     <b class="arrow"></b>
                 </li>
             </ul>
+        </li>-->
+        <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="glyphicon glyphicon-user"></i>
+                <span class="menu-text"> 用户管理 </span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="">
+                    <a href="/admin-user/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        用户管理
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="/modify-password/index">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        修改密码
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
         </li>
-       <li class="">
-         <a href="#" class="dropdown-toggle">
-             <i class="glyphicon glyphicon-user"></i>
-             <span class="menu-text"> 用户管理 </span>
-             <b class="arrow fa fa-angle-down"></b>
-         </a>
-         <b class="arrow"></b>
-         <ul class="submenu">
-             <li class="">
-                 <a href="/admin-user/index">
-                     <i class="menu-icon fa fa-caret-right"></i>
-                     用户管理
-                 </a>
-                 <b class="arrow"></b>
-             </li>
-             <li class="">
-                 <a href="/modify-password/index">
-                     <i class="menu-icon fa fa-caret-right"></i>
-                     修改密码
-                 </a>
-                 <b class="arrow"></b>
-             </li>
-         </ul>
-       </li>
 
         <!--
         <li class="">

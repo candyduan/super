@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>中介详情</li>
+<li class="active"><i class="fa fa-dashboard"></i>中介商详情</li>
 </ol>
 <div class="main">
     <table class="table table-striped table-bordered table-hover">

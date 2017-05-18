@@ -2,7 +2,7 @@
 .btn{maring-left:10px;margin-right:10px;margin-top:0px;}
 </style>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>中介列表</li>
+<li class="active"><i class="fa fa-dashboard"></i>中介商列表</li>
 </ol>
 <div class="main">
     <!-- 数据栏 -->

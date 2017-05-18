@@ -364,6 +364,10 @@
     }
     <!-- --------地域设置---begin-------- -->
     function setProvince(sdid, provider){
+        if(provider == 1){//从主页面点过来的时候 nav 必须在移动这一栏
+            $('#tab_type li').removeClass('active');
+            $('#tab_type_1').addClass('active');
+        }
         $('#hidden_sdid').val(sdid); //!! 重要 更改状态通过这个获取sdid
         var post_url = '/sdk/get-province-limit';
         var post_data = {
@@ -641,7 +645,7 @@
                 $('#tabtype a').text('无限制');
                 $('#btn_submit_name_table').removeClass('grey').addClass('green');
                 break;
-            case 1: $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-primary').addClass('btn-success').text('指定');
+            case 1: $('#btn_search_time_table').removeClass('btn-danger').removeClass('btn-primary').addClass('btn-success').text('指定');
                 $('#tabtype a').text('白名单');
                 break;
             case 2: $('#btn_search_time_table').removeClass('btn-success').removeClass('btn-primary').addClass('btn-danger').text('屏蔽');

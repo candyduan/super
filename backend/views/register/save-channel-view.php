@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>添加通道</li>
+<li class="active"><i class="fa fa-dashboard"></i>通道管理</li>
 </ol>
 <div class="main">
 <div class="databar" style="width:98%;padding-left:20px">
@@ -12,7 +12,7 @@
 				<?php }?>
 				</select>
 			</div>
-			
+			<input type="hidden" id="rcid">
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">负责人</span>
 				<select class="form-control" id="holder">
@@ -97,45 +97,87 @@
 			<textarea rows="4"  id="remark" style="width:500px;margin-left:auto;margin-right:auto;border-radius:5px;"  ></textarea>
 		</div>
 		<div style='margin-top: 10px'>
-		<button type="submit" class="btn btn-primary searchbar_smt" id="btn_add"> 添加 </button>
+		<button type="submit" class="btn btn-primary searchbar_smt" id="btn_save"> 保存 </button>
 		</div>
 			 
 </div>
 </div>
 
 <script> 
-$('#btn_add').on('click', function(event){
-	 doAddChannel();
-});
-function doAddChannel(){
-	var  url = '/register/add-channel-result';
-	var  sign 			= $('#sign').val();
-	var  merchant 		= $('#merchant').val();
-	var  name 			= $('#name').val();
-	var  useMobile	 	= $('#useMobile').val();
-	var  useUnicom 		= $('#useUnicom').val();
-	var  useTelecom 	= $('#useTelecom').val();
-	var  sdkVersion 	= $('#sdkVersion').val();
-	var  cutRate 		= $('#cutRate').val();
-	var  inPrice 		= $('#inPrice').val();
-	var  waitTime 		= $('#waitTime').val();
-	var  devType 		= $('#devType').val();
-	var  status 		= $('#status').val();
-	var  priorityRate 	= $('#priorityRate').val();
-	var  remark 		= $('#remark').val();
-	var  holder 		= $('#holder').val();
-	
-	var data = 'holder='+holder+'&sign='+sign+'&merchant='+merchant+'&name='+name+'&useMobile='+useMobile+'&useUnicom='+useUnicom+'&useTelecom='+useTelecom+'&sdkVersion='+sdkVersion;
-	data = data +'&cutRate='+cutRate+'&inPrice='+inPrice+'&waitTime='+waitTime+'&devType='+devType+'&status='+status+'&priorityRate='+priorityRate+'&remark='+remark;
-	if(name != '' && merchant != ''){
-		var succ 	= function(resultJson){
-			alert(resultJson.msg);
-			return;
+$(document).ready(function(){
+	var rcid  = Utils.getQueryString('rcid');
+	if(parseInt(rcid) > 0){
+		var url = '/register/detail-channel-result';
+		var data='rcid='+rcid;
+		var succFunc	= function(resJson){
+			if(parseInt(resJson.resultCode) == 1){
+				$('#rcid').val(resJson.item.rcid);
+				$('#name').val(resJson.item.name);
+				$('#sign').val(resJson.item.sign);
+				$('#merchant').val(resJson.item.merchant);
+ 				$('#useMobile').val(resJson.item.useMobile);
+ 				$("#useMobile").prop("checked",parseInt(resJson.item.useMobile));
+				$('#useUnicom').val(resJson.item.useUnicom);
+				$("#useUnicom").prop("checked",parseInt(resJson.item.useUnicom));
+				$('#useTelecom').val(resJson.item.useTelecom);
+				$("#useTelecom").prop("checked",parseInt(resJson.item.useTelecom));
+				$('#sdkVersion').val(resJson.item.sdkVersion);
+				$('#cutRate').val(resJson.item.cutRate);
+				$('#inPrice').val(resJson.item.inPrice);
+				$('#waitTime').val(resJson.item.waitTime);	
+				$('#devType').val(resJson.item.devType);	
+				$('#status').val(resJson.item.status);	
+				$('#priorityRate').val(resJson.item.priorityRate);	
+				$('#remark').val(resJson.item.remark);	
+				$('#holder').val(resJson.item.holder);	
+			}		
 		};
-		Utils.ajax(url,data,succ);
-	}else{
-		alert('通道名称不能为空');
+		Utils.ajax(url,data,succFunc);
 	}
-}
+	$('#btn_save').click(function(){
+		if($('#name').val() == ''){
+			$('#name').addClass('input-err');
+			return;
+		}
+		if($('#sign').val() == ''){
+			$('#sign').addClass('input-err');
+			return;
+		}
+		if($('#inPrice').val() == ''){
+			$('#inPrice').addClass('input-err');
+			return;
+		} 
+		var  url = '/register/save-channel-result';
+		var  rcid 			= $('#rcid').val();
+		var  sign 			= $('#sign').val();
+		var  merchant 		= $('#merchant').val();
+		var  name 			= $('#name').val();
+		var  useMobile	 	= $('#useMobile').val();
+		var  useUnicom 		= $('#useUnicom').val();
+		var  useTelecom 	= $('#useTelecom').val();
+		var  sdkVersion 	= $('#sdkVersion').val();
+		var  cutRate 		= $('#cutRate').val();
+		var  inPrice 		= $('#inPrice').val();
+		var  waitTime 		= $('#waitTime').val();
+		var  devType 		= $('#devType').val();
+		var  status 		= $('#status').val();
+		var  priorityRate 	= $('#priorityRate').val();
+		var  remark 		= $('#remark').val();
+		var  holder 		= $('#holder').val();
+		
+		var data = 'rcid='+rcid+'&sign='+sign+'&merchant='+merchant+'&name='+name+'&useMobile='+useMobile+'&useUnicom='+useUnicom;
+		data = data +'&useTelecom='+useTelecom+'&sdkVersion='+sdkVersion+'&cutRate='+cutRate+'&inPrice='+inPrice+'&waitTime='+waitTime;
+		data = data +'&devType='+devType+'&status='+status+'&priorityRate='+priorityRate+'&remark='+remark+'&holder='+holder;
+		var succFunc	= function(resJson){
+				if(parseInt(resJson.resultCode) == 1){
+					Utils.getNoFooterModal("成功",resJson.msg);
+				}else{
+					Utils.getErrModal("保存失败",resJson.msg);
+				}
+			};
+		Utils.ajax(url,data,succFunc);
+	});
+});
+
 </script>
 

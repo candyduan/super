@@ -10,13 +10,16 @@
     <meta name="author" content="">
 
     <title>麦广互娱管理后台</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/common/jquery.js"></script>
+    <script src="/js/common/bootstrap.min.js"></script>
+    <script src="/js/register/Utils.js?d=20170516"></script>  
 </head>
 
 <body>
             <div class="container-fluid">
             <?= $content ?>
-            </div>
-            
+            </div>          
 </body>
 
 </html>
