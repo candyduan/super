@@ -6,7 +6,7 @@ use yii\helpers\Html;
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title><?=Html::encode(Yii::$app->params['title']);?></title>
+    <title>麦广互娱-融合SDK</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <link rel="stylesheet" href="/ace/assets/css/bootstrap.min.css" />
@@ -34,12 +34,7 @@ use yii\helpers\Html;
             <span class="icon-bar"></span>
         </button>
         <div class="navbar-header pull-left">
-            <a href="/site/index" class="navbar-brand">
-                <small>
-                    <i class="fa fa-leaf"></i>
-                    融合SDK后台
-                </small>
-            </a>
+        <?php echo backend\library\widgets\WidgetsUtils::getMainMenu();?>
         </div>
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">

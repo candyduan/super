@@ -7,10 +7,10 @@ use common\library\Constant;
 use common\library\BController;
 
 class AgencyController extends BController{
-    public $layout = "register";
+    public $layout = "agency";
     
     public function actionIndex(){
-        
+        return $this->render('index');
     }
     
     public function actionAccountListView(){

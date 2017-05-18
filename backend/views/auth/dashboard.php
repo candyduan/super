@@ -7,10 +7,10 @@ body{
 }
 </style>
 <div class="main">
+<div class="func-module func-paysdk">支付SDK</div>
 <div class="func-module func-mop-sdk">融合SDK</div>
 <div class="func-module func-register">主动上行</div>
 <div class="func-module func-agency">注册中介</div>
-<div class="func-module func-paysdk">支付SDK</div>
 <div class="func-module func-other">其它功能</div>
 <div class="func-module func-other">其它功能</div>
 </div>
@@ -23,7 +23,7 @@ $(document).ready(function(){
 		window.location.href="/register/index";
 	});
 	$('.func-agency').click(function(){
-		window.location.href="/agency/account-list-view";
+		window.location.href="/agency/index";
 	});
 	$('.func-paysdk').click(function(){
 		window.location.href="http://master.maimob.cn/index.php/admin/";

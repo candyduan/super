@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>麦广互娱-主动上行</title>
+    <title>麦广互娱-注册中介</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -67,21 +67,15 @@
                     <li class="active">
                         <a href="/register/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#regchannel"><i class="fa fa-fw fa-dashboard"></i>通道中心<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="regchannel" class="collapse">
-                            <li><a href="/register/merchant-view">通道商列表</a></li>
-                            <li><a href="/register/channel-view">通道管理</a></li>
-                            <li><a href="/register/mutex-view">通道组管理</a></li>
-                        </ul>
-                    </li>
                     
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#profit"><i class="fa fa-fw fa-dashboard"></i>数据中心<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="profit" class="collapse">
-                            <li><a href="/register/profit-channel-view">通道收益</a></li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#agency"><i class="fa fa-fw fa-dashboard"></i>中介商管理<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="agency" class="collapse">
+                            <li><a href="/agency/account-list-view">中介商列表</a></li>
+                            <li><a href="/agency/account-set-view">新增中介商</a></li>
                         </ul>
-                    </li>                                    
+                    </li>
+                                        
                                         
                 </ul>
             </div>
