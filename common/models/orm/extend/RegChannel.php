@@ -145,8 +145,13 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	);
     }
     
-    public static function addChannel($sign,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inPrice,$waitTime,$devType,$status,$priorityRate,$remark,$holder){
-    	$regChannel = new RegChannel();
+    public static function saveChannel($rcid,$sign,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inPrice,$waitTime,$devType,$status,$priorityRate,$remark,$holder){
+    	if(is_numeric($rcid) && $rcid){
+    		$regChannel = self::findByPk($rcid);
+    	}else{
+    		$regChannel = new RegChannel();
+    		$regChannel->recordTime		= Utils::getNowTime();
+    	}
     	$regChannel->sign			= $sign;
     	$regChannel->merchant		= $merchant;
     	$regChannel->name			= $name;
@@ -162,38 +167,17 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	$regChannel->priorityRate	= $priorityRate;
     	$regChannel->remark			= $remark;
     	$regChannel->holder			= $holder;
-    	$regChannel->updateTime		= Utils::getNowTime();
-    	$res	= $regChannel->insert();
+    	try{
+     		$res	= $regChannel->save();
+     	}catch (\Exception $e){
+     		return false;
+     	}
     	if($res){
     		return true;
     	}
     	return false;
     }
-    
-    public static function updateChannel($rcid,$merchant,$name,$useMobile,$useUnicom,$useTelecom,$sdkVersion,$cutRate,$inPrice,$waitTime,$devType,$status,$priorityRate,$remark,$holder){
-    	$regChannel = self::findByPk($rcid);
-    	if($regChannel){
-	    	$regChannel->merchant		= $merchant;
-	    	$regChannel->name			= $name;
-	    	$regChannel->useMobile		= $useMobile;
-	    	$regChannel->useUnicom		= $useUnicom;
-	    	$regChannel->useTelecom		= $useTelecom;
-	    	$regChannel->sdkVersion		= $sdkVersion;
-	    	$regChannel->cutRate		= $cutRate;
-	    	$regChannel->inPrice		= $inPrice;
-	    	$regChannel->waitTime		= $waitTime;
-	    	$regChannel->devType		= $devType;
-	    	$regChannel->status			= $status;
-	    	$regChannel->priorityRate	= $priorityRate;
-	    	$regChannel->remark			= $remark;
-	    	$regChannel->holder			= $holder;
-	    	$res	= $regChannel->save();
-	    	if($res){
-	    		return true;
-	    	}
-    	}
-    	return false;
-    }
+ 
     public static function getTypeHeaderChannelList(){
     	$res			= array();
     	$channelList 	= self::find()->all();

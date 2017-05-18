@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
 <li class="active"><i class="fa fa-dashboard"></i>通道管理</li>
-<li class="active" style="padding-left:20px"><a href="/register/add-channel">添加通道</a></li>
+<li class="active" style="padding-left:20px"><a href="/register/save-channel-view">添加通道</a></li>
 </ol>
 <div class="main">
 
@@ -62,17 +62,14 @@ function setResult(page){
                 if(parseInt(resultJson.resultCode) == 1){
                         var resultHtml = '<tr><td>通道商</td><td>通道</td><td>负责人</td><td>运营商</td><td>开发类型</td><td>状态</td></tr>';
                         $.each(resultJson.list,function(key,val){
-                                resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td><a href="/register/update-channel?rcid='+val.rcid+'">'+val.channelName+'</a></td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td>'+val.status+'</td></tr>';
+                                resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td><a href="/register/save-channel-view?rcid='+val.rcid+'">'+val.channelName+'</a></td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td>'+val.status+'</td></tr>';
                         });
                         $('#data_list').html(resultHtml);
-
-
 
                         Utils.setPagination(page,resultJson.pages);
                         $(".pager_number").click(function(){
                             setResult($(this).attr('page'));
                         });
-                
                 }else{
                 	$('#data_list').html(resultJson.msg);
                 }
