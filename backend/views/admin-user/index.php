@@ -40,6 +40,7 @@
     <div class="panel-footer">
     </div>
 </div>
+
 <div id="modalAdminUser" class="modal fade" >
     <div class="modal-dialog" >
         <div class="modal-content">
@@ -79,6 +80,7 @@
                         </div>
                   <br /><br />
                 <input type="hidden" value="" name="auid" id="auid"/>
+                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" id="btn_submit_adminuser">提交</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>

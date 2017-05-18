@@ -24,8 +24,8 @@ use yii\helpers\Html;
     <script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" href="/css/site.css"></link>
 </head>
-<body class="no-skin">
-<div id="navbar" class="navbar navbar-default          ace-save-state">
+<body class="skin-1">
+<div id="navbar" class="navbar navbar-default     ace-save-state " style="background-color:#2E2E2E ">
     <div class="navbar-container ace-save-state" id="navbar-container">
         <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
             <span class="sr-only">Toggle sidebar</span>
@@ -36,14 +36,24 @@ use yii\helpers\Html;
         <div class="navbar-header pull-left">
         <?php echo backend\library\widgets\WidgetsUtils::getMainMenu();?>
         </div>
-        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+        <ul class="nav navbar-right top-nav" >
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>  <?php echo Yii::$app->user->identity->username;?><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="/auth/logout"><i class="fa fa-fw fa-power-off"></i>退出</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    <!--    <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <img class="nav-user-photo" src="/ace/assets/images/avatars/avatar2.png" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>Welcome,</small>
-                         <?php echo Yii::$app->user->identity->username;?>
+                         <?php /*echo Yii::$app->user->identity->username;*/?>
 								</span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
@@ -57,7 +67,7 @@ use yii\helpers\Html;
                     </ul>
                 </li>
             </ul>
-        </div>
+        </div>-->
     </div><!-- /.navbar-container -->
 </div>
 <body class="main-container ace-save-state" id="main-container">
