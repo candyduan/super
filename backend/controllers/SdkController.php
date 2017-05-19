@@ -459,6 +459,7 @@ class SdkController extends BController
     }
 
     private function _getUnlimitTime($stimeetime){ //获取没有被屏蔽的时间点
+        $data = [];
         for($i = 0 ;$i < 24 ;$i++){
             $unlimit = true;
             foreach ($stimeetime as $value) {

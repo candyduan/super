@@ -217,7 +217,7 @@
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
-                <span>SDK地域时间设置:</span>
+                <span>SDK地域时间设置:</span><button id="sdkprovincetime_batch_set" class="btn btn-success">全选</button>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" id="div_time" style="height:500px">
@@ -235,7 +235,7 @@
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
-                <span>SDK时间设置:</span>
+                <span>SDK时间设置:</span><button id="sdktime_batch_set" class="btn btn-success">全选</button>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" id="div_sdktime" style="height:500px">
@@ -541,6 +541,7 @@
                     circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
                 }
             }
+            $('#sdkprovincetime_batch_set').removeClass('btn-danger').addClass('btn-success');
             $('#btn_submit_time').attr('disabled', false);
             $('#hidden_prid').val(prid); //后面提交的时候需要
             $('#div_time').empty().append(circle_buttons.join(' '));
@@ -596,6 +597,7 @@
                     circle_buttons.push('<button  onclick = "timebtnClick(this)" class="btn-circle btn-lg btn-success">'+i+'</button >');
                 }
             }
+            $('#sdktime_batch_set').removeClass('btn-danger').addClass('btn-success');
             $('#hidden_setime_sdid').val(sdid);
             $('#btn_submit_sdktime').attr('disabled', false);
             $('#div_sdktime').empty().append(circle_buttons.join(' '));
@@ -796,5 +798,23 @@
         });
         return timelimit;
     }
+
+    $('#sdktime_batch_set').on('click',function(){
+        $(this).toggleClass('btn-danger');
+        if($(this).hasClass('btn-danger')){
+            $('#div_sdktime').children(".btn-circle").removeClass('btn-sucess').addClass('btn-danger');
+        }else{
+            $('#div_sdktime').children(".btn-circle").removeClass('btn-danger').addClass('btn-success');
+        }
+    });
+
+    $('#sdkprovincetime_batch_set').on('click',function(){
+        $(this).toggleClass('btn-danger');
+        if($(this).hasClass('btn-danger')){
+            $('#div_time').children(".btn-circle").removeClass('btn-sucess').addClass('btn-danger');
+        }else{
+            $('#div_time').children(".btn-circle").removeClass('btn-danger').addClass('btn-success');
+        }
+    });
 
 </script>
