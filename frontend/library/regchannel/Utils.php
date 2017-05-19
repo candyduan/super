@@ -304,7 +304,7 @@ class Utils{
                         'delayed'       => 1,
                         'blockPeriod'   => 3600,
                     );
-                    array_push($res, $verifyRuleModel);
+                    array_push($res, $item);
                 }
                 break;
             case Constant::CHANNEL_DOUBLE:
@@ -361,7 +361,7 @@ class Utils{
                         'delayed'       => 1,
                         'blockPeriod'   => 3600,
                     );
-                    array_push($res, $verifyRuleModel);
+                    array_push($res, $item);
                 }
                 break;                
             case Constant::CHANNEL_SMSP:
