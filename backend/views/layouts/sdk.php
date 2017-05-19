@@ -15,7 +15,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/css/mii-admin.css" rel="stylesheet">
+    <link href="/css/mii-admin.css?d=20170519" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -66,42 +66,42 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="/site/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
+                    <li class="">
+                        <a class="sidebar-item" href="/site/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#sdkadmin"><i class="fa fa-fw fa-dashboard"></i>融合SDK管理<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdkadmin" class="collapse">
-                            <li><a href="/sdk/index">融合SDK管理</a></li>
+                            <li><a class="sidebar-item" href="/sdk/index">融合SDK管理</a></li>
                         </ul>
                     </li>
                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#sdksort"><i class="fa fa-fw fa-dashboard"></i>SDK计费排序<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdksort" class="collapse">
-                            <li><a href="/sort/index">SDK计费排序</a></li>
+                            <li><a class="sidebar-item" href="/sort/index">SDK计费排序</a></li>
                         </ul>
                     </li>                    
 
                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#sdkcontent"><i class="fa fa-fw fa-dashboard"></i>SDK内容中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdkcontent" class="collapse">
-                            <li><a href="/partner/index">内容商列表</a></li>
-                            <li><a href="/app/index">应用列表</a></li>
-                            <li><a href="/campaign/index">活动列表</a></li>
+                            <li><a class="sidebar-item" href="/partner/index">内容商列表</a></li>
+                            <li><a class="sidebar-item" href="/app/index">应用列表</a></li>
+                            <li><a class="sidebar-item" href="/campaign/index">活动列表</a></li>
                         </ul>
                     </li> 
  
                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#sdkimport"><i class="fa fa-fw fa-dashboard"></i>SDK成果录入<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdkimport" class="collapse">
-                            <li><a href="/sdk-promotion-result/index">SDK成果录入</a></li>
+                            <li><a class="sidebar-item" href="/sdk-promotion-result/index">SDK成果录入</a></li>
                         </ul>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#sdkadminuser"><i class="fa fa-fw fa-dashboard"></i>用户管理<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdkadminuser" class="collapse">
-                            <li><a href="/admin-user/index">用户管理</a></li>
-                            <li><a href="/modify-password/index">修改密码</a></li>
+                            <li><a class="sidebar-item" href="/admin-user/index">用户管理</a></li>
+                            <li><a class="sidebar-item" href="/modify-password/index">修改密码</a></li>
                         </ul>
                     </li>
 
@@ -123,9 +123,7 @@
 
     </div>
     <!-- /#wrapper -->
-<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;text-align:center !important;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="margin-top:10%;"></div>
-
-<div id="dialog" class="modal fade"></div>
+<?php echo backend\library\widgets\WidgetsUtils::getFooter();?>
 </body>
 
 </html>

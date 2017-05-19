@@ -43,4 +43,27 @@ class WidgetsUtils{
             ';
         return $str;
     }
+    
+    
+    public static function getFooter(){
+        $str = '
+<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;text-align:center !important;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="margin-top:10%;"></div>
+<div id="dialog" class="modal fade"></div>
+<script>
+$(document).ready(function(){
+	var url = window.location.href;
+	var domain = document.domain;
+	url = url.replace("http://","").replace(domain,"").replace(":8082","");
+	$.each($(".sidebar-item"),function(key,val){
+		if($(val).attr("href") == url){
+			$(val).addClass("selected");
+			$(val).parent().parent().addClass("in");
+		}
+	});
+});
+</script>            
+            
+            ';
+        return $str;
+    }
 }
