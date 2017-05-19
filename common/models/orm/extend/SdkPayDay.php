@@ -20,7 +20,7 @@ class SdkPayDay extends \common\models\orm\base\SdkPayDay {
             'sumallPay' => 0,
             'sumsuccessPay' => 0
         ];
-        $data = self::find()->select(['allPay','successPay'])/*->select(['SUM(allPay) as sumallpay', 'SUM(successPay) as sumsuccesspay'])*/
+        $data = self::find()->select(['allPay','successPay'])
             ->where($condition)
             ->all();
         foreach($data as $value){

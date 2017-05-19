@@ -21,6 +21,7 @@ use yii\filters\AccessControl;
 use common\library\BController;
 use common\library\province\ProvinceUtils;
 use common\models\orm\extend\SdkPayDay;
+use common\models\orm\extend\SdkPayTransaction;
 /**
  * SdkPay controller
  */
@@ -84,14 +85,21 @@ class SdkPayController extends BController
         $checkProvider = Utils::getBackendParam('checkProvider');
         $checkProvider = $checkProvider?true:false;
 
-        $condition = self::_getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time);
-        
         if( 3 == $dateType ||  4 == $dateType){//时段和月份全搜算总数
             $start = null;
             $length = null;
         }
-        $data = SdkPayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
-        $count = SdkPayDay::getIndexCount($condition['where'],$condition['group']);
+        
+        if(2 == $dateType){//小时
+            $condition = self::_getHourCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time);
+            $data = SdkPayTransaction::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
+            $count = SdkPayTransaction::getIndexCount($condition['where'],$condition['group']);
+        }else{
+            $condition = self::_getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time);
+            $data = SdkPayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
+            $count = SdkPayDay::getIndexCount($condition['where'],$condition['group']);
+        }
+        
         $providerName = [
             0 => '-',
             1 => '移动',
@@ -169,7 +177,6 @@ class SdkPayController extends BController
             'province.name as provinceName',
             'sum(sdkPayDay.allPay) as allPay',
             'sum(sdkPayDay.successPay) as successPay',
-            'sdkPayDay.ratio'
             ];
         
         $where[] = 'and';
@@ -236,14 +243,6 @@ class SdkPayController extends BController
                 ];
                 break;
         }
-//         if(Utils::isValid($time)){// TODO
-//             $where[] = [
-//                 'not in',
-//                 'HOUR(sdkPayDay.recordTime)',
-//                 explode(',', $time)
-//             ];
-//         }
-        
         
         $group = [];
         if(1 == $dateType){//按天统计
@@ -258,7 +257,83 @@ class SdkPayController extends BController
         if($checkProvince){
             $group[] = 'sdkPayDay.prid';
         }
+        $condition['select'] = $select;
+        $condition['where'] = $where;
+        $condition['group'] = $group;
+        return $condition;
+    }
+    private function _getHourCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time){
+        $select = [
+            'sdkPayTransaction.recordTime as date',
+            'sdk.name as sdk',
+            'sdkPayTransaction.provider as provider',
+            'province.name as provinceName',
+            'sum(sdkPayTransaction.price) as allPay',
+            'sum(sdkPayTransaction.price) as successPay',// TODO
+        ];
+    
+        $where[] = 'and';
+        $where[] = [
+            '>',
+            'sdkPayTransaction.status',
+            0
+        ];
+        if(Utils::isValid($sdk)){
+            $where[] = [
+                'like',
+                'sdk.name',
+                $sdk
+            ];
+        }
+    
+        if($provider > 0){
+            $where[] = [
+                '=',
+                'sdkPayTransaction.provider',
+                $provider
+            ];
+        }
+        if(Utils::isValid($province)){
+            $where[] = [
+                'in',
+                'sdkPayTransaction.prid',
+                explode(',', $province)
+            ];
+        }
+        if(Utils::isDate($stime)){
+            $where[] = [
+                '>=',
+                'sdkPayTransaction.recordTime',
+                $stime.' 00:00:00'
+            ];
+        }
+        if(Utils::isDate($etime)){
+            $where[] = [
+                '<=',
+                'sdkPayTransaction.recordTime',
+                $etime.' 23:59:59'
+            ];
+        }
+
+        if(Utils::isValid($time)){
+            $where[] = [
+                'not in',
+                'HOUR(sdkPayTransaction.recordTime)',
+                explode(',', $time)
+            ];
+        }
         
+        $group = [];
+        if($checkSDK){
+            $group[] = 'sdkPayTransaction.sdid';
+        }
+        if($checkProvider){
+            $group[] = 'sdkPayTransaction.provider';
+        }
+        if($checkProvince){
+            $group[] = 'sdkPayTransaction.prid';
+        }
+    
         $condition['select'] = $select;
         $condition['where'] = $where;
         $condition['group'] = $group;
