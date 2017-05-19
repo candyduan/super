@@ -16,7 +16,6 @@
 
     <!-- Custom CSS -->
     <link href="/css/mii-admin.css" rel="stylesheet">
-    <link href="/css/register.css" rel="stylesheet"> 
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">

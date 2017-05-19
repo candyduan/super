@@ -5,7 +5,7 @@
         <li class="active"><i class="fa fa-dashboard"></i>融合SDK管理</li>
         </ol>
     <!-- panel body -->
-    <div class="panel-body">
+    <div class="panel-body main">
         <div class="row">
             <form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">

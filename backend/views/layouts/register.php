@@ -10,13 +10,12 @@
     <meta name="author" content="">
 
     <title>麦广互娱-主动上行</title>
-
+	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="/css/mii-admin.css" rel="stylesheet">
-    <link href="/css/register.css" rel="stylesheet"> 
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">

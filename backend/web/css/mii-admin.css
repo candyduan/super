@@ -145,7 +145,7 @@ ul.alert-dropdown {
 
 .side-nav>li>ul>li>a {
     display: block;
-    padding: 10px 15px 10px 38px;
+    padding: 10px 15px 10px 20px;
     text-decoration: none;
     color: #999;
 }
@@ -226,3 +226,9 @@ ul.alert-dropdown {
     color: #df8a13;
 }
 .input-err{border:1px solid #ff2d2d !important;}
+.main{min-height:800px;}
+.container-fluid{margin-left:0px !important;margin-right:0px !important;padding-left:0px !important;padding-right:0px !important;}
+.searchbar{margin-bottom:20px;}
+.navbar-brand{padding:15px !important;}
+.breadcrumb{display:block;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:10px;}
+.collapse ul li a{font-size:15px !important;}
