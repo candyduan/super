@@ -1,12 +1,9 @@
 
 <div class="panel panel-warning">
     <!-- panel heading -->
-    <div class="page-header">
-        <h1>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            后台用户管理
-        </h1>
-    </div>
+            <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i>后台用户管理</li>
+        </ol>
     <!-- panel body -->
     <div class="panel-body">
         <div class="row">
@@ -90,7 +87,6 @@
     </div>
 </div>
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
-<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
 <script src="/js/sdk/util.js"></script>
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">

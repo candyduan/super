@@ -5,15 +5,9 @@
 
 <body class="no-skin">
 <div style="height: 1000px;">
-    <div class="page-header">
-        <h1>
-            WELCOME
-            <small>
-                <i class="ace-icon fa fa-angle-double-right"></i>
-                欢迎光临麦广融合SDK管理后台
-            </small>
-        </h1>
-    </div>
+        <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i>首页</li>
+        </ol>
 </div>
 </body>
 </html>
