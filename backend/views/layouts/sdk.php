@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>麦广互娱-融合SDK</title>
-
+    <link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
