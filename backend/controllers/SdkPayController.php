@@ -132,7 +132,11 @@ class SdkPayController extends BController
         }
         array_push($totalItem, number_format($totalAllPay/100,2));
         array_push($totalItem, number_format($totalSuccPay/100,2));
-        array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');        
+        if(0 == $totalAllPay){
+            array_push($totalItem, '-');
+        }else{
+            array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');                
+        }    
         array_unshift($tabledata, $totalItem);
 
         $data = [
@@ -185,7 +189,6 @@ class SdkPayController extends BController
                 explode(',', $province)
             ];
         }
-        
         switch ($dateType){
             case 1:// 天
             case 2://小时

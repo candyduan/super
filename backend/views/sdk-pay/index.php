@@ -13,9 +13,9 @@
         	<form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text"  class="form-control " id='sdk' name ='SDK'  placeholder="SDK"/>
-                    <input  type="text"   class="form-control date-picker" id="startDate" data-date-format="yyyy-mm-dd">
+                    <input  type="text"   class="form-control date-picker" id="startDate" name="startDate" data-date-format="yyyy-mm-dd">
                     ~
-                    <input  type="text"   class="form-control date-picker" id="endDate" data-date-format="yyyy-mm-dd">
+                    <input  type="text"   class="form-control date-picker" id="endDate" name="endDate" data-date-format="yyyy-mm-dd">
                      字段：
                     <input type="checkbox" id="checkSDK" name="checkSDK" checked="true"/> SDK 
                     <input type="checkbox" id="checkProvince" name="checkProvince" checked="true"/> 省份 
