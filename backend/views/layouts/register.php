@@ -15,7 +15,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/css/mii-admin.css" rel="stylesheet">
+    <link href="/css/mii-admin.css?d=20170519" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -63,29 +63,29 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="/register/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
+                    <li class="">
+                        <a class="sidebar-item" href="/register/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#regchannel"><i class="fa fa-fw fa-dashboard"></i>通道中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="regchannel" class="collapse">
-                            <li><a href="/register/merchant-view">通道商列表</a></li>
-                            <li><a href="/register/channel-view">通道管理</a></li>
-                            <li><a href="/register/mutex-view">通道组管理</a></li>
+                            <li><a class="sidebar-item" href="/register/merchant-view">通道商列表</a></li>
+                            <li><a class="sidebar-item" href="/register/channel-view">通道管理</a></li>
+                            <li><a class="sidebar-item" href="/register/mutex-view">通道组管理</a></li>
                         </ul>
                     </li>
                     
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#profit"><i class="fa fa-fw fa-dashboard"></i>数据中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="profit" class="collapse">
-                            <li><a href="/register/profit-channel-view">通道收益</a></li>
+                            <li><a class="sidebar-item" href="/register/profit-channel-view">通道收益</a></li>
                         </ul>
                     </li>                                    
 
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#opertools"><i class="fa fa-fw fa-dashboard"></i>运营工具<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="opertools" class="collapse">
-                            <li><a href="/register/order-view">注册记录查询</a></li>
+                            <li><a class="sidebar-item" href="/register/order-view">注册记录查询</a></li>
                         </ul>
                     </li>
                                                             
@@ -107,9 +107,7 @@
 
     </div>
     <!-- /#wrapper -->
-<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;text-align:center !important;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="margin-top:10%;"></div>
-
-<div id="dialog" class="modal fade"></div>
+<?php echo backend\library\widgets\WidgetsUtils::getFooter();?>
 </body>
 
 </html>

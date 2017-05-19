@@ -15,7 +15,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/css/mii-admin.css" rel="stylesheet">
+    <link href="/css/mii-admin.css?d=20170519" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -63,15 +63,15 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="/agency/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
+                    <li class="">
+                        <a class="sidebar-item" href="/agency/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
                     
-                    <li>
+                    <li class="">
                         <a href="javascript:;" data-toggle="collapse" data-target="#agency"><i class="fa fa-fw fa-dashboard"></i>中介商管理<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="agency" class="collapse">
-                            <li><a href="/agency/account-list-view">中介商列表</a></li>
-                            <li><a href="/agency/account-set-view">新增中介商</a></li>
+                            <li><a class="sidebar-item" href="/agency/account-list-view">中介商列表</a></li>
+                            <li><a class="sidebar-item" href="/agency/account-set-view">新增中介商</a></li>
                         </ul>
                     </li>
                                         
@@ -94,9 +94,7 @@
 
     </div>
     <!-- /#wrapper -->
-<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;text-align:center !important;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="margin-top:10%;"></div>
-
-<div id="dialog" class="modal fade"></div>
+<?php echo backend\library\widgets\WidgetsUtils::getFooter();?>
 </body>
 
 </html>
