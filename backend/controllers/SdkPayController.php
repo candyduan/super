@@ -269,7 +269,7 @@ class SdkPayController extends BController
             'sdkPayTransaction.provider as provider',
             'province.name as provinceName',
             'sum(sdkPayTransaction.price) as allPay',
-            'sum(sdkPayTransaction.price) as successPay',// TODO
+            'sum(if(sdkPayTransaction.status = 2,sdkPayTransaction.price,0)) as successPay',
         ];
     
         $where[] = 'and';
