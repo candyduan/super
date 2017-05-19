@@ -5,7 +5,7 @@
         </ol>
     <!-- panel body -->
     <span>注:点击地图上不同省份修改sdk排序(请点击字体以外的区域)</span>
-    <div class="panel-body">
+    <div class="panel-body main">
         <div class="row">
             <input type="hidden" id='hidden_provider' value="1"/>
             <input type="hidden" id='hidden_prid' value="0"/>

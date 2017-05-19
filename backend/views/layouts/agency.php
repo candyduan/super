@@ -10,13 +10,12 @@
     <meta name="author" content="">
 
     <title>麦广互娱-注册中介</title>
-
+	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="/css/mii-admin.css" rel="stylesheet">
-    <link href="/css/register.css" rel="stylesheet"> 
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -65,7 +64,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="/register/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
+                        <a href="/agency/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
                     
                     <li>

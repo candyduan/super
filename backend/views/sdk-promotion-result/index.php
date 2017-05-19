@@ -4,7 +4,7 @@
         <li class="active"><i class="fa fa-dashboard"></i>融合SDK成果录入</li>
         </ol>
     <!-- panel body -->
-    <div class="panel-body">
+    <div class="panel-body main">
         <div class="row">
             <div class="col-sm-10 col-md-10 col-lg-10">
                 注:灰色小勾表示预览状态，绿色小勾表示已经提交,每次上传预览的时候，之前并未被提交的预览都会被覆盖 <br/><br/>

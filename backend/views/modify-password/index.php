@@ -4,7 +4,7 @@
         <li class="active"><i class="fa fa-dashboard"></i>修改密码</li>
         </ol>
     <!-- panel body -->
-    <div class="panel-body" style="height: 800px;">
+    <div class="panel-body main">
         <div class="row">
             <form class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
