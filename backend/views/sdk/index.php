@@ -363,6 +363,7 @@
         if(provider == 1){//从主页面点过来的时候 nav 必须在移动这一栏
             $('#tab_type li').removeClass('active');
             $('#tab_type_1').addClass('active');
+            $('#hidden_tab_type').val(1);
         }
         $('#hidden_sdid').val(sdid); //!! 重要 更改状态通过这个获取sdid
         var post_url = '/sdk/get-province-limit';
@@ -404,7 +405,9 @@
         event.preventDefault();
         var toids = getBatchIDs('prid');
         if (toids.length > 0) {
-            //两个按钮的class 和 hidden status =0
+            $('#btn_comfirm_open').removeClass('btn-success');
+            $('#btn_comfirm_ban').removeClass('btn-danger');
+            $('#hidden_status').val('');
             $('#modalComfirmProvince').modal('show');
         } else {
             alert('请至少勾选一个选项!');
