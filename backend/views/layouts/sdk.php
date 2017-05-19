@@ -50,7 +50,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <div style="padding-top: 5px" >
                 <?php echo backend\library\widgets\WidgetsUtils::getMainMenu();?>
+                </div>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
