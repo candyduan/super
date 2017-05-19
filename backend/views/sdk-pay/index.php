@@ -66,6 +66,7 @@
             </div>
             <input type="hidden" id='hidden_setime_array' value = "" />
             <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btn_set_all">全选</button>
                 <button type="submit" class="btn btn-success" id="btn_submit_sdktime">提交</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
             </div>
@@ -169,6 +170,19 @@
         });
     }
 
+    $('#btn_set_all').on('click', function(event){
+        event.preventDefault();
+        var set = $('#div_sdktime').children(".btn-circle").eq(0).hasClass('btn-success');
+        $('#div_sdktime').children(".btn-circle").each(function(){
+        	if(set){
+                $(this).removeClass('btn-success').addClass('btn-danger');
+            }else{
+                $(this).removeClass('btn-danger').addClass('btn-success');
+            }
+        });
+    });
+
+    
     $('#btn_submit_sdktime').on('click', function(event){
         event.preventDefault();
         var timelimit = [];

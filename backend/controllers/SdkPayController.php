@@ -109,7 +109,14 @@ class SdkPayController extends BController
         $totalSuccPay = 0;
         $tabledata = [];
         foreach($data as $value){
-            $item = array(date('Y-m-d',strtotime($value['date'])));
+            $item = array();
+            if( 3 == $dateType){//时段不显示时间
+                array_push($item, '-');
+            }else if(4 == $dateType){
+                array_push($item, date('Y-m',strtotime($value['date'])));
+            }else{
+                array_push($item, date('Y-m-d',strtotime($value['date'])));
+            }
             if($checkSDK){
                 array_push($item, $value['sdk']);
             }else{
@@ -229,7 +236,19 @@ class SdkPayController extends BController
                 ];
                 break;
         }
+//         if(Utils::isValid($time)){// TODO
+//             $where[] = [
+//                 'not in',
+//                 'HOUR(sdkPayDay.recordTime)',
+//                 explode(',', $time)
+//             ];
+//         }
+        
+        
         $group = [];
+        if(1 == $dateType){//按天统计
+            $group[] = 'sdkPayDay.date';
+        }
         if($checkSDK){
             $group[] = 'sdkPayDay.sdid';
         }
@@ -240,8 +259,6 @@ class SdkPayController extends BController
             $group[] = 'sdkPayDay.prid';
         }
         
-        if(Utils::isValid($time)){// TODO
-        }
         $condition['select'] = $select;
         $condition['where'] = $where;
         $condition['group'] = $group;
