@@ -1,11 +1,8 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
-    <div class="page-header">
-        <h1>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            融合SDK计费排序
-        </h1>
-    </div>
+        <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i>融合SDK计费排序</li>
+        </ol>
     <!-- panel body -->
     <span>注:点击地图上不同省份修改sdk排序(请点击字体以外的区域)</span>
     <div class="panel-body">

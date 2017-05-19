@@ -1,12 +1,9 @@
 <link rel="stylesheet" href="/ace/assets/css/bootstrap-datepicker3.min.css" />
 <div class="panel panel-warning">
     <!-- panel heading -->
-    <div class="page-header">
-        <h1>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            融合SDK计费转化表
-        </h1>
-    </div>
+       <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i>融合SDK计费转化表</li>
+        </ol>
     <!-- panel body -->
     <div class="panel-body">
         <div class="row">
