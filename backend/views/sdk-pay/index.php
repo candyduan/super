@@ -14,9 +14,9 @@
                     ~
                     <input  type="text"   class="form-control date-picker" id="endDate" name="endDate" data-date-format="yyyy-mm-dd">
                      字段：
-                    <input type="checkbox" id="checkSDK" name="checkSDK" checked="true"/> SDK 
-                    <input type="checkbox" id="checkProvince" name="checkProvince" checked="true"/> 省份 
-                    <input type="checkbox" id="checkProvider" name="checkProvider" checked="true"/>运营商 
+                    <input type="checkbox" id="checkSDK" name="checkSDK"/> SDK 
+                    <input type="checkbox" id="checkProvince" name="checkProvince"/> 省份 
+                    <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商 
                     
                     <i class="glyphicon pointer green glyphicon-certificate" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
                     <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0" id="inputProvider"></i> 

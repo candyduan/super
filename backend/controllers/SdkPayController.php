@@ -144,7 +144,11 @@ class SdkPayController extends BController
             $successPay = number_format($value['successPay']/100,2);
             array_push($item, $allPay);
             array_push($item, $successPay);
-            array_push($item, number_format($value['successPay']/$value['allPay'] *100,2).'%');
+            if(0 == $value['allPay']){
+                array_push($item, '-');
+            }else{
+                array_push($item, number_format($value['successPay']/$value['allPay'] *100,2).'%');
+            }
             $tabledata[] = $item;
             $totalAllPay += $value['allPay'];
             $totalSuccPay += $value['successPay'];
