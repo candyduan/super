@@ -104,7 +104,7 @@
             "pagingType": "simple_numbers",
             "searching": false,
             "bAutoWidth": false,
-            "scrollX": true,
+         //   "scrollX": true,
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,

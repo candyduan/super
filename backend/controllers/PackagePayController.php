@@ -22,6 +22,7 @@ use common\library\BController;
 use common\library\province\ProvinceUtils;
 use common\models\orm\extend\SdkPayDay;
 use common\models\orm\extend\SdkPayTransaction;
+use common\models\orm\extend\SdkPackagePayDay;
 /**
  * SdkPay controller
  */
@@ -67,83 +68,76 @@ class PackagePayController extends BController
         
         $dateType = Utils::getBackendParam('dateType',3);
         
-        $checkSDK = Utils::getBackendParam('checkCP');
-        $checkSDK = $checkSDK?true:false;
-        $checkProvince = Utils::getBackendParam('checkProvince');
-        $checkProvince = $checkProvince?true:false;
-        $checkProvider = Utils::getBackendParam('checkProvider');
-        $checkProvider = $checkProvider?true:false;
+        $checkCP = Utils::getBackendParam('checkCP');
+        $checkCP = $checkCP?true:false;
+        $checkAPP = Utils::getBackendParam('checkAPP');
+        $checkAPP = $checkAPP?true:false;
+        $checkCmp = Utils::getBackendParam('checkCmp');
+        $checkCmp = $checkCmp?true:false;
+        $checkM = Utils::getBackendParam('checkM');
+        $checkM = $checkM?true:false;
 
         if( 3 == $dateType ||  4 == $dateType){//时段和月份全搜算总数
             $start = null;
             $length = null;
         }
         
-        $condition = self::_getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time);
-        $data = SdkPayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
-        $count = SdkPayDay::getIndexCount($condition['where'],$condition['group']);
+        $condition = self::_getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType);
+        $data = SdkPackagePayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
+        $count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
         
-        $providerName = [
-            0 => '-',
-            1 => '移动',
-            2 => '联通',
-            3 => '电信',
-        ];
-        
-        $totalItem = array(
-            'Total',
-            '-',
-            '-',
-            '-'
-        );
-        $totalAllPay = 0;
-        $totalSuccPay = 0;
         $tabledata = [];
         foreach($data as $value){
             $item = array();
             if( 3 == $dateType){//时段不显示时间
                 array_push($item, '-');
-            }else if(4 == $dateType){
+            }else if(4 == $dateType){//月份显示月
                 array_push($item, date('Y-m',strtotime($value['date'])));
             }else{
                 array_push($item, date('Y-m-d',strtotime($value['date'])));
             }
-            if($checkSDK){
-                array_push($item, $value['sdk']);
+            if($checkCP){
+                array_push($item, $value['partner']);
             }else{
                 array_push($item, '-');
             }
-            if($checkProvider){
-                array_push($item, $providerName[$value['provider']]);
+            if($checkAPP){
+                array_push($item, $value['app']);
             }else{
                 array_push($item, '-');
             }
-            if($checkProvince){
-                array_push($item, $value['provinceName']);
+            if($checkCmp){
+                array_push($item, $value['cmp']);
             }else{
                 array_push($item, '-');
             }
-            $allPay = number_format($value['allPay']/100,2);
-            $successPay = number_format($value['successPay']/100,2);
-            array_push($item, $allPay);
-            array_push($item, $successPay);
-            if(0 == $value['allPay']){
+            if($checkM){
+                array_push($item, $value['m']);
+            }else{
+                array_push($item, '-');
+            }
+            
+            array_push($item, $value['newUser']);
+            array_push($item, $value['actUser']);
+            
+            array_push($item, $value['users']);
+            array_push($item, $value['successPay']);
+            array_push($item, $value['cp']);
+            array_push($item, $value['arpu']);// TODO
+            array_push($item, $value['parpu']);
+            array_push($item, $value['payRatio']);// TODO
+            array_push($item, $value['income']);
+            array_push($item, $value['payCp']);
+            array_push($item, $value['payM']);
+            array_push($item, $value['profit']);
+            if(0 == $value['successPay']){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$value['allPay'] *100,2).'%');
+                array_push($item, number_format($value['profit']/$value['successPay']*100,2).'%');
             }
+            
             $tabledata[] = $item;
-            $totalAllPay += $value['allPay'];
-            $totalSuccPay += $value['successPay'];
         }
-        array_push($totalItem, number_format($totalAllPay/100,2));
-        array_push($totalItem, number_format($totalSuccPay/100,2));
-        if(0 == $totalAllPay){
-            array_push($totalItem, '-');
-        }else{
-            array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');                
-        }    
-        array_unshift($tabledata, $totalItem);
 
         $data = [
             'searchData' => [
@@ -156,59 +150,69 @@ class PackagePayController extends BController
         Utils::jsonOut($data);
         exit;
     }
-    private function _getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time){
+    private function _getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType){
         $select = [
-            'sdkPayDay.date as date',
-            'sdk.name as sdk',
-            'sdkPayDay.provider as provider',
-            'province.name as provinceName',
-            'sum(sdkPayDay.allPay) as allPay',
-            'sum(sdkPayDay.successPay) as successPay',
+            'sdkPackagePayDay.date as date',
+            'partner.name as partner',
+            'app.name as app',
+            'campaign.name as cmp',
+            'channel.name as m',
+            'partner.name as newUser',// TODO激活数
+            'partner.name as actUser',// TODO活跃数
+            'sum(sdkPackagePayDay.users) as users',
+            'sum(sdkPackagePayDay.successPay) as successPay',
+            'sum(sdkPackagePayDay.cp) as cp',
+            'sum(sdkPackagePayDay.cp) as arpu',
+            'sum(sdkPackagePayDay.cp) as parpu',// TODO
+            'sum(sdkPackagePayDay.cp) as payRatio',// TODO
+            'sum(sdkPackagePayDay.income) as income',
+            'sum(sdkPackagePayDay.payCp) as payCp',
+            'sum(sdkPackagePayDay.payM) as payM',
+            'sum(sdkPackagePayDay.profit) as profit',
             ];
         
         $where[] = 'and';
         $where[] = [
             '=',
-            'sdkPayDay.status',
+            'sdkPackagePayDay.status',
             1
         ];
-        if(Utils::isValid($sdk)){
+        if(Utils::isValid($partner)){
             $where[] = [
                 'like',
-                'sdk.name',
-                $sdk
+                'partner.name',
+                $partner
+            ];
+        }
+        if($app > 0){
+            $where[] = [
+                '=',
+                'app.id',
+                $app
+            ];
+        }
+        if($channel > 0){
+            $where[] = [
+                '=',
+                'campaignPackage.partner',
+                $channel
             ];
         }
         
-        if($provider > 0){
-            $where[] = [
-                '=',
-                'sdkPayDay.provider',
-                $provider
-            ];
-        }
-        if(Utils::isValid($province)){
-            $where[] = [
-                'in',
-                'sdkPayDay.prid',
-                explode(',', $province)
-            ];
-        }
         switch ($dateType){
             case 1:// 天
-            case 2://小时
             case 3://时段
                 if(Utils::isDate($stime)){
                     $where[] = [
                         '>=',
-                        'sdkPayDay.date',
+                        'sdkPackagePayDay.date',
                         $stime.' 00:00:00'
                     ];
                 }
                 if(Utils::isDate($etime)){
                     $where[] = [
                         '<=',
-                        'sdkPayDay.date',
+                        'sdkPackagePayDay.date',
                         $etime.' 23:59:59'
                     ];
                 }
@@ -220,12 +224,12 @@ class PackagePayController extends BController
                 
                 $where[] = [
                     '>=',
-                    'sdkPayDay.date',
+                    'sdkPackagePayDay.date',
                     $sdate.' 00:00:00'
                 ];
                 $where[] = [
                     '<=',
-                    'sdkPayDay.date',
+                    'sdkPackagePayDay.date',
                     $edate.' 23:59:59'
                 ];
                 break;
@@ -233,16 +237,19 @@ class PackagePayController extends BController
         
         $group = [];
         if(1 == $dateType){//按天统计
-            $group[] = 'sdkPayDay.date';
+            $group[] = 'sdkPackagePayDay.date';
         }
-        if($checkSDK){
-            $group[] = 'sdkPayDay.sdid';
+        if($checkCP){
+            $group[] = 'campaignPackage.partner';
         }
-        if($checkProvider){
-            $group[] = 'sdkPayDay.provider';
+        if($checkAPP){
+            $group[] = 'campaignPackage.app';
         }
-        if($checkProvince){
-            $group[] = 'sdkPayDay.prid';
+        if($checkCmp){
+            $group[] = 'campaignPackage.id';
+        }
+        if($checkM){
+            $group[] = 'campaignPackage.media';
         }
         $condition['select'] = $select;
         $condition['where'] = $where;
