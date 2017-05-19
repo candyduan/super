@@ -19,6 +19,20 @@ class RegChannelVerifyRule extends \common\models\orm\base\RegChannelVerifyRule{
                     ;
         return $models;
     }
+    
+    
+    public static function findByRcidType($rcid,$type){
+        $condition  = array(
+            'rcid'      => $rcid,
+            'type'      => $type,
+            'status'    => 1,
+        );
+        $model  = self::find()
+                    ->where($condition)
+                    ->one()
+                    ;
+        return $model;
+    }
     public static function findByRcidAndType($rcid,$type){
     	if(!is_numeric($rcid) || !is_numeric($type) ){
     		return [];

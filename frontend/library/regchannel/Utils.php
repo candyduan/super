@@ -282,6 +282,29 @@ class Utils{
                             'delayed'       => 0,
                             'blockPeriod'   => 3600,
                 );
+                
+                
+                
+                $verifyRuleModel   = RegChannelVerifyRule::findByRcidType($regChannelModel->rcid,0);
+                if($verifyRuleModel){
+                    $item   = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => 2,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $verifyRuleModel->keys1,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $verifyRuleModel);
+                }
                 break;
             case Constant::CHANNEL_DOUBLE:
                 $res = array(
@@ -318,6 +341,27 @@ class Utils{
                         'blockPeriod'   => 3600,
                     ),
                 );
+                
+                $verifyRuleModel   = RegChannelVerifyRule::findByRcidType($regChannelModel->rcid,0);
+                if($verifyRuleModel){
+                    $item   = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => 3,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $verifyRuleModel->keys1,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $verifyRuleModel);
+                }
                 break;                
             case Constant::CHANNEL_SMSP:
                 $res    = array();
