@@ -64,7 +64,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="/register/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
+                        <a href="/agency/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
                     
                     <li>
