@@ -8,6 +8,7 @@ use common\models\orm\extend\RegChannelVerifyRule;
 use common\library\Utils as commonUtils;
 use common\models\orm\extend\RegChannelCfgUrlYapi;
 use common\models\orm\extend\RegChannelCfgMain;
+use function Faker\time;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
@@ -246,7 +247,7 @@ class Utils{
             $res[] = array(
                 'type'          => Constant::TASK_SEND_MESSAGE,
                 'roid'          => $regOrderModel->roid,
-                'subId'         => 99,
+                'subId'         => microtime(),
                 'port'          => $messages[1],
                 'cmd'           => $messages[2],
                 'sourcePort'    => '',
