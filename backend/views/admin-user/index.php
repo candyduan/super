@@ -87,7 +87,6 @@
     </div>
 </div>
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
-<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
 <script src="/js/sdk/util.js"></script>
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">
