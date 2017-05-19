@@ -86,6 +86,10 @@ class SdkPayController extends BController
 
         $condition = self::_getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time);
         
+        if( 3 == $dateType ||  4 == $dateType){//时段和月份全搜算总数
+            $start = null;
+            $length = null;
+        }
         $data = SdkPayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
         $count = SdkPayDay::getIndexCount($condition['where'],$condition['group']);
         $providerName = [
@@ -125,7 +129,7 @@ class SdkPayController extends BController
             $successPay = number_format($value['successPay']/100,2);
             array_push($item, $allPay);
             array_push($item, $successPay);
-            array_push($item, $value['ratio'].'%');
+            array_push($item, number_format($value['successPay']/$value['allPay'] *100,2).'%');
             $tabledata[] = $item;
             $totalAllPay += $value['allPay'];
             $totalSuccPay += $value['successPay'];
@@ -209,7 +213,20 @@ class SdkPayController extends BController
                 }
                 break;
             case 4://月份
-                // TODO
+                $sdate = date('Y-m-01',strtotime($stime));
+                $edate = date('Y-m-01',strtotime($etime));
+                $edate = date("Y-m-d",strtotime("$edate 1 month -1 day"));
+                
+                $where[] = [
+                    '>=',
+                    'sdkPayDay.date',
+                    $sdate.' 00:00:00'
+                ];
+                $where[] = [
+                    '<=',
+                    'sdkPayDay.date',
+                    $edate.' 23:59:59'
+                ];
                 break;
         }
         $group = [];
