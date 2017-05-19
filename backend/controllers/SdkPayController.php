@@ -68,18 +68,21 @@ class SdkPayController extends BController
         $start = Utils::getBackendParam('start',0);
         $length = Utils::getBackendParam('length',100);
         
-        $sdk = Utils::getBackendParam('sdk','');
+        $sdk = Utils::getBackendParam('SDK','');
         $stime = Utils::getBackendParam('startDate','');
         $etime = Utils::getBackendParam('endDate','');
         
         $dateType = Utils::getBackendParam('dateType',3);
         $provider = Utils::getBackendParam('provider',0);
-        $province = json_decode(Utils::getBackendParam('province','[]'),true);
-        $time = json_decode(Utils::getBackendParam('time','[]'),true);
+        $province = Utils::getBackendParam('province','');
+        $time = Utils::getBackendParam('time','');
         
-        $checkSDK = Utils::getBackendParam('checkSDK',true);
-        $checkProvince = Utils::getBackendParam('checkProvince',true);
-        $checkProvider = Utils::getBackendParam('checkProvider',true);
+        $checkSDK = Utils::getBackendParam('checkSDK');
+        $checkSDK = $checkSDK?true:false;
+        $checkProvince = Utils::getBackendParam('checkProvince');
+        $checkProvince = $checkProvince?true:false;
+        $checkProvider = Utils::getBackendParam('checkProvider');
+        $checkProvider = $checkProvider?true:false;
         
         $condition = self::_getCondition($sdk,$stime,$etime,$dateType,$provider,$province,$time);
         
@@ -91,21 +94,44 @@ class SdkPayController extends BController
             2 => '联通',
             3 => '电信',
         ];
+        
+        $totalItem = array(
+            'Total',
+            '-',
+            '-',
+            '-'
+        );
+        $totalAllPay = 0;
+        $totalSuccPay = 0;
         $tabledata = [];
         foreach($data as $value){
             $item = array(date('Y-m-d',strtotime($value['date'])));
             if($checkSDK){
                 array_push($item, $value['sdk']);
+            }else{// TODO 动态变化列数
+                array_push($item, '-');
             }
             if($checkProvider){
                 array_push($item, $providerName[$value['provider']]);
+            }else{
+                array_push($item, '-');
             }
             if($checkProvince){
                 array_push($item, $value['provinceName']);
+            }else{
+                array_push($item, '-');
             }
-            array_push($item, $value['provinceName']);
+            array_push($item, $value['allPay']);
+            array_push($item, $value['successPay']);
+            array_push($item, $value['ratio'].'%');
             $tabledata[] = $item;
+            $totalAllPay += $value['allPay'];
+            $totalSuccPay += $value['successPay'];
         }
+        array_push($totalItem, $totalAllPay);
+        array_push($totalItem, $totalSuccPay);
+        array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');        
+        array_unshift($tabledata, $totalItem);
 
         $data = [
             'searchData' => [
@@ -126,10 +152,10 @@ class SdkPayController extends BController
             'sdkPayDay.status',
             1
         ];
-        if($sdk > 0){
+        if(Utils::isValid($sdk)){
             $condition[] = [
-                '=',
-                'sdkPayDay.sdid',
+                'like',
+                'sdk.name',
                 $sdk
             ];
         }
@@ -157,14 +183,14 @@ class SdkPayController extends BController
                 $provider
             ];
         }
-        if(count($province) > 0){
+        if(Utils::isValid($province)){
             $condition[] = [
                 'in',
                 'sdkPayDay.prid',
-                $province
+                explode(',', $province)
             ];
         }
-        if(count($time) > 0){// TODO
+        if(Utils::isValid($time)){// TODO
         }
         return $condition;
     }
