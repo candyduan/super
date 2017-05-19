@@ -27,4 +27,10 @@ class Partner extends \common\models\orm\base\Partner {
 
     }
 
+    public static function fetchAllArr(){
+        $data= self::find()->select(['partner.id','partner.name'])
+        ->where('')
+        ->all();
+        return $data;
+    }
 }

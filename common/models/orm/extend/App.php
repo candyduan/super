@@ -32,4 +32,10 @@ class App extends \common\models\orm\base\App {
 
     }
 
+    public static function fetchAllBelongSdkArr(){
+        $data= self::find()->select(['app.id','app.name'])->join('inner join', 'partner', 'app.partner = partner.id')
+            ->where('partner.belong = 1')
+            ->all();
+        return $data;
+    }
 }

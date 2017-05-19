@@ -18,7 +18,7 @@
                     <input type="checkbox" id="checkProvince" name="checkProvince"/> 省份 
                     <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商 
                     
-                    <i class="glyphicon pointer green glyphicon-certificate" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
+                    <i class="glyphicon pointer green glyphicon-glass" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
                     <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0" id="inputProvider"></i> 
                     <i class="glyphicon pointer green glyphicon-globe" onclick="setProvince()" title="省份"></i> 
                     <i class="glyphicon pointer grey glyphicon-time" onclick="setTime()" title="小时时段"></i> 
@@ -222,20 +222,20 @@
     }
     
     function setDateType(that){
-    	if($(that).hasClass('glyphicon-certificate')){
-            $(that).removeClass('glyphicon-certificate').addClass('glyphicon-music');
+    	if($(that).hasClass('glyphicon-glass')){
+            $(that).removeClass('glyphicon-glass').addClass('glyphicon-music');
             $(that).attr('title',"月份");
             $(that).attr('value',"4");
         }else if($(that).hasClass('glyphicon-music')){
-            $(that).removeClass('glyphicon-music').addClass('glyphicon-glass');
+            $(that).removeClass('glyphicon-music').addClass('glyphicon-certificate');
             $(that).attr('title',"天");
             $(that).attr('value',"1");
-        }else if($(that).hasClass('glyphicon-glass')){
-            $(that).removeClass('glyphicon-glass').addClass('glyphicon-time');
+        }else if($(that).hasClass('glyphicon-certificate')){
+            $(that).removeClass('glyphicon-certificate').addClass('glyphicon-time');
             $(that).attr('title',"小时");
             $(that).attr('value',"2");
         }else if($(that).hasClass('glyphicon-time')){
-            $(that).removeClass('glyphicon-time').addClass('glyphicon-certificate');
+            $(that).removeClass('glyphicon-time').addClass('glyphicon-glass');
             $(that).attr('title',"时段");
             $(that).attr('value',"3");
         }
