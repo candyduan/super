@@ -53,7 +53,7 @@ class WidgetsUtils{
 $(document).ready(function(){
 	var url = window.location.href;
 	var domain = document.domain;
-	url = url.replace("http://","").replace(domain,"");
+	url = url.replace("http://","").replace(domain,"").replace(":8082","");
 	$.each($(".sidebar-item"),function(key,val){
 		if($(val).attr("href") == url){
 			$(val).addClass("selected");
