@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "regOrder".
  *
  * @property integer $roid
- * @property integer $imsi
+ * @property string $imsi
  * @property integer $rcid
  * @property string $spSign
  * @property string $spOrderId
@@ -33,11 +33,10 @@ class RegOrder extends \yii\db\ActiveRecord
     {
         return [
             [['imsi', 'rcid'], 'required'],
-            [['imsi', 'rcid', 'status'], 'integer'],
+            [['rcid', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['spSign', 'spOrderId'], 'string', 'max' => 128],
+            [['imsi', 'spSign', 'spOrderId'], 'string', 'max' => 128],
             [['imsi', 'rcid'], 'unique', 'targetAttribute' => ['imsi', 'rcid'], 'message' => 'The combination of Imsi and Rcid has already been taken.'],
-            [['spSign'], 'unique'],
         ];
     }
 

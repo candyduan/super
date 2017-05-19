@@ -108,7 +108,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
             'channelName'   => "[{$regChannelModel->rcid}]".$regChannelModel->name,
             'holderName'    => $holderName,//TODO
             'provider'      => $provider,
-            'devType'       => $channelDevTypeList[$regChannelModel->devType],
+            'devType'       => isset($channelDevTypeList[$regChannelModel->devType]) ? $channelDevTypeList[$regChannelModel->devType]:'',
             'status'        => $channelStatusList[$regChannelModel->status],
         );
         return $item;
@@ -139,9 +139,7 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     		1 => 'single',
     		2 => 'double',
     		3 => 'sms+',
-    		4 => 'url+',
-    		5 => 'multiUrl',
-    		6 => 'multiSms'
+    		4 => 'url+'
     	);
     }
     
@@ -185,5 +183,14 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     		$res[]	= array('id'=>$channel['rcid'],'name'=>"【".$channel['rcid']."】".$channel['name']);
     	}
     	return $res;
+    }
+    
+    public static function getNameByPk($id){
+        $model  = self::findByPk($id);
+        $name = '';
+        if($model){
+            $name = $model->name;
+        }
+        return $name;
     }
 }
