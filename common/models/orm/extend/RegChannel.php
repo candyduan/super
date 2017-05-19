@@ -186,4 +186,13 @@ class RegChannel extends \common\models\orm\base\RegChannel{
     	}
     	return $res;
     }
+    
+    public static function getNameByPk($id){
+        $model  = self::findByPk($id);
+        $name = '';
+        if($model){
+            $name = $model->name;
+        }
+        return $name;
+    }
 }

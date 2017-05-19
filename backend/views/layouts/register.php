@@ -82,7 +82,14 @@
                             <li><a href="/register/profit-channel-view">通道收益</a></li>
                         </ul>
                     </li>                                    
-                                        
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#opertools"><i class="fa fa-fw fa-dashboard"></i>运营工具<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="opertools" class="collapse">
+                            <li><a href="/register/order-view">注册记录查询</a></li>
+                        </ul>
+                    </li>
+                                                            
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
