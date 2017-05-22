@@ -117,15 +117,26 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            array_push($item, $value['newUser']);
-            array_push($item, $value['actUser']);
+            $newUser = 0;// TODO
+            $actUser = 0;// TODO
+            array_push($item, $newUser);
+            array_push($item, $actUser);
             
             array_push($item, $value['users']);
             array_push($item, $value['successPay']);
             array_push($item, $value['cp']);
-            array_push($item, $value['arpu']);// TODO
-            array_push($item, $value['parpu']);
-            array_push($item, $value['payRatio']);// TODO
+            if($newUser <= 0){
+                array_push($item, '-');
+            }else{
+                array_push($item, $value['arpu']);
+            }
+            
+            array_push($item, number_format($value['successPay']/$value['users']*100,2));
+            if($actUser <= 0){
+                array_push($item, '-');
+            }else{
+                array_push($item, number_format($value['users']/$actUser*100,2).'%');
+            }
             array_push($item, $value['income']);
             array_push($item, $value['payCp']);
             array_push($item, $value['payM']);
@@ -157,14 +168,9 @@ class PackagePayController extends BController
             'app.name as app',
             'campaign.name as cmp',
             'channel.name as m',
-            'partner.name as newUser',// TODO激活数
-            'partner.name as actUser',// TODO活跃数
             'sum(sdkPackagePayDay.users) as users',
             'sum(sdkPackagePayDay.successPay) as successPay',
             'sum(sdkPackagePayDay.cp) as cp',
-            'sum(sdkPackagePayDay.cp) as arpu',
-            'sum(sdkPackagePayDay.cp) as parpu',// TODO
-            'sum(sdkPackagePayDay.cp) as payRatio',// TODO
             'sum(sdkPackagePayDay.income) as income',
             'sum(sdkPackagePayDay.payCp) as payCp',
             'sum(sdkPackagePayDay.payM) as payM',
