@@ -90,6 +90,15 @@
                             <li><a class="sidebar-item" href="/campaign/index">活动列表</a></li>
                         </ul>
                     </li> 
+                    
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#datacontent"><i class="fa fa-fw fa-dashboard"></i>数据中心<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="datacontent" class="collapse">
+                            <li><a href="/sdk-pay/index">融合SDK计费转化表</a></li>
+                            <li><a href="/package-pay/index">融合SDK渠道收益</a></li>
+                            <li><a href="/package-pay/analysis">融合SDK渠道计费分析</a></li>
+                        </ul>
+                    </li> 
  
                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#sdkimport"><i class="fa fa-fw fa-dashboard"></i>SDK成果录入<i class="fa fa-fw fa-caret-down"></i></a>
