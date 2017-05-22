@@ -19,7 +19,7 @@ use common\library\BController;
  */
 class AdminUserController extends BController
 {
-    public $layout = "sdk";
+    public $layout = "system";
     public function behaviors()
     {
         return [

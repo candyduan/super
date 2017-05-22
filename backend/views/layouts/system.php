@@ -9,8 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>麦广互娱-融合SDK</title>
-    <link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <title>麦广互娱-系统管理</title>
+	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
@@ -19,7 +19,7 @@
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="/css/site.css"></link>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,7 +31,6 @@
     <script src="/js/common/bootstrap.min.js"></script>
   	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
     <script src="/js/register/Utils.js?d=20170516"></script>
-    
     <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 	<script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
  </head>
@@ -67,53 +66,22 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="">
-                        <a class="sidebar-item" href="/site/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
+                        <a class="sidebar-item" href="/system/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkadmin"><i class="fa fa-fw fa-dashboard"></i>融合SDK管理<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="sdkadmin" class="collapse">
-                            <li><a class="sidebar-item" href="/sdk/index">融合SDK管理</a></li>
-                        </ul>
-                    </li>
-                   <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdksort"><i class="fa fa-fw fa-dashboard"></i>SDK计费排序<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="sdksort" class="collapse">
-                            <li><a class="sidebar-item" href="/sort/index">SDK计费排序</a></li>
-                        </ul>
-                    </li>                    
-
-                   <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkcontent"><i class="fa fa-fw fa-dashboard"></i>SDK内容中心<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="sdkcontent" class="collapse">
-                            <li><a class="sidebar-item" href="/partner/index">内容商列表</a></li>
-                            <li><a class="sidebar-item" href="/app/index">应用列表</a></li>
-                            <li><a class="sidebar-item" href="/campaign/index">活动列表</a></li>
-                        </ul>
-                    </li> 
                     
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#datacontent"><i class="fa fa-fw fa-dashboard"></i>数据中心<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="datacontent" class="collapse">
-                            <li><a class="sidebar-item" href="/sdk-pay/index">融合SDK计费转化表</a></li>
-                            <li><a class="sidebar-item" href="/package-pay/index">融合SDK渠道收益</a></li>
-                            <li><a class="sidebar-item" href="/package-pay/analysis">融合SDK渠道计费分析</a></li>
-                        </ul>
-                    </li> 
- 
-                   <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkimport"><i class="fa fa-fw fa-dashboard"></i>SDK成果录入<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="sdkimport" class="collapse">
-                            <li><a class="sidebar-item" href="/sdk-promotion-result/index">SDK成果录入</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkadminuser"><i class="fa fa-fw fa-dashboard"></i>用户管理<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="sdkadminuser" class="collapse">
-                            <li><a class="sidebar-item" href="/admin-user/index">用户管理</a></li>
+                    <li class="">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#user-center"><i class="fa fa-fw fa-dashboard"></i>个人中心<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="user-center" class="collapse">
                             <li><a class="sidebar-item" href="/modify-password/index">修改密码</a></li>
                         </ul>
                     </li>
-
+                                        
+                     <li class="">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#bkadminuser"><i class="fa fa-fw fa-dashboard"></i>后台用户管理<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="bkadminuser" class="collapse">
+                            <li><a class="sidebar-item" href="/admin-user/index">后台用户列表</a></li>
+                        </ul>
+                    </li>                                       
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -136,4 +104,3 @@
 </body>
 
 </html>
-

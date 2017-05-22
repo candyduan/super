@@ -11,11 +11,14 @@ body{
 <div class="col-xs-3 func-module func-mop-sdk">融合SDK</div>
 <div class="col-xs-3 func-module func-register">主动上行</div>
 <div class="col-xs-3 func-module func-agency">注册中介</div>
-<div class="col-xs-3 func-module func-other">其它功能</div>
+<div class="col-xs-3 func-module func-system">系统管理</div>
 <div class="col-xs-3 func-module func-other">其它功能</div>
 </div>
 <script>
 $(document).ready(function(){
+	$('.func-system').click(function(){
+		window.location.href='/system/index';
+	});
 	$('.func-mop-sdk').click(function(){
 		window.location.href='/site/index';
 	});

@@ -7,6 +7,7 @@ class WidgetsUtils{
                 <a class="navbar-brand" style="font-size:18px;" href="/site/index">融合SDK</a>
                 <a class="navbar-brand" style="font-size:18px;" href="/register/index">主动上行</a>
                 <a class="navbar-brand" style="font-size:18px;" href="/agency/index">注册中介</a>
+                <a class="navbar-brand" style="font-size:18px;" href="/system/index">系统管理</a>
             ';
         return $str;
     }

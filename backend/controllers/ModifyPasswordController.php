@@ -15,7 +15,7 @@ use backend\web\util\MyMail;
  */
 class ModifyPasswordController extends BController
 {
-    public $layout = "sdk";
+    public $layout = "system";
     public function behaviors()
     {
         return [
