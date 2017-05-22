@@ -23,6 +23,7 @@ use common\library\province\ProvinceUtils;
 use common\models\orm\extend\SdkPayDay;
 use common\models\orm\extend\SdkPayTransaction;
 use common\models\orm\extend\SdkPackagePayDay;
+use common\models\orm\extend\PlayerCount;
 /**
  * SdkPay controller
  */
@@ -117,6 +118,9 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
+//             $userDate = PlayerCount::getNewAndActUserByCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType);
+//             $newUser = Utils::getValuesFromArray($userDate, 'newCount',0);
+//             $actUser = Utils::getValuesFromArray($userDate,'activeCount',0);
             $newUser = 0;// TODO
             $actUser = 0;// TODO
             array_push($item, $newUser);
@@ -128,7 +132,7 @@ class PackagePayController extends BController
             if($newUser <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, $value['arpu']);
+                array_push($item, number_format($value['successPay']/$actUser,2));
             }
             
             array_push($item, number_format($value['successPay']/$value['users']*100,2));
@@ -163,6 +167,7 @@ class PackagePayController extends BController
     }
     private function _getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType){
         $select = [
+            'campaignPackage.mediaSign as mediaSign',
             'sdkPackagePayDay.date as date',
             'partner.name as partner',
             'app.name as app',
