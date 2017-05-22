@@ -18,7 +18,11 @@ class MyHtml
         if(Utils::isValid($id)){
             $idStr = ' id="'.$id.'" ';
         }
-        return '<i title="'.$caid.'" class=" pointer ' . $class . '" onclick="' . $clickMethod. '(' . $clickMethodParameters . ');"'.$idStr.'></i>';
+        if($clickMethod !== ''){
+            return '<i title="' . $caid . '" class=" pointer ' . $class . '" onclick="' . $clickMethod . '(' . $clickMethodParameters . ');"' . $idStr . '></i>';
+        }else{
+            return '<i title="' . $caid . '" class=" pointer ' . $class . '" ' . $idStr . '></i>';
+        }
     }
     //0-无效，1-暂停，2-测试，3-运行
     public static function iElements($clickMethod, $clickMethodParameters,$blue,$green,$black,$purple){
