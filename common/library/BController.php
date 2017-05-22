@@ -10,37 +10,41 @@ class BController extends Controller{
     public function beforeAction($action){
         $controllerName = $action->controller->id;
         $actionName     = $action->id;
-        if($controllerName != 'auth' && $actionName !='login'){
-            $adminUserModel   = \Yii::$app->user->identity;
-            $flag   = 3;
-            if($adminUserModel){
-                $flag   = 2;
-                if($adminUserModel->username == 'admin'){
-                    $flag   = 1;
-                }else{
-                    $power  = $controllerName.'/';//先简单判断到功能模块 !!斜杠很重要
-                    $adminAuthorModel  = AdminAuthor::findByAuidPower($adminUserModel->id,$power);
-                    if($adminAuthorModel){
+        if($controllerName == '' || $controllerName ==''){
+
+        }else{
+            if($controllerName != 'auth' && $actionName !='login'){
+                $adminUserModel   = \Yii::$app->user->identity;
+                $flag   = 3;
+                if($adminUserModel){
+                    $flag   = 2;
+                    if($adminUserModel->username == 'admin'){
                         $flag   = 1;
+                    }else{
+                        $power  = $controllerName.'/';//先简单判断到功能模块 !!斜杠很重要
+                        $adminAuthorModel  = AdminAuthor::findByAuidPower($adminUserModel->id,$power);
+                        if($adminAuthorModel){
+                            $flag   = 1;
+                        }
                     }
                 }
+            }else{
+                $flag   = 4;
             }
-        }else{
-            $flag   = 4;
+            switch ($flag){
+                case 1:
+                    return true;
+                    break;
+                case 2:
+                    $this->redirect('/auth/noauth');
+                    break;
+                case 3:
+                    $this->redirect('/auth/login');
+                    break;
+                case 4:
+                    return true;
+                    break;
+            }
         }
-        switch ($flag){
-            case 1:
-                return true;
-                break;
-            case 2:
-                $this->redirect('/auth/noauth');
-                break;
-            case 3:
-                $this->redirect('/auth/login');
-                break;
-            case 4:
-                return true;
-                break;
-        }        
     }
 }
