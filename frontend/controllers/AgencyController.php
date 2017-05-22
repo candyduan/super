@@ -144,6 +144,8 @@ class AgencyController extends FController{
                     
                 }else{
                     Utils::log('验证码匹配错误');
+                    $out['resultCode']  = Constant::RESULT_CODE_NONE;
+                    $out['msg']         = '验证码匹配错误';
                 }
             }else{
                 $out['resultCode']  = Constant::RESULT_CODE_NONE;
