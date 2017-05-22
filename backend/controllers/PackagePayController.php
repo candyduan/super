@@ -24,6 +24,7 @@ use common\models\orm\extend\SdkPayDay;
 use common\models\orm\extend\SdkPayTransaction;
 use common\models\orm\extend\SdkPackagePayDay;
 use common\models\orm\extend\PlayerCount;
+use common\models\orm\extend\PayAction;
 /**
  * SdkPay controller
  */
@@ -87,6 +88,8 @@ class PackagePayController extends BController
         $data = SdkPackagePayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
         $count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
         
+        $userData = PayAction::getNewAndActUserByCondition($checkCP, $checkAPP, $checkCmp, $checkM, $partner, $app, $channel, $stime, $etime, $dateType);
+        
         $tabledata = [];
         foreach($data as $value){
             $item = array();
@@ -118,11 +121,11 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-//             $userDate = PlayerCount::getNewAndActUserByCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType);
-//             $newUser = Utils::getValuesFromArray($userDate, 'newCount',0);
-//             $actUser = Utils::getValuesFromArray($userDate,'activeCount',0);
             $newUser = 0;// TODO
             $actUser = 0;// TODO
+            foreach ($userData as $userItem){
+                
+            }
             array_push($item, $newUser);
             array_push($item, $actUser);
             
