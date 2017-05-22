@@ -106,13 +106,13 @@
                             <li><a class="sidebar-item" href="/sdk-promotion-result/index">SDK成果录入</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkadminuser"><i class="fa fa-fw fa-dashboard"></i>用户管理<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="sdkadminuser" class="collapse">
-                            <li><a class="sidebar-item" href="/admin-user/index">用户管理</a></li>
-                            <li><a class="sidebar-item" href="/modify-password/index">修改密码</a></li>
-                        </ul>
-                    </li>
+<!--                     <li> -->
+<!--                         <a href="javascript:;" data-toggle="collapse" data-target="#sdkadminuser"><i class="fa fa-fw fa-dashboard"></i>用户管理<i class="fa fa-fw fa-caret-down"></i></a> -->
+<!--                         <ul id="sdkadminuser" class="collapse"> -->
+<!--                             <li><a class="sidebar-item" href="/admin-user/index">用户管理</a></li> -->
+<!--                             <li><a class="sidebar-item" href="/modify-password/index">修改密码</a></li> -->
+<!--                         </ul> -->
+<!--                     </li> -->
 
                 </ul>
             </div>
