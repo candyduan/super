@@ -1,33 +1,33 @@
 <link rel="stylesheet" href="/ace/assets/css/bootstrap-datepicker3.min.css" />
 <div class="panel panel-warning">
     <!-- panel heading -->
-       <ol class="breadcrumb">
+    <ol class="breadcrumb">
         <li class="active"><i class="fa fa-dashboard"></i>融合SDK计费转化表</li>
-        </ol>
+    </ol>
     <!-- panel body -->
     <div class="panel-body main">
         <div class="row">
-        	<form action="" method="get" id="formSearch" class="form-inline">
+            <form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text"  class="form-control " id='sdk' name ='SDK'  placeholder="SDK"/>
                     <input  type="text"   class="form-control date-picker" id="startDate" name="startDate" data-date-format="yyyy-mm-dd">
                     ~
                     <input  type="text"   class="form-control date-picker" id="endDate" name="endDate" data-date-format="yyyy-mm-dd">
-                     字段：
-                    <input type="checkbox" id="checkSDK" name="checkSDK"/> SDK 
-                    <input type="checkbox" id="checkProvince" name="checkProvince"/> 省份 
-                    <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商 
-                    
-                    <i class="glyphicon pointer green glyphicon-glass" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
-                    <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0" id="inputProvider"></i> 
-                    <i class="glyphicon pointer green glyphicon-globe" onclick="setProvince()" title="省份"></i> 
-                    <i class="glyphicon pointer grey glyphicon-time" onclick="setTime()" title="小时时段"></i> 
-                    <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="查询"></i> 
-                    <i class="glyphicon pointer green glyphicon-cloud-download" onclick="downloadData()" title="下载"></i> 
-                </div>  
+                    字段：
+                    <input type="checkbox" id="checkSDK" name="checkSDK"/> SDK
+                    <input type="checkbox" id="checkProvince" name="checkProvince"/> 省份
+                    <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商
+
+                    <i class="glyphicon pointer green glyphicon-glass" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i>
+                    <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0" id="inputProvider"></i>
+                    <i class="glyphicon pointer green glyphicon-globe" onclick="setProvince()" title="省份"></i>
+                    <i class="glyphicon pointer grey glyphicon-time" onclick="setTime()" title="小时时段"></i>
+                    <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="查询"></i>
+                    <i class="glyphicon pointer green glyphicon-cloud-download" onclick="downloadData()" title="下载"></i>
                 </div>
             </form>
-        </div><hr>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <table id="tbl" class="table table-striped table-bordered gclass_table text-center">
@@ -51,7 +51,6 @@
     <div class="panel-footer">
     </div>
 </div>
-
 <div id="modalSdkTime" class="modal fade">
     <div class="modal-dialog" >
         <div class="modal-content">
