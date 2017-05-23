@@ -4,6 +4,11 @@ use common\library\Utils;
 use yii\data\Pagination;
 
 class RegOrder extends \common\models\orm\base\RegOrder{
+    const STATUS_DEL        = 0;
+    const STATUS_PREPARE    = 1;
+    const STATUS_SDKDONE    = 2;
+    const STATUS_SYNCDONE   = 3;
+    
     public static function findByPk($id){
         if(!is_numeric($id)){
             return null;
@@ -77,5 +82,17 @@ class RegOrder extends \common\models\orm\base\RegOrder{
             'status'        => $status,
         );
         return $item;
+    }
+    
+    
+    public static function findBySpSign($spSign = ''){
+        $condition  = array(
+            'spSign'  => $spSign,
+        );
+        $model  = self::find()
+                        ->where($condition)
+                        ->one()
+                        ;
+        return $model;
     }
 }
