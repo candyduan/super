@@ -246,3 +246,5 @@ input[type="email"], input[type="url"], input[type="search"], input[type="tel"],
     transition-duration: 0.1s;
 }
 .btn-default{background-color:#ffffff !important;color:#000000 !important;text-shadow:0 0 0 #000000!important;}
+.main-menu{font-size:18px !important;}
+.main-menu-light{color:#ffffff !important;}

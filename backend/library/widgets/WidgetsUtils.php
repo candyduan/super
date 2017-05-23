@@ -1,13 +1,37 @@
 <?php
 namespace backend\library\widgets;
 class WidgetsUtils{
-    public static function getMainMenu(){
+    public static function getMainMenu($layout = ''){
+        $payLight       = '';
+        $sdkLight       = '';
+        $registerLight  = '';
+        $agencyLight    = '';
+        $systemLight    = '';
+        switch ($layout){
+            case 'pay':
+                $payLight       = 'main-menu-light';
+                break;
+            case 'sdk':
+                $sdkLight       = 'main-menu-light';
+                break;
+            case 'register':
+                $registerLight  = 'main-menu-light';
+                break;
+            case 'agency':
+                $agencyLight    = 'main-menu-light';
+                break;
+            case 'system':
+                $systemLight    = 'main-menu-light';
+                break;
+            default:
+                $light = '';
+        }
         $str = '
-                <a class="navbar-brand" style="font-size:18px;" href="http://master.maimob.cn/index.php/admin/" target="_blank">支付SDK</a>
-                <a class="navbar-brand" style="font-size:18px;" href="/site/index">融合SDK</a>
-                <a class="navbar-brand" style="font-size:18px;" href="/register/index">主动上行</a>
-                <a class="navbar-brand" style="font-size:18px;" href="/agency/index">注册中介</a>
-                <a class="navbar-brand" style="font-size:18px;" href="/system/index">系统管理</a>
+                <a class="navbar-brand main-menu '.$payLight.'" href="http://master.maimob.cn/index.php/admin/" target="_blank">支付SDK</a>
+                <a class="navbar-brand main-menu '.$sdkLight.'" href="/site/index">融合SDK</a>
+                <a class="navbar-brand main-menu '.$registerLight.'" href="/register/index">主动上行</a>
+                <a class="navbar-brand main-menu '.$agencyLight.'" href="/agency/index">注册中介</a>
+                <a class="navbar-brand main-menu '.$systemLight.'" href="/system/index">系统管理</a>
             ';
         return $str;
     }
