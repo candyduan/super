@@ -87,8 +87,8 @@ class PackagePayController extends BController
         $condition = self::_getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType);
         $data = SdkPackagePayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
         $count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
-        
-        $userData = PayAction::getNewAndActUserByCondition($checkCP, $checkAPP, $checkCmp, $checkM, $partner, $app, $channel, $stime, $etime, $dateType);
+        // TODO
+//         $userData = PayAction::getNewAndActUserByCondition($checkCP, $checkAPP, $checkCmp, $checkM, $partner, $app, $channel, $stime, $etime, $dateType);
         
         $tabledata = [];
         foreach($data as $value){
