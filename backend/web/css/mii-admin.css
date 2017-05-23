@@ -248,3 +248,4 @@ input[type="email"], input[type="url"], input[type="search"], input[type="tel"],
 .btn-default{background-color:#ffffff !important;color:#000000 !important;text-shadow:0 0 0 #000000!important;}
 .main-menu{font-size:18px !important;}
 .main-menu-light{color:#ffffff !important;}
+.pager_number{margin-left:3px;margin-right:3px;}
