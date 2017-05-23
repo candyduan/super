@@ -33,4 +33,25 @@ class Partner extends \common\models\orm\base\Partner {
         ->all();
         return $data;
     }
+
+    public static function getAllPartnersByBelong($belong,$name){
+        $condition[] = 'and';
+        $condition[] = ['=', 'belong', $belong];
+        $condition[] = ['=', 'deleted', 0];
+        if($name !== ''){
+            $condition[] = [
+                'like',
+                'name',
+                $name
+            ];
+        }
+        $data = self::find()->select(['id','name'])
+            ->where($condition)
+            ->all();
+        $return_data = [];
+        foreach($data as $value){
+            $return_data[$value['id']] = $value['name'];
+        }
+        return $return_data;
+    }
 }

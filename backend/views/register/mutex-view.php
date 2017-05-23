@@ -67,7 +67,7 @@
 					<div>
 						<div class="input-group">
 							<span class="input-group-addon">通道组名称</span>
-							<input type="text" class="form-control mutexName" placeholder="Username" aria-describedby="basic-addon1" id="mutexName" value="">
+							<input type="text" class="form-control mutexName" placeholder="请输入通道组名称" aria-describedby="basic-addon1" id="mutexName" value="">
 						</div>
 						<div class="input-group">
 							<span class="input-group-addon">通道组状态</span>

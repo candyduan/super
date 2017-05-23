@@ -3,7 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
-
+use common\models\orm\extend\OutUser;
 /**
  * Login form
  */
@@ -84,5 +84,24 @@ class LoginForm extends Model
         }
 
         return $this->_user;
+    }
+
+    /**
+     * Logs in a user using the provided username and password.
+     *
+     * @return bool whether the user is logged in successfully
+     */
+    public function outlogin()
+    {
+        $this->_user = OutUser::findByUsernameOrEmail($this->username);
+        if($this->_user) {
+            if (md5(trim($this->password)) == $this->_user->password_hash) {
+                return Yii::$app->user->login($this->_user, $this->rememberMe ? 3600 * 24 * 1 : 0);
+            } else {
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 }

@@ -56,4 +56,9 @@ class Constant{
      */
     const SUBMIT_SERVER     = 1;
     const SUBMIT_CLIENT     = 2;
+
+    /*
+    * 融合SDK
+    */
+    const BELONG_SDK     = 1;
 }
