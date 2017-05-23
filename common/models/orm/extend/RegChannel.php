@@ -193,4 +193,13 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         }
         return $name;
     }
+    
+    public static function signUsed($sign){
+        $model  = self::findBySign($sign);
+        if($model){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

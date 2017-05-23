@@ -228,6 +228,13 @@ class RegisterController extends BController{
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
     	}else{
+    	    $signCheck = RegChannel::signUsed($sign);
+    	    if($signCheck){
+    	        $out['resultCode'] = Constant::RESULT_CODE_PARAMS_ERR;
+    	        $out['msg']        = '该代码标识已被使用，请重新命名';
+    	        Utils::jsonOut($out);
+    	        return;
+    	    }
     	    $db    = RegChannel::getDb()->beginTransaction();
     	    try{
     	        //channel
@@ -253,7 +260,6 @@ class RegisterController extends BController{
     	        $regChannelModel->remark		= $remark;
     	        $regChannelModel->holder		= $holder;
     	        $regChannelModel->save();
-    	        	
     	        //channel verify rule 0
     	        $regChannelVerifyRule0Model    = RegChannelVerifyRule::findByRcidAndType($rcid, 0);
     	        if(!$regChannelVerifyRule0Model){
