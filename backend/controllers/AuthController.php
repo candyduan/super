@@ -18,7 +18,8 @@ class AuthController extends BController{
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        $session = \yii::$app->session;
+        if (!empty($session->get('__id'))) {
             return $this->render("/system/index");
         }
         $model = new LoginForm();

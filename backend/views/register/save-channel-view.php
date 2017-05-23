@@ -42,7 +42,7 @@
  						
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">优化比例</span>
-				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="百分比值" id="cutRate" >
+				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="百分比值,默认100" id="cutRate">
 			</div>
 			
 			<div id="channelVerfyRuleType0"  style="border:1px solid rgb(210, 192, 192);margin-top:10px;">
@@ -50,7 +50,7 @@
 				<div class="input-group" style="padding-top:10px;">
 					<span class="input-group-addon" style="width:120px">屏蔽类型</span>
 					&nbsp;&nbsp;
-					<input onclick="this.value=(this.value==0)?1:0" type="checkbox" id="type0" value="0" >普通屏蔽
+					普通屏蔽
 				</div>
 				
 				<div class="input-group" style="padding-top:10px;">
@@ -68,8 +68,8 @@
  				<div class="input-group" style="padding-top:10px;padding-bottom:10px;">
 					<span class="input-group-addon" style="width:120px">屏蔽状态</span>
 					<select class="form-control" id="statusType0">
-						<option value="0" >删除</option>
 						<option value="1" >可用</option>
+						<option value="0" >删除</option>						
 					</select>
 				</div>
 			</div>
@@ -86,7 +86,7 @@
 						
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">触发时间</span>
-				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="单位/秒" id="waitTime" >
+				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="单位/秒，默认10秒" id="waitTime" >
 			</div>
 						
 			<div class="input-group" style="padding-top:10px;">
@@ -119,7 +119,7 @@
 						
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">冲突优先级</span>
-				<input type="text" class="form-control mutexName"   id="priorityRate" placeholder="百分比值">
+				<input type="text" class="form-control mutexName"   id="priorityRate" placeholder="百分比值，默认100">
 			</div>
 			
 			<div id="channelVerfyRuleType1"  style="border:1px solid rgb(210, 192, 192);margin-top:10px;">
@@ -127,7 +127,7 @@
 				<div class="input-group" style="padding-top:10px;">
 					<span class="input-group-addon" style="width:120px">屏蔽类型</span>
 					&nbsp;&nbsp;
-					<input onclick="this.value=(this.value==0)?1:0" type="checkbox" id="type1" value="0" >验证码屏蔽
+					验证码屏蔽
 				</div>
 				
 				<div class="input-group" style="padding-top:10px;">
@@ -144,8 +144,8 @@
  				<div class="input-group" style="padding-top:10px;padding-bottom:10px;">
 					<span class="input-group-addon" style="width:120px">屏蔽状态</span>
 					<select class="form-control" id="statusType1">
-						<option value="0" >删除</option>
 						<option value="1" >可用</option>
+						<option value="0" >删除</option>						
 					</select>
 				</div>
 			</div>
@@ -170,6 +170,11 @@ $(document).ready(function(){
 	if(merchantId >0){
 		$("#merchant").val(merchantId);
 		$("#merchant").prop("disabled",true);
+	}
+	if(parseInt($('#devType').val()) > 2){
+		$("#channelVerfyRuleType1").show();
+	}else{
+		$("#channelVerfyRuleType1").hide();
 	}
 	if(parseInt(rcid) > 0){
 		var url = '/register/detail-channel-result';
@@ -209,7 +214,7 @@ $(document).ready(function(){
 		};
 		Utils.ajax(url,data,succFunc);
 	}
-	$('#devType').change(function(){ 
+	$('#devType').change(function(){
 		var devTypeVal	= $(this).children('option:selected').val(); 
 		devTypeVal > 2 ? $("#channelVerfyRuleType1").show() : $("#channelVerfyRuleType1").hide();
 	});
@@ -244,14 +249,12 @@ $(document).ready(function(){
 		var  remark 		= $('#remark').val();
 		var  holder 		= $('#holder').val();
 
-		var  type0 			= $('#type0').val();
 		var  portType0 		= $('#portType0').val();
 		var  keys1Type0 	= $('#keys1Type0').val();
 		var  keys2Type0 	= $('#keys2Type0').val();
 		var  keys3Type0 	= $('#keys3Type0').val();
 		var  statusType0 	= $('#statusType0').val();
 		if(devType>2){
-			var  type1 			= $('#type1').val();
 			var  portType1 		= $('#portType1').val();
 			var  keys1Type1 	= $('#keys1Type1').val();
 			var  keys2Type1 	= $('#keys2Type1').val();
@@ -262,9 +265,9 @@ $(document).ready(function(){
 		var data = 'rcid='+rcid+'&sign='+sign+'&merchant='+merchant+'&name='+name+'&useMobile='+useMobile+'&useUnicom='+useUnicom;
 		data = data +'&useTelecom='+useTelecom+'&sdkVersion='+sdkVersion+'&cutRate='+cutRate+'&inPrice='+inPrice+'&waitTime='+waitTime;
 		data = data +'&devType='+devType+'&status='+status+'&priorityRate='+priorityRate+'&remark='+remark+'&holder='+holder;
-		data = data +'&type0='+type0+'&portType0='+portType0+'&keys1Type0='+keys1Type0+'&keys2Type0='+keys2Type0+'&keys3Type0='+keys3Type0+'&statusType0='+statusType0;
+		data = data +'&portType0='+portType0+'&keys1Type0='+keys1Type0+'&keys2Type0='+keys2Type0+'&keys3Type0='+keys3Type0+'&statusType0='+statusType0;
 		if(devType>2){
-			data = data +'&type1='+type1+'&portType1='+portType1+'&keys1Type1='+keys1Type1+'&keys2Type1='+keys2Type1+'&keys3Type1='+keys3Type1+'&statusType1='+statusType1;
+			data = data +'&portType1='+portType1+'&keys1Type1='+keys1Type1+'&keys2Type1='+keys2Type1+'&keys3Type1='+keys3Type1+'&statusType1='+statusType1;
 		}
 		var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){

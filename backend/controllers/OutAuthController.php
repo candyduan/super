@@ -7,7 +7,7 @@ use common\models\orm\extend\OutUser;
 use yii\web\Controller;
 use Yii;
 
-class OutAuthController extends Controller{//controller yaogaila
+class OutAuthController extends BController{//controller yaogaila
     public $layout = "out";
     /*
      * 未授权页面
@@ -24,9 +24,6 @@ class OutAuthController extends Controller{//controller yaogaila
 
     public function actionIndex()
     {
-        $ouid = Yii::$app->getSession()->get('__outuserid');
-        $outuser = OutUser::findByPk($ouid);
-        yii::$app->user->setIdentity($outuser);
         if (!Yii::$app->user->isGuest) {
             return $this->render("/out-auth/index");
         } else {
@@ -36,14 +33,15 @@ class OutAuthController extends Controller{//controller yaogaila
 
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->render("/out-login/index");
+        $session =  Yii::$app->getSession();
+        if (!empty($session->get('__outuserid'))) {
+            return $this->render("/out-auth/index");
         }
         $model= new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->outlogin()) {
-            $id =  Yii::$app->getSession()->get('__id');
-            Yii::$app->getSession()->set('__outuserid', $id);
-            Yii::$app->getSession()->set('__id', '');
+            $id =  $session->get('__id');
+            $session->set('__outuserid', $id);
+            $session->set('__id', '');
             $this->redirect("/out-auth/index");
         } else {
             $model = new LoginForm();
@@ -60,8 +58,9 @@ class OutAuthController extends Controller{//controller yaogaila
      */
     public function actionLogout()
     {
+        Yii::$app->getSession()->set('__outuserid', '');
         Yii::$app->user->logout();
-        $this->redirect("/out-auth/index");
+        $this->redirect("/out-auth/login");
     }
 
 }
