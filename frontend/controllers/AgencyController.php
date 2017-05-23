@@ -52,7 +52,7 @@ class AgencyController extends FController{
             
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
                 $out['msg']         = Constant::RESULT_MSG_SUCC;
-                $out['asid']        = $stackModel->asid;
+                //$out['asid']        = $stackModel->asid;
 
                 $itemVerify   = array(
                     'type'          => 3,
