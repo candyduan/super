@@ -84,4 +84,18 @@ class Sdk extends \common\models\orm\base\Sdk{
         $data = self::find()->select(['name'])->where(['sdid' => $sdid])->one();
         return isset($data['name']) ? $data['name'] :'';
     }
+
+    public static function findAllSdk(){
+	    	$datas = self::find()->all();
+	    	$sdkArr = [];
+	    	if($datas){
+	    		foreach($datas as $data){
+	    			$sdkArr[] =[
+	    					'id' => $data->sdid,
+	    					'name' => '【' . $data->sdid . '】' . $data->name,
+	    			];
+	    		}
+	    	}
+	    	return  $sdkArr;
+    }
 }

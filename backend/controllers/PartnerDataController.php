@@ -50,7 +50,7 @@ class PartnerDataController extends BController
     }
 
     private function _setLayout(){
-        $layout = Utils::getBackendParam('layout');
+        $layout = yii::$app->params['partnerDataLayout'];
         if(!empty($layout))
             $this->layout = $layout;
     }

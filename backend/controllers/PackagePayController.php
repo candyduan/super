@@ -25,6 +25,7 @@ use common\models\orm\extend\SdkPayTransaction;
 use common\models\orm\extend\SdkPackagePayDay;
 use common\models\orm\extend\PlayerCount;
 use common\models\orm\extend\PayAction;
+use common\library\Constant;
 /**
  * SdkPay controller
  */
@@ -272,4 +273,70 @@ class PackagePayController extends BController
         $condition['group'] = $group;
         return $condition;
     }
+
+     public function actionAnalysis(){
+     	return $this->render('analysis-view');
+     }
+
+     /**
+      * 根据内容商查询应用
+      */
+     public function actionGetAppWithPartner() {
+     	$partner = Utils::getBackendParam('partner');
+     	if(is_numeric($partner) && $partner){
+     		$list = App::findByPartner($partner);
+     	}else{
+     		$list = App::findAllToArray();
+     	}
+     	if($list){
+     		$out['list'] = $list;
+     		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+     		$out['msg']         = Constant::RESULT_MSG_SUCC;
+     	}else{
+     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+     		$out['msg']         =  Constant::RESULT_MSG_NONE;
+     	}
+     	Utils::jsonOut($out);
+     }
+  
+     /**
+      * 按条件查询活动
+      */
+     public function actionGetCampaignWithPartnerAndApp() {
+     	$partner = Utils::getBackendParam('partner');
+     	$app = Utils::getBackendParam('app');
+     	$list = Campaign::findAllByPartnerAndApp($partner,$app);
+     	if($list){
+     		$out['list'] = $list;
+     		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+     		$out['msg']         = Constant::RESULT_MSG_SUCC;
+     	}else{
+     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+     		$out['msg']         =  Constant::RESULT_MSG_NONE;
+     	}
+     	Utils::jsonOut($out);
+     }
+     
+     /**
+      * 获取渠道
+      */
+     public function actionGetAppCampaignMediaSdk(){
+     	$app = App::findAllToArray();
+     	$campaign = Campaign::findAllByPartnerAndApp();
+     	$media = Partner::findAllMedia();
+     	$sdk	 =  Sdk::findAllSdk();
+     	if($media && $sdk && $app && $campaign){
+     		$out['app'] = $app;
+     		$out['campaign'] = $campaign;
+     		$out['media'] = $media;
+     		$out['sdk'] = $sdk;
+     		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+     		$out['msg']         = Constant::RESULT_MSG_SUCC;
+     	}else{
+     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+     		$out['msg']         =  Constant::RESULT_MSG_NONE;
+     	}
+     	Utils::jsonOut($out);
+     }
+      
 }

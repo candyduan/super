@@ -543,4 +543,10 @@ class Utils{
         }
         return $result;
     }
+    
+    public static function getSpSign(RegOrder $regOrderModel,$len=10){
+        $spSign = str_pad($regOrderModel->roid, $len,'0',STR_PAD_LEFT);
+        return $spSign;
+        
+    }
 }

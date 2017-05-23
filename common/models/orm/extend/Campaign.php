@@ -73,5 +73,25 @@ class Campaign extends \common\models\orm\base\Campaign {
 
     }
 
+    public static function findAllByPartnerAndApp($partner='',$app=''){
+    		$condition = [];
+    		if(is_numeric($partner) && $partner){
+    			$condition['partner'] = $partner;
+    		}
+    		if(is_numeric($app) && $app){
+    			$condition['app'] = $app;
+    		}
+    		$datas = self::find()->where($condition)->all();
+    		$campaignArr = [];
+    		if($datas){
+    			foreach($datas as $data){
+    				$campaignArr[] =[
+    						'id' => $data->id,
+    						'name' => '【' . $data->id . '】' . $data->name,
+    				];
+    			}
+    		}
+    		return  $campaignArr;
+    }
 
 }
