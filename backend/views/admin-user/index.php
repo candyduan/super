@@ -11,7 +11,7 @@
                 <div class="col-sm-10 col-md-10 col-lg-10">&nbsp;&nbsp;
                     <button class="btn btn-primary" id="btn_add">
                         <span class="glyphicon glyphicon-plus"></span>
-                        <span>新增内部后台用户</span>
+                        <span>新增内部账户</span>
                     </button>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 text-right">

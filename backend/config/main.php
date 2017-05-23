@@ -6,6 +6,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'defaultRoute'  => 'system',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
