@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>通道管理</li>
+<li class="active"><i class="fa fa-dashboard"></i>通道详情</li>
 </ol>
 <div class="main">
 <div class="databar" style="width:100%;padding-left:20px">
