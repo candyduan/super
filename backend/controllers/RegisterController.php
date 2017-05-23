@@ -269,18 +269,20 @@ class RegisterController extends BController{
     	        $regChannelVerifyRule0Model->save();
     	        	
     	        //channel verify rule 1
-    	        $regChannelVerifyRule1Model    = RegChannelVerifyRule::findByRcidAndType($rcid, 1);
-    	        if(!$regChannelVerifyRule1Model){
-    	            $regChannelVerifyRule1Model    = new RegChannelVerifyRule();
-    	            $regChannelVerifyRule1Model->type  = 1;
+    	        if($devType > Constant::CHANNEL_DOUBLE){
+    	            $regChannelVerifyRule1Model    = RegChannelVerifyRule::findByRcidAndType($rcid, 1);
+    	            if(!$regChannelVerifyRule1Model){
+    	                $regChannelVerifyRule1Model    = new RegChannelVerifyRule();
+    	                $regChannelVerifyRule1Model->type  = 1;
+    	            }
+    	            $regChannelVerifyRule1Model->rcid   = $regChannelModel->rcid;
+    	            $regChannelVerifyRule1Model->port	= $portType1;
+    	            $regChannelVerifyRule1Model->keys1	= $keys1Type1;
+    	            $regChannelVerifyRule1Model->keys2	= $keys2Type1;
+    	            $regChannelVerifyRule1Model->keys3	= $keys3Type1;
+    	            $regChannelVerifyRule1Model->status	= $statusType1;
+    	            $regChannelVerifyRule1Model->save();
     	        }
-    	        $regChannelVerifyRule1Model->rcid   = $regChannelModel->rcid;
-    	        $regChannelVerifyRule1Model->port	= $portType1;
-    	        $regChannelVerifyRule1Model->keys1	= $keys1Type1;
-    	        $regChannelVerifyRule1Model->keys2	= $keys2Type1;
-    	        $regChannelVerifyRule1Model->keys3	= $keys3Type1;
-    	        $regChannelVerifyRule1Model->status	= $statusType1;
-    	        $regChannelVerifyRule1Model->save();
     	        
     	        $db->commit();
     	        
