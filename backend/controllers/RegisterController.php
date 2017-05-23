@@ -73,8 +73,7 @@ class RegisterController extends BController{
     		$payCircle = Utils::getBackendParam('payCircle');
     		$tax = Utils::getBackendParam('tax');
     		$memo = Utils::getBackendParam('memo');
-    		$merchantId = Utils::getBackendParam('merchantId','');
-    		
+    		$merchantId = Utils::getBackendParam('mid','');
     		
     		if(is_numeric($merchantId)){
     			$model = Merchant::findByIdAndName($merchantId,$name);

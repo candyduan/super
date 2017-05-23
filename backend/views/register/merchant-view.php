@@ -70,7 +70,7 @@
 							<input type="text" class="form-control mutexName" placeholder="" aria-describedby="basic-addon1" id="memo" value="">
 						</div>
 						
-						<input type='hidden' value='' id='merchantId'>
+						<input type='hidden' value='' id='mid'>
 						<button type="submit" class="btn btn-primary searchbar_smt" id="saveMerchant"> 保存 </button>
 					</div>
 				</p>
@@ -83,8 +83,11 @@
 $(document).ready(function(){
     setResult(1); 
     $('#search').click(function(){
+        if($('#selectMerchantObj').val() == ''){
+			$('#merchantId').val('');
+        }
         setResult(1);
-});
+	});
 });
 
 var merchantJsonList =<?=json_encode(Merchant::findAllToArray())?>;
@@ -147,7 +150,7 @@ function setResult(page){
 						$('#payCircle').val(payCircle);
 						$('#tax').val(item.tax);
 						$('#memo').val(item.tax);
-						$('#merchantId').val(mid);
+						$('#mid').val(mid);
 						$('#saveMerchantDiv').modal('show');
 					}else{
 						Utils.getErrModal('err',resultJson.msg);
@@ -171,6 +174,7 @@ $('#addMerchantBtn').click(function(){
 	$('#payCircle').val('1');
 	$('#tax').val('');
 	$('#memo').val('');
+	$('#mid').val('');
 	var url = '/register/holder-result';
 	var data = '';
 	var succ = function(resultJson){
@@ -195,12 +199,13 @@ $('#saveMerchant').click(function(){
 	var payCircle = $('#payCircle').val();
 	var tax = parseFloat($('#tax').val());
 	var memo = $('#memo').val();
+	var mid = $('#mid').val();
 	if(merchantName == ''){
 		return;
 	}
 	
 	var url = '/register/merchant-set-save';
-	var data = 'name='+merchantName+'&addr='+merchantAddr+'&holder='+merchantHolder+'&payCircle='+payCircle+'&tax='+tax+'&memo='+memo; 
+	var data = 'name='+merchantName+'&addr='+merchantAddr+'&holder='+merchantHolder+'&payCircle='+payCircle+'&tax='+tax+'&memo='+memo+'&mid='+mid; 
 	var succ = function(resultJson){
 		if(resultJson.resultCode == 1){
 			$('#saveMerchantDiv').modal('hide');
