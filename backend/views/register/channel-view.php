@@ -1,6 +1,5 @@
 <ol class="breadcrumb">
 <li class="active"><i class="fa fa-dashboard"></i>通道列表</li>
-<li class="active" style="padding-left:20px"><a href="/register/save-channel-view">添加通道</a></li>
 </ol>
 <div class="main">
 
