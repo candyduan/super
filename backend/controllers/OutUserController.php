@@ -114,10 +114,10 @@ class OutUserController extends BController
     public function actionDeleteOutUser(){
         $resultState = 0;
         $ouid = Utils::getBParam('ouid');
-        if(isset($auid)) {
+        if(isset($ouid)) {
             $transaction = OutUser::getDb()->beginTransaction();
             try {
-                $resultState = OutUser::deleteAll(['id'=>$ouid]);
+                $resultState = OutUser::deleteAll(['ouid'=>$ouid]);
                 $transaction->commit();
             } catch (ErrorException $e) {
                 $resultState = 0;

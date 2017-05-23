@@ -29,7 +29,7 @@ class OutUser extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+  /*  public function rules()
     {
         return [
             [['partner', 'status'], 'integer'],
@@ -38,12 +38,12 @@ class OutUser extends \yii\db\ActiveRecord
             [['username'], 'unique'],
             [['email'], 'unique'],
         ];
-    }
+    }*/
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+/*    public function attributeLabels()
     {
         return [
             'ouid' => 'Ouid',
@@ -55,5 +55,5 @@ class OutUser extends \yii\db\ActiveRecord
             'updateTime' => 'Update Time',
             'status' => 'Status',
         ];
-    }
+    }*/
 }
