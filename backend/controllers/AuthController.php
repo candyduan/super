@@ -19,11 +19,11 @@ class AuthController extends BController{
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->render("/auth/dashboard");
+            return $this->render("/system/index");
         }
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $this->redirect("/auth/dashboard");
+            $this->redirect("/system/index");
         } else {
             return $this->renderAjax('/auth/login', [
                 'model' => $model,

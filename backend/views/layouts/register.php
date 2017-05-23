@@ -15,7 +15,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/css/mii-admin.css?d=20170522" rel="stylesheet">
+    <link href="/css/mii-admin.css?d=20170523" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -47,7 +47,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <?php echo backend\library\widgets\WidgetsUtils::getMainMenu();?>
+                <?php echo backend\library\widgets\WidgetsUtils::getMainMenu('register');?>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
