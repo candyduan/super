@@ -208,7 +208,9 @@ class AdminUserController extends BController
                         'package-pay',
                         'modify-password' ,
                         'package',
-                        'site'
+                        'site',
+                        'system',
+                        'partner-data'
                     ];
                     foreach($powerdetails as $powerdetail){
                         self::_addPowerDetail($powerdetail, $auid);

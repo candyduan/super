@@ -72,8 +72,8 @@
                 <li class="">
                     <a href="javascript:;" data-toggle="collapse" data-target="#my-benefit"><i class="fa fa-fw fa-dashboard"></i>我的收入<i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="my-benefit" class="collapse">
-                        <li><a class="sidebar-item" href="/modify-password/index">游戏收入</a></li>
-                        <li><a class="sidebar-item" href="/modify-password/index">cps</a></li>
+                        <li><a class="sidebar-item" href="/partner-data/gain">游戏收入</a></li>
+                        <li><a class="sidebar-item" href="/partner-data/cps-gain">cps收入</a></li>
                     </ul>
                 </li>
             </ul>

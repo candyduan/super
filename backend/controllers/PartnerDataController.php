@@ -18,7 +18,7 @@ use common\library\BController;
  */
 class PartnerDataController extends BController
 {
-    public $layout = "sdk";
+    public $layout = "out";
     public function behaviors()
     {
         return [
@@ -40,11 +40,18 @@ class PartnerDataController extends BController
 
     public function actionGain()
     {
+        self::_setLayout();
         $holders = Admin::getAllAdmins();
-
         return $this->render('gain',['holders' =>$holders ]);
     }
     public function actionCpsGain(){
+        self::_setLayout();
         return $this->render('cps-gain',[]);
+    }
+
+    private function _setLayout(){
+        $layout = Utils::getBackendParam('layout');
+        if(!empty($layout))
+            $this->layout = $layout;
     }
 }
