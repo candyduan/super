@@ -35,6 +35,7 @@ class BController extends Controller{
                     if($partner->utype == Constant::PARTNER_BOTH){
                         $outflag = 1;
                     }else if($partner->utype == Constant::PARTNER_ONLY){
+                        \yii::$app->params['partnerDataLayout'] = 'out';
                         if($actionName == 'gain'){
                             $outflag = 1;
                         } else {
@@ -65,6 +66,7 @@ class BController extends Controller{
             }
         }else{
             $flag = 3;
+            \yii::$app->params['partnerDataLayout'] = 'sdk';
             if($controllerName != 'auth' && $actionName !='login'){ //内部的
                 if(!empty($session->get('__id'))) {
                     $adminUserModel = \Yii::$app->user->identity;
