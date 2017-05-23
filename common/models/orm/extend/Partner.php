@@ -54,4 +54,32 @@ class Partner extends \common\models\orm\base\Partner {
         }
         return $return_data;
     }
+    
+    public static function findAllToArray(){
+	    	$datas = self::find()->all();
+	    	$partnerArr = [];
+	    	if($datas){
+	    		foreach($datas as $data){
+	    			$partnerArr[] =[
+	    					'id' => $data->id,
+	    					'name' => '【' . $data->id . '】' . $data->name,
+	    			];
+	    		}
+	    	}
+	    	return  $partnerArr;
+    }
+
+    public static function findAllMedia(){
+    		$datas = self::find()->where('utype in (2,3)')->all();
+    		$mediaArr = [];
+    		if($datas){
+    			foreach($datas as $data){
+    				$mediaArr[] =[
+    						'id' => $data->id,
+    						'name' => '【' . $data->id . '】' . $data->name,
+    				];
+    			}
+    		}
+    		return  $mediaArr;
+    }
 }
