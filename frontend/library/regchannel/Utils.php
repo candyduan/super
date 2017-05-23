@@ -8,6 +8,7 @@ use common\models\orm\extend\RegChannelVerifyRule;
 use common\library\Utils as commonUtils;
 use common\models\orm\extend\RegChannelCfgUrlYapi;
 use common\models\orm\extend\RegChannelCfgMain;
+use function Faker\time;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
@@ -246,7 +247,7 @@ class Utils{
             $res[] = array(
                 'type'          => Constant::TASK_SEND_MESSAGE,
                 'roid'          => $regOrderModel->roid,
-                'subId'         => 99,
+                'subId'         => microtime(),
                 'port'          => $messages[1],
                 'cmd'           => $messages[2],
                 'sourcePort'    => '',
@@ -282,6 +283,29 @@ class Utils{
                             'delayed'       => 0,
                             'blockPeriod'   => 3600,
                 );
+                
+                
+                
+                $verifyRuleModel   = RegChannelVerifyRule::findByRcidType($regChannelModel->rcid,0);
+                if($verifyRuleModel){
+                    $item   = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => 2,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $verifyRuleModel->keys1,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $item);
+                }
                 break;
             case Constant::CHANNEL_DOUBLE:
                 $res = array(
@@ -318,6 +342,27 @@ class Utils{
                         'blockPeriod'   => 3600,
                     ),
                 );
+                
+                $verifyRuleModel   = RegChannelVerifyRule::findByRcidType($regChannelModel->rcid,0);
+                if($verifyRuleModel){
+                    $item   = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => 3,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $verifyRuleModel->keys1,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $item);
+                }
                 break;                
             case Constant::CHANNEL_SMSP:
                 $res    = array();

@@ -251,3 +251,15 @@ Utils.myTypeHeder	= function(jsonList,lableText,lableId,callback){
 		}
 	});
 }
+
+
+Utils.getToday	= function(){
+	var myDate = new Date();  
+	var year  = myDate.getFullYear();
+	var month = myDate.getMonth() + 1;
+	var day	  = myDate.getDate();
+	if(month < 10){
+		month = '0' + month;
+	}
+	return year +'-'+month+'-'+day;
+};

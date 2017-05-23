@@ -16,7 +16,7 @@ class RegChannelMutex extends \common\models\orm\base\RegChannelMutex{
 		return $model;
 	} 
 	
-	public static function findAllNeedPaginator($page=1,$perpage = 5){
+	public static function findAllNeedPaginator($page=1,$perpage = 20){
 		$data = self::find();
 	
 		$totalCount = $data->count();
@@ -30,6 +30,19 @@ class RegChannelMutex extends \common\models\orm\base\RegChannelMutex{
 		];
 	}
 	
+	public static function findByIdNeedPaginator($id,$page=1,$perpage = 20){
+		$data = self::find()->where('rcmid = :id',[':id' => $id]);
+		$totalCount =$data->count();
+		$pages = ceil($totalCount/$perpage);
+		$pagination = new Pagination(['totalCount' => $totalCount, 'pageSize' => $perpage, 'page' => $page ]);
+		$models = $data->offset($pagination->offset)->limit($pagination->limit)->all();
+		return [
+				'models' => $models,
+				'pages' => $pages,
+				'count' => $totalCount,
+		];
+	}
+	
 	public static function getItemArrByModel(RegChannelMutex $regChannelMutexModel){
 		$item   = array(
 				'rcmid'          => $regChannelMutexModel->rcmid,
@@ -39,6 +52,21 @@ class RegChannelMutex extends \common\models\orm\base\RegChannelMutex{
 		);
 		return $item;
 	}
+	
+	public static function findAllToArray(){
+		$datas = self::find()->all();
+		$channelArr = [];
+		if($datas){
+			foreach($datas as $data){
+				$channelArr[] =[
+						'id' => $data->rcmid,
+						'name' => '【' . $data->rcmid . '】' . $data->name,
+				];
+			}
+		}
+		return  $channelArr;
+	}
+	
 	
 	
 	/**

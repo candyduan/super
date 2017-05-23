@@ -19,11 +19,11 @@ class AuthController extends BController{
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->render("/site/index");
+            return $this->render("/system/index");
         }
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $this->redirect("/site/index");
+            $this->redirect("/system/index");
         } else {
             return $this->renderAjax('/auth/login', [
                 'model' => $model,
@@ -40,5 +40,10 @@ class AuthController extends BController{
     {
         Yii::$app->user->logout();
         return $this->goHome();
+    }
+    
+    
+    public function actionDashboard(){
+        return $this->render('/auth/dashboard');
     }
 }

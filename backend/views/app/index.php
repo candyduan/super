@@ -1,13 +1,10 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
-    <div class="page-header">
-        <h1>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            应用管理
-        </h1>
-    </div>
+        <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i>应用管理</li>
+        </ol>
     <!-- panel body -->
-    <div class="panel-body">
+    <div class="panel-body main">
         <div class="row">
             <form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
