@@ -224,10 +224,10 @@ $('#saveMutex').click(function(){
 	if(mutexName == ''){
 		return;
 	}
-	alert('-'+rcmid+'-'+mutexName+'-'+mutexStatus+'-');
 	var succ = function(resultJson){
          if(parseInt(resultJson.resultCode) == 1){
         	 	$('#saveMutexDiv').modal('toggle');
+        	 	 setResult(1);
          }else{
         	 	$('#saveMutexDiv').modal('toggle');
             $('#data_list').html(resultJson.msg);

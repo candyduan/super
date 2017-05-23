@@ -106,11 +106,12 @@
         $("#startDate").val(now);
         $("#endDate").val(now);
    		 _initDataTable();
-	    $('.date-picker').datepicker({
+    })
+    
+    $('.date-picker').datepicker({
 	        autoclose: true,
 	        todayHighlight: true
 	    })
-    })
     
 	var merchantJsonList =<?=json_encode(Partner::findAllToArray())?>;
 	var objMap = {};
