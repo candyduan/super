@@ -18,6 +18,10 @@ AppAsset::register($this);
     <link rel="shortcut icon" href="/imgs/favicon.ico" />
     <title><?=Html::encode(Yii::$app->params['title']);?></title>
     <meta charset="utf-8" />
+    <style>
+    .panel-heading{background-color:#000000 !important;color:#ffffff !important;}
+    .panel-body{border:1px solid #000000 !important;}
+    </style>
 </head>
 <body style="margin-top: 100px">
 
@@ -25,7 +29,7 @@ AppAsset::register($this);
     <div class="row">
         <div class="col-sm-4 col-md-4 col-lg-4"></div>
         <div class="col-sm-4 col-md-4 col-lg-4">
-            <div class="panel panel-info">
+            <div class="panel">
                 <div class="panel-heading">
                     <div class="inline">
                     <span class="glyphicon glyphicon-leaf"></span>
