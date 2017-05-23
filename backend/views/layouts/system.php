@@ -77,9 +77,10 @@
                     </li>
                                         
                      <li class="">
-                        <a href="javascript:;" data-toggle="collapse" data-target="#bkadminuser"><i class="fa fa-fw fa-dashboard"></i>后台用户管理<i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#bkadminuser"><i class="fa fa-fw fa-dashboard"></i>用户管理<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="bkadminuser" class="collapse">
-                            <li><a class="sidebar-item" href="/admin-user/index">后台用户列表</a></li>
+                            <li><a class="sidebar-item" href="/admin-user/index">内部账户管理</a></li>
+                            <li><a class="sidebar-item" href="/out-user/index">客户账户列表</a></li>
                         </ul>
                     </li>                                       
                 </ul>
