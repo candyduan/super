@@ -13,6 +13,8 @@ use Yii;
  * @property integer $sdid
  * @property integer $provider
  * @property integer $prid
+ * @property integer $newUsers
+ * @property integer $actUsers
  * @property integer $users
  * @property double $allPay
  * @property double $successPay
@@ -45,7 +47,7 @@ class SdkPackagePayDay extends \yii\db\ActiveRecord
     {
         return [
             [['date', 'recordTime', 'updateTime'], 'safe'],
-            [['cpid', 'sdid', 'provider', 'prid', 'users', 'cp', 'status'], 'integer'],
+            [['cpid', 'sdid', 'provider', 'prid', 'newUsers', 'actUsers', 'users', 'cp', 'status'], 'integer'],
             [['allPay', 'successPay', 'ratio', 'parpu', 'income', 'payCp', 'payM', 'profit', 'profitRatio'], 'number'],
             [['cpid', 'sdid', 'provider', 'prid', 'date'], 'unique', 'targetAttribute' => ['cpid', 'sdid', 'provider', 'prid', 'date'], 'message' => 'The combination of Date, Cpid, Sdid, Provider and Prid has already been taken.'],
         ];
@@ -63,6 +65,8 @@ class SdkPackagePayDay extends \yii\db\ActiveRecord
             'sdid' => 'Sdid',
             'provider' => 'Provider',
             'prid' => 'Prid',
+            'newUsers' => 'New Users',
+            'actUsers' => 'Act Users',
             'users' => 'Users',
             'allPay' => 'All Pay',
             'successPay' => 'Success Pay',

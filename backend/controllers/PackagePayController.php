@@ -176,8 +176,8 @@ class PackagePayController extends BController
             'app.name as app',
             'campaign.name as cmp',
             'channel.name as m',
-            'sum(sdkPackagePayDay.users) as newUsers',// TODO
-            'sum(sdkPackagePayDay.users) as actUsers',// TODO
+            'sum(sdkPackagePayDay.newUsers) as newUsers',
+            'sum(sdkPackagePayDay.actUsers) as actUsers',
             'sum(sdkPackagePayDay.users) as users',
             'sum(sdkPackagePayDay.successPay) as successPay',
             'sum(sdkPackagePayDay.cp) as cp',
