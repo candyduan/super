@@ -10,3 +10,5 @@ environments/dev/backend/web/assets
 frontend/assets
 frontend/runtime
 environments/dev/frontend/web/assets
+frontend/web/assets
+frontend/web/assets/*
