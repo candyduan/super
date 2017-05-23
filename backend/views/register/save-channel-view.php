@@ -42,7 +42,7 @@
  						
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">优化比例</span>
-				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="百分比值" id="cutRate" >
+				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="百分比值,默认100" id="cutRate">
 			</div>
 			
 			<div id="channelVerfyRuleType0"  style="border:1px solid rgb(210, 192, 192);margin-top:10px;">
@@ -68,8 +68,8 @@
  				<div class="input-group" style="padding-top:10px;padding-bottom:10px;">
 					<span class="input-group-addon" style="width:120px">屏蔽状态</span>
 					<select class="form-control" id="statusType0">
-						<option value="0" >删除</option>
 						<option value="1" >可用</option>
+						<option value="0" >删除</option>						
 					</select>
 				</div>
 			</div>
@@ -86,7 +86,7 @@
 						
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">触发时间</span>
-				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="单位/秒" id="waitTime" >
+				<input type="text" class="form-control"  aria-describedby="basic-addon1" placeholder="单位/秒，默认10秒" id="waitTime" >
 			</div>
 						
 			<div class="input-group" style="padding-top:10px;">
@@ -119,7 +119,7 @@
 						
 			<div class="input-group" style="padding-top:10px;">
 				<span class="input-group-addon" style="width:120px">冲突优先级</span>
-				<input type="text" class="form-control mutexName"   id="priorityRate" placeholder="百分比值">
+				<input type="text" class="form-control mutexName"   id="priorityRate" placeholder="百分比值，默认100">
 			</div>
 			
 			<div id="channelVerfyRuleType1"  style="border:1px solid rgb(210, 192, 192);margin-top:10px;">
@@ -144,8 +144,8 @@
  				<div class="input-group" style="padding-top:10px;padding-bottom:10px;">
 					<span class="input-group-addon" style="width:120px">屏蔽状态</span>
 					<select class="form-control" id="statusType1">
-						<option value="0" >删除</option>
 						<option value="1" >可用</option>
+						<option value="0" >删除</option>						
 					</select>
 				</div>
 			</div>

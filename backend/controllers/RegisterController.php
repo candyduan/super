@@ -202,12 +202,12 @@ class RegisterController extends BController{
     	$useUnicom 		= Utils::getBackendParam('useUnicom');
     	$useTelecom	 	= Utils::getBackendParam('useTelecom');
     	$sdkVersion 	= Utils::getBackendParam('sdkVersion');
-    	$cutRate 		= Utils::getBackendParam('cutRate');
+    	$cutRate 		= Utils::getBackendParam('cutRate',100);
     	$inPrice 		= Utils::getBackendParam('inPrice');
-    	$waitTime 		= Utils::getBackendParam('waitTime');
+    	$waitTime 		= Utils::getBackendParam('waitTime',10);
     	$devType 		= Utils::getBackendParam('devType');
     	$status 		= Utils::getBackendParam('status');
-    	$priorityRate 	= Utils::getBackendParam('priorityRate');
+    	$priorityRate 	= Utils::getBackendParam('priorityRate',100);
     	$remark 		= Utils::getBackendParam('remark');
     	$holder 		= Utils::getBackendParam('holder');
     	
@@ -228,15 +228,71 @@ class RegisterController extends BController{
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
     	}else{
-    		$res = RegChannel::saveChannel($rcid, $sign,$merchant, $name, $useMobile, $useUnicom, $useTelecom, $sdkVersion, $cutRate, $inPrice, $waitTime, $devType, $status, $priorityRate, $remark,$holder);
-      		RegChannelVerifyRule::saveChannelVerifyRule($rcid, $type0, $portType0, $keys1Type0, $keys2Type0, $keys3Type0, $statusType0, $type1, $portType1, $keys1Type1, $keys2Type1, $keys3Type1, $statusType1);
-      		if($res){
-    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
-    			$out['msg']         = Constant::RESULT_MSG_SUCC;
-    		}else{
-    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
-    			$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
-    		}
+    	    $db    = RegChannel::getDb()->beginTransaction();
+    	    try{
+    	        //channel
+    	        if($rcid > 0){
+    	            $regChannelModel   = RegChannel::findByPk($rcid);
+    	        }else{
+    	            $regChannelModel   = new RegChannel();
+    	        }
+    	        	
+    	        $regChannelModel->sign			= $sign;
+    	        $regChannelModel->merchant		= $merchant;
+    	        $regChannelModel->name			= $name;
+    	        $regChannelModel->useMobile		= $useMobile;
+    	        $regChannelModel->useUnicom		= $useUnicom;
+    	        $regChannelModel->useTelecom	= $useTelecom;
+    	        $regChannelModel->sdkVersion	= $sdkVersion;
+    	        $regChannelModel->cutRate		= $cutRate;
+    	        $regChannelModel->inPrice		= $inPrice;
+    	        $regChannelModel->waitTime		= $waitTime;
+    	        $regChannelModel->devType		= $devType;
+    	        $regChannelModel->status		= $status;
+    	        $regChannelModel->priorityRate	= $priorityRate;
+    	        $regChannelModel->remark		= $remark;
+    	        $regChannelModel->holder		= $holder;
+    	        $regChannelModel->save();
+    	        	
+    	        //channel verify rule 0
+    	        $regChannelVerifyRule0Model    = RegChannelVerifyRule::findByRcidAndType($rcid, 0);
+    	        if(!$regChannelVerifyRule0Model){
+    	            $regChannelVerifyRule0Model    = new RegChannelVerifyRule();
+    	            $regChannelVerifyRule0Model->type  = 0;
+    	        }
+    	        $regChannelVerifyRule0Model->rcid  = $regChannelModel->rcid;
+    	        $regChannelVerifyRule0Model->port	= $portType0;
+    	        $regChannelVerifyRule0Model->keys1	= $keys1Type0;
+    	        $regChannelVerifyRule0Model->keys2	= $keys2Type0;
+    	        $regChannelVerifyRule0Model->keys3	= $keys3Type0;
+    	        $regChannelVerifyRule0Model->status	= $statusType0;
+    	        $regChannelVerifyRule0Model->save();
+    	        	
+    	        //channel verify rule 1
+    	        $regChannelVerifyRule1Model    = RegChannelVerifyRule::findByRcidAndType($rcid, 1);
+    	        if(!$regChannelVerifyRule1Model){
+    	            $regChannelVerifyRule1Model    = new RegChannelVerifyRule();
+    	            $regChannelVerifyRule1Model->type  = 1;
+    	        }
+    	        $regChannelVerifyRule1Model->rcid   = $regChannelModel->rcid;
+    	        $regChannelVerifyRule1Model->port	= $portType1;
+    	        $regChannelVerifyRule1Model->keys1	= $keys1Type1;
+    	        $regChannelVerifyRule1Model->keys2	= $keys2Type1;
+    	        $regChannelVerifyRule1Model->keys3	= $keys3Type1;
+    	        $regChannelVerifyRule1Model->status	= $statusType1;
+    	        $regChannelVerifyRule1Model->save();
+    	        
+    	        $db->commit();
+    	        
+    	        $out['resultCode'] = Constant::RESULT_CODE_SUCC;
+    	        $out['msg']        = Constant::RESULT_MSG_SUCC;
+    	    }catch (\Exception $e){
+    	        $db->rollBack();
+    	        
+    	        $out['resultCode'] = Constant::RESULT_CODE_SYSTEM_BUSY;
+    	        $out['msg']        = Constant::RESULT_MSG_SYSTEM_BUSY;
+    	        $out['msg']        = $e->getMessage();
+    	    }
     	}
     	Utils::jsonOut($out);
     }
