@@ -87,8 +87,6 @@ class PackagePayController extends BController
         $condition = self::_getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType);
         $data = SdkPackagePayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
         $count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
-        // TODO
-//         $userData = PayAction::getNewAndActUserByCondition($checkCP, $checkAPP, $checkCmp, $checkM, $partner, $app, $channel, $stime, $etime, $dateType);
         
         $tabledata = [];
         foreach($data as $value){
@@ -121,11 +119,8 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            $newUser = 0;// TODO
-            $actUser = 0;// TODO
-            foreach ($userData as $userItem){
-                
-            }
+            $newUser = $value['newUsers'];
+            $actUser = $value['actUsers'];
             array_push($item, $newUser);
             array_push($item, $actUser);
             
@@ -135,7 +130,7 @@ class PackagePayController extends BController
             if($newUser <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$actUser,2));
+                array_push($item, number_format($value['successPay']/$newUser,2));
             }
             
             if($value['users'] <= 0){
@@ -181,6 +176,8 @@ class PackagePayController extends BController
             'app.name as app',
             'campaign.name as cmp',
             'channel.name as m',
+            'sum(sdkPackagePayDay.users) as newUsers',// TODO
+            'sum(sdkPackagePayDay.users) as actUsers',// TODO
             'sum(sdkPackagePayDay.users) as users',
             'sum(sdkPackagePayDay.successPay) as successPay',
             'sum(sdkPackagePayDay.cp) as cp',
