@@ -97,8 +97,8 @@
                             <li><a class="sidebar-item" href="/sdk-pay/index">融合SDK计费转化表</a></li>
                             <li><a class="sidebar-item" href="/package-pay/index">融合SDK渠道收益</a></li>
                             <li><a class="sidebar-item" href="/package-pay/analysis">融合SDK渠道计费分析</a></li>
-                            <li><a class="sidebar-item" href="/partner-data/gain">游戏收入</a></li>
-                            <li><a class="sidebar-item" href="/partner-data/cps-gain">cps收入</a></li>
+<!--                             <li><a class="sidebar-item" href="/partner-data/gain">游戏收入</a></li> -->
+<!--                             <li><a class="sidebar-item" href="/partner-data/cps-gain">cps收入</a></li> -->
                         </ul>
                     </li> 
  
