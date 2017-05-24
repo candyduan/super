@@ -362,8 +362,10 @@ class PackagePayController extends BController
      	$checkProvider = Utils::getBackendParam('checkProvider') ? true : false;
      	
      	$dateType = Utils::getBackendParam('dateType',3);
+     	$provider = Utils::getBackendParam('provider',0);
+     	$province = Utils::getBackendParam('province','');
      	
-     	$condition = self::_getAnalysisCondition($checkCp,$checkApp,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,$partner,$app,$campaign,$media,$sdk,$stime,$etime,$dateType);
+     	$condition = self::_getAnalysisCondition($checkCp,$checkApp,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,$partner,$app,$campaign,$media,$sdk,$stime,$etime,$dateType,$provider,$province);
      	$data = SdkPackagePayDay::getAnalysisData($condition['select'],$condition['where'],$condition['group'], $start,$length);
      	$count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
      	$tabledata = [];
@@ -436,7 +438,7 @@ class PackagePayController extends BController
      	Utils::jsonOut($data);
      }
      
-     private function _getAnalysisCondition($checkCP,$checkAPP,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,$partner,$app,$campaign,$media,$sdk,$stime,$etime,$dateType){
+     private function _getAnalysisCondition($checkCP,$checkAPP,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,$partner,$app,$campaign,$media,$sdk,$stime,$etime,$dateType,$provider,$province){
      	$select = [
      			'campaignPackage.partner as partner',
      			'campaignPackage.app as app',
@@ -491,6 +493,20 @@ class PackagePayController extends BController
      				'=',
      				'sdkPackagePayDay.sdid',
      				$sdk
+     		];
+     	}
+     	if($provider > 0){
+     		$where[] = [
+     				'=',
+     				'sdkPackagePayDay.provider',
+     				$provider
+     		];
+     	}
+     	if(Utils::isValid($province)){
+     		$where[] = [
+     				'in',
+     				'sdkPackagePayDay.prid',
+     				explode(',', $province)
      		];
      	}
      	
