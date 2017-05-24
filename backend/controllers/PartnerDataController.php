@@ -51,6 +51,14 @@ class PartnerDataController extends BController
         return $this->render('gain', ['apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
     }
     
+    public function actionCpsGain(){
+        self::_setLayout();
+        $apps = App::fetchAllBelongSdkArr();
+        $campaigns = Campaign::fetchAllBelongSdkArr();
+        $channels = Partner::fetchAllArr();
+        return $this->render('cps-gain', ['apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
+    }
+    
     public function actionAjaxGain(){
         $start = Utils::getBackendParam('start',0);
         $length = Utils::getBackendParam('length',100);
@@ -127,7 +135,84 @@ class PartnerDataController extends BController
         Utils::jsonOut($data);
         exit;
     }
-    private function _getCondition($checkAPP,$checkCampaign,$checkM,$partner,$app,$campaign,$channel,$stime,$etime,$dateType){
+    public function actionAjaxCpsGain(){
+        $start = Utils::getBackendParam('start',0);
+        $length = Utils::getBackendParam('length',100);
+    
+        $app = Utils::getBackendParam('app','');
+        $campaign = Utils::getBackendParam('campaign','');
+        $channel = Utils::getBackendParam('channel','');
+    
+        $stime = Utils::getBackendParam('startDate','');
+        $etime = Utils::getBackendParam('endDate','');
+    
+        $dateType = Utils::getBackendParam('dateType',3);
+    
+        $checkAPP = Utils::getBackendParam('checkAPP');
+        $checkAPP = $checkAPP?true:false;
+        $checkCampaign = Utils::getBackendParam('checkCampaign');
+        $checkCampaign = $checkCampaign?true:false;
+        $checkM = Utils::getBackendParam('checkM');
+        $checkM = $checkM?true:false;
+    
+        $count = 0;
+        $tabledata = [];
+        $partner = self::_getPartnerId();
+        if($partner > 0){
+            if( 3 == $dateType ||  4 == $dateType){//时段和月份全搜算总数
+                $start = null;
+                $length = null;
+            }
+    
+            $condition = self::_getCondition($checkAPP,$checkCampaign,$checkM,$partner,$app,$campaign,$channel,$stime,$etime,$dateType,true);
+            $data = SdkPackagePayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
+            $count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
+    
+            foreach($data as $value){
+                $item = array();
+                if( 3 == $dateType){//时段不显示时间
+                    array_push($item, '-');
+                }else if(4 == $dateType){//月份显示月
+                    array_push($item, date('Y-m',strtotime($value['date'])));
+                }else{
+                    array_push($item, date('Y-m-d',strtotime($value['date'])));
+                }
+                if($checkAPP){
+                    array_push($item, $value['app']);
+                }else{
+                    array_push($item, '-');
+                }
+                if($checkCampaign){
+                    array_push($item, $value['c']);
+                }else{
+                    array_push($item, '-');
+                }
+                if($checkM){
+                    array_push($item, $value['m']);
+                }else{
+                    array_push($item, '-');
+                }
+    
+                array_push($item, $value['newUsers']);
+                array_push($item, $value['successPay']);
+    
+                $tabledata[] = $item;
+            }
+        }
+    
+        $data = [
+            'searchData' => [
+    
+            ],
+            'recordsTotal' => $count,
+            'recordsFiltered' => $count,
+            'tableData' => $tabledata,
+        ];
+        Utils::jsonOut($data);
+        exit;
+    }
+    
+    private function _getCondition($checkAPP,$checkCampaign,$checkM,$partner,$app,$campaign,$channel,$stime,$etime,$dateType,$isChannel = FALSE){
         $select = [
             'sdkPackagePayDay.date as date',
             'app.name as app',
@@ -144,12 +229,22 @@ class PartnerDataController extends BController
             1
         ];
 
-        if($partner > 0){
-            $where[] = [
-                '=',
-                'campaignPackage.partner',
-                $partner
-            ];
+        if($isChannel){
+            if($partner > 0){
+                $where[] = [
+                    '=',
+                    'campaignPackage.media',
+                    $partner
+                ];
+            }
+        }else{
+            if($partner > 0){
+                $where[] = [
+                    '=',
+                    'campaignPackage.partner',
+                    $partner
+                ];
+            }
         }
         
         if($app > 0){
@@ -229,11 +324,6 @@ class PartnerDataController extends BController
         return $condition;
     }
     
-    public function actionCpsGain(){
-        self::_setLayout();
-        return $this->render('cps-gain',[]);
-    }
-
     private function _setLayout(){
         $layout = yii::$app->params['partnerDataLayout'];
         if(!empty($layout))
