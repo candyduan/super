@@ -149,7 +149,7 @@ function setResult(page){
 						payCircle = item.payCircle == '周' ? 1 : 2;
 						$('#payCircle').val(payCircle);
 						$('#tax').val(item.tax);
-						$('#memo').val(item.tax);
+						$('#memo').val(item.memo);
 						$('#mid').val(mid);
 						$('#saveMerchantDiv').modal('show');
 					}else{

@@ -589,4 +589,24 @@ class RegisterController extends BController{
         Utils::jsonOut($out);
     }
     
+    public function actionOrderDel(){
+        $roid   = Utils::getBackendParam('roid');
+        
+        $regOrderModel  = RegOrder::findByPk($roid);
+        if($regOrderModel){
+          try{
+              $regOrderModel->delete();
+              $out['resultCode']    = Constant::RESULT_CODE_SUCC;
+              $out['msg']           = Constant::RESULT_MSG_SUCC;
+          }catch (\Exception $e){
+              $out['resultCode']    = Constant::RESULT_CODE_SYSTEM_BUSY;
+              $out['msg']           = Constant::RESULT_MSG_SYSTEM_BUSY;
+          }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
+    }
+    
 }
