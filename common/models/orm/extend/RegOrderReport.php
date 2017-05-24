@@ -6,7 +6,7 @@ use yii\data\Pagination;
 class RegOrderReport extends \common\models\orm\base\RegOrderReport{
     public static function findByStimeEtimeRcidMobileImsiNeedPaginator($stime,$etime,$rcid,$mobileImsi,$page=1,$perpage=20){
     
-        $data = self::find();
+        $data = self::find()->innerJoin('regOrder','regOrder.roid = regOrderReport.roid')->innerJoin('simCard','regOrder.imsi = simCard.imsi');
         if(Utils::isValid($stime) && Utils::isValid($etime)){
             $min    = $stime.' 00:00:00';
             $max    = $etime.' 23:59:59';
@@ -14,12 +14,10 @@ class RegOrderReport extends \common\models\orm\base\RegOrderReport{
             $data->andWhere(['<=','regOrderReport.recordTime',$max]);
         }
         if(is_numeric($rcid) && $rcid > 0){
-            $data->innerJoin('regOrder','regOrder.roid = regOrderReport.roid');
             $data->andWhere(['=','regOrder.rcid',$rcid]);
         }
     
         if(Utils::isValid($mobileImsi)){
-            $data->innerJoin('simCard','regOrder.imsi = simCard.imsi');
             $data->andWhere('(regOrder.imsi = :imsi OR simCard.mobile = :imsi)',array(':imsi' => $mobileImsi));
         }
         //         $sql = $data->createCommand()->getRawSql();
