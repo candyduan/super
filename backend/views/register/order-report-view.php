@@ -1,14 +1,11 @@
-<?php
-use backend\library\widgets\WidgetsUtils;
-?>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>注册订单查询</li>
+<li class="active"><i class="fa fa-dashboard"></i>注册日志查询</li>
 </ol>
 <div class="main">
 	<!-- 搜索栏 -->
 	<div class="form-inline searchbar">	
-		  <?php echo WidgetsUtils::getSearchTime();?>
-		  <?php echo WidgetsUtils::getSearchChannel();?>
+		  <?php echo backend\library\widgets\WidgetsUtils::getSearchTime();?>
+		  <?php echo backend\library\widgets\WidgetsUtils::getSearchChannel();?>
           <div class="form-group"><input type="text" class="form-control mobile-imsi"   placeholder="手机号/imsi"></div>
           <button type="submit" class="btn btn-default searchbar_smt" id="search"> 搜索 </button>
 	</div>
@@ -32,7 +29,7 @@ $(document).ready(function(){
 });
 function setResult(page){
 	//url
-	var url ='/register/order-result';
+	var url ='/register/order-report-result';
 	//data
 	var data = 'stime='+$('.search-stime').val()+'&etime='+$('.search-etime').val()+'&rcid='+$('#channel').val()+'&mobile-imsi='+$('.mobile-imsi').val();
 	//succ

@@ -346,7 +346,7 @@
         }
     }
     function setProvince(){
-    		var province = $('#hidden_province_array').val().split(',');
+    	var province = $('#hidden_province_array').val().split(',');
         var post_url = '/sdk-pay/get-province';
         var post_data = {
         };

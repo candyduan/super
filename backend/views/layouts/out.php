@@ -35,7 +35,7 @@
     <script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
 </head>
 
-<body
+<body>
 
 <div id="wrapper">
 
