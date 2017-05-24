@@ -195,13 +195,15 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         return $name;
     }
     
-    public static function signUsed($sign){
+    public static function signUsed($sign,$rcid){
+        $flag   = false;
         $model  = self::findBySign($sign);
         if($model){
-            return true;
-        }else{
-            return false;
+            if($model->rcid != $rcid){
+                $flag    = true;
+            }
         }
+        return $flag;
     }
     
     public static function getDevTypeName($devType){

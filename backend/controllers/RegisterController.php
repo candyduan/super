@@ -228,7 +228,7 @@ class RegisterController extends BController{
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
     	}else{
-    	    $signCheck = RegChannel::signUsed($sign);
+    	    $signCheck = RegChannel::signUsed($sign,$rcid);
     	    if($signCheck){
     	        $out['resultCode'] = Constant::RESULT_CODE_PARAMS_ERR;
     	        $out['msg']        = '该代码标识已被使用，请重新命名';
@@ -636,8 +636,6 @@ class RegisterController extends BController{
         
             $list   = [];
             foreach ($models as $model){
-                
-                $item   = RegOrder::getItemArrByModel($model);
                 $item   = RegOrderReport::getItemArrByModel($model);
                 array_push($list, $item);
             }
