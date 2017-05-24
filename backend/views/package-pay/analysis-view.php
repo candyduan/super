@@ -12,18 +12,18 @@
         <div class="row">
             <form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
-                    <input type="text"  class="form-control searchbar_partner"  name ='Partner'  placeholder="Partner"/>
-                    <input type="hidden"  class="form-control searchbar_partner" id='partner'>
-                   	<select id="app">
+                    <input type="text"  class="form-control searchbar_partner"  placeholder="Partner"/>
+                    <input type="hidden"  class="form-control searchbar_partner" name ='partner' id='partner'>
+                   	<select name="app" id="app">
                    		<option value="">选择应用</option>
                    	</select>
-                   	<select id="campaign">
+                   	<select name="campaign" id="campaign">
                    		<option value="">选择活动</option>
                    	</select>
-                   	<select id="media">
+                   	<select name="media" id="media">
                    		<option value="">选择渠道</option>
                    	</select>
-                   	<select id="sdk">
+                   	<select name="sdk" id="sdk">
                    		<option value="">选择sdk</option>
                    	</select>
                     <input  type="text"   class="form-control date-picker" id="startDate" name="startDate" data-date-format="yyyy-mm-dd">
@@ -36,9 +36,9 @@
                     <input type="checkbox" id="checkMedia" name="checkMedia"/>Media
                     <input type="checkbox" id="checkSdk" name="checkSdk"/>SDK
                     <input type="checkbox" id="checkProvince" name="checkProvince"/>省
-                    <input type="checkbox" id="checkProvince" name="checkProvince"/>运营商
+                    <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商
                     
-
+					<i class="glyphicon pointer green glyphicon-glass" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
                     <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0" id="inputProvider"></i>
                     <i class="glyphicon pointer green glyphicon-globe" onclick="setProvince()" title="省份"></i>
                     <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="查询"></i>
@@ -52,14 +52,18 @@
                 <table id="tbl" class="table table-striped table-bordered gclass_table text-center">
                     <thead>
                     <tr>
-                        <td id="cloumn_date">日期</td>
-                        <td>活动包</td>
+                   		<td id="cloumn_date">日期</td>
+                   		<td>内容商</td>
+                   		<td>应用</td>
+                   		<td>活动</td>
+                        <td>渠道</td>
+                        <td>渠道标识</td>
                        	<td id="cloumn_sdk">SDK</td>
+                       	<td id="cloumn_province">省份</td>
                         <td id="cloumn_provider">运营商</td>
-                        <td id="cloumn_province">省份</td>
-                        <td>付费用户数</td>
+                        
                         <td>请求总金额</td>
-                        <td>支付成功金额</td>
+                        <td>信息费</td>
                         <td>收入</td>
                         <td>转化率</td>
                     </tr>
@@ -71,6 +75,25 @@
     </div>
     <!-- panel footer -->
     <div class="panel-footer">
+    </div>
+</div>
+
+<div id="modalSdkTime" class="modal fade">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>SDK时间设置:</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="div_sdktime" style="height:500px">
+            </div>
+            <input type="hidden" id='hidden_setime_array' value = "" />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btn_set_all">全选</button>
+                <button type="submit" class="btn btn-success" id="btn_submit_sdktime">提交</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -179,7 +202,6 @@
         param += '&provider=' + $("#inputProvider").attr("value");
         param += '&province=' + $('#hidden_province_array').val().split(',');
         param += '&time=' + $('#hidden_setime_array').val().split(',');
-
 // 		var targetsCount  = 4;// TODO 动态变化列数
 // 		if($("#checkSDK").prop('checked')){
 // 			targetsCount += 1;
@@ -226,7 +248,7 @@
             },
             "serverSide": true,
             "ajax": {
-                "url":'/sdk-pay/ajax-index?' + $.param($('#formSearch').serializeArray()) + param,
+                "url":'/package-pay/analysis-ajax-index?' + $.param($('#formSearch').serializeArray()) + param,
                 "dataSrc": function(json) {
                     return json.tableData;
                 }
@@ -372,6 +394,22 @@
             saveProvince();
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    function setDateType(that){
+    	if($(that).hasClass('glyphicon-glass')){
+            $(that).removeClass('glyphicon-glass').addClass('glyphicon-music');
+            $(that).attr('title',"月份");
+            $(that).attr('value',"4");
+        }else if($(that).hasClass('glyphicon-music')){
+            $(that).removeClass('glyphicon-music').addClass('glyphicon-certificate');
+            $(that).attr('title',"天");
+            $(that).attr('value',"1");
+        }else if($(that).hasClass('glyphicon-certificate')){
+            $(that).removeClass('glyphicon-certificate').addClass('glyphicon-glass');
+            $(that).attr('title',"时段");
+            $(that).attr('value',"3");
+        }
     }
    
     function searchData(){
