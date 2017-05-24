@@ -33,6 +33,13 @@ class OutUser extends \common\models\orm\base\OutUser  implements IdentityInterf
         $model  = self::find()->where(['or', ['username' => $name],['email'=> $name]])->andwhere(['status'=>1])->one();
         return $model;
     }
+    public static function findByOuid($ouid = null){
+        if(!is_numeric($ouid)){
+            return null;
+        }
+       $model = self::find()->where(['ouid' => $ouid])->one();
+       return $model; 
+    }
 
     public static function findIdentity($id){
         return self::getPrimaryKey();

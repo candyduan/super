@@ -93,5 +93,10 @@ class Campaign extends \common\models\orm\base\Campaign {
     		}
     		return  $campaignArr;
     }
-
+    public static function fetchAllBelongSdkArr(){
+        $data= self::find()->select(['campaign.id','campaign.name'])->join('inner join', 'partner', 'campaign.partner = partner.id')
+        ->where('partner.belong = 1')
+        ->all();
+        return $data;
+    }
 }
