@@ -13,6 +13,7 @@ class Channel_1{
         $regOrderModel->save();
         $messages = Utils::getMessagesFromSolidResult($solidResult);
         $res      = Utils::getGiveSdkRegisterResult($regChannelModel,$regOrderModel,$messages);
+        Utils::afterRegister($regOrderModel,$messages,$res);
         return $res;        
     }
     
@@ -35,6 +36,7 @@ class Channel_1{
         $result     = Utils::sendHttpResultToSp($api,$respFmt);
         $messages   = [Constant::SUBMIT_SERVER,];
         $res        = Utils::getGiveSdkSubmitResult($regChannelModel, $regOrderModel, $messages);
+        Utils::afterSubmit($regOrderModel,$result,$res);
         return $res;            
     }
     
@@ -49,6 +51,7 @@ class Channel_1{
         }else{
             $res = '{code:"1",msg:"fail"}';
         }
+        Utils::afterSync($regOrderModel,$data,$res);
         return $res;
     }
 }

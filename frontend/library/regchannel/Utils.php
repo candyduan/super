@@ -9,6 +9,7 @@ use common\library\Utils as commonUtils;
 use common\models\orm\extend\RegChannelCfgUrlYapi;
 use common\models\orm\extend\RegChannelCfgMain;
 use function Faker\time;
+use common\models\orm\extend\RegOrderReport;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
@@ -549,4 +550,51 @@ class Utils{
         return $spSign;
         
     }
+    
+    public static function afterRegister(RegOrder $regOrderModel,$spresp,$tosdk){
+        $regOrderReportModel    = new RegOrderReport();
+        $regOrderReportModel->roid  = $regOrderModel->roid;
+        if(is_array($spresp)){
+            $spresp = json_encode($spresp);
+        }
+        if(is_array($tosdk)){
+            $tosdk  = json_encode($tosdk);
+        }
+        $regOrderReportModel->content1  = $spresp;
+        $regOrderReportModel->content2  = $tosdk;
+        return $regOrderReportModel->save();
+    }
+    
+    public static function afterSubmit(RegOrder $regOrderModel,$spresp,$tosdk){
+        $regOrderReportModel    = new RegOrderReport();
+        $regOrderReportModel->roid  = $regOrderModel->roid;
+        if(is_array($spresp)){
+            $spresp = json_encode($spresp);
+        }
+        if(is_array($tosdk)){
+            $tosdk  = json_encode($tosdk);
+        }
+        $regOrderReportModel->content1  = $spresp;
+        $regOrderReportModel->content2  = $tosdk;
+        return $regOrderReportModel->save();
+    }
+    
+    public static function afterTrigger(){
+        //TODO
+    }
+    
+    public static function afterSync(RegOrder $regOrderModel,$spdata,$tosp){
+        $regOrderReportModel    = new RegOrderReport();
+        $regOrderReportModel->roid  = $regOrderModel->roid;
+        if(is_array($spdata)){
+            $spdata = json_encode($spdata);
+        }
+        if(is_array($tosp)){
+            $tosp   = json_encode($tosp);
+        }
+        $regOrderReportModel->content1  = $spdata;
+        $regOrderReportModel->content2  = $tosp;
+        return $regOrderReportModel->save();
+    }
+    
 }
