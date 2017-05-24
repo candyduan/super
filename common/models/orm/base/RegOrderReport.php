@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $rorid
  * @property integer $roid
+ * @property integer $type
  * @property string $content1
  * @property string $content2
  * @property string $recordTime
@@ -32,7 +33,7 @@ class RegOrderReport extends \yii\db\ActiveRecord
     {
         return [
             [['roid'], 'required'],
-            [['roid', 'status'], 'integer'],
+            [['roid', 'type', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['content1', 'content2'], 'string', 'max' => 10240],
         ];
@@ -46,6 +47,7 @@ class RegOrderReport extends \yii\db\ActiveRecord
         return [
             'rorid' => 'Rorid',
             'roid' => 'Roid',
+            'type' => 'Type',
             'content1' => 'Content1',
             'content2' => 'Content2',
             'recordTime' => 'Record Time',

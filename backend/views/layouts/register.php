@@ -86,7 +86,8 @@
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#opertools"><i class="fa fa-fw fa-dashboard"></i>运营工具<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="opertools" class="collapse">
-                            <li><a class="sidebar-item" href="/register/order-view">注册记录查询</a></li>
+                            <li><a class="sidebar-item" href="/register/order-view">注册订单查询</a></li>
+                            <li><a class="sidebar-item" href="/register/order-report-view">注册日志查询</a></li>
                         </ul>
                     </li>
                                                             

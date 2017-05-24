@@ -31,7 +31,7 @@ class Channel_1{
                 'smsContent'    => $message,
             ),
         );
-        
+        \common\library\Utils::log(json_encode($api));
         $respFmt    = 'text';
         $result     = Utils::sendHttpResultToSp($api,$respFmt);
         $messages   = [Constant::SUBMIT_SERVER,];

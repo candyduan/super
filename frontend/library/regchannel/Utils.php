@@ -553,6 +553,7 @@ class Utils{
     public static function afterRegister(RegOrder $regOrderModel,$spresp,$tosdk){
         $regOrderReportModel    = new RegOrderReport();
         $regOrderReportModel->roid  = $regOrderModel->roid;
+        $regOrderReportModel->type  = 1;
         if(is_array($spresp)){
             $spresp = json_encode($spresp);
         }
@@ -567,6 +568,7 @@ class Utils{
     public static function afterSubmit(RegOrder $regOrderModel,$spresp,$tosdk){
         $regOrderReportModel    = new RegOrderReport();
         $regOrderReportModel->roid  = $regOrderModel->roid;
+        $regOrderReportModel->type  = 2;
         if(is_array($spresp)){
             $spresp = json_encode($spresp);
         }
@@ -585,6 +587,7 @@ class Utils{
     public static function afterSync(RegOrder $regOrderModel,$spdata,$tosp){
         $regOrderReportModel    = new RegOrderReport();
         $regOrderReportModel->roid  = $regOrderModel->roid;
+        $regOrderReportModel->type  = 4;
         if(is_array($spdata)){
             $spdata = json_encode($spdata);
         }

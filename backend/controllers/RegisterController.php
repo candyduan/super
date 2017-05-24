@@ -609,4 +609,13 @@ class RegisterController extends BController{
         Utils::jsonOut($out);
     }
     
+    
+    public function actionOrderReportView(){
+        return $this->render('order-report-view');
+    }
+    
+    public function actionOrderReportResult(){
+        
+    }
+    
 }
