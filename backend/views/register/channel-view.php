@@ -48,11 +48,11 @@ function setResult(page){
         //url
         var url = '/register/channel-result';
         //data
-        var mid  = Utils.getQueryString('mid');
-        if(mid != ''){
-			$('#merchant').val(mid);
+        var mid = $('#merchant').val();
+        if(mid == ''){
+        	mid  = Utils.getQueryString('mid');
         }
-      	var merchantId  = $('#merchant').val();
+      	var merchantId  = mid;
      	var channelId	= $('#channel').val();
      	var status		= $("#status").val();
         var data = 'merchantId='+merchantId+'&channelId='+channelId+'&page='+page+'&status='+status;
