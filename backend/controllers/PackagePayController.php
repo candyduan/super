@@ -377,22 +377,22 @@ class PackagePayController extends BController
      			array_push($item, date('Y-m-d',strtotime($value['date'])));
      		}
      		if($checkCp){
-     			array_push($item, Partner::getNameById($value['partner']));
+     			array_push($item, '【'.$value['partner'].'】' . Partner::getNameById($value['partner']));
      		}else{
      			array_push($item, '-');
      		}
      		if($checkApp){
-     			array_push($item, App::getNameById($value['app']));
+     			array_push($item, '【'.$value['app'].'】' .  App::getNameById($value['app']));
      		}else{
      			array_push($item, '-');
      		}
      		if($checkCmp){
-     			array_push($item, Campaign::getNameById($value['campaign']));
+     			array_push($item, '【'.$value['campaign'].'】' .  Campaign::getNameById($value['campaign']));
      		}else{
      			array_push($item, '-');
      		}
      		if($checkM){
-     			array_push($item, Partner::getNameById($value['media']));
+     			array_push($item, '【'.$value['media'].'】' . Partner::getNameById($value['media']));
      		}else{
      			array_push($item, '-');
      		}
