@@ -45,4 +45,30 @@ class SdkPackagePayDay extends \common\models\orm\base\SdkPackagePayDay{
         ->where($where)->groupBy($group)->count();
         return $count;
     }
+    
+    public static function getAnalysisData($select,$where,$group, $start = null,$length = null){
+	    	$query = new Query();
+	    	$query	->select($select)
+		    	->from('sdkPackagePayDay')
+		    	->join('left join', 'campaignPackage','sdkPackagePayDay.cpid = campaignPackage.id')
+		    	->where($where)
+		    	->groupBy($group);
+	    	if($start){
+	    		$query->offset($start);
+	    	}
+	    	if($length){
+	    		$query->limit($length);
+	    	}
+	    	$command = $query->orderBy('sdkPackagePayDay.date desc')->createCommand();
+	    	$data = $command->queryAll();
+	    	return $data;
+    }
+    
+    public static function getAnalysisCount($where,$group){
+    	$count = self::find()
+	    	->from('sdkPackagePayDay')
+	    	->join('left join', 'campaignPackage','sdkPackagePayDay.cpid = campaignPackage.id')
+	    ->where($where)->groupBy($group)->count();
+    	return $count;
+    }
 }

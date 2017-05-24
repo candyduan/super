@@ -26,6 +26,7 @@ use common\models\orm\extend\SdkPackagePayDay;
 use common\models\orm\extend\PlayerCount;
 use common\models\orm\extend\PayAction;
 use common\library\Constant;
+use common\models\orm\extend\Province;
 /**
  * SdkPay controller
  */
@@ -338,5 +339,222 @@ class PackagePayController extends BController
      	}
      	Utils::jsonOut($out);
      }
-      
+     
+     public function actionAnalysisAjaxIndex(){
+     	$start = Utils::getBackendParam('start',0);
+     	$length = Utils::getBackendParam('length',100);
+     	
+     	$partner = Utils::getBackendParam('partner');
+     	$app = Utils::getBackendParam('app');
+     	$campaign = Utils::getBackendParam('campaign');
+     	$media = Utils::getBackendParam('media');
+     	$sdk = Utils::getBackendParam('sdk');
+     	
+     	$stime = Utils::getBackendParam('startDate','');
+     	$etime = Utils::getBackendParam('endDate','');
+     	
+     	$checkCp = Utils::getBackendParam('checkPartner') ? true : false;
+     	$checkApp = Utils::getBackendParam('checkApp') ? true : false;
+     	$checkCmp = Utils::getBackendParam('checkCampaginPackage') ? true : false;
+     	$checkM = Utils::getBackendParam('checkMedia') ? true : false;
+     	$checkSdk = Utils::getBackendParam('checkSdk') ? true : false;
+     	$checkProvince = Utils::getBackendParam('checkProvince') ? true : false;
+     	$checkProvider = Utils::getBackendParam('checkProvider') ? true : false;
+     	
+     	$dateType = Utils::getBackendParam('dateType',3);
+     	
+     	$condition = self::_getAnalysisCondition($checkCp,$checkApp,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,$partner,$app,$campaign,$media,$sdk,$stime,$etime,$dateType);
+     	$data = SdkPackagePayDay::getAnalysisData($condition['select'],$condition['where'],$condition['group'], $start,$length);
+     	$count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
+     	$tabledata = [];
+     	foreach($data as $value){
+     		$item = array();
+     		if( 3 == $dateType){//时段不显示时间
+     			array_push($item, '-');
+     		}else if(4 == $dateType){//月份显示月
+     			array_push($item, date('Y-m',strtotime($value['date'])));
+     		}else{
+     			array_push($item, date('Y-m-d',strtotime($value['date'])));
+     		}
+     		if($checkCp){
+     			array_push($item, Partner::getNameById($value['partner']));
+     		}else{
+     			array_push($item, '-');
+     		}
+     		if($checkApp){
+     			array_push($item, App::getNameById($value['app']));
+     		}else{
+     			array_push($item, '-');
+     		}
+     		if($checkCmp){
+     			array_push($item, Campaign::getNameById($value['campaign']));
+     		}else{
+     			array_push($item, '-');
+     		}
+     		if($checkM){
+     			array_push($item, Partner::getNameById($value['media']));
+     		}else{
+     			array_push($item, '-');
+     		}
+     		//渠道标识mediaSign
+     		array_push($item, $value['mediaSign']);
+     		if($checkSdk){
+     			array_push($item, Sdk::getNameById($value['sdk']));
+     		}else{
+     			array_push($item, '-');
+     		}
+     		if($checkProvince){
+     			array_push($item, Province::getNameById($value['province']));
+     		}else{
+     			array_push($item, '-');
+     		}
+     		if($checkProvider){
+     			array_push($item, $value['provider'] == 1 ? '移动' : ($value['provider'] == 2 ? '联通' : '电信')) ;
+     		}else{
+     			array_push($item, '-');
+     		}
+     		
+     	
+     		array_push($item, $value['allPay']);
+     		array_push($item, $value['successPay']);
+     		array_push($item, $value['income']);
+     		if(0 == $value['allPay']){
+     			array_push($item, '-');
+     		}else{
+     			array_push($item, number_format($value['successPay']/$value['allPay']*100,2).'%');
+     		}
+     		$tabledata[] = $item;
+     	}
+     	
+     	$data = [
+     			'searchData' => [
+     			],
+     			'recordsTotal' => $count,
+     			'recordsFiltered' => $count,
+     			'tableData' => $tabledata,
+     	];
+     	Utils::jsonOut($data);
+     }
+     
+     private function _getAnalysisCondition($checkCP,$checkAPP,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,$partner,$app,$campaign,$media,$sdk,$stime,$etime,$dateType){
+     	$select = [
+     			'campaignPackage.partner as partner',
+     			'campaignPackage.app as app',
+     			'campaignPackage.campaign as campaign',
+     			'campaignPackage.media as media',
+     			'campaignPackage.mediaSign as mediaSign',
+     			'sdkPackagePayDay.sdid as sdk',
+     			'sdkPackagePayDay.prid as province',
+     			'sdkPackagePayDay.provider as provider',
+     			'sdkPackagePayDay.date as date',
+     			'sum(sdkPackagePayDay.allPay) as allPay',
+     			'sum(sdkPackagePayDay.successPay) as successPay',
+     			'sum(sdkPackagePayDay.income) as income',
+     	];
+     	
+     	$where[] = 'and';
+     	$where[] = [
+     			'=',
+     			'sdkPackagePayDay.status',
+     			1
+     	];
+     	if(Utils::isValid($partner)){
+     		$where[] = [
+     				'=',
+     				'campaignPackage.partner',
+     				$partner
+     		];
+     	}
+     	if($app > 0){
+     		$where[] = [
+     				'=',
+     				'campaignPackage.app',
+     				$app
+     		];
+     	}
+     	if($campaign > 0){
+     		$where[] = [
+     				'=',
+     				'campaignPackage.campaign',
+     				$campaign
+     		];
+     	}
+     	if($media > 0){
+     		$where[] = [
+     				'=',
+     				'campaignPackage.media',
+     				$media
+     		];
+     	}
+     	if($sdk > 0){
+     		$where[] = [
+     				'=',
+     				'sdkPackagePayDay.sdid',
+     				$sdk
+     		];
+     	}
+     	
+     	switch ($dateType){
+     		case 1:// 天
+     		case 3://时段
+     			if(Utils::isDate($stime)){
+     				$where[] = [
+     						'>=',
+     						'sdkPackagePayDay.date',
+     						$stime.' 00:00:00'
+     				];
+     			}
+     			if(Utils::isDate($etime)){
+     				$where[] = [
+     						'<=',
+     						'sdkPackagePayDay.date',
+     						$etime.' 23:59:59'
+     				];
+     			}
+     			break;
+     		case 4://月份
+     			$sdate = date('Y-m-01',strtotime($stime));
+     			$edate = date('Y-m-01',strtotime($etime));
+     			$edate = date("Y-m-d",strtotime("$edate 1 month -1 day"));
+     	
+     			$where[] = [
+     					'>=',
+     					'sdkPackagePayDay.date',
+     					$sdate.' 00:00:00'
+     			];
+     			$where[] = [
+     					'<=',
+     					'sdkPackagePayDay.date',
+     					$edate.' 23:59:59'
+     			];
+     			break;
+     	}
+     	
+     	$group = [];
+     	if(1 == $dateType){//按天统计
+     		$group[] = 'sdkPackagePayDay.date';
+     	}
+     	if($checkCP){
+     		$group[] = 'campaignPackage.partner';
+     	}
+     	if($checkAPP){
+     		$group[] = 'campaignPackage.app';
+     	}
+     	if($checkCmp){
+     		$group[] = 'campaignPackage.id';
+     	}
+     	if($checkM){
+     		$group[] = 'campaignPackage.media';
+     	}
+     	if($checkProvince){
+     		$group[] = 'sdkPackagePayDay.prid';
+     	}
+     	if($checkProvider){
+     		$group[] = 'sdkPackagePayDay.provider';
+     	}
+     	$condition['select'] = $select;
+     	$condition['where'] = $where;
+     	$condition['group'] = $group;
+     	return $condition;
+     }
 }
