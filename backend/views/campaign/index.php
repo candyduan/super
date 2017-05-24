@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/ace/assets/css/bootstrap-datepicker3.min.css" />
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
@@ -30,7 +31,8 @@
                         <td>AG-优</td>
                         <td>CP-R</td>
                         <td>CP-优</td>
-                        <td>M分成</td>
+                        <td>M-R</td>
+                        <td>M-优</td>
                         <td>sign</td>
                         <td>管理</td>
                     </tr>
@@ -64,25 +66,33 @@
                         <span class="input-group-addon">应用:</span>
                         <input type="text" id="campaign_app" readonly placeholder="应用" class="form-control"/>
                         <span class="input-group-addon">cp优化比例:</span>
-                        <input type="text" id="campaign_cutrate" readonly placeholder="cp优化比例" class="form-control"/>
+                        <input type="text" id="campaign_cutrate"  placeholder="填写1-100的整数" class="form-control"/>
+                        <span class="input-group-addon">%</span>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">状态:</span>
                         <input type="text"  id="campaign_status" readonly placeholder="状态" class="form-control"/>
                         <span class="input-group-addon">cp优化开始:</span>
-                        <input type="text" id="campaign_cutday" readonly placeholder="cp优化开始" class="form-control"/>
+                        <input type="text" id="campaign_cutday"  placeholder="cp优化开始"  class="form-control date-picker" data-date-format="yyyy-mm-dd"/>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">活动名:</span>
                         <input type="text"  id="campaign_name" readonly placeholder="活动名" class="form-control" />
                         <span class="input-group-addon">渠道分成比例:</span>
-                        <input type="text" id="campaign_mrate" placeholder="渠道分成比例" readonly class="form-control" />
+                        <input type="text" id="campaign_mrate" readonly placeholder="渠道分成比例"  class="form-control" />
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">活动类型:</span>
                         <input type="text"  id="campaign_type" readonly placeholder="活动类型" class="form-control"/>
+                        <span class="input-group-addon">渠道优化比例:</span>
+                        <input type="text" id="campaign_mcutrate"  placeholder="填写1-100的整数" class="form-control"/>
+                        <span class="input-group-addon">%</span>
+                    </div><br /><br />d
+                    <div class="input-group">
                         <span class="input-group-addon">级别:</span>
                         <input type="text" id="campaign_grade" readonly placeholder="级别" class="form-control"/>
+                        <span class="input-group-addon">渠道优化开始:</span>
+                        <input type="text" id="campaign_mcutday"  placeholder="渠道优化开始"   class="form-control date-picker" data-date-format="yyyy-mm-dd"/>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">时间范围:</span>
@@ -257,6 +267,8 @@
 </div>
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
+<script src="/ace/assets/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/common/bootstrap3-typeahead.min.js"></script>
 <script src="/js/sdk/util.js"></script>
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">
@@ -264,10 +276,16 @@
         _initDataTable();
     });
 
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
+
     $('#btn_search').on('click', function(event){
         event.preventDefault();
         _initDataTable();
     });
+
     function _initDataTable() {
         $("#tbl").dataTable().fnDestroy();
         $('#tbl').DataTable({
@@ -336,24 +354,27 @@
     }
 
     $('#btn_submit_campaign').on('click',function(event){
-        $('#btn_submit_campaign').prop('disabled',true);
         event.preventDefault();
-        var data = {
-            'caid' : $('#hidden_caid').val(),
-            'paymode' : $('#campaign_paymode').val()
-        }
-        var method = 'get';
-        var url = '/campaign/modify-paymode';
-        var success_function = function(result){
-            if(parseInt(result) > 0){
-                alert(MESSAGE_MODIFY_SUCCESS);
-            }else{
-                alert(MESSAGE_ADD_ERROR);
+        var error_num = validInput();
+        if(error_num == 0) {
+            $('#btn_submit_campaign').prop('disabled',true);
+            var data = {
+                'caid': $('#hidden_caid').val(),
+                'paymode': $('#campaign_paymode').val()
             }
-            $('#modalCampaign').modal('hide');
-        }
+            var method = 'get';
+            var url = '/campaign/modify-paymode';
+            var success_function = function (result) {
+                if (parseInt(result) > 0) {
+                    alert(MESSAGE_MODIFY_SUCCESS);
+                } else {
+                    alert(MESSAGE_ADD_ERROR);
+                }
+                $('#modalCampaign').modal('hide');
+            }
 
-        callAjaxWithFunction(url,data,success_function,method);
+            callAjaxWithFunction(url, data, success_function, method);
+        }
     });
 
     function getSdks(caid){
@@ -578,39 +599,17 @@
         }
     }
 
+    function validInput(){
+        var  error_num = 0;
+        var  cutrate = $('#campaign_cutrate').val();
+        var  cutday = $('#campaign_cutday').val();
+        var  mcutrate = $('#campaign_mcutrate').val();
+        var  mcutday = $('#campaign_mcutday').val();
+        if(!isPositiveInt(cutrate) || !isPositiveInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
+            alert(MESSAGE_PERCENT_ERROR);
+            error_num += 1;
+        }
 
-    /*
-     $('#sdk_icon').on('click',function(){
-     if($(this).hasClass('green')) {
-     var sdk = $('#sdk_select').val();
-     var appid = $('#sdk_appid').val();
-     var post_url = '/campaign/get-all-sdks';
-     var post_data = {
-     'caid' : $('#hidden_caid').val()
-     };
-     var method = 'get';
-     var success_function = function(result){
-
-     }
-     });*/
-
-    /*
-     $('#sdk_appid').on('keyup',function(){
-     if($(this).val() !== ''){
-     $('#sdk_icon').removeClass('grey').addClass('green');
-     }else{
-     $('#sdk_icon').removeClass('green').addClass('grey');
-     }
-     })
-
-     function feeKeyUp() {
-     $('input[name="fee"]').on('keyup', function () {
-     if($(this).val() !== ''){
-     $(this).parent().next().children('i').removeClass('grey').addClass('green');
-     }else{
-     alert('grey');
-     }
-     })
-     }
-     */
+        return error_num;
+    }
 </script>
