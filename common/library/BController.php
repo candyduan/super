@@ -3,7 +3,7 @@ namespace common\library;
 use common\models\orm\extend\Partner;
 use yii\web\Controller;
 use common\models\orm\extend\AdminAuthor;
-use common\models\orm\extend\Outuser;
+use common\models\orm\extend\OutUser;
 use common\models\orm\extend\AgencyAccount;
 use common\library\Constant;
 class BController extends Controller{
