@@ -36,13 +36,13 @@ class BController extends Controller{
                         $outflag = 1;
                     }else if($partner->utype == Constant::PARTNER_ONLY){
                         \yii::$app->params['partnerDataLayout'] = 'out';
-                        if($actionName == 'gain'){
+                        if($actionName == 'gain' || $actionName == 'ajax-gain'){
                             $outflag = 1;
                         } else {
                             $outflag = 2;
                         }
                     } else if($partner == Constant::PARTNER_CP){
-                        if($actionName == 'cps-gain'){
+                        if($actionName == 'cps-gain' || $actionName == 'ajax-cps-gain'){
                             $outflag = 1;
                         } else {
                             $outflag = 2;
