@@ -49,6 +49,8 @@ class Constant{
      * 域名
      */
     const DOMAIN_REGISTER   = 'paytest1.maimob.net';
+    //const DOMAIN_REGISTER_SYNC   = 'http://data.maimob.cn';//真服
+    const DOMAIN_REGISTER_SYNC   = 'http://supertest.maimob.net:8082';//测服
     
     
     /*

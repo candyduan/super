@@ -19,6 +19,10 @@ use common\models\orm\extend\SdkVersion;
 use common\models\orm\extend\RegOrder;
 use common\models\orm\extend\RegChannelVerifyRule;
 use common\models\orm\extend\RegOrderReport;
+use common\models\orm\extend\App;
+use common\models\orm\extend\Campaign;
+use common\models\orm\extend\CampaignPackage;
+use common\models\orm\extend\RegSwitch;
 class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
@@ -589,7 +593,7 @@ class RegisterController extends BController{
         }
         Utils::jsonOut($out);
     }
-    
+
     public function actionOrderDel(){
         $roid   = Utils::getBackendParam('roid');
         
@@ -650,6 +654,173 @@ class RegisterController extends BController{
             $out['msg']         = $msg;
         }
         Utils::jsonOut($out);
+    }
+        
+    public function actionCampaignView(){
+    	return $this->render('campaign-view');
+    }
+    
+    public function actionCampaignResult(){
+    	$app 		= Utils::getBackendParam('app');
+    	$page       = Utils::getBackendParam('page',1);
+    	$res		= Campaign::findAllNeedPaginator($app,$page);
+    	$pages  	= $res['pages'];
+    	$models 	= $res['models'];
+    	if($pages >= $page && $pages > 0){
+    		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		$out['pages']       = $pages;
+    		$out['page']        = $page;
+     		$list   = array();
+    		foreach ($models as $model){
+    			$list[]   = Campaign::getItemArrByModel($model);
+    		}
+    		$out['list']    = $list;
+    	}else{
+    		if($page > 1){
+    			$msg    = Constant::RESULT_MSG_NOMORE;
+    		}else{
+    			$msg    = Constant::RESULT_MSG_NONE;
+    		}
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = $msg;
+    	}
+    	Utils::jsonOut($out);
+    }
+    
+    public function actionGetAppByPartnerResult(){
+    	$res 		= array();
+    	$partner  	= Utils::getBackendParam('partner');
+    	if(!is_numeric($partner) || !$partner){
+    		$res['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$res['msg']  		= Constant::RESULT_MSG_PARAMS_ERR;
+    		Utils::jsonOut($res);exit();
+    	}
+    	$list		= App::findByPartner($partner);
+    	if(!$list){
+    		$res['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$res['msg']  		= Constant::RESULT_MSG_NONE;
+    		Utils::jsonOut($res);exit();
+    	}
+    	$res['resultCode']  = Constant::RESULT_CODE_SUCC;
+    	$res['msg']         = Constant::RESULT_MSG_SUCC;
+    	$res['list']        = $list;
+    	Utils::jsonOut($res);
+    }
+    
+    public function actionCampaignPackageView(){
+    	return $this->render('campaign-package-view');
+    }
+    
+    public function actionCampaignPackageResult(){
+    	$campaignId	= Utils::getBackendParam('campaignId');
+    	if(!is_numeric($campaignId) || !$campaignId){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		Utils::jsonOut($out);exit();
+    	}
+    	$page       = Utils::getBackendParam('page',1);
+    	$res		= CampaignPackage::findAllNeedPaginator($campaignId,$page);
+    	$pages  	= $res['pages'];
+    	$models 	= $res['models'];
+    	if($pages >= $page && $pages > 0){
+    		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		$out['pages']       = $pages;
+    		$out['page']        = $page;
+    		$list   = array();
+    		foreach ($models as $model){
+    			$list[]   = CampaignPackage::getItemArrByModel($model);
+    		}
+    		$out['list']    = $list;
+    	}else{
+    		if($page > 1){
+    			$msg    = Constant::RESULT_MSG_NOMORE;
+    		}else{
+    			$msg    = Constant::RESULT_MSG_NONE;
+    		}
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = $msg;
+    	}
+    	Utils::jsonOut($out);
+    }
+    
+    public function actionSwitchResult(){
+    	$campaignPackageId	= Utils::getBackendParam('campaignPackageId');
+    	if(!is_numeric($campaignPackageId) || !$campaignPackageId){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		Utils::jsonOut($out);exit();
+    	}
+    	$regSwitchModel		= RegSwitch::findByCampaignPackage($campaignPackageId);
+     	if(!$regSwitchModel){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_NONE;
+    	}else{
+     		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		$out['item']        = $regSwitchModel->toArray();
+    	}
+    	Utils::jsonOut($out);
+    }
+    
+    public function actionSaveSwitchResult(){
+    	$campaignPackageId	= Utils::getBackendParam('campaignPackageId');
+    	$stime				= Utils::getBackendParam('stime');
+    	$etime				= Utils::getBackendParam('etime');
+    	$status				= Utils::getBackendParam('status');
+    	if(!is_numeric($campaignPackageId) || !$campaignPackageId){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		Utils::jsonOut($out);exit();
+    	}
+    	$regSwitchModel		= RegSwitch::findByCampaignPackage($campaignPackageId);
+    	if(!$regSwitchModel){
+    		$regSwitchModel	= new RegSwitch();
+    		$regSwitchModel->campaignPackageId	= $campaignPackageId;
+    		$regSwitchModel->stime				= $stime;
+    		$regSwitchModel->etime				= $etime;
+    		$regSwitchModel->status				= $status;
+    		$regSwitchModel->recordTime			= Utils::getNowTime();
+    		$res = $regSwitchModel->save();
+    		if(!$res){
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    			Utils::jsonOut($out);exit();
+    		}
+    	}else{
+     		$regSwitchModel->stime				= $stime;
+    		$regSwitchModel->etime				= $etime;
+    		$regSwitchModel->status				= $status;
+     		$res = $regSwitchModel->save();
+    		if(!$res){
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    			Utils::jsonOut($out);exit();
+    		}
+    	}
+    	$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    	$out['msg']         = Constant::RESULT_MSG_SUCC;
+    	Utils::jsonOut($out);
+    }
+    
+    public function actionCampaignPackageBarResult(){
+    	$campaignId	= Utils::getBackendParam('campaignId');
+    	if(!is_numeric($campaignId) || !$campaignId){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+    		Utils::jsonOut($out);exit();
+    	}
+    	$regCampaign		= Campaign::findPartnerAppbyCampaign($campaignId);
+    	if(!$regCampaign){
+    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    		$out['msg']         = Constant::RESULT_MSG_NONE;
+    	}else{
+    		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		$out['item']        = $regCampaign;
+    	}
+    	Utils::jsonOut($out);
     }
     
 }
