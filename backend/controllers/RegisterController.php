@@ -621,7 +621,7 @@ class RegisterController extends BController{
         $rcid           = Utils::getBackendParam('rcid');
         $mobileImsi     = Utils::getBackendParam('mobile-imsi');
         $page           = Utils::getBackendParam('page',1);
-        $res    = RegOrder::findByStimeEtimeRcidMobileImsiNeedPaginator($stime,$etime,$rcid,$mobileImsi,$page);
+        
         $res    = RegOrderReport::findByStimeEtimeRcidMobileImsiNeedPaginator($stime,$etime,$rcid,$mobileImsi,$page);
         
         $pages  = $res['pages'];
