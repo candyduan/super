@@ -8,7 +8,6 @@ use common\models\orm\extend\RegChannelVerifyRule;
 use common\library\Utils as commonUtils;
 use common\models\orm\extend\RegChannelCfgUrlYapi;
 use common\models\orm\extend\RegChannelCfgMain;
-use function Faker\time;
 use common\models\orm\extend\RegOrderReport;
 
 class Utils{
@@ -137,11 +136,11 @@ class Utils{
     public static function httpRequest(array $api){
         $result = '';
         $url 		= $api['url'];
-        $data 		= $api['data'];
-        $get 		= $api['get'];
-        $header 	= $api['header'];
-        $timeout = $api['timeout'];
-        $closeSSL 	= $api['closeSSL'];
+        $data 		= @$api['data'];
+        $get 		= @$api['get'];
+        $header 	= @$api['header'];
+        $timeout    = @$api['timeout'];
+        $closeSSL 	= @$api['closeSSL'];
         try {
             if($get){
                 if (is_array($data) && !empty($data)){
