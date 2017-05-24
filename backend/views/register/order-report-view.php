@@ -35,28 +35,12 @@ function setResult(page){
 	//succ
 	var succ	= function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
-			resultHtml = '<tr><td>ID</td><td>IMSI</td><td>手机号</td><td>通道</td><td>透传</td><td>注册时间</td><td>状态</td><td>操作</td></tr>';
+			resultHtml = '<tr><td>IMSI</td><td>手机号</td><td>通道</td><td>通道类型</td><td>日志类型</td><td>recv</td><td>send</td><td>时间</td></tr>';
 
             $.each(resultJson.list,function(key,val){
-                resultHtml = resultHtml + '<tr><td>'+val.roid+'</td><td>'+val.imsi+'</td><td>'+val.mobile+'</td><td>'+val.channelName+'</td><td>'+val.spSign+'</td><td>'+val.recordTime+'</td><td>'+val.status+'</td><td><button data-roid="'+val.roid+'" class="btn btn-default btn-del">删除</button></td></tr>';
+                resultHtml = resultHtml + '<tr><td>'+val.imsi+'</td><td>'+val.mobile+'</td><td>'+val.channel+'</td><td>'+val.devType+'</td><td>'+val.type+'</td><td>'+val.recv+'</td><td>'+val.send+'</td><td>'+val.time+'</td></tr>';
             });
             $('#data_list').html(resultHtml);
-            $('.btn-del').click(function(){
-                var r   = confirm("您确定要删除该订单吗？");
-                if(!r){
-                    return;
-                }
-                var delurl = '/register/order-del';
-                var deldata='roid='+$(this).attr('data-roid');
-                var delsucc= function(delJson){
-					if(parseInt(delJson.resultCode) == 1){
-						setResult(page);
-					}else{
-						alert(delJson.msg);
-					}
-                };
-                Utils.ajax(delurl,deldata,delsucc);
-            });
             Utils.setPagination(page,resultJson.pages);
             $(".pager_number").click(function(){
                 setResult($(this).attr('page'));

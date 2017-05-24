@@ -18,6 +18,7 @@ use common\models\orm\extend\SdkVersion;
 
 use common\models\orm\extend\RegOrder;
 use common\models\orm\extend\RegChannelVerifyRule;
+use common\models\orm\extend\RegOrderReport;
 class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
@@ -615,7 +616,42 @@ class RegisterController extends BController{
     }
     
     public function actionOrderReportResult(){
+        $stime 			= Utils::getBackendParam('stime');
+        $etime 			= Utils::getBackendParam('etime');
+        $rcid           = Utils::getBackendParam('rcid');
+        $mobileImsi     = Utils::getBackendParam('mobile-imsi');
+        $page           = Utils::getBackendParam('page',1);
+        $res    = RegOrder::findByStimeEtimeRcidMobileImsiNeedPaginator($stime,$etime,$rcid,$mobileImsi,$page);
+        $res    = RegOrderReport::findByStimeEtimeRcidMobileImsiNeedPaginator($stime,$etime,$rcid,$mobileImsi,$page);
         
+        $pages  = $res['pages'];
+        $count  = $res['count'];
+        $models = $res['models'];
+        
+        if($pages > 0 && $pages >= $page){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $out['pages']       = $pages;
+            $out['page']        = $page;
+        
+            $list   = [];
+            foreach ($models as $model){
+                
+                $item   = RegOrder::getItemArrByModel($model);
+                $item   = RegOrderReport::getItemArrByModel($model);
+                array_push($list, $item);
+            }
+            $out['list']    = $list;
+        }else{
+            if($page > 1){
+                $msg    = Constant::RESULT_MSG_NOMORE;
+            }else{
+                $msg    = Constant::RESULT_MSG_NONE;
+            }
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = $msg;
+        }
+        Utils::jsonOut($out);
     }
     
 }

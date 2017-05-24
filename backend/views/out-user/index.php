@@ -8,13 +8,22 @@
     <div class="panel-body main">
         <div class="row">
             <form action="" method="get" id="formSearch" class="form-inline">
-                <div class="col-sm-10 col-md-10 col-lg-10">&nbsp;&nbsp;
-                    <button class="btn btn-primary" id="btn_add">
+                <div class="col-sm-10 col-md-10 col-lg-10">
+                    <input type="text" class="form-control" id="searchStr" name="searchStr" placeholder="内容商用户名邮箱:模糊"/>
+                    <select class="form-control" id="utype" name="utype">
+                        <option value="0">合作模式</option>
+                        <option value="1">内容供应</option>
+                        <option value="2">内容推广</option>
+                        <option value="3">综合</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit" id="btn_search">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span>搜索</span>
+                    </button>
+                    <button class="btn btn-success" id="btn_add">
                         <span class="glyphicon glyphicon-plus"></span>
                         <span>新增客户账户</span>
-                    </button>
-                </div>
-                <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+                    </button>&nbsp;
                 </div>
             </form>
         </div><hr>
@@ -84,6 +93,11 @@
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        _initDataTable();
+    });
+
+    $('#btn_search').on('click', function(event){
+        event.preventDefault();
         _initDataTable();
     });
 

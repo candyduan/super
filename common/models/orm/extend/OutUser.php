@@ -4,7 +4,7 @@ use yii\web\IdentityInterface;
 class OutUser extends \common\models\orm\base\OutUser  implements IdentityInterface {
 
     public static function getIndexData($where, $start,$length){
-        $data= self::find()
+        $data= self::find()->join('inner join', 'partner', 'outUser.partner = partner.id')
             ->where($where)
             ->offset($start)
             ->limit($length)
@@ -13,7 +13,7 @@ class OutUser extends \common\models\orm\base\OutUser  implements IdentityInterf
     }
 
     public static function getIndexCount($where){
-        $count = self::find()
+        $count = self::find()->join('inner join', 'partner', 'outUser.partner = partner.id')
             ->where($where)->count();
         return $count;
     }

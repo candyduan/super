@@ -3,6 +3,7 @@ namespace common\models\orm\extend;
 use yii\data\Pagination;
 use common\library\Utils;
 use common\models\orm\extend\Admin;
+use common\library\Constant;
 
 class RegChannel extends \common\models\orm\base\RegChannel{
     public static function findByPk($id){
@@ -201,5 +202,23 @@ class RegChannel extends \common\models\orm\base\RegChannel{
         }else{
             return false;
         }
+    }
+    
+    public static function getDevTypeName($devType){
+        switch ($devType){
+            case Constant::CHANNEL_SINGLE:
+                $name   = 'single';
+                break;
+            case Constant::CHANNEL_DOUBLE:
+                $name   = 'double';
+                break;
+            case Constant::CHANNEL_SMSP:
+                $name   = 'sms+';
+                break;
+            case Constant::CHANNEL_URLP:
+                $name   = 'url+';
+                break;
+        }
+        return $name;
     }
 }
