@@ -56,7 +56,6 @@ class RegOrderReport extends \common\models\orm\base\RegOrderReport{
         return $name;
     }
     public static function getItemArrByModel(RegOrderReport $reportModel){
-        //			<tr><td>ID</td><td>IMSI</td><td>手机号</td><td>通道</td><td>通道类型</td><td>日志类型</td><td>recv</td><td>send</td><td>时间</td></tr>
         $channel    = '';
         $devType    = '';
         $mobile     = '';
@@ -87,5 +86,6 @@ class RegOrderReport extends \common\models\orm\base\RegOrderReport{
             'mobile'    => $mobile,
             'imsi'      => $imsi,
         );
+        return $item;
     }
 }
