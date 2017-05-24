@@ -54,7 +54,7 @@ class RegisterController extends FController{
             }catch (\Exception $e){
                 $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
                 $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
-                //$out['msg']         = $e->getMessage();
+                $out['msg']         = $e->getMessage();
             }
         }else{
             $out['resultCode']  = Constant::RESULT_CODE_NONE;
