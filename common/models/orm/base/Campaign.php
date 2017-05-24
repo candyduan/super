@@ -39,6 +39,8 @@ use Yii;
  * @property integer $grade
  * @property integer $belong
  * @property integer $payMode
+ * @property integer $mcutDay
+ * @property double $mcutRate
  */
 class Campaign extends \yii\db\ActiveRecord
 {
@@ -56,8 +58,8 @@ class Campaign extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['partner', 'app', 'beginDate', 'endDate', 'status', 'inPrice', 'outPrice', 'type', 'deleted', 'holder', 'isTest', 'recordTime', 'updateTime', 'cutDay', 'agent', 'agentCutDay', 'grade', 'belong', 'payMode'], 'integer'],
-            [['rate', 'mrate', 'cutRate', 'agentCutRate', 'agentRate'], 'number'],
+            [['partner', 'app', 'beginDate', 'endDate', 'status', 'inPrice', 'outPrice', 'type', 'deleted', 'holder', 'isTest', 'recordTime', 'updateTime', 'cutDay', 'agent', 'agentCutDay', 'grade', 'belong', 'payMode', 'mcutDay'], 'integer'],
+            [['rate', 'mrate', 'cutRate', 'agentCutRate', 'agentRate', 'mcutRate'], 'number'],
             [['memo', 'desc'], 'string'],
             [['name'], 'string', 'max' => 150],
             [['sign'], 'string', 'max' => 128],
@@ -106,6 +108,8 @@ class Campaign extends \yii\db\ActiveRecord
             'grade' => 'Grade',
             'belong' => 'Belong',
             'payMode' => 'Pay Mode',
+            'mcutDay' => 'Mcut Day',
+            'mcutRate' => 'Mcut Rate',
         ];
     }
 }

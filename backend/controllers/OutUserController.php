@@ -47,9 +47,11 @@ class OutUserController extends BController
     }
 
     public function actionAjaxIndex(){
+
         $start = intval(Utils::getBParam('start', 0));
         $length = intval(Utils::getBParam('length', 100));
-        $condition = self::_getCondition();
+        $searchStr = trim(Utils::getBParam('searchStr', ''));
+        $condition = self::_getCondition($searchStr);
         $data = OutUser::getIndexData($condition, $start,$length);
         $count = OutUser::getIndexCount($condition);
         $tabledata = [];
@@ -202,12 +204,26 @@ class OutUserController extends BController
         return $resultState;
     }
 
-    private function _getCondition(){
-        $condition = [
-            '=',
-            'status',
-            1
-        ];
+    private function _getCondition($searchStr){
+        $condition[] = 'or';
+        if($searchStr !== '') {
+            $condition[] = [
+                'like',
+                'outUser.email',
+                $searchStr
+            ];
+            $condition[] = [
+                'like',
+                'outUser.username',
+                $searchStr
+            ];
+            $condition[] = [
+                'like',
+                'partner.name',
+                $searchStr
+            ];
+
+        }
 
         return $condition;
     }
