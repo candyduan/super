@@ -74,6 +74,10 @@
 				</div>
 			</div>
 			
+			<div class="input-group" style="padding-top:10px;" id="syncDataDiv">
+				<span class="input-group-addon" style="width:120px">同步地址</span>
+				<span  style="padding-left:10px;margin-top:10px" id="syncData"></span>
+			</div>
  						
 		</div>
 					
@@ -122,7 +126,7 @@
 				<input type="text" class="form-control mutexName"   id="priorityRate" placeholder="百分比值，默认100">
 			</div>
 			
-			<div id="channelVerfyRuleType1"  style="border:1px solid rgb(210, 192, 192);margin-top:10px;">
+			<div id="channelVerfyRuleType1"  style="border:1px solid rgb(210, 192, 192);margin-top:10px;display:none">
 				
 				<div class="input-group" style="padding-top:10px;">
 					<span class="input-group-addon" style="width:120px">屏蔽类型</span>
@@ -210,9 +214,12 @@ $(document).ready(function(){
 					$('#keys3Type'+obj.type).val(obj.keys3);
 					$('#statusType'+obj.type).val(obj.status);
 				});  
+ 				$("#syncDataDiv").show();
+ 				$("#syncData").html("<?php echo common\library\Constant::DOMAIN_REGISTER_SYNC?>/register/sync?sign="+resJson.item.sign);
 			}		
 		};
 		Utils.ajax(url,data,succFunc);
+		
 	}
 	$('#devType').change(function(){
 		var devTypeVal	= $(this).children('option:selected').val(); 

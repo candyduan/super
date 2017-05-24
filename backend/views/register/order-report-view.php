@@ -35,10 +35,10 @@ function setResult(page){
 	//succ
 	var succ	= function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
-			resultHtml = '<tr><td>IMSI</td><td>手机号</td><td>通道</td><td>通道类型</td><td>日志类型</td><td>recv</td><td>send</td><td>时间</td></tr>';
+			resultHtml = '<tr><td>订单ID</td><td>IMSI</td><td>手机号</td><td>通道</td><td>通道类型</td><td>日志类型</td><td>recv</td><td>send</td><td>时间</td></tr>';
 
             $.each(resultJson.list,function(key,val){
-                resultHtml = resultHtml + '<tr><td>'+val.imsi+'</td><td>'+val.mobile+'</td><td>'+val.channel+'</td><td>'+val.devType+'</td><td>'+val.type+'</td><td>'+val.recv+'</td><td>'+val.send+'</td><td>'+val.time+'</td></tr>';
+                resultHtml = resultHtml + '<tr><td>'+val.roid+'</td><td>'+val.imsi+'</td><td>'+val.mobile+'</td><td>'+val.channel+'</td><td>'+val.devType+'</td><td>'+val.type+'</td><td>'+val.recv+'</td><td>'+val.send+'</td><td>'+val.time+'</td></tr>';
             });
             $('#data_list').html(resultHtml);
             Utils.setPagination(page,resultJson.pages);

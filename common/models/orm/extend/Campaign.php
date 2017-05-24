@@ -3,6 +3,7 @@ namespace common\models\orm\extend;
 
 use common\library\Utils;
 use yii\db\Query;
+use yii\data\Pagination;
 
 class Campaign extends \common\models\orm\base\Campaign {
 
@@ -72,6 +73,26 @@ class Campaign extends \common\models\orm\base\Campaign {
         return isset($data['id']) ? $data['id'] : '';
 
     }
+    
+    public static function getCampaignByCampaignPackageId($campaignPackageId){
+    	$query = new Query();
+        $query	->select(['campaign.id as campaignId', 'campaign.name as campaignName','campaignPackage.mediaSign as mediaSign'])
+            ->from('campaignPackage')
+            ->join('left join', 'campaign', 'campaign.id = campaignPackage.campaign')
+            ->where(['campaignPackage.id' => $campaignPackageId]);
+        $command 	= $query->createCommand();
+        $data 		= $command->queryOne();
+     	return $data;
+    }
+    
+    public static function getTypeHeaderCampaignList(){
+    	$res			= array();
+    	$campaignList 	= self::find()->all();
+    	foreach ($campaignList as $campaign){
+    		$res[]	= array('id'=>$campaign['id'],'name'=>"【".$campaign['id']."】".$campaign['name']);
+    	}
+    	return $res;
+    }
 
     public static function findAllByPartnerAndApp($partner='',$app=''){
     		$condition = [];
@@ -99,4 +120,54 @@ class Campaign extends \common\models\orm\base\Campaign {
         ->all();
         return $data;
     }
+
+    
+    public static function findAllNeedPaginator($app,$page=1,$perpage = 20){
+    	$condition	= array();
+     	if(is_numeric($app) && $app){
+    		$condition['app'] =  $app;
+    	}
+    	$data = self::find()->where($condition);
+    	$totalCount = $data->count();
+    	$pages      = ceil($totalCount/$perpage);
+    	$pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);
+    	$models = $data->offset($pagination->offset)->limit($pagination->limit)->all();
+    	return [
+    		'models'    => $models,
+    		'pages'     => $pages,
+    		'count'     => $totalCount,
+    	];
+    }
+    
+    public static function getAllCampaignStatus(){
+    	return array(
+    		3 => '测试中',
+    		2 => '已结束',
+    		1 => '进行中',
+    		0 => '未审核'
+    	);
+    }
+    
+    public static function getItemArrByModel(Campaign $campaignModel){
+    	$campaignStatus	= self::getAllCampaignStatus();
+     	$item   = array(
+     		'campaignId'  	=> $campaignModel->id,
+    		'campaignName'  => "[{$campaignModel->id}]".$campaignModel->name,
+    		'campaignSign'  => $campaignModel->sign,
+    		'statusName'    => $campaignStatus[$campaignModel->status]
+    	);
+    	return $item;
+    }
+    
+    public static function findPartnerAppbyCampaign($campaignId){
+    	$query = new Query();
+    	$query	->select(['partner.name as pname','campaign.name as cname','app.name as aname','partner.id as pid','campaign.id as cid','app.id as aid'])
+    	->from('campaign')
+    	->join('left join', 'app', 'campaign.app = app.id')
+    	->join('left join', 'partner', 'partner.id = app.partner')
+    	->where(['campaign.id' => $campaignId]);
+    	$data = $query->createCommand()->queryOne();
+     	return $data;
+    }
+    
 }
