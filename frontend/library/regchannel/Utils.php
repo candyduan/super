@@ -138,6 +138,9 @@ class Utils{
         $url 		= $api['url'];
         $data 		= @$api['data'];
         $get 		= @$api['get'];
+        if(is_null($get)){
+            $get    = true;
+        }
         $header 	= @$api['header'];
         $timeout    = @$api['timeout'];
         $closeSSL 	= @$api['closeSSL'];

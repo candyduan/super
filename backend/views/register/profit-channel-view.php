@@ -48,10 +48,10 @@ function setResult(){
         var succ        = function(resultJson){
         	if(parseInt(resultJson.resultCode) == 1){
             	checkTitle = '';
-                if(checkMerchant!=0 || merchant){
+                if(checkMerchant!=0 || merchant!=0){
  					checkTitle+= '<td>通道商</td>';
                 }
-                if(checkChannel!=0 || channel){
+                if(checkChannel!=0 || channel!=0){
 					checkTitle+= '<td>通道</td>';
                 }
                 var htmlTitle = '<tr><td>日期</td>'+checkTitle+'<td>请求次数</td><td>成功次数</td><td>收入(元)</td><td>转化率</td></tr>';
@@ -65,11 +65,11 @@ function setResult(){
 	                	itemNum++;
 	                	resultHtml 	= resultHtml + '<tr><td>'+val.day+'</td>';
 	                	htmlCount 	= '<tr style="color: orange"><td>总计</td>';
-	                    if(checkMerchant!=0 || merchant){
+	                    if(checkMerchant!=0 || merchant!=0){
 	                    	resultHtml 	= resultHtml + '<td>'+val.merchantName+'</td>';
 	                    	htmlCount	= htmlCount + '<td>-</td>';
 	                    }
-	                    if(checkChannel!=0 || channel){
+	                    if(checkChannel!=0 || channel!=0){
 	                        resultHtml = resultHtml + '<td>'+val.channelName+'</td>';
 	                        htmlCount	= htmlCount + '<td>-</td>';
 	                    }
