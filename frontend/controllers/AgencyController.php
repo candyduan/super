@@ -52,7 +52,7 @@ class AgencyController extends FController{
             
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
                 $out['msg']         = Constant::RESULT_MSG_SUCC;
-                $out['asid']        = $stackModel->asid;
+                //$out['asid']        = $stackModel->asid;
 
                 $itemVerify   = array(
                     'type'          => 3,
@@ -144,6 +144,8 @@ class AgencyController extends FController{
                     
                 }else{
                     Utils::log('验证码匹配错误');
+                    $out['resultCode']  = Constant::RESULT_CODE_NONE;
+                    $out['msg']         = '验证码匹配错误';
                 }
             }else{
                 $out['resultCode']  = Constant::RESULT_CODE_NONE;

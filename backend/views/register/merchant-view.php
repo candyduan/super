@@ -1,9 +1,14 @@
+<?php use common\models\orm\extend\Merchant; ?>
 <ol class="breadcrumb">
 <li class="active"><i class="fa fa-dashboard"></i>通道商列表</li>
 </ol>
 <!-- 搜索 -->
 <div class="form-inline searchbar">
-  <div class="form-group"><input type="text" class="form-control searchbar_merchant"  placeholder="通道商"></div>
+  <div class="form-group">
+  	<input type="text" class="form-control searchbar_merchant" id="selectMerchantObj" placeholder="通道商" value=''>
+  	<input type="hidden" id="merchantId" value="">
+  
+  </div>
   <button type="submit" class="btn btn-default searchbar_smt" id="search"> 搜索 </button>
   <button type="submit" class="btn btn-default addMerchant_btn" id="addMerchantBtn"> 添加 </button>
 </div>
@@ -65,7 +70,7 @@
 							<input type="text" class="form-control mutexName" placeholder="" aria-describedby="basic-addon1" id="memo" value="">
 						</div>
 						
-						<input type='hidden' value='' id='merchantId'>
+						<input type='hidden' value='' id='mid'>
 						<button type="submit" class="btn btn-primary searchbar_smt" id="saveMerchant"> 保存 </button>
 					</div>
 				</p>
@@ -78,31 +83,49 @@
 $(document).ready(function(){
     setResult(1); 
     $('#search').click(function(){
+        if($('#selectMerchantObj').val() == ''){
+			$('#merchantId').val('');
+        }
         setResult(1);
+	});
 });
+
+var merchantJsonList =<?=json_encode(Merchant::findAllToArray())?>;
+var objMap = {};
+$("#selectMerchantObj").typeahead({
+    source: function (query, process) {
+        var names = [];
+        $.each(merchantJsonList, function (index, ele) {
+            objMap[ele.name] = ele.id;
+            names.push(ele.name);
+        });
+        process(names);//调用处理函数，格式化
+    },
+    items: 8,//最多显示个数
+    afterSelect: function (item) {
+        $('#merchantId').val(objMap[item]);
+    }
 });
 
 function setResult(page){
     //url
     var url = '/register/merchant-result';
     //data
-  	var merchantId  = $('.searchbar_merchant').val();
+  	var merchantId  = $('#merchantId').val();
     var data = 'merchantId='+merchantId+'&page='+page;
     //succ
     var succ        = function(resultJson){
             if(parseInt(resultJson.resultCode) == 1){
-                    var resultHtml = '<tr><td>ID</td><td>通道商名称</td><td>负责人</td><td>结算周期</td><td>税率</td><td>管理</td>/tr>';
+                    var resultHtml = '<tr><td>ID</td><td>通道商名称</td><td>负责人</td><td>结算周期</td><td>税率（%）</td><td>管理</td>/tr>';
                     $.each(resultJson.list,function(key,val){
                             resultHtml = resultHtml + '<tr><td>'+val.id+'</td><td>'+val.name+'</td><td>'+val.holder+'</td><td>按'+val.payCircle+'结算</td><td>'+val.tax+'</td><td><a class="btn btn-default " href="/register/channel-view?mid='+val.id+'"> 查看 </a><button type="submit" class="btn btn-default editMerchant_btn" mid="'+val.id+'"> 编辑 </button></td>';
                     });
                     $('#data_list').html(resultHtml);
-
-            if(resultJson.pages > 1){
-                Utils.setPagination(page,resultJson.pages);
-                $(".pager_number").click(function(){
-                    setResult($(this).attr('page'));
-                });
-            }
+	                Utils.setPagination(page,resultJson.pages);
+	                $(".pager_number").click(function(){
+	                    setResult($(this).attr('page'));
+	                });
+	            
 
 			$('.editMerchant_btn').click(function(){
 				
@@ -126,8 +149,8 @@ function setResult(page){
 						payCircle = item.payCircle == '周' ? 1 : 2;
 						$('#payCircle').val(payCircle);
 						$('#tax').val(item.tax);
-						$('#memo').val(item.tax);
-						$('#merchantId').val(mid);
+						$('#memo').val(item.memo);
+						$('#mid').val(mid);
 						$('#saveMerchantDiv').modal('show');
 					}else{
 						Utils.getErrModal('err',resultJson.msg);
@@ -151,6 +174,7 @@ $('#addMerchantBtn').click(function(){
 	$('#payCircle').val('1');
 	$('#tax').val('');
 	$('#memo').val('');
+	$('#mid').val('');
 	var url = '/register/holder-result';
 	var data = '';
 	var succ = function(resultJson){
@@ -175,12 +199,13 @@ $('#saveMerchant').click(function(){
 	var payCircle = $('#payCircle').val();
 	var tax = parseFloat($('#tax').val());
 	var memo = $('#memo').val();
+	var mid = $('#mid').val();
 	if(merchantName == ''){
 		return;
 	}
 	
 	var url = '/register/merchant-set-save';
-	var data = 'name='+merchantName+'&addr='+merchantAddr+'&holder='+merchantHolder+'&payCircle='+payCircle+'&tax='+tax+'&memo='+memo; 
+	var data = 'name='+merchantName+'&addr='+merchantAddr+'&holder='+merchantHolder+'&payCircle='+payCircle+'&tax='+tax+'&memo='+memo+'&mid='+mid; 
 	var succ = function(resultJson){
 		if(resultJson.resultCode == 1){
 			$('#saveMerchantDiv').modal('hide');

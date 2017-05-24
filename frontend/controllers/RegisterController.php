@@ -53,7 +53,7 @@ class RegisterController extends FController{
                 }
             }catch (\Exception $e){
                 $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
-                //$out['msg']         = '系统繁忙';
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
                 $out['msg']         = $e->getMessage();
             }
         }else{
@@ -92,10 +92,10 @@ class RegisterController extends FController{
             $res = \frontend\library\regchannel\Utils::gotoTrigger($regChannelModel,$regOrderModel);
             if($res){
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
-                $out['msg']         = 'success';
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
             }else{
                 $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
-                $out['msg']         = '请求失败，请稍后重试！';
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
             }
         }else{
             $out['resultCode']  = Constant::RESULT_CODE_NONE;

@@ -20,7 +20,7 @@ class SdkPayDay extends \common\models\orm\base\SdkPayDay {
             'sumallPay' => 0,
             'sumsuccessPay' => 0
         ];
-        $data = self::find()->select(['allPay','successPay'])/*->select(['SUM(allPay) as sumallpay', 'SUM(successPay) as sumsuccesspay'])*/
+        $data = self::find()->select(['allPay','successPay'])
             ->where($condition)
             ->all();
         foreach($data as $value){
@@ -30,27 +30,31 @@ class SdkPayDay extends \common\models\orm\base\SdkPayDay {
          return $return_data;
     }
     
-    public static function getIndexData($where, $start,$length){
+    public static function getIndexData($select,$where,$group, $start = null,$length = null){
         $query = new Query();
-        $query	->select([
-            'sdk.name as sdk',
-            'province.name as provinceName',
-            'sdkPayDay.*']
-            )
+        $query	->select($select)
             ->from('sdkPayDay')
             ->join('inner join', 'sdk',
                 'sdkPayDay.sdid = sdk.sdid')
             ->join('inner join', 'province',
                 'sdkPayDay.prid = province.id')
             ->where($where)
-            ->offset($start)
-            ->limit($length);
-        $command = $query->orderBy('sdkPayDay.spdid desc')->createCommand();
+            ->groupBy($group);
+        if($start){
+            $query->offset($start);
+        }
+        if($length){
+            $query->limit($length);
+        }
+        $command = $query->orderBy('sdkPayDay.date desc')->createCommand();
         $data = $command->queryAll();
         return $data;
     }
-    public static function getIndexCount($where){
-        $count = self::find()->where($where)->count();
+    public static function getIndexCount($where,$group){
+        $count = self::find()->join('inner join', 'sdk',
+                'sdkPayDay.sdid = sdk.sdid')
+            ->join('inner join', 'province',
+                'sdkPayDay.prid = province.id')->where($where)->groupBy($group)->count();
         return $count;
     }
 }

@@ -2,7 +2,7 @@
 .btn{maring-left:10px;margin-right:10px;margin-top:0px;}
 </style>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>中介列表</li>
+<li class="active"><i class="fa fa-dashboard"></i>中介商列表</li>
 </ol>
 <div class="main">
     <!-- 数据栏 -->
@@ -41,7 +41,7 @@ function setResult(page){
 								status = '禁用';
 								btnOps = '启用';
                             }
-                                resultHtml = resultHtml + '<tr><td>'+val.aaid+'</td><td>'+val.name+'</td><td>'+val.account+'</td><td>'+val.verifyPort+'</td><td>'+val.verifyKeywords+'</td><td>'+val.blockPort+'</td><td>'+val.blockKeywords+'</td><td>'+val.smtKeywords+'</td><td>'+status+'</td><td><a class="btn btn-xs btn-default btn-view" href="/agency/account-detail-view?aaid='+val.aaid+'" target="_blank">查看</a><a class="btn btn-xs btn-default btn-change" href="/agency/account-set-view?aaid='+val.aaid+'" target="_blank">修改</a><a class="btn btn-xs btn-default btn-ops" data-aaid="'+val.aaid+'">'+btnOps+'</a></td></tr>';
+                                resultHtml = resultHtml + '<tr><td>'+val.aaid+'</td><td>'+val.name+'</td><td>'+val.account+'</td><td>'+val.verifyPort+'</td><td>'+val.verifyKeywords+'</td><td>'+val.blockPort+'</td><td>'+val.blockKeywords+'</td><td>'+val.smtKeywords+'</td><td>'+status+'</td><td><a class="btn btn-default btn-view" href="/agency/account-detail-view?aaid='+val.aaid+'" target="_blank">查看</a><a class="btn btn-default btn-change" href="/agency/account-set-view?aaid='+val.aaid+'" target="_blank">修改</a><a class="btn btn-default btn-ops" data-aaid="'+val.aaid+'">'+btnOps+'</a></td></tr>';
                         });
                         $('#data_list').html(resultHtml);
 

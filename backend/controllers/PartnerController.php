@@ -59,7 +59,7 @@ class PartnerController extends BController
         $tabledata = [];
         foreach($data as $value){
             $utypes = [
-                0 => '合作模式',
+                0 => '未确定',
                 1 => '内容供应',
                 2 => '内容推广',
                 3 => '综合'

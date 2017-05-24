@@ -8,6 +8,7 @@ use common\models\orm\extend\RegChannelVerifyRule;
 use common\library\Utils as commonUtils;
 use common\models\orm\extend\RegChannelCfgUrlYapi;
 use common\models\orm\extend\RegChannelCfgMain;
+use common\models\orm\extend\RegOrderReport;
 
 class Utils{
     public static function createOrder($rcid,$imsi){
@@ -135,11 +136,14 @@ class Utils{
     public static function httpRequest(array $api){
         $result = '';
         $url 		= $api['url'];
-        $data 		= $api['data'];
-        $get 		= $api['get'];
-        $header 	= $api['header'];
-        $timeout = $api['timeout'];
-        $closeSSL 	= $api['closeSSL'];
+        $data 		= @$api['data'];
+        $get 		= @$api['get'];
+        if(is_null($get)){
+            $get    = true;
+        }
+        $header 	= @$api['header'];
+        $timeout    = @$api['timeout'];
+        $closeSSL 	= @$api['closeSSL'];
         try {
             if($get){
                 if (is_array($data) && !empty($data)){
@@ -246,7 +250,7 @@ class Utils{
             $res[] = array(
                 'type'          => Constant::TASK_SEND_MESSAGE,
                 'roid'          => $regOrderModel->roid,
-                'subId'         => 99,
+                'subId'         => microtime(),
                 'port'          => $messages[1],
                 'cmd'           => $messages[2],
                 'sourcePort'    => '',
@@ -282,6 +286,29 @@ class Utils{
                             'delayed'       => 0,
                             'blockPeriod'   => 3600,
                 );
+                
+                
+                
+                $verifyRuleModel   = RegChannelVerifyRule::findByRcidType($regChannelModel->rcid,0);
+                if($verifyRuleModel){
+                    $item   = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => 2,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $verifyRuleModel->keys1,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $item);
+                }
                 break;
             case Constant::CHANNEL_DOUBLE:
                 $res = array(
@@ -318,6 +345,27 @@ class Utils{
                         'blockPeriod'   => 3600,
                     ),
                 );
+                
+                $verifyRuleModel   = RegChannelVerifyRule::findByRcidType($regChannelModel->rcid,0);
+                if($verifyRuleModel){
+                    $item   = array(
+                        'type'          => Constant::TASK_BLOCK_MESSAGE,
+                        'roid'          => $regOrderModel->roid,
+                        'subId'         => 3,
+                        'port'          => $verifyRuleModel->port,
+                        'cmd'           => $verifyRuleModel->keys1,
+                        'sourcePort'    => '',
+                        'sendType'      => $verifyRuleModel->type,
+                        'httpMethod'    => '',
+                        'httpData'      => '',
+                        'httpParams'    => array(),
+                        'httpHeader'    => array(),
+                        'followed'      => 1,
+                        'delayed'       => 1,
+                        'blockPeriod'   => 3600,
+                    );
+                    array_push($res, $item);
+                }
                 break;                
             case Constant::CHANNEL_SMSP:
                 $res    = array();
@@ -498,4 +546,60 @@ class Utils{
         }
         return $result;
     }
+    
+    public static function getSpSign(RegOrder $regOrderModel,$len=10){
+        $spSign = str_pad($regOrderModel->roid, $len,'0',STR_PAD_LEFT);
+        return $spSign;
+        
+    }
+    
+    public static function afterRegister(RegOrder $regOrderModel,$spresp,$tosdk){
+        $regOrderReportModel    = new RegOrderReport();
+        $regOrderReportModel->roid  = $regOrderModel->roid;
+        $regOrderReportModel->type  = 1;
+        if(is_array($spresp)){
+            $spresp = json_encode($spresp);
+        }
+        if(is_array($tosdk)){
+            $tosdk  = json_encode($tosdk);
+        }
+        $regOrderReportModel->content1  = $spresp;
+        $regOrderReportModel->content2  = $tosdk;
+        return $regOrderReportModel->save();
+    }
+    
+    public static function afterSubmit(RegOrder $regOrderModel,$spresp,$tosdk){
+        $regOrderReportModel    = new RegOrderReport();
+        $regOrderReportModel->roid  = $regOrderModel->roid;
+        $regOrderReportModel->type  = 2;
+        if(is_array($spresp)){
+            $spresp = json_encode($spresp);
+        }
+        if(is_array($tosdk)){
+            $tosdk  = json_encode($tosdk);
+        }
+        $regOrderReportModel->content1  = $spresp;
+        $regOrderReportModel->content2  = $tosdk;
+        return $regOrderReportModel->save();
+    }
+    
+    public static function afterTrigger(){
+        //TODO
+    }
+    
+    public static function afterSync(RegOrder $regOrderModel,$spdata,$tosp){
+        $regOrderReportModel    = new RegOrderReport();
+        $regOrderReportModel->roid  = $regOrderModel->roid;
+        $regOrderReportModel->type  = 4;
+        if(is_array($spdata)){
+            $spdata = json_encode($spdata);
+        }
+        if(is_array($tosp)){
+            $tosp   = json_encode($tosp);
+        }
+        $regOrderReportModel->content1  = $spdata;
+        $regOrderReportModel->content2  = $tosp;
+        return $regOrderReportModel->save();
+    }
+    
 }

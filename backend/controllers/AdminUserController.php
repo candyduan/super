@@ -19,7 +19,7 @@ use common\library\BController;
  */
 class AdminUserController extends BController
 {
-    public $layout = "sdk";
+    public $layout = "system";
     public function behaviors()
     {
         return [
@@ -57,11 +57,18 @@ class AdminUserController extends BController
                 $operation = '';
             }else{
                 $powers = AdminAuthor::getPowersByAuid($value['id']);
-                $powerNames = self::_getPowerNames();
+                $allbackend = ['sdk/' => '融合sdk后台','register/' =>'主动上行后台','agency/' => '注册中介后台'];
+                $powerNamesStr = '';
+                foreach($powers as $k => $v){
+                    if(isset($allbackend[$v])){
+                        $powerNamesStr .= $allbackend[$v] .'<br/>';
+                    }
+                }
+             /*   $powerNames = self::_getPowerNames();
                 $powerNamesStr = '';
                 foreach($powers as $v){
                     $powerNamesStr .= isset($powerNames[$v]) ?  $powerNames[$v] . MyHtml::br() : '';
-                }
+                }*/
                 $operation = MyHtml::aElement('javascript:void(0)', 'modifyPowers',$value['id'],'修改权限') . MyHtml::br();
                 $operation .=  MyHtml::aElement('javascript:void(0)', 'deleteAdminUser',$value['id'],'删除用户');
             }
@@ -189,29 +196,49 @@ class AdminUserController extends BController
         $powers = self::_getPowers();
         foreach($powers as $power) {
             if (Utils::getBParam($power) == "on") {
-                $model = new AdminAuthor();
-                $model->auid = $auid;
-                $model->power = $power.'/';
-                $model->status = 1;
-                $model->save();
+                if($power == 'sdk'){
+                    $powerdetails = [
+                        'sdk',
+                        'sort',
+                        'partner',
+                        'app',
+                        'campaign',
+                        'sdk-promotion-result',
+                        'sdk-pay',
+                        'package-pay',
+                        'modify-password' ,
+                        'package',
+                        'site',
+                        'system',
+                        'partner-data'
+                    ];
+                    foreach($powerdetails as $powerdetail){
+                        self::_addPowerDetail($powerdetail, $auid);
+                    }
+                }else{
+                    self::_addPowerDetail($power, $auid);
+                }
             }
         }
+    }
+
+    private function _addPowerDetail($power, $auid){
+        $model = new AdminAuthor();
+        $model->auid = $auid;
+        $model->power = $power.'/';
+        $model->status = 1;
+        $model->save();
     }
 
     private function _getPowers(){
         return [
             'sdk',
-            'sort',
-            'app',
-            'campaign',
-            'partner',
-            'sdk-promotion-result',
-            'modify-password',
-            'sdk-pay'
+            'agency',
+            'register'
         ];
     }
 
-    private function _getPowerNames(){
+ /*   private function _getPowerNames(){
         return [
             'sdk/' => 'SDK管理',
             'sort/' => 'SDK计费排序',
@@ -220,9 +247,10 @@ class AdminUserController extends BController
             'campaign/' => 'SDK内容中心(活动列表)',
             'sdk-promotion-result/' => 'SDK成果录入',
             'sdk-pay/' => '数据中心(计费转化)',
-            'modify-password/' => '修改密码'
+            'modify-password/' => '修改密码',
+            'package/' => 'SDK内容中心(活动包列表)'
         ];
-    }
+    }*/
 
     private function _getCondition(){
         $condition = [

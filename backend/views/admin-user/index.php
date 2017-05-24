@@ -1,20 +1,17 @@
 
 <div class="panel panel-warning">
     <!-- panel heading -->
-    <div class="page-header">
-        <h1>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            后台用户管理
-        </h1>
-    </div>
+            <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i>内部账户管理</li>
+        </ol>
     <!-- panel body -->
-    <div class="panel-body">
+    <div class="panel-body main">
         <div class="row">
             <form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">&nbsp;&nbsp;
                     <button class="btn btn-primary" id="btn_add">
                         <span class="glyphicon glyphicon-plus"></span>
-                        <span>新增后台用户</span>
+                        <span>新增内部账户</span>
                     </button>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 text-right">
@@ -40,11 +37,12 @@
     <div class="panel-footer">
     </div>
 </div>
+
 <div id="modalAdminUser" class="modal fade" >
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
-                <span>新增后台用户:</span>
+                <span>新增内部账户:</span>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <form id="formAdminUser" action="#" method="post" enctype="multipart/form-data">
@@ -61,48 +59,25 @@
                         <span class="input-group-addon"> 邮箱 <span class="red">*</span>:</span>
                         <input   placeholder ='必填' type="text" name="email" id="email" class="form-control"/>
                     </div><br /><br />
-
                         <span class="input-group-addon"> 权限:</span>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="sdk" id="sdk" >SDK管理
+                                <input type="checkbox" name="sdk" id="sdk" >融合sdk后台
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="sort" id="sort">SDK计费排序
+                                <input type="checkbox" name="register" id="register">主动上行后台
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"  name="partner"  id="partner">SDK内容中心(内容商列表)
-                            </label>
-
-                            <label>
-                                <input type="checkbox"  name="app"  id="app">SDK内容中心(应用列表)
-                            </label>
-
-                            <label>
-                                <input type="checkbox"  name="campaign"  id="campaign">SDK内容中心(活动列表)
+                                <input type="checkbox"  name="agency" id="agency"> 注册中介后台
                             </label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"  name="sdk-promotion-result" id="sdk-promotion-result"> SDK成果录入
-                            </label>
-                        </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"  name="sdk-pay" id="sdk-promotion-result">数据中心(计费转化)
-                        </label>
-                    </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"  name="modify-password" id="modify-password" > 修改密码
-                            </label>
-                        </div>
-                    </div><br /><br />
+                  <br /><br />
                 <input type="hidden" value="" name="auid" id="auid"/>
+                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" id="btn_submit_adminuser">提交</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
@@ -112,7 +87,6 @@
     </div>
 </div>
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
-<script src="/ace/assets/js/jquery-2.1.4.min.js"></script>
 <script src="/js/sdk/util.js"></script>
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">

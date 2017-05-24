@@ -80,6 +80,7 @@ class CampaignController extends BController
                 sprintf('%.2f',$value['rate']) . '%',
                 sprintf('%.2f',$value['cutRate']) . ' % @' . date('Y-m-d', $value['cutDay']),
                 sprintf('%.2f',$value['mrate']) . ' %',
+                sprintf('%.2f',$value['mcutRate']) . ' % @' . date('Y-m-d', $value['mcutDay']),
                 $value['sign'],
                 MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'关联SDK参数配置'). MyHtml::br().
                 MyHtml::aElement("/package/index?caid=".$value['id'], '', '','活动包管理')
@@ -202,7 +203,7 @@ class CampaignController extends BController
                 $campaign['enddate'] = date('Y-m-d', $campaign['endDate']);
                 $campaign['grade'] = $campaign['grade'] == 0 ? '普通' : 'A级';
                 $campaign['rate'] = sprintf('%.2f', $campaign['rate']) . '%'; //cp分成比例
-                $campaign['cutrate'] = sprintf('%.2f', $campaign['cutRate']) . '%';  //cp优化比例
+                $campaign['cutrate'] = $campaign['cutRate']; //cp优化比例
                 $campaign['cutday'] = date('Y-m-d', $campaign['cutDay']); //cp优化开始
                 $campaign['mrate'] = sprintf('%.2f', $campaign['mrate']) . '%'; //渠道分成比例
             }

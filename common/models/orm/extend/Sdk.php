@@ -4,6 +4,13 @@ namespace common\models\orm\extend;
 use common\library\Utils;
 
 class Sdk extends \common\models\orm\base\Sdk{
+	
+	public static function getNameById($id){
+		$data = self::find()->select(['name'])->where(['sdid' => $id])->one();
+		return isset($data['name']) ? $data['name'] : '';
+	
+	}
+	
     public static function findByName($name){
         if(!Utils::isValid($name)){
             return NULL;
@@ -83,5 +90,19 @@ class Sdk extends \common\models\orm\base\Sdk{
     public static function getNameBySdid($sdid){
         $data = self::find()->select(['name'])->where(['sdid' => $sdid])->one();
         return isset($data['name']) ? $data['name'] :'';
+    }
+
+    public static function findAllSdk(){
+	    	$datas = self::find()->all();
+	    	$sdkArr = [];
+	    	if($datas){
+	    		foreach($datas as $data){
+	    			$sdkArr[] =[
+	    					'id' => $data->sdid,
+	    					'name' => '【' . $data->sdid . '】' . $data->name,
+	    			];
+	    		}
+	    	}
+	    	return  $sdkArr;
     }
 }

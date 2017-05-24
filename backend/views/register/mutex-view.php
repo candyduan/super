@@ -1,6 +1,6 @@
 <?php 
 	use common\models\orm\extend\RegChannel;
-	$channelArr = RegChannel::findAllToArray();
+	use common\models\orm\extend\RegChannelMutex;
 ?>
 <ol class="breadcrumb">
 <li class="active"><i class="fa fa-dashboard"></i>通道组管理</li>
@@ -9,7 +9,10 @@
 
 <!-- 搜索栏 -->
 <div class="form-inline searchbar">
-  <div class="form-group"><input type="text" class="form-control searchbar_channelMutex"  placeholder="通道组"></div>
+  <div class="form-group">
+  	<input type="text" class="form-control searchbar_channelMutex"  placeholder="通道组" value=''>
+  	<input type='hidden' value='' id='searchMutexId'> 
+  </div>
   <button type="submit" class="btn btn-default searchbar_smt" id="search"> 搜索 </button>
   <button type="submit" class="btn btn-default searchbar_smt danger"  id="addMutexBtn"> 添加 </button>
 </div>
@@ -64,7 +67,7 @@
 					<div>
 						<div class="input-group">
 							<span class="input-group-addon">通道组名称</span>
-							<input type="text" class="form-control mutexName" placeholder="Username" aria-describedby="basic-addon1" id="mutexName" value="">
+							<input type="text" class="form-control mutexName" placeholder="请输入通道组名称" aria-describedby="basic-addon1" id="mutexName" value="">
 						</div>
 						<div class="input-group">
 							<span class="input-group-addon">通道组状态</span>
@@ -114,11 +117,31 @@
 $(document).ready(function(){
         setResult(1); 
         $('#search').click(function(){
+            if($('.searchbar_channelMutex').val() == ''){
+           	 	$('#searchMutexId').val('');
+            }
             setResult(1);
     });
 });
 
-var channelJsonList =<?=json_encode($channelArr)?>;
+var merchantJsonList =<?=json_encode(RegChannelMutex::findAllToArray())?>;
+var objMap = {};
+$(".searchbar_channelMutex").typeahead({
+    source: function (query, process) {
+        var names = [];
+        $.each(merchantJsonList, function (index, ele) {
+            objMap[ele.name] = ele.id;
+            names.push(ele.name);
+        });
+        process(names);//调用处理函数，格式化
+    },
+    items: 8,//最多显示个数
+    afterSelect: function (item) {
+        $('#searchMutexId').val(objMap[item]);
+    }
+});
+
+var channelJsonList =<?=json_encode(RegChannel::findAllToArray())?>;
 var objMap = {};
 $("#selectChannelObj").typeahead({
     source: function (query, process) {
@@ -140,7 +163,7 @@ function setResult(page){
         //url
         var url = '/register/mutex-result';
         //data
-      	var channelMutexId  = $('.searchbar_channelMutex').val();
+      	var channelMutexId  = $('#searchMutexId').val();
         var data = 'channelMutexId='+channelMutexId+'&page='+page;
         //succ
         var succ        = function(resultJson){
@@ -154,12 +177,10 @@ function setResult(page){
                         });
                         $('#data_list').html(resultHtml);
 
-                if(resultJson.pages > 1){
                     Utils.setPagination(page,resultJson.pages);
                     $(".pager_number").click(function(){
                         setResult($(this).attr('page'));
                     });
-                }
 
                 $('.edit-Mutex').click(function(){
 					var rcmid = $(this).attr('data_rcmid');
@@ -203,10 +224,10 @@ $('#saveMutex').click(function(){
 	if(mutexName == ''){
 		return;
 	}
-	alert('-'+rcmid+'-'+mutexName+'-'+mutexStatus+'-');
 	var succ = function(resultJson){
          if(parseInt(resultJson.resultCode) == 1){
         	 	$('#saveMutexDiv').modal('toggle');
+        	 	 setResult(1);
          }else{
         	 	$('#saveMutexDiv').modal('toggle');
             $('#data_list').html(resultJson.msg);
