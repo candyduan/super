@@ -108,7 +108,7 @@ group by c.id");
     }
     
     public static function fetchAllPartnerBelongSdkArrByMedia($media){
-        if(!is_numeric($pid)){
+        if(!is_numeric($media)){
             return array();
         }
         $command = \Yii::$app->db->createCommand("select c.id,c.name,cp.mediaSign
