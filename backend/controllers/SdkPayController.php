@@ -126,7 +126,7 @@ class SdkPayController extends BController
                 array_push($item, date('Y-m-d',strtotime($value['date'])));
             }
             if($checkSDK){
-                array_push($item, $value['sdk']);
+                array_push($item, '【'.$value['sdid'].'】'.$value['sdk']);
             }else{
                 array_push($item, '-');
             }
@@ -147,7 +147,7 @@ class SdkPayController extends BController
             if(0 == $value['allPay']){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$value['allPay'] *100,0).'%');
+                array_push($item, number_format($value['successPay']/$value['allPay'] *100,2).'%');
             }
             $tabledata[] = $item;
             $totalAllPay += $value['allPay'];
@@ -158,7 +158,7 @@ class SdkPayController extends BController
         if(0 == $totalAllPay){
             array_push($totalItem, '-');
         }else{
-            array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,0).'%');                
+            array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');                
         }    
         array_unshift($tabledata, $totalItem);
 
@@ -176,6 +176,7 @@ class SdkPayController extends BController
     private function _getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time){
         $select = [
             'sdkPayDay.date as date',
+            'sdk.sdid as sdid',
             'sdk.name as sdk',
             'sdkPayDay.provider as provider',
             'province.name as provinceName',
@@ -269,6 +270,7 @@ class SdkPayController extends BController
     private function _getHourCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time){
         $select = [
             'sdkPayTransaction.recordTime as date',
+            'sdk.sdid as sdid',
             'sdk.name as sdk',
             'sdkPayTransaction.provider as provider',
             'province.name as provinceName',
