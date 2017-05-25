@@ -7,7 +7,7 @@ class SdkPackagePayDay extends \common\models\orm\base\SdkPackagePayDay{
         $query = new Query();
         $query	->select($select)
         ->from('sdkPackagePayDay')
-        ->join('inner join', 'campaignPackage',
+        ->join('left join', 'campaignPackage',
             'sdkPackagePayDay.cpid = campaignPackage.id')
         ->join('inner join','app',
                 'campaignPackage.app = app.id')
@@ -32,7 +32,7 @@ class SdkPackagePayDay extends \common\models\orm\base\SdkPackagePayDay{
     public static function getIndexCount($where,$group){
         $count = self::find()
         ->from('sdkPackagePayDay')
-        ->join('inner join', 'campaignPackage',
+        ->join('left join', 'campaignPackage',
             'sdkPackagePayDay.cpid = campaignPackage.id')
             ->join('inner join','app',
                 'campaignPackage.app = app.id')
