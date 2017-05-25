@@ -20,7 +20,7 @@ class AuthController extends BController{
     {
         $session = \yii::$app->session;
         if (!empty($session->get('__id'))) {
-            return $this->render("/system/index");
+            $this->redirect("/system/index");
         }
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
