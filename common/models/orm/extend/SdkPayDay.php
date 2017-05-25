@@ -34,9 +34,9 @@ class SdkPayDay extends \common\models\orm\base\SdkPayDay {
         $query = new Query();
         $query	->select($select)
             ->from('sdkPayDay')
-            ->join('inner join', 'sdk',
+            ->join('left join', 'sdk',
                 'sdkPayDay.sdid = sdk.sdid')
-            ->join('inner join', 'province',
+            ->join('left join', 'province',
                 'sdkPayDay.prid = province.id')
             ->where($where)
             ->groupBy($group);
@@ -51,9 +51,9 @@ class SdkPayDay extends \common\models\orm\base\SdkPayDay {
         return $data;
     }
     public static function getIndexCount($where,$group){
-        $count = self::find()->join('inner join', 'sdk',
+        $count = self::find()->join('left join', 'sdk',
                 'sdkPayDay.sdid = sdk.sdid')
-            ->join('inner join', 'province',
+            ->join('left join', 'province',
                 'sdkPayDay.prid = province.id')->where($where)->groupBy($group)->count();
         return $count;
     }
