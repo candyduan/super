@@ -25,7 +25,7 @@ class RegChannelMutexList extends \common\models\orm\base\RegChannelMutexList{
 	}
 	
 	public static  function getItemArrByModel(RegChannelMutexList $RegChannelMutexListModel){
-		$channelName = RegChannel::findByPk($RegChannelMutexListModel->rcid)->name;
+		$channelName = RegChannel::getNameByPk($RegChannelMutexListModel->rcid);
 		return $item = [
 				'rcmlid' => $RegChannelMutexListModel->rcmlid,
 				'rcmid' => $RegChannelMutexListModel->rcmid,

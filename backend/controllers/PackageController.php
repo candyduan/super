@@ -83,9 +83,8 @@ class PackageController extends BController
                 sprintf('%.2f',$value['rate']) . ' %',
                 isset($value['mtype']) ? CampaignPackage::getMTypeName($value['mtype']) :'',
                 sprintf('%.2f',$value['mrate']) . ' %',
-                sprintf('%.2f',$value['cutRate']) . ' % @' . date('Y-m-d', $value['cutDay']),
-                //MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'功能一'). MyHtml::br().
-                //MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'功能二'). MyHtml::br().
+                sprintf('%.2f',$value['cutRate']) . ' % @' .( $value['cutDay'] == 0 ? '' : date('Y-m-d', $value['cutDay'])),
+                sprintf('%.2f',$value['mcutRate']) . ' % @' . ( $value['mcutDay'] == 0 ? '' : date('Y-m-d', $value['mcutDay'])),
                 MyHtml::aElement('javascript:void(0);' ,'getSdks',$value['id'],'渠道关联配置')
             ];
         }
@@ -135,10 +134,12 @@ class PackageController extends BController
                 $package['versionname'] = isset($package['versionName']) ? $package['versionName'] : '';
                 $package['size'] = sprintf('%.2f', $package['size']) . 'MB';
                 $package['rate'] = sprintf('%.2f', $package['rate']) . '%'; //cp分成比例
-                $package['cutrate'] = sprintf('%.2f', $package['cutRate']) . '%';  //cp优化比例
-                $package['cutday'] = date('Y-m-d', $package['cutDay']); //cp优化开始
+                $package['cutrate'] =  $package['cutRate']; //cp优化比例
+                $package['mcutrate'] = $package['mcutRate'];  //cp优化比例
+                $package['cutday'] = $package['cutDay'] == 0 ? '' : date('Y-m-d', $package['cutDay']); //cp优化开始
+                $package['mcutday'] = $package['mcutDay'] == 0 ? '' : date('Y-m-d', $package['mcutDay']);
                 $package['mtype'] = isset($package['mtype']) ? CampaignPackage::getMTypeName($package['mtype']) :'';
-                $package['mrate'] = sprintf('%.2f', $package['mrate']) . '%'; 
+                $package['mrate'] = sprintf('%.2f', $package['mrate']) . '%';
                 $package['sign'] = isset($package['mediaSign']) ? $package['mediaSign'] : '';
                 $package['distname'] = isset($package['media']) ? Partner::getNameById($package['media']) : '';
                 $package['grade'] = $package['grade'] == 0 ? '普通' : 'A级';
@@ -152,20 +153,28 @@ class PackageController extends BController
     public function actionModifyPaymode() {
         $resultState = 0;
         $cpid = Yii::$app->request->get('cpid');
-        $paymode =  Yii::$app->request->get('paymode');
+        $paymode =  intval(Utils::getBParam('paymode'));
+        $cutRate = intval(Utils::getBParam('cutrate'));
+        $cutDay = trim(Utils::getBParam('cutday'));
+        $mcutRate = intval(Utils::getBParam('mcutrate'));
+        $mcutDay = trim(Utils::getBParam('mcutday'));
         if (isset($cpid)) {
             $transaction =  CampaignPackage::getDb()->beginTransaction();
             try {
                 $packageModel = CampaignPackage::findByPk($cpid);
                 if($packageModel){
                     $packageModel->payMode = $paymode;
+                    $packageModel->cutRate = $cutRate;
+                    $packageModel->cutDay = strtotime($cutDay);
+                    $packageModel->mcutRate = $mcutRate;;
+                    $packageModel->mcutDay = strtotime($mcutDay);
                     $resultState  = $packageModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
-                MyMail::sendMail($e->getMessage(), 'Error From modify package pay mode');
+                MyMail::sendMail($e->getMessage(), 'Error From modify package pay mode and rate');
             }
         }
     
@@ -187,7 +196,7 @@ class PackageController extends BController
                     $sdks[$key]['sdid'] = $sdid;
                     $sdks[$key]['name'] = Sdk::getNameBySdid($sdid);
                     $sdks[$key]['status'] = MyHtml::iElement('glyphicon-edit glyphicon grey ', 'changeSign',$cpid.','.$sdid, $sdid,'btn_sdk_sign_'.$sdid) .' ';
-                    
+
                     $packageSdkModel = CampaignPackageSdk::findByCpidSdid($cpid,$sdid);
                     $status = 1;
                     $sign = '';

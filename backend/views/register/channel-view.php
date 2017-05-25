@@ -59,12 +59,62 @@ function setResult(page){
         //succ
         var succ        = function(resultJson){
                 if(parseInt(resultJson.resultCode) == 1){
-                        var resultHtml = '<tr><td>通道商</td><td>通道</td><td>负责人</td><td>运营商</td><td>开发类型</td><td>状态</td></tr>';
+                        var resultHtml = '<tr><td>通道商</td><td>通道</td><td>负责人</td><td>运营商</td><td>开发类型</td><td>时段</td><td>状态</td></tr>';
                         $.each(resultJson.list,function(key,val){
-                                resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td><a href="/register/save-channel-view?rcid='+val.rcid+'">'+val.channelName+'</a></td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td>'+val.status+'</td></tr>';
+                                resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td><a href="/register/save-channel-view?rcid='+val.rcid+'">'+val.channelName+'</a></td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td><a data-rcid="'+val.rcid+'" class="glyphicon glyphicon-time channel-switch"></a></td><td>'+val.status+'</td></tr>';
                         });
                         $('#data_list').html(resultHtml);
+						$('.channel-switch').click(function(){
+							var switchUrl = '/register/channel-switch-result';
+							var switchData='rcid='+$(this).attr('data-rcid');
+							var succFunc  = function(switchJson){
+									if(parseInt(switchJson.resultCode) == 1){
+										var switchHtml = '';
+										$.each(switchJson.list,function(swkey,swval){
+											var swhourStyle = '';
+											if(parseInt(swval.swswitch) == 1){
+												swhourStyle = 'swhour-open';
+											}else{
+												swhourStyle = 'swhour-close';
+											}
+											switchHtml = switchHtml+'<button data-hour="'+swval.swhour+'" data-status="'+swval.swswitch+'" class="hour'+swval.swhour+' swhour '+swhourStyle+'">'+swval.swhour+'</button>';											
+										});
+										Utils.getNoFooterModal('时段设置',switchHtml);
+										$('.swhour').click(function(){
+											var opsUrl = '/register/channel-switch-set';
+											var status = $(this).attr('data-status');
+											if(parseInt(status) == 1){
+												status = 0;
+											}else{
+												status = 1;
+											}
+											var opsData='rcid='+switchJson.rcid+'&hour='+$(this).attr('data-hour')+'&status='+status;
+											var opsSucc=function(opsJson){
+													if(parseInt(opsJson.resultCode) == 1){//succ
+														var swhour = '.'+opsJson.swhour;
+														if(parseInt(opsJson.status) == 1){//open
+															$(swhour).removeClass('swhour-close');
+															$(swhour).addClass('swhour-open');
+															$(swhour).attr('data-status',opsJson.status);
+														}else{//close
+															$(swhour).removeClass('swhour-open');
+															$(swhour).addClass('swhour-close');
+															$(swhour).attr('data-status',opsJson.status);
+														}
 
+													}else{//fail
+														alert(opsJson.msg);
+													}
+											};
+											Utils.ajax(opsUrl,opsData,opsSucc);
+										});
+									}else{
+										alert(switchJson.msg);
+									}
+							};
+							Utils.ajax(switchUrl,switchData,succFunc);
+						});
+						
                         Utils.setPagination(page,resultJson.pages);
                         $(".pager_number").click(function(){
                             setResult($(this).attr('page'));
