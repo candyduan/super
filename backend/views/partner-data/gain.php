@@ -29,8 +29,8 @@
                         <option value="0">渠道标识：可模糊</option>
                         <?php foreach($channels as $value){
                             $id = $value['id'];
-                            $name = $value['mediaSign'];
-                            echo "<option value='$id'> $name</option>";
+                            $mediaSign = $value['mediaSign'];
+                            echo "<option value='$mediaSign'> $mediaSign</option>";
                         }?>
                     </select>
                     <input  type="text"   class="form-control date-picker" id="startDate" name="startDate" data-date-format="yyyy-mm-dd">

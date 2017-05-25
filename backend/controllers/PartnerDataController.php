@@ -55,9 +55,10 @@ class PartnerDataController extends BController
     
     public function actionCpsGain(){
         self::_setLayout();
-        $apps = App::fetchAllBelongSdkArr();
-        $campaigns = Campaign::fetchAllBelongSdkArr();
-        $channels = Partner::fetchAllArr();
+        $pid = self::_getPartnerId();
+        $apps = App::fetchAllBelongSdkArrByMedia($pid);
+        $campaigns = Campaign::fetchAllBelongSdkArrByMedia($pid);
+        $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByMedia();
         return $this->render('cps-gain', ['apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
     }
     
@@ -120,7 +121,7 @@ class PartnerDataController extends BController
                 }
             
                 array_push($item, $value['newUsers']);
-                array_push($item, $value['successPay']);
+                array_push($item, number_format($value['successPay'],0));
             
                 $tabledata[] = $item;
             }
@@ -264,10 +265,10 @@ class PartnerDataController extends BController
                 $campaign
             ];
         }
-        if($channel > 0){
+        if(Utils::isValid($channel)){
             $where[] = [
                 '=',
-                'campaignPackage.media',
+                'campaignPackage.mediaSign',
                 $channel
             ];
         }
