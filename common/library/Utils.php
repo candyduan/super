@@ -187,7 +187,14 @@ class Utils{
         }
         return false;
     }
-
+    
+    public static function isFrontendAlpha(){
+        if(!strstr($_SERVER['HTTP_HOST'], 'supertest')){
+            return true;
+        }else{
+            return false;
+        }        
+    }
     public static function getBParam($key,$default = NULL){
         $request    = \Yii::$app->getRequest();
         $value      = $request->get($key);
