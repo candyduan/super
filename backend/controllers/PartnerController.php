@@ -71,7 +71,9 @@ class PartnerController extends BController
                 $value['belong'] == 1 ?  '融合SDK' : '支付SDK',
                 Admin::getNickById($value['holder']),
                 $value['payCircle'] == 1 ? '周结' : '月结',
-                MyHtml::aElement("/app/index?id=". $value['id'], '','','查看产品')
+                MyHtml::aElement("/app/index?id=". $value['id'], '','','查看应用') . MyHtml::br() .
+                MyHtml::aElement("/partner-data/gain?partner=". $value['id'], '','','查看应用收益')  . MyHtml::br() .
+                MyHtml::aElement("/partner-data/cps-gain?partner=". $value['id'], '','','查看渠道收益')
             ];
         }
 

@@ -51,7 +51,8 @@ class OutUserController extends BController
         $start = intval(Utils::getBParam('start', 0));
         $length = intval(Utils::getBParam('length', 100));
         $searchStr = trim(Utils::getBParam('searchStr', ''));
-        $condition = self::_getCondition($searchStr);
+        $utype = intval(Utils::getBParam('utype', -1));
+        $condition = self::_getCondition($searchStr,$utype);
         $data = OutUser::getIndexData($condition, $start,$length);
         $count = OutUser::getIndexCount($condition);
         $tabledata = [];
@@ -204,27 +205,40 @@ class OutUserController extends BController
         return $resultState;
     }
 
-    private function _getCondition($searchStr){
-        $condition[] = 'or';
+    private function _getCondition($searchStr,$utype){
+        $condition = $condition1 = $condition2 = [];
+        if($utype !== -1){
+           $condition1[] = 'and';
+           $condition1[] = ['=' , 'partner.utype',$utype];
+        }
+
         if($searchStr !== '') {
-            $condition[] = [
+            $condition2[] = 'or';
+            $condition2[] = [
                 'like',
                 'outUser.email',
                 $searchStr
             ];
-            $condition[] = [
+            $condition2[] = [
                 'like',
                 'outUser.username',
                 $searchStr
             ];
-            $condition[] = [
+            $condition2[] = [
                 'like',
                 'partner.name',
                 $searchStr
             ];
-
         }
 
+        if(!empty($condition1) && !empty($condition2)){
+            $condition = $condition1[] = $condition2;
+
+        }else if(!empty($condition1)){
+            $condition = $condition1;
+        } else if(!empty($condition2)){
+            $condition = $condition2;
+        }
         return $condition;
     }
 

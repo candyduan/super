@@ -158,7 +158,7 @@
 			var succ = function(resultJson){
 				 if(parseInt(resultJson.resultCode) == 1){
 					 $.each(resultJson.list,function(key,val){
-							appOptions += '<option class="select_app" value="'+val.id+'">'+val.name+'</option>';
+							appOptions += '<option>选择应用</option><option class="select_app" value="'+val.id+'">'+val.name+'</option>';
 					})
 					$('#app').html(appOptions);
 
@@ -181,7 +181,7 @@
 		var succ = function(resultJson){
 				if(resultJson.resultCode == 1){
 					$.each(resultJson.list,function(key,val){
-						campaignOptions += '<option value="'+val.id+'">'+val.name+'</option>';
+						campaignOptions += '<option>选择活动</option><option value="'+val.id+'">'+val.name+'</option>';
 					})
 					$('#campaign').html(campaignOptions);
 				}else{

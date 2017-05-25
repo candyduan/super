@@ -40,6 +40,8 @@ use Yii;
  * @property integer $preMobile
  * @property integer $adStatus
  * @property integer $payMode
+ * @property integer $mcutDay
+ * @property double $mcutRate
  */
 class CampaignPackage extends \yii\db\ActiveRecord
 {
@@ -57,8 +59,8 @@ class CampaignPackage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['campaign', 'media', 'partner', 'app', 'mtype', 'cutDay', 'size', 'opened', 'versionCode', 'agent', 'agentCutDay', 'grade', 'recordTime', 'updateTime', 'quickFB', 'needConfirm', 'mobileImportant', 'showRes', 'showLoading', 'preMobile', 'adStatus', 'payMode'], 'integer'],
-            [['rate', 'mrate', 'cutRate', 'agentCutRate', 'agentRate'], 'number'],
+            [['campaign', 'media', 'partner', 'app', 'mtype', 'cutDay', 'size', 'opened', 'versionCode', 'agent', 'agentCutDay', 'grade', 'recordTime', 'updateTime', 'quickFB', 'needConfirm', 'mobileImportant', 'showRes', 'showLoading', 'preMobile', 'adStatus', 'payMode', 'mcutDay'], 'integer'],
+            [['rate', 'mrate', 'cutRate', 'agentCutRate', 'agentRate', 'mcutRate'], 'number'],
             [['mediaSign'], 'string', 'max' => 64],
             [['apk'], 'string', 'max' => 128],
             [['cdnSign', 'versionName'], 'string', 'max' => 45],
@@ -106,6 +108,8 @@ class CampaignPackage extends \yii\db\ActiveRecord
             'preMobile' => 'Pre Mobile',
             'adStatus' => 'Ad Status',
             'payMode' => 'Pay Mode',
+            'mcutDay' => 'Mcut Day',
+            'mcutRate' => 'Mcut Rate',
         ];
     }
 }
