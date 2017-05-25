@@ -120,7 +120,14 @@ class Campaign extends \common\models\orm\base\Campaign {
         ->all();
         return $data;
     }
-
+    public static function fetchAllBelongSdkArrByPid($pid){
+        $data= self::find()->select(['campaign.id','campaign.name'])->join('inner join', 'partner', 'campaign.partner = partner.id')
+        ->where('partner.belong = 1 and partner.id = :pid',array(
+            ':pid' => $pid
+        ))
+        ->all();
+        return $data;
+    }
     
     public static function findAllNeedPaginator($app,$page=1,$perpage = 20){
     	$condition	= array();

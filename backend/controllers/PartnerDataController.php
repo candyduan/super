@@ -17,6 +17,7 @@ use common\models\orm\extend\Campaign;
 use common\models\orm\extend\App;
 use common\models\orm\extend\SdkPackagePayDay;
 use common\models\orm\extend\OutUser;
+use common\models\orm\extend\CampaignPackage;
 /**
  * Partner controller
  */
@@ -45,9 +46,10 @@ class PartnerDataController extends BController
     public function actionGain()
     {
         self::_setLayout();
-        $apps = App::fetchAllBelongSdkArr();
-        $campaigns = Campaign::fetchAllBelongSdkArr();
-        $channels = Partner::fetchAllArr();
+        $pid = self::_getPartnerId();
+        $apps = App::fetchAllBelongSdkArrByPid($pid);
+        $campaigns = Campaign::fetchAllBelongSdkArrByPid($pid);
+        $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByPid($pid);
         return $this->render('gain', ['apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
     }
     
@@ -112,7 +114,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
                 if($checkM){
-                    array_push($item, $value['m']);
+                    array_push($item, $value['mediaSign']);
                 }else{
                     array_push($item, '-');
                 }
@@ -188,7 +190,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
                 if($checkM){
-                    array_push($item, $value['m']);
+                    array_push($item, $value['mediaSign']);
                 }else{
                     array_push($item, '-');
                 }
@@ -218,6 +220,7 @@ class PartnerDataController extends BController
             'app.name as app',
             'campaign.name as c',
             'channel.name as m',
+            'campaignPackage.mediaSign as mediaSign',
             'sum(sdkPackagePayDay.newUsers) as newUsers',
             'sum(sdkPackagePayDay.successPay) as successPay',
         ];
