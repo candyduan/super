@@ -152,13 +152,13 @@
 	        $('#partner').val(objMap[item]);
 			//联动app选择
 	        var partner = $('#partner').val();
-			var appOptions;
+			var appOptions = '<option>选择应用</option>';
 			var url = "/package-pay/get-app-with-partner";
 			var data = 'partner='+partner;
 			var succ = function(resultJson){
 				 if(parseInt(resultJson.resultCode) == 1){
 					 $.each(resultJson.list,function(key,val){
-							appOptions += '<option>选择应用</option><option class="select_app" value="'+val.id+'">'+val.name+'</option>';
+							appOptions += '<option class="select_app" value="'+val.id+'">'+val.name+'</option>';
 					})
 					$('#app').html(appOptions);
 
@@ -175,13 +175,13 @@
 		var partner = $('#partner').val();
 		var app = $('#app').val();
 
-		var campaignOptions = '';
+		var campaignOptions = '<option>选择活动</option>';
 		var url = '/package-pay/get-campaign-with-partner-and-app';
 		var data = 'partner='+partner+'&app='+app;
 		var succ = function(resultJson){
 				if(resultJson.resultCode == 1){
 					$.each(resultJson.list,function(key,val){
-						campaignOptions += '<option>选择活动</option><option value="'+val.id+'">'+val.name+'</option>';
+						campaignOptions += '<option value="'+val.id+'">'+val.name+'</option>';
 					})
 					$('#campaign').html(campaignOptions);
 				}else{
