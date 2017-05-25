@@ -244,28 +244,32 @@
     }
 
     $('#btn_submit_package').on('click',function(event){
-        $('#btn_submit_package').prop('disabled',true);
         event.preventDefault();
-        var data = {
-            'cpid' : $('#hidden_cpid').val(),
-            'paymode' : $('#package_paymode').val(),
-            'cutrate' : $('#package_cutrate').val(),
-            'cutday' : $('#package_cutday').val(),
-            'mcutrate' : $('#package_mcutrate').val(),
-            'mcutday' : $('#package_mcutday').val(),
+        var error_num = validInput();
+        if(error_num == 0) {
+            $('#btn_submit_package').prop('disabled',true);
+            var data = {
+                'cpid': $('#hidden_cpid').val(),
+                'paymode': $('#package_paymode').val(),
+                'cutrate': $('#package_cutrate').val(),
+                'cutday': $('#package_cutday').val(),
+                'mcutrate': $('#package_mcutrate').val(),
+                'mcutday': $('#package_mcutday').val(),
 
-        }
-        var method = 'get';
-        var url = '/package/modify-paymode';
-        var success_function = function(result){
-            if(parseInt(result) > 0){
-                alert(MESSAGE_MODIFY_SUCCESS);
-            }else{
-                alert(MESSAGE_ADD_ERROR);
             }
-            $('#modalPackage').modal('hide');
+            var method = 'get';
+            var url = '/package/modify-paymode';
+            var success_function = function (result) {
+                if (parseInt(result) > 0) {
+                    alert(MESSAGE_MODIFY_SUCCESS);
+                } else {
+                    alert(MESSAGE_ADD_ERROR);
+                }
+                _initDataTable();
+                $('#modalPackage').modal('hide');
+            }
+            callAjaxWithFunction(url, data, success_function, method);
         }
-        callAjaxWithFunction(url,data,success_function,method);
     });
 
     function getSdks(cpid){
@@ -337,18 +341,21 @@
     }
 
     function validInput(){
-   var  error_num = 0;
-        /*         var  cutrate = $('#package_cutrate').val();
+        var  error_num = 0;
+        var  cutrate = $('#package_cutrate').val();
         var  cutday = $('#package_cutday').val();
         var  mcutrate = $('#package_mcutrate').val();
         var  mcutday = $('#package_mcutday').val();
-        if(!isPositiveInt(cutrate) || !isPositiveInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
+        if(!isUnsignedInt(cutrate) || !isUnsignedInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
             alert(MESSAGE_PERCENT_ERROR);
             error_num += 1;
-        } *//*else if(cutday == '' || mcutday == ''){
-         alert(MESSAGE_DATE_ERROR);
-         error_num += 1;
-         }*/
+        } else if(cutday == '' &&  cutrate > 0){
+            alert('您已经设置了CP优化比例,请设置一个开始时间');
+            error_num += 1;
+        } else if(mcutday == '' &&  mcutrate > 0){
+            alert('您已经设置了渠道优化比例,请设置一个开始时间');
+            error_num += 1;
+        }
 
         return error_num;
     }

@@ -87,7 +87,7 @@
                         <span class="input-group-addon">渠道优化比例:</span>
                         <input type="text" id="campaign_mcutrate"  placeholder="填写1-100的整数" class="form-control"/>
                         <span class="input-group-addon">%</span>
-                    </div><br /><br />d
+                    </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">级别:</span>
                         <input type="text" id="campaign_grade" readonly placeholder="级别" class="form-control"/>
@@ -376,6 +376,7 @@
                 } else {
                     alert(MESSAGE_ADD_ERROR);
                 }
+                _initDataTable();
                 $('#modalCampaign').modal('hide');
             }
 
@@ -606,18 +607,21 @@
     }
 
     function validInput(){
-    var  error_num = 0;
-     /*    var  cutrate = $('#campaign_cutrate').val();
-        var  cutday = $('#campaign_cutday').val();
+        var  error_num = 0;
+        var  cutrate = $('#campaign_cutrate').val();
         var  mcutrate = $('#campaign_mcutrate').val();
         var  mcutday = $('#campaign_mcutday').val();
-        if(!isPositiveInt(cutrate) || !isPositiveInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
+        var  cutday = $('#campaign_cutday').val();
+        if(!isUnsignedInt(cutrate) || !isUnsignedInt(cutrate)  || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
             alert(MESSAGE_PERCENT_ERROR);
             error_num += 1;
-        } *//*else if(cutday == '' || mcutday == ''){
-            alert(MESSAGE_DATE_ERROR);
+        } else if(cutday == '' &&  cutrate > 0){
+            alert('您已经设置了CP优化比例,请设置一个开始时间');
             error_num += 1;
-        }*/
+        } else if(mcutday == '' &&  mcutrate > 0){
+            alert('您已经设置了渠道优化比例,请设置一个开始时间');
+            error_num += 1;
+        }
 
         return error_num;
     }
