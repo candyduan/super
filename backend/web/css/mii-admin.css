@@ -232,7 +232,7 @@ ul.alert-dropdown {
 .navbar-brand{padding:14px !important;}
 .breadcrumb{display:block;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:10px;}
 .collapse li a{font-size:14px !important;}
-.selected{background-color:#ffffff !important;}
+.selected{background-color:#ffffff !important;color:#000000 !important;}
 
 input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], textarea {
     background-color: #fff;

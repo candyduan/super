@@ -124,14 +124,14 @@ class WidgetsUtils{
           
         	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
             <link href="/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/css/mii-admin.css?d=201705251" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=201705252" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
             <style type="text/css">
             .navbar{background-color:'.$bcolor.';border:0px;}
             .nav{background-color:'.$bcolor.';margin-top:-1px;}
             .main-menu{color:'.$fcolor.' !important;}
             .user-ops{background-color:'.$bcolor.' !important;;color:'.$fcolor.' !important;;}
-            .side-nav li a:hover,.side-nav li a:focus,.side-nav li a {outline: none;background-color:'.$bcolor.' !important;color:'.$fcolor.' !important;}
+            .side-nav li a:hover,.side-nav li a:focus,.side-nav li a {outline: none;background-color:'.$bcolor.';color:'.$fcolor.' !important;}
             </style>
             <script src="/js/common/jquery.js"></script>
             <script src="/js/common/bootstrap.min.js"></script>
