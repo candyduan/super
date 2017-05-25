@@ -127,18 +127,18 @@ class PackagePayController extends BController
             array_push($item, $actUser);
             
             array_push($item, $value['users']);
-            array_push($item, $value['successPay']);
-            array_push($item, $value['cp']);
+            array_push($item, number_format($value['successPay'],0));
+            array_push($item, number_format($value['cp'],0));
             if($newUser <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$newUser,2));
+                array_push($item, number_format($value['successPay']/$newUser,0));
             }
             
             if($value['users'] <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$value['users']*100,2));
+                array_push($item, number_format($value['successPay']/$value['users'],0));
             }
             
             if($actUser <= 0){
@@ -146,14 +146,14 @@ class PackagePayController extends BController
             }else{
                 array_push($item, number_format($value['users']/$actUser*100,2).'%');
             }
-            array_push($item, $value['income']);
-            array_push($item, $value['payCp']);
-            array_push($item, $value['payM']);
-            array_push($item, $value['profit']);
+            array_push($item, number_format($value['income'],0));
+            array_push($item, number_format($value['payCp'],0));
+            array_push($item, number_format($value['payM'],0));
+            array_push($item, number_format($value['profit'],0));
             if(0 == $value['successPay']){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['profit']/$value['successPay']*100,2).'%');
+                array_push($item, number_format($value['profit']/$value['successPay']*100,0).'%');
             }
             
             $tabledata[] = $item;
@@ -418,12 +418,12 @@ class PackagePayController extends BController
      		
      	
      		array_push($item, $value['allPay']);
-     		array_push($item, $value['successPay']);
-     		array_push($item, $value['income']);
+     		array_push($item, number_format($value['successPay'],0));
+     		array_push($item, number_format($value['income'],0));
      		if(0 == $value['allPay']){
      			array_push($item, '-');
      		}else{
-     			array_push($item, number_format($value['successPay']/$value['allPay']*100,2).'%');
+     			array_push($item, number_format($value['successPay']/$value['allPay']*100,0).'%');
      		}
      		$tabledata[] = $item;
      	}
