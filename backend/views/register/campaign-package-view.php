@@ -127,27 +127,7 @@ $('#saveSwitchBtn').click(function(){
 	};
 	Utils.ajax(url,data,succ);
 });
-
-$('#saveSwitchBtn').click(function(){
-	var url 	= '/register/save-switch-result';
-	var stime	= $("#stime").val();
-	var etime	= $("#etime").val();
-	var status	= $("#status").val();
-	var campaignPackageId	= $("#campaignPackageId").val();
-	var data 	= 'stime='+stime+'&etime='+etime+'&status='+status+'&campaignPackageId='+campaignPackageId;
-	var succ    = function(resultJson){
- 		if(parseInt(resultJson.resultCode) == 1){
- 			$("#saveSwitchDiv").modal('hide');
- 			var statusName = status == 1 ? '打开' : '关闭';
- 			$("#statusName"+campaignPackageId).html(statusName);
- 			$("#time"+campaignPackageId).html(stime+" ~ "+etime);
-			Utils.getNoFooterModal("成功",resultJson.msg);
-		}else{
-			Utils.getErrModal("保存失败",resJson.msg);
-		}
-	};
-	Utils.ajax(url,data,succ);
-});
+ 
 function barShow(){
 	var url 		= '/register/campaign-package-bar-result';
 	var campaignId	= Utils.getQueryString('campaignId');
