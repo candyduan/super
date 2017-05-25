@@ -147,7 +147,7 @@ class SdkPayController extends BController
             if(0 == $value['allPay']){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$value['allPay'] *100,2).'%');
+                array_push($item, number_format($value['successPay']/$value['allPay'] *100,0).'%');
             }
             $tabledata[] = $item;
             $totalAllPay += $value['allPay'];
@@ -158,7 +158,7 @@ class SdkPayController extends BController
         if(0 == $totalAllPay){
             array_push($totalItem, '-');
         }else{
-            array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,2).'%');                
+            array_push($totalItem, number_format($totalSuccPay/$totalAllPay *100,0).'%');                
         }    
         array_unshift($tabledata, $totalItem);
 
