@@ -101,22 +101,22 @@ class PackagePayController extends BController
                 array_push($item, date('Y-m-d',strtotime($value['date'])));
             }
             if($checkCP){
-                array_push($item, $value['partner']);
+                array_push($item, '【'.$value['pid'].'】'.$value['partner']);
             }else{
                 array_push($item, '-');
             }
             if($checkAPP){
-                array_push($item, $value['app']);
+                array_push($item, '【'.$value['aid'].'】'.$value['app']);
             }else{
                 array_push($item, '-');
             }
             if($checkCmp){
-                array_push($item, $value['cmp']);
+                array_push($item, '【'.$value['cid'].'】'.$value['cmp']);
             }else{
                 array_push($item, '-');
             }
             if($checkM){
-                array_push($item, $value['m']);
+                array_push($item, '【'.$value['chid'].'】'.$value['m']);
             }else{
                 array_push($item, '-');
             }
@@ -153,7 +153,7 @@ class PackagePayController extends BController
             if(0 == $value['successPay']){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['profit']/$value['successPay']*100,0).'%');
+                array_push($item, number_format($value['profit']/$value['successPay']*100,2).'%');
             }
             
             $tabledata[] = $item;
@@ -174,9 +174,13 @@ class PackagePayController extends BController
         $select = [
             'campaignPackage.mediaSign as mediaSign',
             'sdkPackagePayDay.date as date',
+            'partner.id as pid',
             'partner.name as partner',
+            'app.id as aid',
             'app.name as app',
+            'campaign.id as cid',
             'campaign.name as cmp',
+            'channel.id as chid',
             'channel.name as m',
             'sum(sdkPackagePayDay.newUsers) as newUsers',
             'sum(sdkPackagePayDay.actUsers) as actUsers',
