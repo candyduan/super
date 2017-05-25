@@ -55,7 +55,7 @@ class PackagePayController extends BController
     public function actionIndex()
     {
         $apps = App::fetchAllBelongSdkArr();
-        $channels = Partner::fetchAllArr();
+        $channels = CampaignPackage::fetchAllPartnerBelongSdkArr();
         return $this->render('index', ['apps' =>$apps,'channels' =>$channels]);
     }
     

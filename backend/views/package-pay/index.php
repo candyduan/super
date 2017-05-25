@@ -15,7 +15,7 @@
                         <?php foreach($apps as $value){
                             $id = $value['id'];
                             $name = $value['name'];
-                            echo "<option value='id'> $name</option>";
+                            echo "<option value='$id'> $name</option>";
                         }?>
                     </select>
                     <select class="form-control" id="channel" name="channel">
@@ -23,7 +23,7 @@
                         <?php foreach($channels as $value){
                             $id = $value['id'];
                             $name = $value['name'];
-                            echo "<option value='id'> $name</option>";
+                            echo "<option value='$id'> $name</option>";
                         }?>
                     </select>
                     <input  type="text"   class="form-control date-picker" id="startDate" name="startDate" data-date-format="yyyy-mm-dd">
