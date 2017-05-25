@@ -27,11 +27,26 @@ class WidgetsUtils{
                 $light = '';
         }
         $str = '
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
                 <a class="navbar-brand main-menu '.$payLight.'" href="http://master.maimob.cn/index.php/admin/" target="_blank">支付SDK</a>
                 <a class="navbar-brand main-menu '.$sdkLight.'" href="/site/index">融合SDK</a>
                 <a class="navbar-brand main-menu '.$registerLight.'" href="/register/index">主动上行</a>
                 <a class="navbar-brand main-menu '.$agencyLight.'" href="/agency/index">注册中介</a>
                 <a class="navbar-brand main-menu '.$systemLight.'" href="/system/index">系统管理</a>
+            </div>
+                    
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>'.\Yii::$app->user->identity->username.'<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/auth/logout"><i class="fa fa-fw fa-power-off"></i>退出</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
             ';
         return $str;
     }
