@@ -10,6 +10,7 @@
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text" class="form-control" id="name" name="name" placeholder="内容商名称:模糊搜索"/>
                     <select class="form-control" id="utype" name="utype">
+                        <option value="-1">全部</option>
                         <option value="0">未确定</option>
                         <option value="1">内容供应</option>
                         <option value="2">内容推广</option>

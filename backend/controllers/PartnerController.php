@@ -50,7 +50,7 @@ class PartnerController extends BController
         $start = intval($request->get('start', 0));
         $length = intval($request->get('length', 100));
         $name = trim($request->get('name',''));
-        $utype = intval($request->get('utype', 0));
+        $utype = intval($request->get('utype', -1));
         $holder = intval($request->get('holder',0));
         $condition = self::_getCondition($name, $utype, $holder);
 
@@ -128,7 +128,7 @@ class PartnerController extends BController
                 $name
             ];
         }
-        if($utype !== 0){
+        if($utype !== -1){
             $condition[] = [
                 '=',
                 'utype',
