@@ -17,6 +17,7 @@ use common\models\orm\extend\Campaign;
 use common\models\orm\extend\App;
 use common\models\orm\extend\SdkPackagePayDay;
 use common\models\orm\extend\OutUser;
+use common\models\orm\extend\CampaignPackage;
 /**
  * Partner controller
  */
@@ -45,9 +46,10 @@ class PartnerDataController extends BController
     public function actionGain()
     {
         self::_setLayout();
-        $apps = App::fetchAllBelongSdkArr();
-        $campaigns = Campaign::fetchAllBelongSdkArr();
-        $channels = Partner::fetchAllArr();
+        $pid = self::_getPartnerId();
+        $apps = App::fetchAllBelongSdkArrByPid($pid);
+        $campaigns = Campaign::fetchAllBelongSdkArrByPid($pid);
+        $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByPid($pid);
         return $this->render('gain', ['apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
     }
     
