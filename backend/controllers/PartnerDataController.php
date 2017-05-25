@@ -120,7 +120,7 @@ class PartnerDataController extends BController
                 }
             
                 array_push($item, $value['newUsers']);
-                array_push($item, $value['successPay']);
+                array_push($item, number_format($value['successPay'],0));
             
                 $tabledata[] = $item;
             }
