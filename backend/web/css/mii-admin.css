@@ -8,7 +8,7 @@
 
 body {
     margin-top: 100px;
-    background-color: #222;
+    /* background-color: #222; */
 }
 
 @media(min-width:768px) {
@@ -131,7 +131,7 @@ ul.alert-dropdown {
     .side-nav>li>a {
         width: 225px;
     }
-
+	.side-nav li{list-style-type:none;}
     .side-nav li a:hover,
     .side-nav li a:focus {
         outline: none;
@@ -248,7 +248,7 @@ input[type="email"], input[type="url"], input[type="search"], input[type="tel"],
 .modal-header{padding:8px !important;}
 .btn-default{background-color:#ffffff !important;color:#000000 !important;text-shadow:0 0 0 #000000!important;}
 .main-menu{font-size:18px !important;}
-.main-menu-light{color:#ffffff !important;}
+.main-menu-light{font-size:20px !important;text-decoration:underline !important;}
 .pager_number{margin-left:3px;margin-right:3px;}
 .swhour{width:50px;height:50px;border-radius:25px;border:0px;margin-left:5px;margin-right:5px;margin-top:5px;margin-bottom:5px;}
 .swhour-open{background-color:#00A600;}
