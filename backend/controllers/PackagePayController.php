@@ -212,7 +212,7 @@ class PackagePayController extends BController
         if($channel > 0){
             $where[] = [
                 '=',
-                'campaignPackage.partner',
+                'campaignPackage.media',
                 $channel
             ];
         }
