@@ -106,4 +106,17 @@ where p.belong = 1 and p.id = $pid
 group by c.id");
         return $command->queryAll();
     }
+    
+    public static function fetchAllPartnerBelongSdkArrByMedia($media){
+        if(!is_numeric($pid)){
+            return array();
+        }
+        $command = \Yii::$app->db->createCommand("select c.id,c.name,cp.mediaSign
+            from campaignPackage as cp
+            inner join partner as c on (cp.media = c.id)
+            inner join partner as p on (cp.partner = p.id)
+            where p.belong = 1 and cp.media = $media
+            group by c.id");
+        return $command->queryAll();
+    }
 }

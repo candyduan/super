@@ -46,6 +46,16 @@ class App extends \common\models\orm\base\App {
         ->all();
         return $data;
     }
+    public static function fetchAllBelongSdkArrByMedia($media = null){
+        $data= self::find()->select(['app.id','app.name'])
+        ->join('inner join', 'campaignPackage','app.partner = campaignPackage.media')
+        ->join('inner join', 'partner', 'app.partner = partner.id')
+        ->where('partner.belong = 1 and campaignPackage.media = :media',array(
+            ':media' => $media
+        ))
+        ->all();
+        return $data;
+    }
 
     	public static function findAllToArray(){
     		$datas = self::find()->all();
