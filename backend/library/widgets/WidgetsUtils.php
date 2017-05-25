@@ -113,8 +113,8 @@ class WidgetsUtils{
     
     public static function getHeader(){
         $color    = AdminTheme::getColorByAuid(\Yii::$app->user->identity->id);
-        $bcolor   = '#'.$color['bcolor'];
-        $fcolor   = '#'.$color['fcolor'];
+        $bcolor   = '#'.@$color['bcolor'];        
+        $fcolor   = '#'.@$color['fcolor'];
         $str ='
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
