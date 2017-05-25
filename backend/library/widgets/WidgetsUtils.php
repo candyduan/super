@@ -125,7 +125,9 @@ class WidgetsUtils{
             <script src="/js/common/jquery.js"></script>
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
-            <script src="/js/register/Utils.js?d=20170516"></script>                        
+            <script src="/js/register/Utils.js?d=20170516"></script>
+            <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
+	        <script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
             ';
         return $str;
     }
