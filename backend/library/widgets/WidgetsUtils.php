@@ -1,5 +1,7 @@
 <?php
 namespace backend\library\widgets;
+use common\models\orm\extend\AdminTheme;
+
 class WidgetsUtils{
     public static function getMainMenu($layout = ''){
         $payLight       = '';
@@ -39,7 +41,7 @@ class WidgetsUtils{
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>'.\Yii::$app->user->identity->username.'<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle user-ops" data-toggle="dropdown"><i class="fa fa-user"></i>'.\Yii::$app->user->identity->username.'<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="/auth/logout"><i class="fa fa-fw fa-power-off"></i>退出</a>
@@ -110,6 +112,9 @@ class WidgetsUtils{
     }
     
     public static function getHeader(){
+        $color    = AdminTheme::getColorByAuid(\Yii::$app->user->identity->id);
+        $bcolor   = '#'.$color['bcolor'];
+        $fcolor   = '#'.$color['fcolor'];
         $str ='
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -119,9 +124,15 @@ class WidgetsUtils{
           
         	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
             <link href="/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/css/mii-admin.css?d=20170525" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=201705251" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+            <style type="text/css">
+            .navbar{background-color:'.$bcolor.';border:0px;}
+            .nav{background-color:'.$bcolor.';margin-top:-1px;}
+            .main-menu{color:'.$fcolor.' !important;}
+            .user-ops{background-color:'.$bcolor.' !important;;color:'.$fcolor.' !important;;}
+            .side-nav li a:hover,.side-nav li a:focus,.side-nav li a {outline: none;background-color:'.$bcolor.' !important;color:'.$fcolor.' !important;}
+            </style>
             <script src="/js/common/jquery.js"></script>
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
