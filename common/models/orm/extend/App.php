@@ -40,9 +40,8 @@ class App extends \common\models\orm\base\App {
     }
     public static function fetchAllBelongSdkArrByPid($pid = null){
         $data= self::find()->select(['app.id','app.name'])->join('inner join', 'partner', 'app.partner = partner.id')
-        ->where(array(
-            ['and','partner.belong',1],
-            ['and','partner.id',$pid]
+        ->where('partner.belong = 1 and partner.id = :pid',array(
+            ':pid' => $pid
         ))
         ->all();
         return $data;
