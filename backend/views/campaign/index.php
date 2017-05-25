@@ -606,15 +606,15 @@
     }
 
     function validInput(){
-        var  error_num = 0;
-        var  cutrate = $('#campaign_cutrate').val();
+    var  error_num = 0;
+     /*    var  cutrate = $('#campaign_cutrate').val();
         var  cutday = $('#campaign_cutday').val();
         var  mcutrate = $('#campaign_mcutrate').val();
         var  mcutday = $('#campaign_mcutday').val();
         if(!isPositiveInt(cutrate) || !isPositiveInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
             alert(MESSAGE_PERCENT_ERROR);
             error_num += 1;
-        } /*else if(cutday == '' || mcutday == ''){
+        } *//*else if(cutday == '' || mcutday == ''){
             alert(MESSAGE_DATE_ERROR);
             error_num += 1;
         }*/
