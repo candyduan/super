@@ -11,7 +11,8 @@
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text" class="form-control" id="searchStr" name="searchStr" placeholder="内容商用户名邮箱:模糊"/>
                     <select class="form-control" id="utype" name="utype">
-                        <option value="0">合作模式</option>
+                        <option value="-1">全部</option>
+                        <option value="0">未确定</option>
                         <option value="1">内容供应</option>
                         <option value="2">内容推广</option>
                         <option value="3">综合</option>

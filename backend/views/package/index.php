@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/ace/assets/css/bootstrap-datepicker3.min.css" />
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
@@ -27,7 +28,8 @@
                         <td>CP分成</td>
                         <td>渠道方式</td>
                         <td>渠道分成</td>
-                        <td>结算比例</td>
+                        <td>CP-R</td>
+                        <td>CP-M</td>
                         <td>管理</td>
                     </tr>
                     </thead>
@@ -60,19 +62,27 @@
                         <span class="input-group-addon">包名:</span>
                         <input type="text" id="package_name" readonly placeholder="包名" class="form-control"/>
                         <span class="input-group-addon">cp优化比例:</span>
-                        <input type="text" id="package_cutrate" readonly placeholder="cp优化比例" class="form-control"/>
+                        <input type="text" id="package_cutrate"  placeholder="cp优化比例" class="form-control"/>
+                        <span class="input-group-addon">%</span>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">版本号:</span>
                         <input type="text"  id="package_version_code" readonly placeholder="版本号" class="form-control" />
                         <span class="input-group-addon">cp优化开始:</span>
-                        <input type="text" id="package_cutday" readonly placeholder="cp优化开始" class="form-control"/>
+                        <input type="text" id="package_cutday"  placeholder="cp优化开始"  class="form-control date-picker" data-date-format="yyyy-mm-dd"/>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">版本名:</span>
                         <input type="text"  id="package_version_name" readonly placeholder="版本名" class="form-control" />
+                        <span class="input-group-addon">渠道优化比例:</span>
+                        <input type="text" id="package_mcutrate"  placeholder="填写1-100的整数" class="form-control"/>
+                        <span class="input-group-addon">%</span>
+                    </div><br /><br />
+                    <div class="input-group">
                         <span class="input-group-addon">推广分成方式:</span>
                         <input type="text" id="package_push_mode" readonly placeholder="推广分成方式" class="form-control"/>
+                        <span class="input-group-addon">渠道优化开始:</span>
+                        <input type="text" id="package_mcutday"  placeholder="渠道优化开始"  class="form-control date-picker" data-date-format="yyyy-mm-dd"/>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">大小:</span>
@@ -148,12 +158,19 @@
 </div>
 
 <!-- ------------------------------------------------------------------------javascript---------------------------------------------------------------------->
+<script src="/ace/assets/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/common/bootstrap3-typeahead.min.js"></script>
 <script src="/js/sdk/util.js"></script>
 <script src="/js/sdk/alert.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         _initDataTable();
     });
+
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    })
 
     function _initDataTable() {
         $("#tbl").dataTable().fnDestroy();
@@ -165,7 +182,7 @@
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [0, 1, 2, 3, 4,5,6,7,8,9]
+                'aTargets': [0, 1, 2, 3, 4,5,6,7,8,9,10,11]
             }],
             "displayLength": 100, //默认每页多少条数据
             "processing": true,
@@ -211,6 +228,8 @@
             $('#package_rate').val(result.rate);
             $('#package_cutrate').val(result.cutrate);
             $('#package_cutday').val(result.cutday);
+            $('#package_mcutrate').val(result.mcutrate);
+            $('#package_mcutday').val(result.mcutday);
             $('#package_push_mode').val(result.mtype);
             $('#package_push_rate').val(result.mrate);
             $('#package_sign').val(result.sign);
@@ -229,7 +248,12 @@
         event.preventDefault();
         var data = {
             'cpid' : $('#hidden_cpid').val(),
-            'paymode' : $('#package_paymode').val()
+            'paymode' : $('#package_paymode').val(),
+            'cutrate' : $('#package_cutrate').val(),
+            'cutday' : $('#package_cutday').val(),
+            'mcutrate' : $('#package_mcutrate').val(),
+            'mcutday' : $('#package_mcutday').val(),
+
         }
         var method = 'get';
         var url = '/package/modify-paymode';
@@ -310,5 +334,22 @@
             alert(MESSAGE_MODIFY_SUCCESS);
         };
         callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+
+    function validInput(){
+        var  error_num = 0;
+        var  cutrate = $('#package_cutrate').val();
+        var  cutday = $('#package_cutday').val();
+        var  mcutrate = $('#package_mcutrate').val();
+        var  mcutday = $('#package_mcutday').val();
+        if(!isPositiveInt(cutrate) || !isPositiveInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
+            alert(MESSAGE_PERCENT_ERROR);
+            error_num += 1;
+        } /*else if(cutday == '' || mcutday == ''){
+         alert(MESSAGE_DATE_ERROR);
+         error_num += 1;
+         }*/
+
+        return error_num;
     }
 </script>

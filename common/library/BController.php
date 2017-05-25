@@ -41,7 +41,7 @@ class BController extends Controller{
                         } else {
                             $outflag = 2;
                         }
-                    } else if($partner == Constant::PARTNER_CP){
+                    } else if($partner->utype == Constant::PARTNER_CP){
                         if($actionName == 'cps-gain'){
                             $outflag = 1;
                         } else {

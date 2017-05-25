@@ -296,7 +296,7 @@
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [0, 1, 2, 3, 4,5,6,7,8,9]
+                'aTargets': [0, 1, 2, 3, 4,5,6,7,8,9,10]
             }],
             "displayLength": 100, //默认每页多少条数据
             "processing": true,
@@ -342,9 +342,11 @@
             $('#campaign_type').val(result.type);
             $('#campaign_grade').val(result.grade);
             $('#campaign_cutday').val(result.cutday);
+            $('#campaign_mcutday').val(result.mcutday);
             $('#campaign_startdate').val(result.startdate);
             $('#campaign_enddate').val(result.enddate);
             $('#campaign_cutrate').val(result.cutrate);
+            $('#campaign_mcutrate').val(result.mcutrate);
             $('#campaign_syncurl').val(result.syncAddr);
             $('#hidden_caid').val(caid);
             $('#btn_submit_campaign').prop('disabled',false);
@@ -360,7 +362,11 @@
             $('#btn_submit_campaign').prop('disabled',true);
             var data = {
                 'caid': $('#hidden_caid').val(),
-                'paymode': $('#campaign_paymode').val()
+                'paymode': $('#campaign_paymode').val(),
+                'cutrate' : $('#campaign_cutrate').val(),
+                'cutday' : $('#campaign_cutday').val(),
+                'mcutrate' : $('#campaign_mcutrate').val(),
+                'mcutday' : $('#campaign_mcutday').val(),
             }
             var method = 'get';
             var url = '/campaign/modify-paymode';
@@ -608,7 +614,10 @@
         if(!isPositiveInt(cutrate) || !isPositiveInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
             alert(MESSAGE_PERCENT_ERROR);
             error_num += 1;
-        }
+        } /*else if(cutday == '' || mcutday == ''){
+            alert(MESSAGE_DATE_ERROR);
+            error_num += 1;
+        }*/
 
         return error_num;
     }

@@ -78,9 +78,9 @@ class CampaignController extends BController
                 sprintf('%.2f',$value['agentRate']) . ' %',
                 sprintf('%.2f',$value['agentCutRate']) . ' % @'. date('Y-m-d',$value['agentCutDay']),
                 sprintf('%.2f',$value['rate']) . '%',
-                sprintf('%.2f',$value['cutRate']) . ' % @' . date('Y-m-d', $value['cutDay']),
+                sprintf('%.2f',$value['cutRate']) . ' % @' . ( $value['cutDay'] == 0 ? '' : date('Y-m-d', $value['cutDay'])),
                 sprintf('%.2f',$value['mrate']) . ' %',
-                sprintf('%.2f',$value['mcutRate']) . ' % @' . date('Y-m-d', $value['mcutDay']),
+                sprintf('%.2f',$value['mcutRate']) . ' % @' . ( $value['mcutDay'] == 0 ? '' : date('Y-m-d', $value['mcutDay'])),
                 $value['sign'],
                 MyHtml::aElement("javascript:void(0);", 'getSdks',$value['id'],'关联SDK参数配置'). MyHtml::br().
                 MyHtml::aElement("/package/index?caid=".$value['id'], '', '','活动包管理')
@@ -102,21 +102,29 @@ class CampaignController extends BController
 
     public function actionModifyPaymode() {
         $resultState = 0;
-        $caid = Yii::$app->request->get('caid');
-        $paymode =  Yii::$app->request->get('paymode');
+        $caid = Utils::getBParam('caid');
+        $paymode =  intval(Utils::getBParam('paymode'));
+        $cutRate = intval(Utils::getBParam('cutrate'));
+        $cutDay = trim(Utils::getBParam('cutday'));
+        $mcutRate = intval(Utils::getBParam('mcutrate'));
+        $mcutDay = trim(Utils::getBParam('mcutday'));
         if (isset($caid)) {
             $transaction =  Campaign::getDb()->beginTransaction();
             try {
                 $campaignModel = Campaign::findByPk($caid);
                 if($campaignModel){
                     $campaignModel->payMode = $paymode;
+                    $campaignModel->cutRate = $cutRate;
+                    $campaignModel->cutDay = strtotime($cutDay);
+                    $campaignModel->mcutRate = $mcutRate;;
+                    $campaignModel->mcutDay = strtotime($mcutDay);
                     $resultState  = $campaignModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
-                MyMail::sendMail($e->getMessage(), 'Error From modify campaign pay mode');
+                MyMail::sendMail($e->getMessage(), 'Error From modify campaign pay mode and rate');
             }
         }
 
@@ -204,7 +212,9 @@ class CampaignController extends BController
                 $campaign['grade'] = $campaign['grade'] == 0 ? '普通' : 'A级';
                 $campaign['rate'] = sprintf('%.2f', $campaign['rate']) . '%'; //cp分成比例
                 $campaign['cutrate'] = $campaign['cutRate']; //cp优化比例
-                $campaign['cutday'] = date('Y-m-d', $campaign['cutDay']); //cp优化开始
+                $campaign['mcutrate'] = $campaign['mcutRate']; //渠道优化比例
+                $campaign['cutday'] =  $campaign['cutDay'] == 0 ? '' :date('Y-m-d', $campaign['cutDay']); //cp优化开始
+                $campaign['mcutday'] = $campaign['mcutDay'] == 0 ? '' : date('Y-m-d', $campaign['mcutDay']); //渠道优化开始
                 $campaign['mrate'] = sprintf('%.2f', $campaign['mrate']) . '%'; //渠道分成比例
             }
         }
