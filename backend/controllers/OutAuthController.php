@@ -24,7 +24,8 @@ class OutAuthController extends BController{//controller yaogaila
 
     public function actionIndex()
     {
-        if (!Yii::$app->user->isGuest) {
+        $session =  Yii::$app->getSession();
+        if (!empty($session->get('__outuserid'))) {
             return $this->render("/out-auth/index");
         } else {
             $this->redirect("/out-auth/login");
