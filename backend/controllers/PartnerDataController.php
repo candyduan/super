@@ -190,7 +190,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
                 if($checkM){
-                    array_push($item, $value['m']);
+                    array_push($item, $value['mediaSign']);
                 }else{
                     array_push($item, '-');
                 }
@@ -220,6 +220,7 @@ class PartnerDataController extends BController
             'app.name as app',
             'campaign.name as c',
             'channel.name as m',
+            'campaignPackage.mediaSign as mediaSign',
             'sum(sdkPackagePayDay.newUsers) as newUsers',
             'sum(sdkPackagePayDay.successPay) as successPay',
         ];
