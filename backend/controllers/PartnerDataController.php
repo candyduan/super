@@ -114,7 +114,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
                 if($checkM){
-                    array_push($item, $value['m']);
+                    array_push($item, $value['mediaSign']);
                 }else{
                     array_push($item, '-');
                 }
