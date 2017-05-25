@@ -38,7 +38,7 @@ $(document).ready(function(){
 		if(parseInt(resJson.item.status) == 1){
 			var status = '正常';
 		}else{
-			var status = '删除';
+			var status = '禁用';
 		}
 		$('#status').html(status);	
 	};

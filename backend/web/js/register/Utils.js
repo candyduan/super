@@ -80,7 +80,7 @@ Utils.getNoFooterModal  = function(title,body){
     '        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
     '        <h4 class="modal-title">' + title + '</h4>' +
     '      </div>' +
-    '      <div class="modal-body" style="padding-top:0px;">' +
+    '      <div class="modal-body" style="display:table;">' +
     '        <p>'+ body +'</p>' +
     '      </div>' +
     '    </div>' +

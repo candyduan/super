@@ -23,6 +23,7 @@ use common\models\orm\extend\App;
 use common\models\orm\extend\Campaign;
 use common\models\orm\extend\CampaignPackage;
 use common\models\orm\extend\RegSwitch;
+use common\models\orm\extend\RegChannelSwitch;
 class RegisterController extends BController{
     public $layout = "register";
     public function actionTest(){
@@ -823,4 +824,40 @@ class RegisterController extends BController{
     	Utils::jsonOut($out);
     }
     
+    public function actionChannelSwitchResult(){
+        $rcid   = Utils::getBackendParam('rcid');
+        $regChannelSwitchModel  = RegChannelSwitch::findbyRcid($rcid);
+        $list                   = RegChannelSwitch::getHourList($regChannelSwitchModel);
+        $out['resultCode']      = Constant::RESULT_CODE_SUCC;
+        $out['rcid']            = $rcid;
+        $out['msg']             = Constant::RESULT_MSG_SUCC;
+        $out['list']            = $list;
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelSwitchSet(){
+        $rcid   = Utils::getBackendParam('rcid');
+        $hour   = Utils::getBackendParam('hour');
+        $status = Utils::getBackendParam('status');
+        
+        $regChannelSwitchModel  = RegChannelSwitch::findbyRcid($rcid);
+        if(!$regChannelSwitchModel){
+            $regChannelSwitchModel  = new RegChannelSwitch();
+            $regChannelSwitchModel->rcid    = $rcid;
+        }
+        $hour = 'hour'.$hour;
+        $regChannelSwitchModel->$hour = $status;
+        try{
+            $regChannelSwitchModel->save();
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $out['status']      = $regChannelSwitchModel->$hour;
+            $out['swhour']      = $hour;
+            $out['rcid']        = $rcid;
+        }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
 }
