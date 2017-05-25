@@ -74,7 +74,7 @@
 				</div>
 			</div>
 			
-			<div class="input-group" style="padding-top:10px;" id="syncDataDiv">
+			<div class="input-group" style="padding-top:10px;display:none" id="syncDataDiv">
 				<span class="input-group-addon" style="width:120px">同步地址</span>
 				<span  style="padding-left:10px;margin-top:10px" id="syncData"></span>
 			</div>
@@ -213,9 +213,9 @@ $(document).ready(function(){
 					$('#keys2Type'+obj.type).val(obj.keys2);
 					$('#keys3Type'+obj.type).val(obj.keys3);
 					$('#statusType'+obj.type).val(obj.status);
-				});  
+				}); 
  				$("#syncDataDiv").show();
- 				$("#syncData").html("<?php echo common\library\Constant::DOMAIN_REGISTER_SYNC?>/register/sync?sign="+resJson.item.sign);
+ 				$("#syncData").html(resJson.syncUrl);
 			}		
 		};
 		Utils.ajax(url,data,succFunc);

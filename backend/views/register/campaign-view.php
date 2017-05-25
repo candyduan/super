@@ -8,7 +8,7 @@
   <div class="form-group"><input type="text"  data-provide="typeahead"  id="partnerText" class="form-control searchbar_merchant"  placeholder="Partner"></div>
   <input type="hidden" id="partner" value="">
   
-  <select class="form-control" id="app" style="width: 160px">
+  <select class="form-control" id="app" style="width: 200px">
 	<option value="0" >选择应用</option>
   </select>
   <button type="submit" class="btn btn-default searchbar_smt" id="searchBtn"> 搜索 </button>

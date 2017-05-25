@@ -49,8 +49,8 @@ class Constant{
      * 域名
      */
     const DOMAIN_REGISTER   = 'paytest1.maimob.net';
-    //const DOMAIN_REGISTER_SYNC   = 'http://data.maimob.cn';//真服
-    const DOMAIN_REGISTER_SYNC   = 'http://supertest.maimob.net:8082';//测服
+    const DOMAIN_REGISTER_SYNC   = 'http://data.maimob.cn';//真服
+    const DOMAIN_REGISTER_SYNC_TEST   = 'http://supertest.maimob.net:8082';//测服
     
     
     /*
@@ -58,16 +58,4 @@ class Constant{
      */
     const SUBMIT_SERVER     = 1;
     const SUBMIT_CLIENT     = 2;
-
-    /*
-     * 融合SDK
-     */
-    const BELONG_SDK     = 1;
-
-    /*
-     * 内容商
-     */
-    const PARTNER_ONLY    = 1;
-    const PARTNER_CP      = 2;
-    const PARTNER_BOTH    = 3;
 }

@@ -175,7 +175,7 @@ class RegisterController extends BController{
     	}else{
     		$regChannel				= RegChannel::findByPk($rcid);
     		$regChannelVerifyRule	= RegChannelVerifyRule::findAllByRcid($rcid);
-    		if(!$regChannel){
+     		if(!$regChannel){
     			 $out['resultCode']  = Constant::RESULT_CODE_NONE;
     			 $out['msg']         = Constant::RESULT_MSG_NONE;
     		}else{
@@ -183,6 +183,8 @@ class RegisterController extends BController{
     			$out['msg']         = Constant::RESULT_MSG_SUCC;
     			$out['item']        = $regChannel->toArray();
     			$out['channelVerifyRule']	= $regChannelVerifyRule;
+    			$syncDomain		= Utils::isFrontendAlpha() ? Constant::DOMAIN_REGISTER_SYNC : Constant::DOMAIN_REGISTER_SYNC_TEST;
+    			$out['syncUrl']	= $syncDomain."/register/sync?sign=".$regChannel->sign;
     		}
     		
     	}
