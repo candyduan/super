@@ -87,24 +87,45 @@ class WidgetsUtils{
     
     public static function getFooter(){
         $str = '
-<div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;text-align:center !important;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="margin-top:10%;"></div>
-<div id="dialog" class="modal fade"></div>
-<script>
-$(document).ready(function(){
-	var url = window.location.href;
-	var domain = document.domain;
-    url = url.split("?");
-    url = url[0];
-	url = url.replace("http://","").replace(domain,"").replace(":8082","");
-	$.each($(".sidebar-item"),function(key,val){
-		if($(val).attr("href") == url){
-			$(val).addClass("selected");
-			$(val).parent().parent().addClass("in");
-		}
-	});
-});
-</script>            
+            <div style="position:absolute;z-index:999;left:0px;top:0px; width:100%;text-align:center !important;display:none;" id="loading" class=""><img src="/imgs/loading.gif" style="margin-top:10%;"></div>
+            <div id="dialog" class="modal fade"></div>
+            <script>
+            $(document).ready(function(){
+            	var url = window.location.href;
+            	var domain = document.domain;
+                url = url.split("?");
+                url = url[0];
+            	url = url.replace("http://","").replace(domain,"").replace(":8082","");
+            	$.each($(".sidebar-item"),function(key,val){
+            		if($(val).attr("href") == url){
+            			$(val).addClass("selected");
+            			$(val).parent().parent().addClass("in");
+            		}
+            	});
+            });
+            </script>            
             
+            ';
+        return $str;
+    }
+    
+    public static function getHeader(){
+        $str ='
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="">
+            <meta name="author" content="">
+          
+        	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+            <link href="/css/bootstrap.min.css" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=20170525" rel="stylesheet">
+            <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+            <script src="/js/common/jquery.js"></script>
+            <script src="/js/common/bootstrap.min.js"></script>
+          	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
+            <script src="/js/register/Utils.js?d=20170516"></script>                        
             ';
         return $str;
     }
