@@ -58,4 +58,16 @@ class Constant{
      */
     const SUBMIT_SERVER     = 1;
     const SUBMIT_CLIENT     = 2;
+    
+    /*
+     * 融合SDK
+     */
+    const BELONG_SDK     = 1;
+    
+    /*
+     * 内容商
+     */
+    const PARTNER_ONLY    = 1;
+    const PARTNER_CP      = 2;
+    const PARTNER_BOTH    = 3;
 }
