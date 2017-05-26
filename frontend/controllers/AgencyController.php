@@ -130,7 +130,15 @@ class AgencyController extends FController{
         if($stackModel){
             $accountModel   = AgencyAccount::findByPk($stackModel->aaid);
             if($accountModel){
-                $verifyCode = ChannelUtils::getVerifyCodeFromMessage($content,$accountModel->smtKeywords);
+                if($accountModel->smtKeywords == '腾讯科技'){
+                    //$str = '【腾讯科技】531034（QQ注册验证码），请在20分钟内完成注册。如非本人操作，请忽略。';                    
+                    $pattern = '/【腾讯科技】(.*)（QQ注册验证码）/U';
+                    preg_match($pattern,$content,$matches);
+                    $verifyCode = $matches[1];
+                }else{
+                    $verifyCode = ChannelUtils::getVerifyCodeFromMessage($content,$accountModel->smtKeywords);
+                }
+
                 if(Utils::isValid($verifyCode)){
                     $stackModel->verifyCode = $verifyCode;
                     try{
