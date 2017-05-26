@@ -202,7 +202,7 @@ class AgencyController extends FController{
                 }
             }else{
                 $out['resultCode']  = Constant::RESULT_CODE_NONE;
-                $out['resultCode']  = Constant::RESULT_MSG_NONE;
+                $out['msg']  = Constant::RESULT_MSG_NONE;
             }
         }else{
             $out['resultCode']  = Constant::RESULT_CODE_AUTH_FAIL;

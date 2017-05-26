@@ -1,6 +1,5 @@
 <?php
 namespace common\models\orm\extend;
-use function Faker\time;
 
 class AgencyStack extends \common\models\orm\base\AgencyStack{
     const STATUS_DEL    = 0;
