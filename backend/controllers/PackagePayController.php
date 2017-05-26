@@ -582,6 +582,9 @@ class PackagePayController extends BController
      	return $condition;
      }
      
+     /**
+      * 渠道计费分析报表下载
+      */
      public function actionAnalysisDownload(){
      	$headerArr = ['日期', '内容商' ,'应用', '活动', '渠道', '渠道标识', 'SDK', '省份', '运营商', '请求总金额', '信息费', '收入', '转化率'];
      	$headerStr = implode("\t", $headerArr);
