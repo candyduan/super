@@ -132,13 +132,13 @@ class PackagePayController extends BController
             if($newUser <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$newUser,0));
+                array_push($item, number_format($value['successPay']/$newUser,2));
             }
             
             if($value['users'] <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$value['users'],0));
+                array_push($item, number_format($value['successPay']/$value['users'],2));
             }
             
             if($actUser <= 0){
@@ -146,10 +146,10 @@ class PackagePayController extends BController
             }else{
                 array_push($item, number_format($value['users']/$actUser*100,2).'%');
             }
-            array_push($item, number_format($value['income'],0));
-            array_push($item, number_format($value['payCp'],0));
-            array_push($item, number_format($value['payM'],0));
-            array_push($item, number_format($value['profit'],0));
+            array_push($item, number_format($value['income'],2));
+            array_push($item, number_format($value['payCp'],2));
+            array_push($item, number_format($value['payM'],2));
+            array_push($item, number_format($value['profit'],2));
             if(0 == $value['successPay']){
                 array_push($item, '-');
             }else{
