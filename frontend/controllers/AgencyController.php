@@ -204,6 +204,8 @@ class AgencyController extends FController{
                         'repeat'    => 5,
                         'timeout'   => 60,
                     );
+                    array_push($list, $item);
+                    $out['list']    = $list;
                 }catch (\Exception $e){
                     $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
                     $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
