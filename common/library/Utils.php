@@ -206,4 +206,9 @@ class Utils{
         }
         return $value;
     }
+    
+    /* 是否是ajax请求 */
+    public static function isAjaxRequest(){
+    	return \Yii::$app->request->isAjax ? true : false;
+    }
 }

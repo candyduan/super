@@ -439,7 +439,11 @@ class PackagePayController extends BController
      			'recordsFiltered' => $count,
      			'tableData' => $tabledata,
      	];
-     	Utils::jsonOut($data);
+     	if(Utils::isAjaxRequest()){
+     		Utils::jsonOut($data);
+     	}else{
+     		return $tabledata;
+     	}
      }
      
      private function _getAnalysisCondition($checkCP,$checkAPP,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,$partner,$app,$campaign,$media,$sdk,$stime,$etime,$dateType,$provider,$province){
@@ -577,4 +581,25 @@ class PackagePayController extends BController
      	$condition['group'] = $group;
      	return $condition;
      }
+     
+     public function actionAnalysisDownload(){
+     	$headerArr = ['日期', '内容商' ,'应用', '活动', '渠道', '渠道标识', 'SDK', '省份', '运营商', '请求总金额', '信息费', '收入', '转化率'];
+     	$headerStr = implode("\t", $headerArr);
+     	$datas = self::actionAnalysisAjaxIndex();
+     	$datasLineArr = [];
+     	foreach($datas as $data){
+     		$datasLineArr[] = implode("\t", $data);
+     	}
+     	
+     	$dataStr = $headerStr."\r\n".implode("\r\n", $datasLineArr);
+     	
+     	header("Content-type:text/csv");
+     	header("Content-Type: application/force-download");
+     	header("Content-Disposition: attachment; filename=融合SDK渠道计费分析表-".date('Y-m-d').".csv");
+     	header('Expires:0');
+     	header('Pragma:public');
+     	echo "\xFF\xFE".mb_convert_encoding($dataStr, 'UCS-2LE', 'UTF-8' );
+     }
+     
+
 }

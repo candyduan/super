@@ -415,8 +415,16 @@
     function searchData(){
     	_initDataTable();
     }
+
+    //下载报表
     function downloadData(){
-    	alert('TODO');
+	   	var param = '&dateType='+ $("#inputDateType").attr("value");
+    		param += '&provider=' + $("#inputProvider").attr("value");
+        param += '&province=' + $('#hidden_province_array').val().split(',');
+        param += '&time=' + $('#hidden_setime_array').val().split(',');
+		var url = '/package-pay/analysis-download';
+		var data = $.param($('#formSearch').serializeArray()) + param;
+		window.open(url+'?'+data);
     }
     
     function timebtnClick(that){
