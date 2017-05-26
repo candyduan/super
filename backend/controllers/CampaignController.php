@@ -115,9 +115,9 @@ class CampaignController extends BController
                 if($campaignModel){
                     $campaignModel->payMode = $paymode;
                     $campaignModel->cutRate = $cutRate;
-                    $campaignModel->cutDay = strtotime($cutDay);
+                    $campaignModel->cutDay = $cutDay == '' ? 0 : strtotime($cutDay);
                     $campaignModel->mcutRate = $mcutRate;;
-                    $campaignModel->mcutDay = strtotime($mcutDay);
+                    $campaignModel->mcutDay = $mcutDay == '' ? 0 : strtotime($mcutDay);
                     $resultState  = $campaignModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();

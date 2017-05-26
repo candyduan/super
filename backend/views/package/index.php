@@ -244,28 +244,32 @@
     }
 
     $('#btn_submit_package').on('click',function(event){
-        $('#btn_submit_package').prop('disabled',true);
         event.preventDefault();
-        var data = {
-            'cpid' : $('#hidden_cpid').val(),
-            'paymode' : $('#package_paymode').val(),
-            'cutrate' : $('#package_cutrate').val(),
-            'cutday' : $('#package_cutday').val(),
-            'mcutrate' : $('#package_mcutrate').val(),
-            'mcutday' : $('#package_mcutday').val(),
+        var error_num = validInput();
+        if(error_num == 0) {
+            $('#btn_submit_package').prop('disabled',true);
+            var data = {
+                'cpid': $('#hidden_cpid').val(),
+                'paymode': $('#package_paymode').val(),
+                'cutrate': $('#package_cutrate').val(),
+                'cutday': $('#package_cutday').val(),
+                'mcutrate': $('#package_mcutrate').val(),
+                'mcutday': $('#package_mcutday').val(),
 
-        }
-        var method = 'get';
-        var url = '/package/modify-paymode';
-        var success_function = function(result){
-            if(parseInt(result) > 0){
-                alert(MESSAGE_MODIFY_SUCCESS);
-            }else{
-                alert(MESSAGE_ADD_ERROR);
             }
-            $('#modalPackage').modal('hide');
+            var method = 'get';
+            var url = '/package/modify-paymode';
+            var success_function = function (result) {
+                if (parseInt(result) > 0) {
+                    alert(MESSAGE_MODIFY_SUCCESS);
+                } else {
+                    alert(MESSAGE_ADD_ERROR);
+                }
+                _initDataTable();
+                $('#modalPackage').modal('hide');
+            }
+            callAjaxWithFunction(url, data, success_function, method);
         }
-        callAjaxWithFunction(url,data,success_function,method);
     });
 
     function getSdks(cpid){

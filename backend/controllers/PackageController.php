@@ -165,9 +165,9 @@ class PackageController extends BController
                 if($packageModel){
                     $packageModel->payMode = $paymode;
                     $packageModel->cutRate = $cutRate;
-                    $packageModel->cutDay = strtotime($cutDay);
+                    $packageModel->cutDay = $cutDay == '' ? 0 : strtotime($cutDay);
                     $packageModel->mcutRate = $mcutRate;;
-                    $packageModel->mcutDay = strtotime($mcutDay);
+                    $packageModel->mcutDay = $mcutDay == '' ? 0 : strtotime($mcutDay);
                     $resultState  = $packageModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();

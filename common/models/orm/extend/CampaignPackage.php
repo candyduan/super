@@ -60,7 +60,7 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
     	if(is_numeric($campaignId) && $campaignId){
     		$condition['campaign'] =  $campaignId;
     	}
-    	$data = self::find()->where($condition);
+    	$data = self::find()->where($condition)->orderBy('id desc');
     	$totalCount = $data->count();
     	$pages      = ceil($totalCount/$perpage);
     	$pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);
