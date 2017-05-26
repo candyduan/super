@@ -341,18 +341,21 @@
     }
 
     function validInput(){
-   var  error_num = 0;
-        /*         var  cutrate = $('#package_cutrate').val();
+        var  error_num = 0;
+        var  cutrate = $('#package_cutrate').val();
         var  cutday = $('#package_cutday').val();
         var  mcutrate = $('#package_mcutrate').val();
         var  mcutday = $('#package_mcutday').val();
-        if(!isPositiveInt(cutrate) || !isPositiveInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
+        if(!isUnsignedInt(cutrate) || !isUnsignedInt(mcutrate) || cutrate > 100 || cutrate < 0  || mcutrate > 100 || mcutrate < 0){
             alert(MESSAGE_PERCENT_ERROR);
             error_num += 1;
-        } *//*else if(cutday == '' || mcutday == ''){
-         alert(MESSAGE_DATE_ERROR);
-         error_num += 1;
-         }*/
+        } else if(cutday == '' &&  cutrate > 0){
+            alert('您已经设置了CP优化比例,请设置一个开始时间');
+            error_num += 1;
+        } else if(mcutday == '' &&  mcutrate > 0){
+            alert('您已经设置了渠道优化比例,请设置一个开始时间');
+            error_num += 1;
+        }
 
         return error_num;
     }
