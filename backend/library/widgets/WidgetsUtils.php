@@ -1,6 +1,7 @@
 <?php
 namespace backend\library\widgets;
 use common\models\orm\extend\AdminTheme;
+use common\models\orm\extend\AgencyAccount;
 
 class WidgetsUtils{
     public static function getMainMenu($layout = ''){
@@ -140,6 +141,18 @@ class WidgetsUtils{
             <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 	        <script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
             ';
+        return $str;
+    }
+    
+    
+    public static function getAgencyAccount(){
+        $str = '<select class="agency-account">';
+        $str.= '<option value="0">全部</option>';
+        $agencyAccountModels = AgencyAccount::findAlls();
+        foreach ($agencyAccountModels as $agencyAccountModel){
+            $str .= '<option value ="'.$agencyAccountModel->aaid.'">'.$agencyAccountModel->name.'</option>';
+        }
+        $str .='</select>';
         return $str;
     }
 }
