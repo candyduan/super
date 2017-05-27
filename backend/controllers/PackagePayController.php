@@ -123,14 +123,7 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            $usersData = array();
-            if( 3 == $dateType){//时段
-                //TODO
-            }else if(4 == $dateType){//月份
-               //TODO
-            }else{//天
-                $usersData = self::_getUsersByDate($checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
-            }
+            $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
             $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
             $actUser = Utils::getValuesFromArray($usersData, 'actUsers',0);
             $users = Utils::getValuesFromArray($usersData, 'payUsers',0);
@@ -291,8 +284,9 @@ class PackagePayController extends BController
         return $condition;
     }
 
-    private function _getUsersByDate($checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media){
+    private function _getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media){
         $res = array();
+        
         $select = [
             'count( distinct sdkPlayer.imsi) as users'  
         ];
@@ -303,11 +297,39 @@ class PackagePayController extends BController
             'sdkPlayer.status',
             1
         ];
-        $where[] = [
-            '=',
-            'sdkPlayer.date',
-            $date.' 00:00:00'
-        ];
+        
+        if( 3 == $dateType){//时段
+            $where[] = [
+                '>=',
+                'sdkPlayer.date',
+                $stime.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayer.date',
+                $etime.' 00:00:00'
+            ];
+        }else if(4 == $dateType){//月份
+            $sdate = date('Y-m-01',strtotime($date));
+            $edate = date("Y-m-d",strtotime("$sdate 1 month -1 day"));
+            $where[] = [
+                '>=',
+                'sdkPlayer.date',
+                $sdate.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayer.date',
+                $edate.' 00:00:00'
+            ];
+        }else{//天
+            $where[] = [
+                '=',
+                'sdkPlayer.date',
+                $date.' 00:00:00'
+            ];
+        }
+        
         if($checkCP){
             $where[] = [
             '=',
@@ -347,7 +369,7 @@ class PackagePayController extends BController
             'sdkPlayer.isNew',
             1
         ];
-        $newUsers = SdkPlayer::getCountByCondition($select,$where,$group);
+        $newUsers = SdkPlayer::getCountByCondition($select,$where);
         $res['newUsers'] = $newUsers['users'];
         
         //支付用户
@@ -357,16 +379,44 @@ class PackagePayController extends BController
         
         $where = [];
         $where[] = 'and';
-        $where[] = [
-            '>=',
-            'sdkPayTransaction.recordTime',
-            $date.' 00:00:00'
-        ];
-        $where[] = [
-            '<=',
-            'sdkPayTransaction.recordTime',
-            $date.' 23:59:59'
-        ];
+        
+        if( 3 == $dateType){//时段
+            $where[] = [
+                '>=',
+                'sdkPayTransaction.recordTime',
+                $stime.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPayTransaction.recordTime',
+                $etime.' 00:00:00'
+            ];
+        }else if(4 == $dateType){//月份
+            $sdate = date('Y-m-01',strtotime($date));
+            $edate = date("Y-m-d",strtotime("$sdate 1 month -1 day"));
+            $where[] = [
+                '>=',
+                'sdkPayTransaction.recordTime',
+                $sdate.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPayTransaction.recordTime',
+                $edate.' 00:00:00'
+            ];
+        }else{//天
+            $where[] = [
+                '>=',
+                'sdkPayTransaction.recordTime',
+                $date.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPayTransaction.recordTime',
+                $date.' 23:59:59'
+            ];
+        }
+        
         if($checkCP){
             $where[] = [
                 '=',
