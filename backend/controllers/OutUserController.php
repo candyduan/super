@@ -232,7 +232,8 @@ class OutUserController extends BController
         }
 
         if(!empty($condition1) && !empty($condition2)){
-            $condition = $condition1[] = $condition2;
+            $condition1[] = $condition2;
+            $condition  = $condition1;
 
         }else if(!empty($condition1)){
             $condition = $condition1;
