@@ -12,7 +12,9 @@
 	
     <!-- 数据栏 -->
     <div class="databar">
-    	<table class="table table-bordered table-hover" id="data_list">
+    	<table class="table table-bordered table-hover">
+    	<thead><tr><td>订单ID</td><td>IMSI</td><td>手机号</td><td>通道</td><td>通道类型</td><td>日志类型</td><td>recv</td><td>send</td><td>时间</td></tr></thead>
+    	<tbody id="data_list"></tbody>
     	</table>
     </div>
     
@@ -35,7 +37,7 @@ function setResult(page){
 	//succ
 	var succ	= function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
-			resultHtml = '<tr><td>订单ID</td><td>IMSI</td><td>手机号</td><td>通道</td><td>通道类型</td><td>日志类型</td><td>recv</td><td>send</td><td>时间</td></tr>';
+			resultHtml = '';
 
             $.each(resultJson.list,function(key,val){
                 resultHtml = resultHtml + '<tr><td>'+val.roid+'</td><td>'+val.imsi+'</td><td>'+val.mobile+'</td><td>'+val.channel+'</td><td>'+val.devType+'</td><td>'+val.type+'</td><td>'+val.recv+'</td><td>'+val.send+'</td><td>'+val.time+'</td></tr>';
