@@ -32,7 +32,7 @@ class WidgetsUtils{
         $str = '
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <a class="navbar-brand main-menu '.$payLight.'" href="http://master.maimob.cn/index.php/admin/" target="_blank">支付SDK</a>
+                <a class="navbar-brand main-menu '.$payLight.'" href="/pay/index">支付SDK</a>
                 <a class="navbar-brand main-menu '.$sdkLight.'" href="/site/index">融合SDK</a>
                 <a class="navbar-brand main-menu '.$registerLight.'" href="/register/index">主动上行</a>
                 <a class="navbar-brand main-menu '.$agencyLight.'" href="/agency/index">注册中介</a>
