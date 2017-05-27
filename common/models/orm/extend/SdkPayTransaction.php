@@ -41,6 +41,9 @@ class SdkPayTransaction extends \common\models\orm\base\SdkPayTransaction{
             ->where($where)
             ->groupBy($group);
             $command = $query->createCommand();
+            Utils::jsonOut(array(
+                $select,$where,$group,$command->getSql()
+            ));exit;
             $data = $command->queryAll();
             if(count($data) > 0){
                 return $data[0];
