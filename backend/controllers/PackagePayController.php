@@ -27,6 +27,8 @@ use common\models\orm\extend\PlayerCount;
 use common\models\orm\extend\PayAction;
 use common\library\Constant;
 use common\models\orm\extend\Province;
+use common\models\orm\extend\SdkPlayer;
+use yii\db\Query;
 /**
  * SdkPay controller
  */
@@ -121,12 +123,21 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            $newUser = $value['newUsers'];
-            $actUser = $value['actUsers'];
+            $usersData = array();
+            if( 3 == $dateType){//时段
+                //TODO
+            }else if(4 == $dateType){//月份
+               //TODO
+            }else{//天
+                $usersData = self::_getUsersByDate($checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
+            }
+            $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
+            $actUser = Utils::getValuesFromArray($usersData, 'actUsers',0);
+            $users = Utils::getValuesFromArray($usersData, 'payUsers',0);
             array_push($item, $newUser);
             array_push($item, $actUser);
+            array_push($item, $users);
             
-            array_push($item, $value['users']);
             array_push($item, number_format($value['successPay'],0));
             array_push($item, number_format($value['cp'],0));
             if($newUser <= 0){
@@ -135,16 +146,16 @@ class PackagePayController extends BController
                 array_push($item, number_format($value['successPay']/$newUser,2));
             }
             
-            if($value['users'] <= 0){
+            if($users <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$value['users'],2));
+                array_push($item, number_format($value['successPay']/$users,2));
             }
             
             if($actUser <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['users']/$actUser*100,2).'%');
+                array_push($item, number_format($users/$actUser*100,2).'%');
             }
             array_push($item, number_format($value['income'],2));
             array_push($item, number_format($value['payCp'],2));
@@ -172,6 +183,7 @@ class PackagePayController extends BController
     }
     private function _getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType){
         $select = [
+            'campaignPackage.id as cpid',
             'campaignPackage.mediaSign as mediaSign',
             'sdkPackagePayDay.date as date',
             'partner.id as pid',
@@ -182,9 +194,9 @@ class PackagePayController extends BController
             'campaign.name as cmp',
             'channel.id as chid',
             'channel.name as m',
-            'sum(sdkPackagePayDay.newUsers) as newUsers',
-            'sum(sdkPackagePayDay.actUsers) as actUsers',
-            'sum(sdkPackagePayDay.users) as users',
+//             'sum(sdkPackagePayDay.newUsers) as newUsers',
+//             'sum(sdkPackagePayDay.actUsers) as actUsers',
+//             'sum(sdkPackagePayDay.users) as users',
             'sum(sdkPackagePayDay.successPay) as successPay',
             'sum(sdkPackagePayDay.cp) as cp',
             'sum(sdkPackagePayDay.income) as income',
@@ -279,6 +291,115 @@ class PackagePayController extends BController
         return $condition;
     }
 
+    private function _getUsersByDate($checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media){
+        $res = array();
+        $select = [
+            'count( distinct sdkPlayer.imsi) as users'  
+        ];
+        $where = [];
+        $where[] = 'and';
+        $where[] = [
+            '=',
+            'sdkPlayer.status',
+            1
+        ];
+        $where[] = [
+            '=',
+            'sdkPlayer.date',
+            $date.' 00:00:00'
+        ];
+        if($checkCP){
+            $where[] = [
+            '=',
+            'campaignPackage.partner',
+            $pid
+            ];
+        }
+        if($checkAPP){
+            $where[] = [
+                '=',
+                'campaignPackage.app',
+                $aid
+            ];
+        }
+        if($checkCmp){
+            $where[] = [
+                '=',
+                'campaignPackage.campaign',
+                $cid
+            ];
+        }
+        if($checkM){
+            $where[] = [
+                '=',
+                'campaignPackage.mediaSign',
+                $media
+            ];
+        }
+        
+        //活跃用户
+        $actUsers = SdkPlayer::getCountByCondition($select,$where);
+        $res['actUsers'] = $actUsers['users'];
+        
+        //激活用户
+        $where[] = [
+            '=',
+            'sdkPlayer.isNew',
+            1
+        ];
+        $newUsers = SdkPlayer::getCountByCondition($select,$where,$group);
+        $res['newUsers'] = $newUsers['users'];
+        
+        //支付用户
+        $select = [
+            'count(distinct sdkPayTransaction.scid) as users'
+        ];
+        
+        $where = [];
+        $where[] = 'and';
+        $where[] = [
+            '>=',
+            'sdkPayTransaction.recordTime',
+            $date.' 00:00:00'
+        ];
+        $where[] = [
+            '<=',
+            'sdkPayTransaction.recordTime',
+            $date.' 23:59:59'
+        ];
+        if($checkCP){
+            $where[] = [
+                '=',
+                'campaignPackage.partner',
+                $pid
+            ];
+        }
+        if($checkAPP){
+            $where[] = [
+                '=',
+                'campaignPackage.app',
+                $aid
+            ];
+        }
+        if($checkCmp){
+            $where[] = [
+                '=',
+                'campaignPackage.campaign',
+                $cid
+            ];
+        }
+        if($checkM){
+            $where[] = [
+                '=',
+                'campaignPackage.mediaSign',
+                $media
+            ];
+        }
+        
+        $payUsers = SdkPayTransaction::getCountByCondition($select,$where);
+        $res['payUsers'] = $payUsers['users'];
+        return $res;
+    }
      public function actionAnalysis(){
      	return $this->render('analysis-view');
      }
