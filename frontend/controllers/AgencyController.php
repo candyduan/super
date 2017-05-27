@@ -130,7 +130,14 @@ class AgencyController extends FController{
         if($stackModel){
             $accountModel   = AgencyAccount::findByPk($stackModel->aaid);
             if($accountModel){
-                $verifyCode = ChannelUtils::getVerifyCodeFromMessage($content,$accountModel->smtKeywords);
+                if($accountModel->smtKeywords == '腾讯科技'){                    
+                    #$pattern = '/【腾讯科技】(.*)（QQ注册验证码）/U';
+                    preg_match('/\d+/',$content,$matches);
+                    $verifyCode = $matches[0];
+                }else{
+                    $verifyCode = ChannelUtils::getVerifyCodeFromMessage($content,$accountModel->smtKeywords);
+                }
+
                 if(Utils::isValid($verifyCode)){
                     $stackModel->verifyCode = $verifyCode;
                     try{
@@ -196,13 +203,15 @@ class AgencyController extends FController{
                         'repeat'    => 5,
                         'timeout'   => 60,
                     );
+                    array_push($list, $item);
+                    $out['list']    = $list;
                 }catch (\Exception $e){
                     $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
                     $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
                 }
             }else{
                 $out['resultCode']  = Constant::RESULT_CODE_NONE;
-                $out['resultCode']  = Constant::RESULT_MSG_NONE;
+                $out['msg']  = Constant::RESULT_MSG_NONE;
             }
         }else{
             $out['resultCode']  = Constant::RESULT_CODE_AUTH_FAIL;

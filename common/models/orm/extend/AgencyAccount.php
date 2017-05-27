@@ -51,4 +51,22 @@ class AgencyAccount extends \common\models\orm\base\AgencyAccount{
             'count'     => $totalCount,
         ];
     }
+    
+    
+    public static function getItemArrByModels($models){
+        $list = [['aaid' => 0,'name' => '全部']];
+        foreach ($models as $model){
+            $item   = array(
+                'aaid'  => $model->aaid,
+                'name'  => $model->name,
+            );
+            $list[] = $item;
+        }
+        return $list;
+    }
+    
+    public static function findAlls(){
+        $models = self::find()->all();
+        return $models;
+    }
 }
