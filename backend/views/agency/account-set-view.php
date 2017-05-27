@@ -35,9 +35,9 @@
   </div>
  
    <div class="form-group">
-    <label for="verifyKeywords" class="col-xs-2 control-label">验证码匹配关键词</label>
+    <label for="verifyKeywords" class="col-xs-2 control-label">验证码下发关键词</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="verifyKeywords" placeholder="请输入验证码匹配关键词">
+      <input type="text" class="form-control" id="verifyKeywords" placeholder="请输入验证码下发关键词">
     </div>
   </div>
   

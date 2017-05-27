@@ -31,7 +31,7 @@ function setResult(page){
         var succ        = function(resultJson){
                 if(parseInt(resultJson.resultCode) == 1){
                 		
-                        var resultHtml = '<tr><td>ID</td><td>名称</td><td>账号</td><td>验证码下发端口</td><td>验证码匹配关键词</td><td>屏蔽下发端口</td><td>屏蔽下发关键词</td><td>匹配验证码关键词</td><td>状态</td><td>操作</td></tr>';
+                        var resultHtml = '<tr><td>ID</td><td>名称</td><td>账号</td><td>验证码下发端口</td><td>验证码下发关键词</td><td>屏蔽下发端口</td><td>屏蔽下发关键词</td><td>匹配验证码关键词</td><td>状态</td><td>操作</td></tr>';
                         $.each(resultJson.list,function(key,val){
                         	var status,btnOps;
                             if(parseInt(val.status) == 1){
