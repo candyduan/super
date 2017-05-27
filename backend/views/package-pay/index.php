@@ -156,7 +156,10 @@
     	_initDataTable();
     }
     function downloadData(){
-    	alert('TODO');
+    	var param = '&dateType='+ $("#inputDateType").attr("value");
+    	var url = '/package-pay/index-download';
+    	var data = $.param($('#formSearch').serializeArray()) + param;
+    	window.open(url+'?'+data);
     }
     
     function getCurdate(){
