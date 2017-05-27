@@ -170,8 +170,12 @@ class SdkPayController extends BController
             'recordsFiltered' => $count,
             'tableData' => $tabledata,
         ];
-        Utils::jsonOut($data);
-        exit;
+        if(Utils::isAjaxRequest()){
+            Utils::jsonOut($data);
+            exit;
+        }else{
+            return $tabledata;
+        }
     }
     private function _getCondition($checkSDK,$checkProvince,$checkProvider,$sdk,$stime,$etime,$dateType,$provider,$province,$time){
         $select = [
@@ -344,5 +348,10 @@ class SdkPayController extends BController
         $condition['where'] = $where;
         $condition['group'] = $group;
         return $condition;
+    }
+    public function actionIndexDownload(){
+        $headerArr = ['日期', 'SDK' ,'运营商', '省份', '请求金额',  '信息费','转化率'];
+        $datas = self::actionAjaxIndex();
+        echo Utils::DownloadForm($headerArr, $datas, '融合SDK计费转化表');
     }
 }

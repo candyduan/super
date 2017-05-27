@@ -171,8 +171,12 @@ class PackagePayController extends BController
             'recordsFiltered' => $count,
             'tableData' => $tabledata,
         ];
-        Utils::jsonOut($data);
-        exit;
+        if(Utils::isAjaxRequest()){
+            Utils::jsonOut($data);
+            exit;
+        }else{
+            return $tabledata;
+        }
     }
     private function _getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType){
         $select = [
@@ -732,4 +736,21 @@ class PackagePayController extends BController
      	$condition['group'] = $group;
      	return $condition;
      }
+     
+     /**
+      * 渠道计费分析报表下载
+      */
+     public function actionAnalysisDownload(){
+     	$headerArr = ['日期', '内容商' ,'应用', '活动', '渠道', '渠道标识', 'SDK', '省份', '运营商', '请求总金额', '信息费', '收入', '转化率'];
+     	$datas = self::actionAnalysisAjaxIndex();
+     	echo Utils::DownloadForm($headerArr, $datas, '融合SDK渠道计费分析表');
+     }
+     /**
+      */
+     public function actionIndexDownload(){
+         $headerArr = ['日期', '内容商' ,'应用', '活动包', '渠道', '激活数', '活跃数', '支付用户', '信息费', 'CP费', 'ARPU', '付ARPU','付费率','收入','CP成本','M成本','毛利','毛利率'];
+         $datas = self::actionAjaxIndex();
+         echo Utils::DownloadForm($headerArr, $datas, '融合SDK渠道计费收益表');
+     }
+
 }
