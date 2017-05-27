@@ -389,7 +389,7 @@ class PackagePayController extends BController
             $where[] = [
                 '<=',
                 'sdkPayTransaction.recordTime',
-                $etime.' 00:00:00'
+                $etime.' 23:59:59'
             ];
         }else if(4 == $dateType){//月份
             $sdate = date('Y-m-01',strtotime($date));
@@ -402,7 +402,7 @@ class PackagePayController extends BController
             $where[] = [
                 '<=',
                 'sdkPayTransaction.recordTime',
-                $edate.' 00:00:00'
+                $edate.' 23:59:59'
             ];
         }else{//天
             $where[] = [
