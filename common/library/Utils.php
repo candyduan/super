@@ -199,4 +199,26 @@ class Utils{
         }
         return $value;
     }
+    
+    /* 是否是ajax请求 */
+    public static function isAjaxRequest(){
+    	return \Yii::$app->request->isAjax ? true : false;
+    }
+    
+    //下载报表
+    public static function DownloadForm($header, $datas ,$filename){
+    		$headerStr = implode("\t", $header);
+    		$datasLineArr = [];
+    		foreach($datas as $data){
+    			$datasLineArr[] = implode("\t", $data);
+    		}
+    		$dataStr = $headerStr."\r\n".implode("\r\n", $datasLineArr);
+    		header("Content-type:text/csv");
+    		header("Content-Type: application/force-download");
+    		header("Content-Disposition: attachment; filename={$filename}-".date('Y-m-d').".csv");
+    		header('Expires:0');
+    		header('Pragma:public');
+    		return "\xFF\xFE".mb_convert_encoding($dataStr, 'UCS-2LE', 'UTF-8' );
+    }
+    
 }

@@ -1,6 +1,7 @@
 <?php
 namespace backend\library\widgets;
 use common\models\orm\extend\AdminTheme;
+use common\models\orm\extend\AgencyAccount;
 
 class WidgetsUtils{
     public static function getMainMenu($layout = ''){
@@ -31,7 +32,7 @@ class WidgetsUtils{
         $str = '
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <a class="navbar-brand main-menu '.$payLight.'" href="http://master.maimob.cn/index.php/admin/" target="_blank">支付SDK</a>
+                <a class="navbar-brand main-menu '.$payLight.'" href="/pay/index">支付SDK</a>
                 <a class="navbar-brand main-menu '.$sdkLight.'" href="/site/index">融合SDK</a>
                 <a class="navbar-brand main-menu '.$registerLight.'" href="/register/index">主动上行</a>
                 <a class="navbar-brand main-menu '.$agencyLight.'" href="/agency/index">注册中介</a>
@@ -140,6 +141,18 @@ class WidgetsUtils{
             <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 	        <script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
             ';
+        return $str;
+    }
+    
+    
+    public static function getAgencyAccount(){
+        $str = '<select class="agency-account">';
+        $str.= '<option value="0">全部</option>';
+        $agencyAccountModels = AgencyAccount::findAlls();
+        foreach ($agencyAccountModels as $agencyAccountModel){
+            $str .= '<option value ="'.$agencyAccountModel->aaid.'">'.$agencyAccountModel->name.'</option>';
+        }
+        $str .='</select>';
         return $str;
     }
 }

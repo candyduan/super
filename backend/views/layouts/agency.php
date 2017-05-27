@@ -28,7 +28,12 @@
                         </ul>
                     </li>
                                         
-                                        
+                     <li class="">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#opertools"><i class="fa fa-fw fa-dashboard"></i>运营工具<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="opertools" class="collapse">
+                            <li><a class="sidebar-item" href="/agency/stack-view">注册堆栈查询</a></li>
+                        </ul>
+                    </li>                                       
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

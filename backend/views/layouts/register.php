@@ -30,6 +30,13 @@
                     </li>
                     
                     <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#campaign"><i class="fa fa-fw fa-dashboard"></i>内容中心<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="campaign" class="collapse">
+                            <li><a class="sidebar-item" href="/register/campaign-view">活动包开关</a></li>
+                        </ul>
+                    </li>  
+                    
+                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#profit"><i class="fa fa-fw fa-dashboard"></i>数据中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="profit" class="collapse">
                             <li><a class="sidebar-item" href="/register/profit-channel-view">通道收益</a></li>
