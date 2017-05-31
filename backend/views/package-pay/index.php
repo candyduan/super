@@ -22,7 +22,7 @@
                         <option value="0">选择渠道</option>
                         <?php foreach($channels as $value){
                             $id = $value['id'];
-                            $name = $value['mediaSign'];
+                            $name = $value['name'];
                             echo "<option value='$id'> $name</option>";
                         }?>
                     </select>
