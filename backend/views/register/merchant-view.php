@@ -1,6 +1,6 @@
 <?php use common\models\orm\extend\Merchant; ?>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>通道商列表</li>
+<li class="active">通道商列表</li>
 </ol>
 <!-- 搜索 -->
 <div class="form-inline searchbar">

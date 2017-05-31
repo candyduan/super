@@ -1,7 +1,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>成果录入</li>
+        <li class="active">成果录入</li>
         </ol>
     <!-- panel body -->
     <div class="panel-body main">

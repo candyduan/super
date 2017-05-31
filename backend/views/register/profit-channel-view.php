@@ -1,6 +1,6 @@
 <script language="javascript" type="text/javascript" src="/js/common/DatePicker/WdatePicker.js"></script>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>通道收益</li>
+<li class="active">通道收益</li>
 </ol>
 <div class="main">
 

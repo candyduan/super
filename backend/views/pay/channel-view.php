@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>通道配置</li>
+<li class="active">通道配置</li>
 </ol>
 <div class="main">
 	<!-- 搜索栏 -->

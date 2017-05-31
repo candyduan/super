@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>收益列表</li>
+<li class="active">收益列表</li>
 </ol>
 <div class="main">
 	<!-- 搜索栏 -->

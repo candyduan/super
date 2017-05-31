@@ -2,7 +2,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>活动包管理</li>
+        <li class="active">活动包管理</li>
         </ol>
     <!-- panel body -->
     <div class="panel-body main">

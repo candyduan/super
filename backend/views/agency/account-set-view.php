@@ -2,7 +2,7 @@
 .col-xs-2{text-align:left !important;}
 </style>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>新增客户</li>
+<li class="active">新增客户</li>
 </ol>
 <div class="main">
 <div class="form-horizontal">

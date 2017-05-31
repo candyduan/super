@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>添加/编辑通道</li>
+<li class="active">添加/编辑通道</li>
 </ol>
 <div class="main">
 <div class="databar" style="width:100%;padding-left:20px">
