@@ -118,8 +118,7 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             if($checkM){
-//                 array_push($item, '【'.$value['chid'].'】'.$value['m']);
-                array_push($item, $value['mediaSign']);
+                array_push($item, '【'.$value['chid'].'】'.$value['m']);
             }else{
                 array_push($item, '-');
             }
