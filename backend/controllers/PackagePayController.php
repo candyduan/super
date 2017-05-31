@@ -362,17 +362,12 @@ class PackagePayController extends BController
                 $media
             ];
         }
-        $where['isNew'] = [
-            '=',
-            'sdkPlayer.isNew',
-            0
-        ];
         //活跃用户
         $actUsers = SdkPlayer::getCountByCondition($select,$where);
         $res['actUsers'] = $actUsers['users'];
         
         //激活用户
-        $where['isNew'] = [
+        $where[] = [
             '=',
             'sdkPlayer.isNew',
             1
