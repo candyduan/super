@@ -277,7 +277,7 @@ class PackagePayController extends BController
             $group[] = 'campaignPackage.app';
         }
         if($checkCmp){
-            $group[] = 'campaignPackage.id';
+            $group[] = 'campaignPackage.campaign';
         }
         if($checkM){
             $group[] = 'campaignPackage.media';
