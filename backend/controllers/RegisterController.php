@@ -772,7 +772,6 @@ class RegisterController extends BController{
     	$campaignPackageId	= Utils::getBackendParam('campaignPackageId');
     	$stime				= Utils::getBackendParam('stime');
     	$etime				= Utils::getBackendParam('etime');
-    	$status				= Utils::getBackendParam('status');
     	if(!is_numeric($campaignPackageId) || !$campaignPackageId){
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
@@ -784,7 +783,6 @@ class RegisterController extends BController{
     		$regSwitchModel->campaignPackageId	= $campaignPackageId;
     		$regSwitchModel->stime				= $stime;
     		$regSwitchModel->etime				= $etime;
-    		$regSwitchModel->status				= $status;
     		$regSwitchModel->recordTime			= Utils::getNowTime();
     		$res = $regSwitchModel->save();
     		if(!$res){
@@ -795,7 +793,6 @@ class RegisterController extends BController{
     	}else{
      		$regSwitchModel->stime				= $stime;
     		$regSwitchModel->etime				= $etime;
-    		$regSwitchModel->status				= $status;
      		$res = $regSwitchModel->save();
     		if(!$res){
     			$out['resultCode']  = Constant::RESULT_CODE_NONE;
@@ -803,8 +800,11 @@ class RegisterController extends BController{
     			Utils::jsonOut($out);exit();
     		}
     	}
-    	$out['resultCode']  = Constant::RESULT_CODE_SUCC;
-    	$out['msg']         = Constant::RESULT_MSG_SUCC;
+    	$nowTime					= time();
+    	$switchStatusName			= $nowTime >= strtotime($stime) && $nowTime<=strtotime($etime) ? '打开' : '关闭';
+    	$out['resultCode']  		= Constant::RESULT_CODE_SUCC;
+    	$out['msg']         		= Constant::RESULT_MSG_SUCC;
+    	$out['switchStatusName']    = $switchStatusName;
     	Utils::jsonOut($out);
     }
     

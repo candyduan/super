@@ -74,7 +74,8 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
     
     public static function getItemArrByModel(CampaignPackage $campaignPackageModel){
     	$regSwitchModel	= RegSwitch::findByCampaignPackage($campaignPackageModel->id);
-    	$switchStatus	= (!$regSwitchModel || $regSwitchModel['status']) ? 1 : 0;
+    	$nowTime		= time();
+    	$switchStatus	= (!$regSwitchModel || ($nowTime>=strtotime($regSwitchModel['stime']) && $nowTime<=strtotime($regSwitchModel['etime']))) ? 1 : 0;
     	$item   = array(
     		'campaignPackageId' => $campaignPackageModel->id,
     		'media'  			=> "[{$campaignPackageModel->media}]".Partner::getNameById($campaignPackageModel->media),
