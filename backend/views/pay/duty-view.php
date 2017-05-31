@@ -64,12 +64,7 @@
     <!-- 数据栏 -->
     <div class="databar">
     	<table class="table table-bordered table-hover" id="data_list">
-    		<tr>
-    			<td>ID</td>
-    			<td>姓名</td>
-    			<td>接入数量</td>
-    			<td class="abc">操作</td>
-    		</tr>
+    		
     	</table>
     </div>
     
@@ -111,12 +106,12 @@
 		var url = '/pay/developers-result';
 		var succ = function(resultJson){
 			 if(parseInt(resultJson.resultCode) == 1){
-					var resultHtml = '';
+					var resultHtml = '<tr><td>姓名</td><td>接入数量</td><td class="abc">操作</td></tr>';
 					$.each(resultJson.datas,function(key,val){
 						if(key == 0){
-							resultHtml += '<tr><td>'+val.id+'</td><td>'+val.name+'</td><td>'+val.count+'</td><td><div  class="canvas canvas3" ret="'+val.id+'"><div class="spinner3">🐯</div></div></td></tr>';
+							resultHtml += '<tr><td>'+val.name+'</td><td>'+val.count+'</td><td><div  class="canvas canvas3" ret="'+val.id+'"><div class="spinner3">🐯</div></div></td></tr>';
 						}else{
-							resultHtml += '<tr><td>'+val.id+'</td><td class="av">'+val.name+'</td><td>'+val.count+'</td><td><div  class="canvas canvas5" ret="'+val.id+'"><div class="spinner5"></div></div></td></tr>';
+							resultHtml += '<tr><td class="av">'+val.name+'</td><td>'+val.count+'</td><td><div  class="canvas canvas5" ret="'+val.id+'"><div class="spinner5"></div></div></td></tr>';
 						}
 					})
 					$('#data_list').html(resultHtml);
