@@ -18,6 +18,7 @@ use common\models\orm\extend\App;
 use common\models\orm\extend\SdkPackagePayDay;
 use common\models\orm\extend\OutUser;
 use common\models\orm\extend\CampaignPackage;
+use common\models\orm\extend\SdkPlayer;
 /**
  * Partner controller
  */
@@ -81,6 +82,7 @@ class PartnerDataController extends BController
         $checkCampaign = $checkCampaign?true:false;
         $checkM = Utils::getBackendParam('checkM');
         $checkM = $checkM?true:false;
+
         
         $count = 0;
         $tabledata = [];
@@ -120,7 +122,9 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
             
-                array_push($item, $value['newUsers']);
+                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],$partner,$value['aid'],$value['cid'],$value['mediaSign']);
+                $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
+                array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
             
                 $tabledata[] = $item;
@@ -157,7 +161,7 @@ class PartnerDataController extends BController
         $checkCampaign = $checkCampaign?true:false;
         $checkM = Utils::getBackendParam('checkM');
         $checkM = $checkM?true:false;
-    
+
         $count = 0;
         $tabledata = [];
         $partner = self::_getPartnerId();
@@ -196,7 +200,9 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
     
-                array_push($item, $value['newUsers']);
+                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],$partner,$value['aid'],$value['cid'],$value['mediaSign']);
+                $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
+                array_push($item, $newUser);
                 array_push($item, $value['successPay']);
     
                 $tabledata[] = $item;
@@ -215,15 +221,97 @@ class PartnerDataController extends BController
         exit;
     }
     
+    private function _getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media){
+        $res = array();
+    
+        $select = [
+            'count( distinct sdkPlayer.imsi) as users'
+        ];
+        $where = [];
+        $where[] = 'and';
+        $where[] = [
+            '=',
+            'sdkPlayer.status',
+            1
+        ];
+    
+        if( 3 == $dateType){//时段
+            $where[] = [
+                '>=',
+                'sdkPlayer.date',
+                $stime.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayer.date',
+                $etime.' 00:00:00'
+            ];
+        }else if(4 == $dateType){//月份
+            $sdate = date('Y-m-01',strtotime($date));
+            $edate = date("Y-m-d",strtotime("$sdate 1 month -1 day"));
+            $where[] = [
+                '>=',
+                'sdkPlayer.date',
+                $sdate.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayer.date',
+                $edate.' 00:00:00'
+            ];
+        }else{//天
+            $where[] = [
+                '=',
+                'sdkPlayer.date',
+                $date.' 00:00:00'
+            ];
+        }
+    
+        $where[] = [
+                '=',
+                'campaignPackage.partner',
+                $pid
+        ];
+        if($checkAPP){
+            $where[] = [
+                '=',
+                'campaignPackage.app',
+                $aid
+            ];
+        }
+        if($checkCmp){
+            $where[] = [
+                '=',
+                'campaignPackage.campaign',
+                $cid
+            ];
+        }
+        if($checkM){
+            $where[] = [
+                '=',
+                'campaignPackage.mediaSign',
+                $media
+            ];
+        }
+        //激活用户
+        $where[] = [
+            '=',
+            'sdkPlayer.isNew',
+            1
+        ];
+        $newUsers = SdkPlayer::getCountByCondition($select,$where);
+        $res['newUsers'] = $newUsers['users'];
+        return $res;
+    }
     private function _getCondition($checkAPP,$checkCampaign,$checkM,$partner,$app,$campaign,$channel,$stime,$etime,$dateType,$isChannel = FALSE){
         $select = [
             'sdkPackagePayDay.date as date',
+            'app.id as aid',
             'app.name as app',
+            'campaign.id as cid',
             'campaign.name as c',
             'channel.name as m',
             'campaignPackage.mediaSign as mediaSign',
-            'sum(sdkPackagePayDay.newUsers) as newUsers',
-            'sum(sdkPackagePayDay.successPay) as successPay',
         ];
     
         $where[] = 'and';
