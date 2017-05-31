@@ -5,7 +5,7 @@
 	<!-- 搜索栏 -->
 	<div class="form-inline searchbar">	
 		  <?php echo backend\library\widgets\WidgetsUtils::getSearchTime();?>
-		  <?php echo backend\library\widgets\WidgetsUtils::getSearchChannel();?>
+		  <?php echo backend\library\widgets\WidgetsUtils::getSearchRegChannel();?>
           <div class="form-group"><input type="text" class="form-control mobile-imsi"   placeholder="手机号/imsi"></div>
           <button type="submit" class="btn btn-default searchbar_smt" id="search"> 搜索 </button>
 	</div>

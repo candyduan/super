@@ -17,7 +17,7 @@ class Admin extends \common\models\orm\base\Admin {
 
     public static function getNickById($id){
         $data = self::find()->select(['nick'])->where(['id' => $id])->one();
-        return isset($data['nick']) ? $data['nick'] : '';
+        return isset($data['nick']) ? $data['nick'] : 'unknow';
 
     }
 

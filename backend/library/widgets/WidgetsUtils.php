@@ -73,7 +73,7 @@ class WidgetsUtils{
         return $str;
     }
     
-    public static function getSearchChannel(){
+    public static function getSearchRegChannel(){
         $str = '
           <div class="form-group"><input type="text" class="form-control" id="channel-f"    placeholder="通道"></div>
           <input type="hidden" id="channel" value="">            
@@ -81,6 +81,34 @@ class WidgetsUtils{
                 $(document).ready(function(){
                 	var jsonList	= '.json_encode(\common\models\orm\extend\RegChannel::getTypeHeaderChannelList()).'
                 	Utils.myTypeHeder(jsonList,"channel-f","channel","");
+                });
+            </script>
+            ';
+        return $str;
+    }
+    
+    public static function getSearchPayChannel(){
+        $str = '
+          <div class="form-group"><input type="text" class="form-control" id="channel-f"    placeholder="通道"></div>
+          <input type="hidden" id="channel" value="">
+            <script>
+                $(document).ready(function(){
+                	var jsonList	= '.json_encode(\common\models\orm\extend\Channel::getTypeHeaderChannelList()).'
+                	Utils.myTypeHeder(jsonList,"channel-f","channel","");
+                });
+            </script>
+            ';
+        return $str;
+    }
+    
+    public static function getSearchMerchant(){
+        $str = '
+          <div class="form-group"><input type="text" class="form-control" id="merchant-f"    placeholder="通道商"></div>
+          <input type="hidden" id="merchant" value="">
+            <script>
+                $(document).ready(function(){
+                	var jsonList	= '.json_encode(\common\models\orm\extend\Merchant::getTypeHeaderMerchantList()).'
+                	Utils.myTypeHeder(jsonList,"merchant-f","merchant","");
                 });
             </script>
             ';
