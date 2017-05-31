@@ -128,12 +128,23 @@ class WidgetsUtils{
                 url = url.split("?");
                 url = url[0];
             	url = url.replace("http://","").replace(domain,"").replace(":8082","");
+                var selected = false;
             	$.each($(".sidebar-item"),function(key,val){
             		if($(val).attr("href") == url){
             			$(val).addClass("selected");
             			$(val).parent().parent().addClass("in");
+                        selected = true;
+                        $.cookie("prev", url, { expires: 7, path: "/" }); 
             		}
             	});
+                 if(!selected){
+                     $.each($(".sidebar-item"),function(key,val){
+                		if($(val).attr("href") == $.cookie("prev")){
+                			$(val).addClass("selected");
+                			$(val).parent().parent().addClass("in");
+                		}
+                	 });
+                 }
             });
             </script>            
             
@@ -164,6 +175,7 @@ class WidgetsUtils{
             .side-nav li a:hover,.side-nav li a:focus,.side-nav li a {outline: none;background-color:'.$bcolor.';color:'.$fcolor.' !important;}
             </style>
             <script src="/js/common/jquery.js"></script>
+            <script src="/js/common/jquery.cookie.js"></script>
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
             <script src="/js/register/Utils.js?d=20170516"></script>

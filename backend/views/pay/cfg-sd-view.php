@@ -62,10 +62,10 @@ if($sdYApiModel){
     <h1 class="header-1">全局设置</h1>
     <div class="main_content row">
     	<div class="col-xs-6">
-    	<button class="btn btn-block btn-info btn-yapi">使用API</button>
+    	<button class="btn btn-block btn-yapi btn-default">使用API</button>
     	</div>
     	<div class="col-xs-6">
-    	<button class="btn btn-block btn-warning btn-napi">固定指令</button>
+    	<button class="btn btn-block btn-napi btn-default">固定指令</button>
     	</div>
     </div>
     
