@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>客户详情</li>
+<li class="active">客户详情</li>
 </ol>
 <div class="main">
     <table class="table table-striped table-bordered table-hover">

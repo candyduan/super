@@ -5,7 +5,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
     <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>融合SDK渠道计费分析</li>
+        <li class="active">融合SDK渠道计费分析</li>
     </ol>
     <!-- panel body -->
     <div class="panel-body main">

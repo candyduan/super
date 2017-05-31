@@ -1,6 +1,6 @@
 <script language="javascript" type="text/javascript" src="/js/common/DatePicker/WdatePicker.js"></script>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>活动包开关设置-活动包列表</li>
+<li class="active">活动包开关设置-活动包列表</li>
 </ol>
 <div class="main">
 

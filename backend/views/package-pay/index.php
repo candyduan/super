@@ -2,7 +2,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
        <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>融合SDK渠道收益表</li>
+        <li class="active">融合SDK渠道收益表</li>
         </ol>
     <!-- panel body -->
     <div class="panel-body">

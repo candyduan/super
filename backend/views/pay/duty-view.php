@@ -57,7 +57,7 @@
 </style>
 
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>通道值班表</li>
+<li class="active">通道值班表</li>
 </ol>
 
 <div class="main">

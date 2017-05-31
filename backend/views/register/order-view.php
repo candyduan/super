@@ -2,7 +2,7 @@
 use backend\library\widgets\WidgetsUtils;
 ?>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>注册订单查询</li>
+<li class="active">注册订单查询</li>
 </ol>
 <div class="main">
 	<!-- 搜索栏 -->

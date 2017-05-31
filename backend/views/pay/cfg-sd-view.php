@@ -54,7 +54,8 @@ if($sdYApiModel){
 
 ?>
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i><?php echo '['.$channelModel->id.']'.$channelModel->name;?></li>
+<li>通道配置</li>
+<li class="active"><?php echo '['.$channelModel->id.']'.$channelModel->name;?></li>
 </ol>
 <div class="main">
 <!-- 标题 -->

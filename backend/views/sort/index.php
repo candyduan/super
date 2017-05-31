@@ -1,7 +1,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>计费排序</li>
+        <li class="active">计费排序</li>
         </ol>
     <!-- panel body -->
     <span>注:点击地图上不同省份修改sdk排序(请点击字体以外的区域)</span>
