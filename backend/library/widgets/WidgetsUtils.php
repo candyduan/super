@@ -2,6 +2,7 @@
 namespace backend\library\widgets;
 use common\models\orm\extend\AdminTheme;
 use common\models\orm\extend\AgencyAccount;
+use common\models\orm\extend\Channel;
 
 class WidgetsUtils{
     public static function getMainMenu($layout = ''){

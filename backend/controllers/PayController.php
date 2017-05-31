@@ -5,6 +5,12 @@ use common\library\Utils;
 use common\models\orm\extend\Channel;
 use common\models\orm\extend\DeveloperChannelCount;
 use common\library\Constant;
+use common\models\orm\extend\ChannelCfgMain;
+use common\models\orm\extend\ChannelCfgPayParams;
+use common\models\orm\extend\ChannelCfgSdNapi;
+use common\models\orm\extend\ChannelCfgSdYapi;
+use common\models\orm\extend\ChannelCfgSync;
+use common\models\orm\extend\ChannelCfgSd;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -67,8 +73,260 @@ class PayController extends BController{
         Utils::jsonOut($out);
     }
     
-    public function actionCfgSdView(){
+    public function actionCfgSdView(){        
         $chid   = Utils::getBackendParam('chid',0);
+        $channelModel       = Channel::findByPk($chid);
+        $mainModel          = ChannelCfgMain::findByChannelId($chid);
+        $payParamsModel     = ChannelCfgPayParams::findByChannelId($chid);
+        $sdModel            = ChannelCfgSd::findByChannelId($chid);
+        $sdNApiModel        = ChannelCfgSdNapi::findByChannelId($chid);
+        $sdYApiModel        = ChannelCfgSdYapi::findByChannelId($chid);
+        $syncModel          = ChannelCfgSync::findByChannelId($chid);
+        
+        $data   = array(
+            'channelModel'      => $channelModel,
+            'mainModel'         => $mainModel,
+            'payParamsModel'    => $payParamsModel,
+            'sdModel'           => $sdModel,
+            'sdNApiModel'       => $sdNApiModel,
+            'sdYApiModel'       => $sdYApiModel,
+            'syncModel'         => $syncModel,
+        );
+        
+        return $this->render('cfg-sd-view',$data);
+    }
+    public function actionCfgSdNapiSave(){
+        $chid       = Utils::getBackendParam('chid',0);
+        $useapi     = Utils::getBackendParam('useapi');
+        $sms1Arr    = json_decode(Utils::getBackendParam('sms1'),true);
+        $sms2Arr    = json_decode(Utils::getBackendParam('sms2'),true);
+        
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $sdNApiModel   = ChannelCfgSdNapi::findByChannelId($chid);
+            if(!$sdNApiModel){
+                $sdNApiModel   = new ChannelCfgSdNapi();
+                $sdNApiModel->channelId    = $chid;
+            }
+            if(count($sms1Arr) > 0){
+                $sms1   = array();
+                foreach ($sms1Arr as $item){
+                    $sms1[$item['fee']] = array(
+                        'spnumber'      => $item['spnumber'],
+                        'cmd'           => $item['cmd'],
+                        'sendtype'      => $item['sendtype'],
+                    );
+                }
+                $sms1   = json_encode($sms1);
+            }else{
+                $sms1   = '';
+            }
+            $sdNApiModel->sms1             = $sms1;
+        
+            if(count($sms2Arr) > 0){
+                foreach ($sms2Arr as $item){
+                    $sms2   = array();
+                    $sms2[$item['fee']] = array(
+                        'spnumber'      => $item['spnumber'],
+                        'cmd'           => $item['cmd'],
+                        'sendtype'      => $item['sendtype'],
+                    );
+                }
+                $sms2   = json_encode($sms2);
+            }else{
+                $sms2   = '';
+            }
+            $sdNApiModel->sms2             = $sms2;
+        
+            try{
+                ChannelCfgMain::backendOps($chid);
+                ChannelCfgSd::backendOps($chid,$useapi);
+                
+                $sdNApiModel->save();
+                
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = '保存成功';
+            }catch (\Exception $e){
+                $out['resultCode']  = SYSTEM_BUSY;
+                $out['msg']         = '保存失败，请稍后重试！';
+            }
+        }else{
+            $out['resultCode'] = Constant::RESULT_CODE_NONE;
+            $out['msg']        = '该通道不存在';
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionCfgSdYapiSave(){
+        $chid               = Utils::getBackendParam('chid');
+        $useapi             = Utils::getBackendParam('useapi');
+        $spnumberKey1       = Utils::getBackendParam('spnumberKey1');
+        $cmdKey1            = Utils::getBackendParam('cmdKey1');
+        $sendType1          = Utils::getBackendParam('sendType1');
+        $spnumberKey2       = Utils::getBackendParam('spnumberKey2');
+        $cmdKey2            = Utils::getBackendParam('cmdKey2');
+        $sendType2          = Utils::getBackendParam('sendType2');
+        $sendInterval       = Utils::getBackendParam('sendInterval');
+        $succKey            = Utils::getBackendParam('succKey');
+        $succValue          = Utils::getBackendParam('succValue');
+        $orderIdKey         = Utils::getBackendParam('orderIdKey');
+        $url                = Utils::getBackendParam('url');
+        $sendMethod         = Utils::getBackendParam('sendMethod');
+        $respFmt            = Utils::getBackendParam('respFmt');
+        
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $sdYApiModel   = ChannelCfgSdYapi::findByChannelId($chid);
+            if(!$sdYApiModel){
+                $sdYApiModel   = new ChannelCfgSdYapi();
+                $sdYApiModel->channelId    = $chid;
+            }
+            $sdYApiModel->spnumberKey1 = $spnumberKey1;
+            $sdYApiModel->cmdKey1      = $cmdKey1;
+            $sdYApiModel->sendType1    = $sendType1;
+            $sdYApiModel->spnumberKey2 = $spnumberKey2;
+            $sdYApiModel->cmdKey2      = $cmdKey2;
+            $sdYApiModel->sendType2    = $sendType2;
+            $sdYApiModel->sendInterval = $sendInterval;
+            $sdYApiModel->succKey      = $succKey;
+            $sdYApiModel->succValue    = $succValue;
+            $sdYApiModel->orderIdKey   = $orderIdKey;
+            $sdYApiModel->url          = $url;
+            $sdYApiModel->sendMethod   = $sendMethod;
+            $sdYApiModel->respFmt      = $respFmt;
+        
+            try{
+                ChannelCfgMain::backendOps($chid);
+                ChannelCfgSd::backendOps($chid, $useapi);
+                $sdYApiModel->save();
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode'] = Constant::RESULT_CODE_NONE;
+            $out['msg']        = '该通道不存在';
+        }
+        Utils::jsonOut($out);
+    }
+    public function actionCfgPayParamsSave(){
+        $chid       = Utils::getBackendParam('chid');
+        $useapi     = Utils::getBackendParam('useapi');
+        $mobileKey  = Utils::getBackendParam('mobileKey');
+        $imeiKey    = Utils::getBackendParam('imeiKey');
+        $imsiKey    = Utils::getBackendParam('imsiKey');
+        $iccidKey   = Utils::getBackendParam('iccidKey');
+        $ipKey      = Utils::getBackendParam('ipKey');
+        $feeKey     = Utils::getBackendParam('feeKey');
+        $feeUnit    = Utils::getBackendParam('feeUnit');
+        $feeCodeKey = Utils::getBackendParam('feeCodeKey');
+        $feePackages= Utils::getBackendParam('feePackages');
+        $customs    = Utils::getBackendParam('customs');
+        $provinceMap= Utils::getBackendParam('provinceMap');
+        $provinceMapKey = Utils::getBackendParam('provinceMapKey');
+        $cpparamKey = Utils::getBackendParam('cpparamKey');
+        $cpparamPrefix = Utils::getBackendParam('cpparamPrefix');
+        $appNameKey = Utils::getBackendParam('appNameKey');
+        $goodNameKey    = Utils::getBackendParam('goodNameKey');
+        $provinceNameKey    = Utils::getBackendParam('provinceNameKey');
+        $linkIdKey      = Utils::getBackendParam('linkIdKey');
+        
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $payParamsModel  = ChannelCfgPayParams::findByChannelId($chid);
+            if(!$payParamsModel){
+                $payParamsModel  = new ChannelCfgPayParams();
+                $payParamsModel->channelId   = $chid;
+            }
+        
+            if($feePackages == '[]'){
+                $feePackages    = '';
+            }
+            if($customs == '[]'){
+                $customs    = '';
+            }
+        
+            if($provinceMap == '[]'){
+                $provinceMap    = '';
+            }
+        
+            $payParamsModel->mobileKey   = $mobileKey;
+            $payParamsModel->imeiKey     = $imeiKey;
+            $payParamsModel->imsiKey     = $imsiKey;
+            $payParamsModel->iccidKey    = $iccidKey;
+            $payParamsModel->ipKey       = $ipKey;
+            $payParamsModel->feeKey      = $feeKey;
+            $payParamsModel->feeUnit     = $feeUnit;
+            $payParamsModel->feeCodeKey  = $feeCodeKey;
+            $payParamsModel->feePackages = $feePackages;
+            $payParamsModel->customs     = $customs;
+            $payParamsModel->provinceMap = $provinceMap;
+            $payParamsModel->provinceMapKey  = $provinceMapKey;
+            $payParamsModel->cpparamKey  = $cpparamKey;
+            $payParamsModel->cpparamPrefix   = $cpparamPrefix;
+            $payParamsModel->appNameKey  = $appNameKey;
+            $payParamsModel->goodNameKey = $goodNameKey;
+            $payParamsModel->provinceNameKey = $provinceNameKey;
+            $payParamsModel->linkIdKey       = $linkIdKey;
+            try{
+                ChannelCfgMain::backendOps($chid);
+                $payParamsModel->save();
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode'] = Constant::RESULT_CODE_NONE;
+            $out['msg']        = '该通道不存在';
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionCfgSyncSave(){
+        $chid       = Utils::getBackendParam('chid');
+        $useapi     = Utils::getBackendParam('useapi');
+        $succKey    = Utils::getBackendParam('succKey');
+        $succValue  = Utils::getBackendParam('succValue');
+        $cpparamKey = Utils::getBackendParam('cpparamKey');
+        $mobileKey  = Utils::getBackendParam('mobileKey');
+        $feeKey     = Utils::getBackendParam('feeKey');
+        $feeUnit    = Utils::getBackendParam('feeUnit');
+        $succReturn = Utils::getBackendParam('succReturn');
+        $feeFixed   = Utils::getBackendParam('feeFixed');
+        
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $syncModel   = ChannelCfgSync::findByChannelId($chid);
+            if(!$syncModel){
+                $syncModel   = new ChannelCfgSync();
+                $syncModel->channelId    = $chid;
+            }
+            $syncModel->succKey      = $succKey;
+            $syncModel->succValue    = $succValue;
+            $syncModel->cpparamKey   = $cpparamKey;
+            $syncModel->mobileKey    = $mobileKey;
+            $syncModel->feeKey       = $feeKey;
+            $syncModel->feeUnit      = $feeUnit;
+            $syncModel->succReturn   = $succReturn;
+            $syncModel->feeFixed     = $feeFixed;
+            try{
+                ChannelCfgMain::backendOps($chid);
+                $syncModel->save();
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode'] = Constant::RESULT_CODE_NONE;
+            $out['msg']        = '该通道不存在';
+        }
+        Utils::jsonOut($out);
     }
     public function actionCfgSmsView(){
         $chid   = Utils::getBackendParam('chid',0);
