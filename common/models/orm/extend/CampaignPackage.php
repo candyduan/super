@@ -87,7 +87,7 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
     }
     
     public static function fetchAllPartnerBelongSdkArr(){
-        $command = \Yii::$app->db->createCommand('select c.id,c.name 
+        $command = \Yii::$app->db->createCommand('select c.id,c.name,cp.mediaSign 
 from campaignPackage as cp
 inner join partner as c on (cp.media = c.id) 
 inner join partner as p on (cp.partner = p.id)
