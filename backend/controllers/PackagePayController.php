@@ -288,7 +288,7 @@ class PackagePayController extends BController
         return $condition;
     }
 
-    private function _getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media){
+    private function _getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$mediaSign){
         $res = array();
         
         $select = [
@@ -359,7 +359,7 @@ class PackagePayController extends BController
             $where[] = [
                 '=',
                 'campaignPackage.mediaSign',
-                $media
+                $mediaSign
             ];
         }
         //活跃用户
@@ -411,12 +411,12 @@ class PackagePayController extends BController
             $where[] = [
                 '>=',
                 'sdkPayTransaction.recordTime',
-                $date.' 00:00:00'
+                date('Y-m-01',strtotime($date)).' 00:00:00'
             ];
             $where[] = [
                 '<=',
                 'sdkPayTransaction.recordTime',
-                $date.' 23:59:59'
+                date('Y-m-01',strtotime($date)).' 23:59:59'
             ];
         }
         
@@ -445,7 +445,7 @@ class PackagePayController extends BController
             $where[] = [
                 '=',
                 'campaignPackage.mediaSign',
-                $media
+                $mediaSign
             ];
         }
         
