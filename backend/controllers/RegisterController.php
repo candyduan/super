@@ -757,8 +757,9 @@ class RegisterController extends BController{
     	}
     	$regSwitchModel		= RegSwitch::findByCampaignPackage($campaignPackageId);
      	if(!$regSwitchModel){
-    		$out['resultCode']  = Constant::RESULT_CODE_NONE;
-    		$out['msg']         = Constant::RESULT_MSG_NONE;
+    		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		$out['item']        = array('stime'=>'2017-03-13','etime'=>'2037-03-13','status'=>1);
     	}else{
      		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     		$out['msg']         = Constant::RESULT_MSG_SUCC;

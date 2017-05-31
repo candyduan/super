@@ -28,14 +28,7 @@
                             <li><a class="sidebar-item" href="/register/mutex-view">通道组管理</a></li>
                         </ul>
                     </li>
-                    
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#campaign"><i class="fa fa-fw fa-dashboard"></i>内容中心<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="campaign" class="collapse">
-                            <li><a class="sidebar-item" href="/register/campaign-view">活动包开关</a></li>
-                        </ul>
-                    </li>  
-                    
+                     
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#profit"><i class="fa fa-fw fa-dashboard"></i>数据中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="profit" class="collapse">
@@ -48,6 +41,7 @@
                         <ul id="opertools" class="collapse">
                             <li><a class="sidebar-item" href="/register/order-view">注册订单查询</a></li>
                             <li><a class="sidebar-item" href="/register/order-report-view">注册日志查询</a></li>
+                            <li><a class="sidebar-item" href="/register/campaign-view">活动包开关</a></li>
                         </ul>
                     </li>
                                                             

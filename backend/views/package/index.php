@@ -25,11 +25,11 @@
                         <td>状态</td>
                         <td>级别</td>
                         <td>计费模式</td>
-                        <td>CP分成</td>
-                        <td>渠道方式</td>
-                        <td>渠道分成</td>
                         <td>CP-R</td>
-                        <td>CP-M</td>
+                        <td>渠道方式</td>
+                        <td>M-R</td>
+                        <td>CP-优</td>
+                        <td>M-优</td>
                         <td>管理</td>
                     </tr>
                     </thead>
