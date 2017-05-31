@@ -42,7 +42,11 @@
                     <input type="checkbox" id="checkM" name="checkM"/>渠道 
                     
                     <i class="glyphicon pointer green glyphicon-glass" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
-                    <i class="glyphicon pointer blue glyphicon-search" onclick="searchData()" title="搜索"></i> 
+                    &nbsp;
+                    <button class="btn btn-primary" type="submit" id="btn_search" onclick="searchData()">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span>搜索</span>
+                    </button>
                 </div>  
                 </div>
             </form>
