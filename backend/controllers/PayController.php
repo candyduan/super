@@ -67,25 +67,6 @@ class PayController extends BController{
         Utils::jsonOut($out);
     }
     
-    
-    
-    public function actionCfgIndex(){
-        $chid   = Utils::getBackendParam('chid',0);
-        $channelModel   = Channel::findByPk($chid);
-        switch ($channelModel->devType){
-            case CHANNEL_SINGLE:
-            case CHANNEL_DOUBLE:
-                $this->redirect('/pay/cfg-sdview?chid='.$chid);
-                break;
-            case CHANNEL_SMSP:
-                $this->redirect('/pay/cfg-smsview?chid='.$chid);
-                break;
-            case CHANNEL_URLP:
-                $this->redirect('/pay/cfg-urlview?chid='.$chid);
-                break;
-        }
-    }
-    
     public function actionCfgSdView(){
         $chid   = Utils::getBackendParam('chid',0);
     }
@@ -139,7 +120,7 @@ class PayController extends BController{
     				$model->save();
     				$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     				$out['msg']         = Constant::RESULT_MSG_SUCC;
-    			} catch (Exception $e) {
+    			} catch (\Exception $e) {
     				$out['resultCode']  = Constant::RESULT_CODE_NONE;
     				$out['msg']         = Constant::RESULT_MSG_NONE;
     			}
