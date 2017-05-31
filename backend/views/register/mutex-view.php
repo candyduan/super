@@ -19,7 +19,9 @@
 
 <!-- 数据栏 -->
 <div class="databar">
-	<table class="table table-bordered table-hover" id="data_list">
+	<table class="table table-bordered table-hover">
+	<thead><tr><td>通道组ID</td><td>通道组名称</td><td>通道组状态</td><td>通道组管理</td></tr></thead>
+	<tbody id="data_list"></tbody>
 	</table>
 </div>
 
@@ -168,7 +170,7 @@ function setResult(page){
         //succ
         var succ        = function(resultJson){
                 if(parseInt(resultJson.resultCode) == 1){
-                        var resultHtml = '<tr><td>通道组ID</td><td>通道组名称</td><td>通道组状态</td><td>通道组管理</td>/tr>';
+                        var resultHtml = '';
                         $.each(resultJson.list,function(key,val){
                                 resultHtml = resultHtml + '<tr><td>'+val.rcmid+'</td><td>'+val.name+'</td><td>'+val.status+'</td><td><button type="button" class="btn btn-default" aria-label="Left Align" onclick="setMutexListResult('+val.rcmid+',\''+val.name+'\')"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button><button type="button" class="btn btn-default edit-Mutex" aria-label="Left Align" data_rcmid="'+val.rcmid+'" >修改</button>';
 	                               	 resultHtml += val.status == '可用' ? '<button type="button" class="btn btn-danger" aria-label="Left Align" onclick="stopMutex('+val.rcmid+',\''+val.name+'\')"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>' : 

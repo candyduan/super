@@ -20,20 +20,20 @@
                         <a class="sidebar-item" href="/site/index"><i class="fa fa-fw fa-dashboard"></i>首页</a>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkadmin"><i class="fa fa-fw fa-dashboard"></i>融合SDK管理<i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkadmin"><i class="fa fa-fw fa-dashboard"></i>SDK管理<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdkadmin" class="collapse">
-                            <li><a class="sidebar-item" href="/sdk/index">融合SDK管理</a></li>
+                            <li><a class="sidebar-item" href="/sdk/index">SDK管理</a></li>
                         </ul>
                     </li>
                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdksort"><i class="fa fa-fw fa-dashboard"></i>SDK计费排序<i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#sdksort"><i class="fa fa-fw fa-dashboard"></i>计费排序<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdksort" class="collapse">
-                            <li><a class="sidebar-item" href="/sort/index">SDK计费排序</a></li>
+                            <li><a class="sidebar-item" href="/sort/index">计费排序</a></li>
                         </ul>
                     </li>                    
 
                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkcontent"><i class="fa fa-fw fa-dashboard"></i>SDK内容中心<i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkcontent"><i class="fa fa-fw fa-dashboard"></i>内容中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdkcontent" class="collapse">
                             <li><a class="sidebar-item" href="/partner/index">内容商列表</a></li>
                             <li><a class="sidebar-item" href="/app/index">应用列表</a></li>
@@ -53,9 +53,9 @@
                     </li> 
  
                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkimport"><i class="fa fa-fw fa-dashboard"></i>SDK成果录入<i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#sdkimport"><i class="fa fa-fw fa-dashboard"></i>成果录入<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="sdkimport" class="collapse">
-                            <li><a class="sidebar-item" href="/sdk-promotion-result/index">SDK成果录入</a></li>
+                            <li><a class="sidebar-item" href="/sdk-promotion-result/index">成果录入</a></li>
                         </ul>
                     </li>
 <!--                     <li> -->

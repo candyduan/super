@@ -16,7 +16,9 @@
 
 <!-- 数据栏 -->
 <div class="databar">
-	<table class="table table-bordered table-hover" id="data_list">
+	<table class="table table-bordered table-hover">
+	<thead><tr><td>活动名</td><td>状态</td><td>SIGN</td><td>管理</td></tr></thead>
+	<tbody id="data_list"></tbody>
 	</table>
 </div>
 
@@ -40,7 +42,7 @@ function setResult(page){
 	var data 	= 'app='+app+'&page='+page;
 	var succ    = function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
-			var resultHtml = '<tr><td>活动名</td><td>状态</td><td>SIGN</td><td>管理</td></tr>';
+			var resultHtml = '';
 			$.each(resultJson.list,function(key,val){
 				resultHtml = resultHtml + '<tr><td>'+val.campaignName+'</td><td>'+val.statusName+'</td><td>'+val.campaignSign+'</td><td><a class="pointer" href="/register/campaign-package-view?campaignId='+val.campaignId+'" >活动包</a></td></tr>';
 			});

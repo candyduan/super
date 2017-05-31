@@ -11,7 +11,9 @@
 	
     <!-- 数据栏 -->
     <div class="databar">
-    	<table class="table table-bordered table-hover" id="data_list">
+    	<table class="table table-bordered table-hover" >
+    	<thead><tr><td>日期</td><td>客户</td><td>成功</td><td>失败</td><td>转化率</td></tr></thead>
+    	<tbody id="data_list"></tbody>
     	</table>
     </div>
     
@@ -34,8 +36,7 @@ function setResult(page){
 	//succ
 	var succ	= function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
-			resultHtml = '<tr><td>日期</td><td>客户</td><td>成功</td><td>失败</td><td>转化率</td></tr>';
-
+			resultHtml = '';
             $.each(resultJson.list,function(key,val){
                 resultHtml = resultHtml + '<tr><td>'+val.day+'</td><td>'+val.account+'</td><td>'+val.succ+'</td><td>'+val.fail+'</td><td>'+val.rate+'</td></tr>';
             });

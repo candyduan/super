@@ -25,7 +25,9 @@
 
 <!-- 数据栏 -->
 <div class="databar">
-	<table class="table table-bordered table-hover" id="data_list">
+	<table class="table table-bordered table-hover" >
+	<thead><tr><td>通道商</td><td>通道</td><td>负责人</td><td>运营商</td><td>开发类型</td><td>时段</td><td>状态</td></tr></thead>
+	<tbody id="data_list"></tbody>
 	</table>
 </div>
 
@@ -59,7 +61,7 @@ function setResult(page){
         //succ
         var succ        = function(resultJson){
                 if(parseInt(resultJson.resultCode) == 1){
-                        var resultHtml = '<tr><td>通道商</td><td>通道</td><td>负责人</td><td>运营商</td><td>开发类型</td><td>时段</td><td>状态</td></tr>';
+                        var resultHtml = '';
                         $.each(resultJson.list,function(key,val){
                                 resultHtml = resultHtml + '<tr><td>'+val.merchantName+'</td><td><a href="/register/save-channel-view?rcid='+val.rcid+'">'+val.channelName+'</a></td><td>'+val.holderName+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td><a data-rcid="'+val.rcid+'" class="glyphicon glyphicon-time channel-switch"></a></td><td>'+val.status+'</td></tr>';
                         });

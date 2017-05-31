@@ -8,7 +8,7 @@
     <tr><td>密码</td><td id="passwd"></td></tr>
     <tr><td>名称</td><td id="name"></td></tr>
     <tr><td>验证码下发端口</td><td id="verifyPort"></td></tr>
-    <tr><td>验证码匹配关键词</td><td id="verifyKeywords"></td></tr>
+    <tr><td>验证码下发关键词</td><td id="verifyKeywords"></td></tr>
     <tr><td>屏蔽下发端口</td><td id="blockPort"></td></tr>
     <tr><td>屏蔽下发关键词</td><td id="blockKeywords"></td></tr>
     <tr><td>匹配验证码关键词</td><td id="smtKeywords"></td></tr>

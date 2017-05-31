@@ -16,7 +16,9 @@
 <div class="main">
     <!-- 数据栏 -->
     <div class="databar">
-    	<table class="table table-bordered table-hover" id="data_list">
+    	<table class="table table-bordered table-hover">
+    	<thead><tr><td>ID</td><td>通道商名称</td><td>负责人</td><td>结算周期</td><td>税率（%）</td><td>管理</td></tr></thead>
+    	<tbody id="data_list"></tbody>
     	</table>
     </div>
     
@@ -116,7 +118,7 @@ function setResult(page){
     //succ
     var succ        = function(resultJson){
             if(parseInt(resultJson.resultCode) == 1){
-                    var resultHtml = '<tr><td>ID</td><td>通道商名称</td><td>负责人</td><td>结算周期</td><td>税率（%）</td><td>管理</td>/tr>';
+                    var resultHtml = '';
                     $.each(resultJson.list,function(key,val){
                             resultHtml = resultHtml + '<tr><td>'+val.id+'</td><td>'+val.name+'</td><td>'+val.holder+'</td><td>按'+val.payCircle+'结算</td><td>'+val.tax+'</td><td><a class="btn btn-default " href="/register/channel-view?mid='+val.id+'"> 查看 </a><button type="submit" class="btn btn-default editMerchant_btn" mid="'+val.id+'"> 编辑 </button></td>';
                     });

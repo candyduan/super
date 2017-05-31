@@ -15,7 +15,9 @@ use backend\library\widgets\WidgetsUtils;
 	
     <!-- 数据栏 -->
     <div class="databar">
-    	<table class="table table-bordered table-hover" id="data_list">
+    	<table class="table table-bordered table-hover">
+    	<thead><tr><td>ID</td><td>IMSI</td><td>手机号</td><td>通道</td><td>透传</td><td>注册时间</td><td>状态</td><td>操作</td></tr></thead>
+    	<tbody id="data_list"></tbody>
     	</table>
     </div>
     
@@ -38,7 +40,7 @@ function setResult(page){
 	//succ
 	var succ	= function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
-			resultHtml = '<tr><td>ID</td><td>IMSI</td><td>手机号</td><td>通道</td><td>透传</td><td>注册时间</td><td>状态</td><td>操作</td></tr>';
+			resultHtml = '';
 
             $.each(resultJson.list,function(key,val){
                 resultHtml = resultHtml + '<tr><td>'+val.roid+'</td><td>'+val.imsi+'</td><td>'+val.mobile+'</td><td>'+val.channelName+'</td><td>'+val.spSign+'</td><td>'+val.recordTime+'</td><td>'+val.status+'</td><td><button data-roid="'+val.roid+'" class="btn btn-default btn-del">删除</button></td></tr>';

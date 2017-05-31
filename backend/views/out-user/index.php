@@ -239,7 +239,7 @@
         callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 
-    function deleteAdminUser(ouid){
+    function deleteOutUser(ouid){
         if(confirm('确认删除该用户?')) {
             var post_url = '/out-user/delete-out-user';
             var post_data = {

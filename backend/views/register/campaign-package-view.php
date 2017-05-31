@@ -10,7 +10,9 @@
 
 <!-- 数据栏 -->
 <div class="databar">
-	<table class="table table-bordered table-hover" id="data_list">
+	<table class="table table-bordered table-hover" >
+	<thead><tr><td>ID</td><td>渠道</td><td>渠道标识</td><td>主动上行</td><td>起止时间</td><td>操作</td></tr></thead>
+	<tbody id="data_list"></tbody>
 	</table>
 </div>
 
@@ -71,7 +73,7 @@ function setResult(page){
 	var data 		= 'campaignId='+campaignId+'&page='+page;
 	var succ    = function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
-			var resultHtml = '<tr><td>ID</td><td>渠道</td><td>渠道标识</td><td>主动上行</td><td>起止时间</td><td>操作</td></tr>';
+			var resultHtml = '';
 			$.each(resultJson.list,function(key,val){
 				resultHtml = resultHtml + '<tr><td>'+val.campaignPackageId+'</td><td>'+val.media+'</td><td>'+val.mediaSign+'</td><td id="statusName'+val.campaignPackageId+'">'+val.switchStatusName+'</td><td id="time'+val.campaignPackageId+'" >'+val.stime+' ~ '+val.etime+'</td><td><a class="btn btn-default btn-ops" style="padding: 1px 12px;" data-cpid="'+val.campaignPackageId+'">修改</a></td></tr>';
 			});
