@@ -411,12 +411,12 @@ class PackagePayController extends BController
             $where[] = [
                 '>=',
                 'sdkPayTransaction.recordTime',
-                date('Y-m-01',strtotime($date)).' 00:00:00'
+                date('Y-m-d',strtotime($date)).' 00:00:00'
             ];
             $where[] = [
                 '<=',
                 'sdkPayTransaction.recordTime',
-                date('Y-m-01',strtotime($date)).' 23:59:59'
+                date('Y-m-d',strtotime($date)).' 23:59:59'
             ];
         }
         
