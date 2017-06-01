@@ -263,7 +263,7 @@ class PartnerDataController extends BController
             $where[] = [
                 '=',
                 'sdkPlayer.date',
-                $date.' 00:00:00'
+                date('Y-m-d',strtotime($date)).' 00:00:00'
             ];
         }
     
