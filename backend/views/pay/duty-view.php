@@ -19,6 +19,7 @@
 	  text-align:center;
 	  line-height:3em;
 	  cursor:pointer;
+	  
 	}
 	
 	@keyframes spinnerThree {
@@ -57,43 +58,18 @@
 </style>
 
 <ol class="breadcrumb">
-<li class="active">通道值班表</li>
+<li class="active"><i class="fa fa-dashboard"></i>通道轮排表</li>
 </ol>
 
 <div class="main">
     <!-- 数据栏 -->
     <div class="databar">
     	<table class="table table-bordered table-hover" id="data_list">
-    		
     	</table>
     </div>
     
-    
     <!-- 分页 -->
     <div class=""><nav><ul class="pager"></ul></nav></div>
-</div>
-
-<div class="modal fade" id="comfirm">
-	<div class="modal-dialog">
-		<div class="modal-content circular">
-			<div class="modal-header" style="background-color:#f1f1f1;">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">确认</h4>
-			</div>
-			<div class="modal-body" style="padding-top:0px;">
-				<p>
-					<div class="input-group">
-						<span class="input-group-addon" id=''>密码</span>
-						<input type='password' id="password" value=''>
-						<input type="hidden" id='id' value=''>
-					</div>
-					<div class="input-group">
-						<button type="submit" class="btn btn-danger searchbar_smt text-center" id="submit"> 确定 </button>
-					</div>
-				</p>
-			</div>
-		</div>
-	</div>
 </div>
 <script>
 	$(document).ready(function(){
@@ -117,36 +93,25 @@
 					$('#data_list').html(resultHtml);
 
 					$('.canvas').click(function(){
-						$('#id').val($(this).attr('ret'));
-						$('#password').val('');
-						$('#comfirm').modal('show');
+						var id = $(this).attr('ret');
+						var data = 'id='+id;
+						var url = '/pay/add-developer-channel-count';
+						var succ = function(resultJson){
+							 if(parseInt(resultJson.resultCode) == 1){	
+								 setResult();
+							 }else{
+								 Utils.getNoFooterModal('Alerting', resultJson.msg);
+							 }
+						}
+						Utils.ajax(url,data,succ,false);
 					});
 			}else{
-				Utils.getNoFooterModal('Alert', resultJson.msg);
+				Utils.getNoFooterModal('Alerting', resultJson.msg);
 			}	
 		}
 		Utils.ajax(url,data,succ);
 	}
 
-	$('#submit').click(function(){
-		var pwd = $('#password').val();
-		var id =$('#id').val();
-		if(pwd == ''){
-			Utils.getNoFooterModal('alert', '密码不可为空');
-			return;
-		}
-		var data = 'id='+id+'&pwd='+pwd;
-		var url = '/pay/add-developer-channel-count';
-		var succ = function(resultJson){
-			 if(parseInt(resultJson.resultCode) == 1){	
-				 $('#comfirm').modal('toggle');
-				 setResult();
-			 }else{
-				 Utils.getNoFooterModal('Alert', resultJson.msg);
-			 }
-		}
-		Utils.ajax(url,data,succ,false);
-	})
 
 
 </script>

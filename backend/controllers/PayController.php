@@ -362,15 +362,9 @@ class PayController extends BController{
     }
     
     public function actionAddDeveloperChannelCount(){
-    		$pwd = Utils::getBackendParam('pwd');
     		$id = Utils::getBackendParam('id');
     		$out['resultCode']  = Constant::RESULT_CODE_NONE;
     		$out['msg']         = Constant::RESULT_MSG_NONE;
-    		if(md5($pwd) != 'e10adc3949ba59abbe56e057f20f883e'){
-    			$out['msg']         = '密码有误';
-    			Utils::jsonOut($out);
-    			exit;
-    		}
     		$model = DeveloperChannelCount::findByPk($id);
     		if($model){
     			$model->count = $model->count + 1;
