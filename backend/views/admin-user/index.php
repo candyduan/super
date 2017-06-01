@@ -59,24 +59,34 @@
                         <span class="input-group-addon"> 邮箱 <span class="red">*</span>:</span>
                         <input   placeholder ='必填' type="text" name="email" id="email" class="form-control"/>
                     </div><br /><br />
-                        <span class="input-group-addon"> 权限:</span>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="sdk" id="sdk" >融合sdk后台
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="register" id="register">主动上行后台
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"  name="agency" id="agency"> 注册中介后台
-                            </label>
-                        </div>
-                  <br /><br />
-                <input type="hidden" value="" name="auid" id="auid"/>
+                    <span class="input-group-addon"> 权限:</span>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="sdk" id="sdk" >融合sdk后台
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="register" id="register">主动上行后台
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"  name="agency" id="agency"> 注册中介后台
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"  name="pay" id="pay"> 支付SDK后台
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"  name="user" id="user"> 系统管理(用户管理)
+                        </label>
+                    </div>
+                    <br /><br />
+                    <input type="hidden" value="" name="auid" id="auid"/>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" id="btn_submit_adminuser">提交</button>
