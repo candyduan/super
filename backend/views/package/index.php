@@ -2,7 +2,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>活动包管理</li>
+        <li class="active">活动包管理</li>
         </ol>
     <!-- panel body -->
     <div class="panel-body main">
@@ -25,11 +25,11 @@
                         <td>状态</td>
                         <td>级别</td>
                         <td>计费模式</td>
-                        <td>CP分成</td>
-                        <td>渠道方式</td>
-                        <td>渠道分成</td>
                         <td>CP-R</td>
-                        <td>CP-M</td>
+                        <td>渠道方式</td>
+                        <td>M-R</td>
+                        <td>CP-优</td>
+                        <td>M-优</td>
                         <td>管理</td>
                     </tr>
                     </thead>
@@ -62,7 +62,7 @@
                         <span class="input-group-addon">包名:</span>
                         <input type="text" id="package_name" readonly placeholder="包名" class="form-control"/>
                         <span class="input-group-addon">cp优化比例:</span>
-                        <input type="text" id="package_cutrate"  placeholder="cp优化比例" class="form-control"/>
+                        <input type="text" id="package_cutrate"  placeholder="填写0-100的整数" class="form-control"/>
                         <span class="input-group-addon">%</span>
                     </div><br /><br />
                     <div class="input-group">
@@ -75,7 +75,7 @@
                         <span class="input-group-addon">版本名:</span>
                         <input type="text"  id="package_version_name" readonly placeholder="版本名" class="form-control" />
                         <span class="input-group-addon">渠道优化比例:</span>
-                        <input type="text" id="package_mcutrate"  placeholder="填写1-100的整数" class="form-control"/>
+                        <input type="text" id="package_mcutrate"  placeholder="填写0-100的整数" class="form-control"/>
                         <span class="input-group-addon">%</span>
                     </div><br /><br />
                     <div class="input-group">

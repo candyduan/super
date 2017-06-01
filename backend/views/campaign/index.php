@@ -2,7 +2,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>活动管理</li>
+        <li class="active">活动管理</li>
         </ol>
     <!-- panel body -->
     <div class="panel-body main">
@@ -79,13 +79,13 @@
                         <span class="input-group-addon">活动名:</span>
                         <input type="text"  id="campaign_name" readonly placeholder="活动名" class="form-control" />
                         <span class="input-group-addon">渠道分成比例:</span>
-                        <input type="text" id="campaign_mrate" readonly placeholder="渠道分成比例"  class="form-control" />
+                        <input type="text" id="campaign_mrate" readonly placeholder="填写0-100的整数"  class="form-control" />
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">活动类型:</span>
                         <input type="text"  id="campaign_type" readonly placeholder="活动类型" class="form-control"/>
                         <span class="input-group-addon">渠道优化比例:</span>
-                        <input type="text" id="campaign_mcutrate"  placeholder="填写1-100的整数" class="form-control"/>
+                        <input type="text" id="campaign_mcutrate"  placeholder="填写0-100的整数" class="form-control"/>
                         <span class="input-group-addon">%</span>
                     </div><br /><br />
                     <div class="input-group">

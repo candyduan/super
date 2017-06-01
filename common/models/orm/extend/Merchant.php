@@ -1,6 +1,5 @@
 <?php
 namespace common\models\orm\extend;
-use yii\base\Object;
 use yii\data\Pagination;
 class Merchant extends \common\models\orm\base\Merchant{
     public static function getNameById($id){

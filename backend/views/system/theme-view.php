@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-<li class="active"><i class="fa fa-dashboard"></i>更换主题</li>
+<li class="active">更换主题</li>
 </ol>
 <style>
 .theme-item{height:200px;width:200px;display:inline-block;margin-right:20px;}

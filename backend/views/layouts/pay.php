@@ -24,6 +24,12 @@
                         <ul id="channel" class="collapse">
                             <li><a class="sidebar-item" href="/pay/channel-view">通道配置</a></li>
                         </ul>
+                    </li>
+                    <li class="">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#operate"><i class="fa fa-fw fa-dashboard"></i>运营中心<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="operate" class="collapse">
+                            <li><a class="sidebar-item" href="/pay/duty-view">轮回</a></li>
+                        </ul>
                     </li>                                      
                 </ul>
             </div>

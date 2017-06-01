@@ -2,6 +2,7 @@
 namespace backend\library\widgets;
 use common\models\orm\extend\AdminTheme;
 use common\models\orm\extend\AgencyAccount;
+use common\models\orm\extend\Channel;
 
 class WidgetsUtils{
     public static function getMainMenu($layout = ''){
@@ -73,7 +74,7 @@ class WidgetsUtils{
         return $str;
     }
     
-    public static function getSearchChannel(){
+    public static function getSearchRegChannel(){
         $str = '
           <div class="form-group"><input type="text" class="form-control" id="channel-f"    placeholder="通道"></div>
           <input type="hidden" id="channel" value="">            
@@ -81,6 +82,34 @@ class WidgetsUtils{
                 $(document).ready(function(){
                 	var jsonList	= '.json_encode(\common\models\orm\extend\RegChannel::getTypeHeaderChannelList()).'
                 	Utils.myTypeHeder(jsonList,"channel-f","channel","");
+                });
+            </script>
+            ';
+        return $str;
+    }
+    
+    public static function getSearchPayChannel(){
+        $str = '
+          <div class="form-group"><input type="text" class="form-control" id="channel-f"    placeholder="通道"></div>
+          <input type="hidden" id="channel" value="">
+            <script>
+                $(document).ready(function(){
+                	var jsonList	= '.json_encode(\common\models\orm\extend\Channel::getTypeHeaderChannelList()).'
+                	Utils.myTypeHeder(jsonList,"channel-f","channel","");
+                });
+            </script>
+            ';
+        return $str;
+    }
+    
+    public static function getSearchMerchant(){
+        $str = '
+          <div class="form-group"><input type="text" class="form-control" id="merchant-f"    placeholder="通道商"></div>
+          <input type="hidden" id="merchant" value="">
+            <script>
+                $(document).ready(function(){
+                	var jsonList	= '.json_encode(\common\models\orm\extend\Merchant::getTypeHeaderMerchantList()).'
+                	Utils.myTypeHeder(jsonList,"merchant-f","merchant","");
                 });
             </script>
             ';
@@ -99,12 +128,23 @@ class WidgetsUtils{
                 url = url.split("?");
                 url = url[0];
             	url = url.replace("http://","").replace(domain,"").replace(":8082","");
+                var selected = false;
             	$.each($(".sidebar-item"),function(key,val){
             		if($(val).attr("href") == url){
             			$(val).addClass("selected");
             			$(val).parent().parent().addClass("in");
+                        selected = true;
+                        $.cookie("prev", url, { expires: 7, path: "/" }); 
             		}
             	});
+                 if(!selected){
+                     $.each($(".sidebar-item"),function(key,val){
+                		if($(val).attr("href") == $.cookie("prev")){
+                			$(val).addClass("selected");
+                			$(val).parent().parent().addClass("in");
+                		}
+                	 });
+                 }
             });
             </script>            
             
@@ -135,6 +175,7 @@ class WidgetsUtils{
             .side-nav li a:hover,.side-nav li a:focus,.side-nav li a {outline: none;background-color:'.$bcolor.';color:'.$fcolor.' !important;}
             </style>
             <script src="/js/common/jquery.js"></script>
+            <script src="/js/common/jquery.cookie.js"></script>
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
             <script src="/js/register/Utils.js?d=20170516"></script>

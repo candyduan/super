@@ -74,14 +74,16 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
     
     public static function getItemArrByModel(CampaignPackage $campaignPackageModel){
     	$regSwitchModel	= RegSwitch::findByCampaignPackage($campaignPackageModel->id);
+    	$nowTime		= time();
+    	$switchStatus	= (!$regSwitchModel || ($nowTime>=strtotime($regSwitchModel['stime']) && $nowTime<=strtotime($regSwitchModel['etime']))) ? 1 : 0;
     	$item   = array(
     		'campaignPackageId' => $campaignPackageModel->id,
     		'media'  			=> "[{$campaignPackageModel->media}]".Partner::getNameById($campaignPackageModel->media),
     		'mediaSign'  		=> $campaignPackageModel->mediaSign,
-     		'stime'    			=> $regSwitchModel['stime'],
-    		'etime'    			=> $regSwitchModel['etime'],
-    		'switchStatus'    	=> $regSwitchModel['status'],
-    		'switchStatusName'  => $regSwitchModel['status'] ? '打开' : '关闭'
+     		'stime'    			=> $regSwitchModel['stime'] ? $regSwitchModel['stime'] : '2017-03-13',
+    		'etime'    			=> $regSwitchModel['etime'] ? $regSwitchModel['etime'] : '2037-03-13',
+    		'switchStatus'    	=> $switchStatus,
+    		'switchStatusName'  => $switchStatus ? '打开' : '关闭'
     	);
     	return $item;
     }

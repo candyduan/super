@@ -2,7 +2,7 @@
 <div class="panel panel-warning">
     <!-- panel heading -->
         <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i>SDK管理</li>
+        <li class="active">SDK管理</li>
         </ol>
     <!-- panel body -->
     <div class="panel-body main">
@@ -112,7 +112,7 @@
                             <div class="col-sm-12 col-md-12 col-lg-12">
                                 <nav class="nav-tabs" role="navigation">
                                     <div>
-                                        <ul class="nav nav-tabs" id="tab_type">
+                                        <ul class="nav nav-tabs" id="tab_type" style="background-color: white">
                                             <li id="tab_type_1" class="active"><a href="#">移动</a></li>
                                             <li id="tab_type_2"><a href="#">联通</a></li>
                                             <li id="tab_type_3"><a href="#">电信</a></li>
@@ -162,7 +162,7 @@
                             <div class="col-sm-12 col-md-12 col-lg-12">
                                 <nav class="nav-tabs" role="navigation">
                                     <div>
-                                        <ul class="nav nav-tabs" id="tab">
+                                        <ul class="nav nav-tabs" id="tab" style="background-color: white">
                                             <li id="tabtype" class="active"><a></a></li>
                                         </ul>
                                     </div>
