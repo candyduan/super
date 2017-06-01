@@ -57,18 +57,13 @@ class AdminUserController extends BController
                 $operation = '';
             }else{
                 $powers = AdminAuthor::getPowersByAuid($value['id']);
-                $allbackend = ['sdk/' => '融合sdk后台','register/' =>'主动上行后台','agency/' => '注册中介后台'];
+                $allbackend = ['sdk/' => '融合sdk后台','register/' =>'主动上行后台','agency/' => '注册中介后台','pay/' => '支付sdk后台' ,'system/' => '系统管理(个人中心)'];
                 $powerNamesStr = '';
                 foreach($powers as $k => $v){
                     if(isset($allbackend[$v])){
                         $powerNamesStr .= $allbackend[$v] .'<br/>';
                     }
                 }
-             /*   $powerNames = self::_getPowerNames();
-                $powerNamesStr = '';
-                foreach($powers as $v){
-                    $powerNamesStr .= isset($powerNames[$v]) ?  $powerNames[$v] . MyHtml::br() : '';
-                }*/
                 $operation = MyHtml::aElement('javascript:void(0)', 'modifyPowers',$value['id'],'修改权限') . MyHtml::br();
                 $operation .=  MyHtml::aElement('javascript:void(0)', 'deleteAdminUser',$value['id'],'删除用户');
             }
@@ -193,34 +188,24 @@ class AdminUserController extends BController
     }
 
     private function _addPower($auid){
+        $powerdetails = [
+            'modify-password' ,
+            'system',
+        ];
+        foreach($powerdetails as $powerdetail){
+            self::_addPowerDetail($powerdetail, $auid);
+        } // system 必须加进去
+
         $powers = self::_getPowers();
-        foreach($powers as $power) {
-            if (Utils::getBParam($power) == "on") {
-                if($power == 'sdk'){
-                    $powerdetails = [
-                        'sdk',
-                        'sort',
-                        'partner',
-                        'app',
-                        'campaign',
-                        'sdk-promotion-result',
-                        'sdk-pay',
-                        'package-pay',
-                        'modify-password' ,
-                        'package',
-                        'site',
-                        'system',
-                        'partner-data'
-                    ];
-                    foreach($powerdetails as $powerdetail){
-                        self::_addPowerDetail($powerdetail, $auid);
-                    }
-                }else{
-                    self::_addPowerDetail($power, $auid);
+        foreach($powers as $power => $detail) {
+            if (Utils::getBParam($power) == "on" && $power !== 'system') {
+                foreach($detail as $powerdetail){
+                    self::_addPowerDetail($powerdetail, $auid);
                 }
             }
         }
     }
+
 
     private function _addPowerDetail($power, $auid){
         $model = new AdminAuthor();
@@ -232,25 +217,26 @@ class AdminUserController extends BController
 
     private function _getPowers(){
         return [
-            'sdk',
-            'agency',
-            'register'
+            'sdk' =>[ //融合SDK
+                'sdk',
+                'sort',
+                'partner',
+                'app',
+                'campaign',
+                'sdk-promotion-result',
+                'sdk-pay',
+                'package-pay',
+                'package',
+                'site',
+                'partner-data'
+            ],
+            'agency' => ['agency'], //主动上行
+            'register' => ['register'],//注册中介
+            'system' => ['system','modify-password'], //个人中心
+            'pay' => ['pay'], //支付SDK
+            'user' => ['admin-user','out-user'] //用户管理
         ];
     }
-
- /*   private function _getPowerNames(){
-        return [
-            'sdk/' => 'SDK管理',
-            'sort/' => 'SDK计费排序',
-            'partner/' => 'SDK内容中心(内容商列表)',
-            'app/' => 'SDK内容中心(应用列表)',
-            'campaign/' => 'SDK内容中心(活动列表)',
-            'sdk-promotion-result/' => 'SDK成果录入',
-            'sdk-pay/' => '数据中心(计费转化)',
-            'modify-password/' => '修改密码',
-            'package/' => 'SDK内容中心(活动包列表)'
-        ];
-    }*/
 
     private function _getCondition(){
         $condition = [
