@@ -188,6 +188,14 @@ class AdminUserController extends BController
     }
 
     private function _addPower($auid){
+        $powerdetails = [
+            'modify-password' ,
+            'system',
+        ];
+        foreach($powerdetails as $powerdetail){
+            self::_addPowerDetail($powerdetail, $auid);
+        } // system 必须加进去
+
         $powers = self::_getPowers();
         foreach($powers as $power => $detail) {
             if (Utils::getBParam($power) == "on" && $power !== 'system') {
@@ -195,15 +203,6 @@ class AdminUserController extends BController
                     self::_addPowerDetail($powerdetail, $auid);
                 }
             }
-
-            $powerdetails = [
-                'modify-password' ,
-                'system',
-            ];
-            foreach($powerdetails as $powerdetail){
-                self::_addPowerDetail($powerdetail, $auid);
-            }
-
         }
     }
 
