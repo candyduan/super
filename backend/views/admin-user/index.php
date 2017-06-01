@@ -82,7 +82,7 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox"  name="user" id="user"> 系统管理(用户管理)
+                            <input type="checkbox"  name="admin-user" id="admin-user"> 系统管理(用户管理)
                         </label>
                     </div>
                     <br /><br />

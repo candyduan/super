@@ -57,7 +57,7 @@ class AdminUserController extends BController
                 $operation = '';
             }else{
                 $powers = AdminAuthor::getPowersByAuid($value['id']);
-                $allbackend = ['sdk/' => '融合sdk后台','register/' =>'主动上行后台','agency/' => '注册中介后台','pay/' => '支付sdk后台' ,'system/' => '系统管理(个人中心)'];
+                $allbackend = ['sdk/' => '融合sdk后台','register/' =>'主动上行后台','agency/' => '注册中介后台','pay/' => '支付sdk后台' ,'admin-user/' => '系统管理(用户管理)'];
                 $powerNamesStr = '';
                 foreach($powers as $k => $v){
                     if(isset($allbackend[$v])){
@@ -234,7 +234,7 @@ class AdminUserController extends BController
             'register' => ['register'],//注册中介
             'system' => ['system','modify-password'], //个人中心
             'pay' => ['pay'], //支付SDK
-            'user' => ['admin-user','out-user'] //用户管理
+            'admin-user' => ['admin-user','out-user'] //用户管理
         ];
     }
 
