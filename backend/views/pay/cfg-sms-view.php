@@ -7,6 +7,7 @@ $payParamsModel = $payParamsModel;
 $smsModel       = $smsModel;
 $smsYApiModel   = $smsYApiModel;
 $smsNApiModel   = $smsNApiModel;
+$submitModel    = $submitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
 
@@ -56,7 +57,7 @@ if($smsNApiModel){
 	<!-- 使用api -->
     <div class="sms_yapi" api="1">
     <hr>
-    	<h1 class="header-1">支付通用设置</h1>
+    	<h1 class="header-1">支付设置</h1>
     	<div class="sms_yapi_content">
         	<div class="form-horizontal">    
 <p>0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</p><br>
@@ -163,33 +164,9 @@ if($smsNApiModel){
     	<!-- 固定指令 -->
     <div class="sms_napi" api="0">
     <hr>
-    	<h1 class="header-1">支付通用设置</h1>
+    	<h1 class="header-1">支付设置</h1>
     	<div class="sms_napi_content">
-        	<div class="form-horizontal">   
-        	<!-- 
-        	   <span>0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</span><br> 
-        	   <div class="form-group">
-                <label for="sms_napi_spnumber" class="col-xs-2 control-label">端口</label>
-                <div class="col-xs-10">
-                  <input type="text" class="form-control" id="sms_napi_spnumber" placeholder="..." value="<?php echo $sms1['spnumber'];?>">
-                </div>
-              </div>              
- 
-              <div class="form-group">
-                <label for="sms_napi_cmd" class="col-xs-2 control-label">指令</label>
-                <div class="col-xs-10">
-                  <input type="text" class="form-control" id="sms_napi_cmd" placeholder="..." value="<?php echo $sms1['cmd'];?>">
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label for="sms_napi_sendtype" class="col-xs-2 control-label">发送方式</label>
-                <div class="col-xs-10">
-                  <input type="text" class="form-control" id="sms_napi_sendtype" placeholder="..." value="<?php echo $sms1['sendtype'];?>">
-                </div>
-              </div>
-            -->
-            
+        	<div class="form-horizontal">            
                <div class="form-group napi_cell">                
                         <div class="col-xs-2 napi_fee_div">
                           <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php echo $newSms1[0]['fee'];?>">
@@ -266,6 +243,84 @@ if($smsNApiModel){
     </div>
     
     
+    
+   <div class="sms_submit">
+    	<hr>
+    	<h1 class="header-1">验证码设置</h1>
+    	<div class="sms_verifycode_content">
+        	<div class="form-horizontal">
+            	  <div class="form-group">
+                    <label for="sms_verifycode_smtKeywords" class="col-xs-2 control-label">提取验证码关键词</label>
+                    <div class="col-xs-10">
+                      <input type="text" class="form-control" id="sms_verifycode_smtKeywords" placeholder="..." value="<?php if($smsModel){echo $smsModel->smtKeywords;}?>">
+                    </div>
+                  </div>
+                  
+                   <div class="form-group">
+                    <label for="sms_verifycode_smtType" class="col-xs-2 control-label">提交验证码方式</label>
+                    <div class="col-xs-10">
+                            <select id="sms_verifycode_smtType" class="form-control">
+                              <option value ="1" <?php if($smsModel){if($smsModel->smtType == '1'){ echo 'selected="selected"';}}?>>server提交</option>
+                              <option value ="2" <?php if($smsModel){if($smsModel->smtType == '2'){ echo 'selected="selected"';}}?>>client提交</option>
+                            </select>
+                    </div>
+                  </div>
+                  
+                  
+                  <div class="form-group sms_verifycode_url_div">
+                    <label for="sms_verifycode_url" class="col-xs-2 control-label">提交验证码Url</label>
+                    <div class="col-xs-10">
+                      <input type="text" class="form-control" id="sms_verifycode_url" placeholder="..." value="<?php if($submitModel){echo $submitModel->url;}?>">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group sms_verifycode_sendMethod_div">
+                    <label for="sms_verifycode_sendMethod" class="col-xs-2 control-label">提交验证码发送方式</label>
+                    <div class="col-xs-10">
+                            <select id="sms_verifycode_sendMethod" class="form-control">
+                              <option value ="1" <?php if($submitModel){if($submitModel->smtSendMethod == '1'){ echo 'selected="selected"';}}?>>GET</option>
+                              <option value ="2" <?php if($submitModel){if($submitModel->smtSendMethod == '2'){ echo 'selected="selected"';}}?>>POST</option>
+                            </select>
+                    </div>
+                  </div>
+                  
+                   <div class="form-group sms_verifycode_respFmt_div">
+                    <label for="sms_verifycode_respFmt" class="col-xs-2 control-label">提交验证码响应格式</label>
+                    <div class="col-xs-10">
+                            <select id="sms_verifycode_respFmt" class="form-control">
+                              <option value ="1" <?php if($submitModel){if($submitModel->smtRespFmt == '1'){ echo 'selected="selected"';}}?>>JSON</option>
+                              <option value ="2" <?php if($submitModel){if($submitModel->smtRespFmt == '2'){ echo 'selected="selected"';}}?>>XML</option>
+                              <option value ="3" <?php if($submitModel){if($submitModel->smtRespFmt == '3'){ echo 'selected="selected"';}}?>>TEXT</option>
+                            </select>
+                    </div>
+                  </div>
+              
+              
+                  <div class="form-group sms_verifycode_succKey_div">
+                    <label for="sms_verifycode_succKey" class="col-xs-2 control-label">提交成功Key</label>
+                    <div class="col-xs-10">
+                      <input type="text" class="form-control" id="sms_verifycode_succKey" placeholder="..." value="<?php if($submitModel){echo $submitModel->succKey;}?>">
+                    </div>
+                  </div>
+    
+                  <div class="form-group sms_verifycode_succValue_div">
+                    <label for="sms_verifycode_succValue" class="col-xs-2 control-label">提交成功值</label>
+                    <div class="col-xs-10">
+                      <input type="text" class="form-control" id="sms_verifycode_succValue" placeholder="..." value="<?php if($submitModel){echo $submitModel->succValue;}?>">
+                    </div>
+                  </div>
+              
+                  <div class="form-group">
+                    <div class="col-xs-10 col-xs-offset-2">
+                      <button id="sms_verifycode_save" class="btn btn-default">保存</button>
+                    </div>
+                  </div> 
+              
+        	</div>
+        </div>
+    </div>
+    <!-- 验证码请求参数设置 -->
+	<?php echo PayCfgWidgets::getCfgSmtParamsWidget($smtParamsModel);?>
     <!-- 数据同步 -->
 	<?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
 </div>
@@ -361,6 +416,49 @@ $(document).ready(function(){
 					$('.sms_napi_content').addClass('input_ok');
 				}else{//失败
 					$('.sms_napi_content').addClass('input_err');
+				}
+		  };
+		  Utils.ajax(url,data,succFunc);
+	});
+
+
+	$('#sms_verifycode_smtType').change(function(){
+		var smtType	= $('#sms_verifycode_smtType').val();
+		if(parseInt(smtType) == 1){//server
+			$('.smt_params').css('display','block');
+			$('.sms_verifycode_url_div').css('display','block');
+			$('.sms_verifycode_sendMethod_div').css('display','block');
+			$('.sms_verifycode_respFmt_div').css('display','block');
+			$('.sms_verifycode_succKey_div').css('display','block');
+			$('.sms_verifycode_succValue_div').css('display','block');
+		}else{//client
+			$('.smt_params').css('display','none');
+			$('.sms_verifycode_url_div').css('display','none');
+			$('.sms_verifycode_sendMethod_div').css('display','none');
+			$('.sms_verifycode_respFmt_div').css('display','none');
+			$('.sms_verifycode_succKey_div').css('display','none');
+			$('.sms_verifycode_succValue_div').css('display','none');
+		}
+	});
+
+	$('#sms_verifycode_save').click(function(){
+		//url
+		var url = '/pay/cfg-sms-submit-save';
+		//data
+		var data	= 'chid='+$('.data_store_common').attr('chid')
+					 +'&smtKeywords='+$('#sms_verifycode_smtKeywords').val()
+				     +'&smtType='+$('#sms_verifycode_smtType').val()
+				     +'&url='+$('#sms_verifycode_url').val()
+				     +'&sendMethod='+$('#sms_verifycode_sendMethod').val()
+				     +'&respFmt='+$('#sms_verifycode_respFmt').val()
+				     +'&succKey='+$('#sms_verifycode_succKey').val()
+				     +'&succValue='+$('#sms_verifycode_succValue').val();
+	     //succFunc
+	     var succFunc	= function(resJson){
+				if(parseInt(resJson.resultCode) == 1){//成功
+					$('.sms_verifycode_content').addClass('input_ok');
+				}else{//失败
+					$('.sms_verifycode_content').addClass('input_err');
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);

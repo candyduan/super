@@ -34,8 +34,8 @@ class ChannelCfgSmsSubmit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cssid', 'channelId'], 'required'],
-            [['cssid', 'channelId', 'sendMethod', 'respFmt', 'status'], 'integer'],
+            [['channelId'], 'required'],
+            [['channelId', 'sendMethod', 'respFmt', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['url'], 'string', 'max' => 512],
             [['succValue', 'succKey'], 'string', 'max' => 128],

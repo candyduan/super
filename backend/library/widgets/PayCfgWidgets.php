@@ -628,4 +628,71 @@ $(document).ready(function(){
             ';
         return $widget;
     }
+    
+    
+    public static function getCfgSmtParamsWidget($smtParamsModel){
+        $orderIdKey = '';
+        $verifyCodeKey  = '';
+        if($smtParamsModel){
+            $orderIdKey     = $smtParamsModel->orderIdKey;
+            $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
+        }
+    
+        $widget = '
+            <div class="smt_params">
+<hr>
+	<h2 class="header-1">验证码请求参数设置</h2>
+		<div class="smt_params_content">
+    		<div class="form-horizontal">
+    
+    		  <div class="form-group">
+                <label for="smt_params_orderidkey" class="col-xs-2 control-label">订单Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_orderidkey" placeholder="..." value="'.$orderIdKey.'">
+                </div>
+              </div>
+    
+    
+              <div class="form-group">
+                <label for="smt_params_verifycodekey" class="col-xs-2 control-label">验证码Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_verifycodekey" placeholder="..." value="'.$verifyCodeKey.'">
+                </div>
+              </div>
+    
+    
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                  <button id="smt_params_save" class="btn btn-default">保存</button>
+                </div>
+              </div>
+    
+    		</div>
+		</div>
+    
+</div>
+<script>
+$(document).ready(function(){
+	$("#smt_params_save").click(function(){
+		//url
+		var url = "/pay/cfg-smt-params-save";
+		//data
+		var data	= "chid="+$(".data_store_common").attr("chid")
+				     +"&orderIdKey="+$("#smt_params_orderidkey").val()
+				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val();
+	     //succFunc
+	     var succFunc	= function(resJson){
+				if(parseInt(resJson.resultCode) == 1){//成功
+					$(".smt_params_content").addClass("input_ok");
+				}else{//失败
+					$(".smt_params_content").addClass("input_err");
+				}
+		  };
+		  Utils.ajax(url,data,succFunc);
+	});
+});
+</script>
+            ';
+        return $widget;
+    }
 }

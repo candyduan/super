@@ -298,6 +298,7 @@ table td {
 .data_sync_content{border:1px solid #000000;padding:10px;}
 .sms_napi_content{border:1px solid #000000;padding:10px;}
 .sms_yapi_content{border:1px solid #000000;padding:10px;}
+.sms_verifycode_content{border:1px solid #000000;padding:10px;}
 .pay_napi{display:none;}
 .sms_napi{display:none;}
 .napi_cell{border:1px solid #4F9D9D;margin:10px !important;padding:10px !important;}

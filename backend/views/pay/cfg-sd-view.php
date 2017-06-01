@@ -85,7 +85,7 @@ if(!is_array($sendType1)){
 	<!-- api通用设置 -->
 <div class="pay_yapi" api="1">
 <hr>
-	<h1 class="header-1">支付通用设置</h1>
+	<h1 class="header-1">支付设置</h1>
 	<div class="pay_yapi_content">
     	<div class="form-horizontal">
     	
@@ -242,7 +242,7 @@ if(!is_array($sendType1)){
 <!-- 不使用api -->
 <div class="pay_napi" api="0">
 <hr>
-	<h1 class="header-1">支付通用设置</h1>
+	<h1 class="header-1">支付设置</h1>
 	<div class="pay_napi_content">
     	<div class="form-horizontal">     
     	<p>0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</p><br>                   
