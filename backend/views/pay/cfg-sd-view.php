@@ -1,5 +1,6 @@
 <?php 
 use backend\library\widgets\PayCfgWidgets;
+use common\library\Constant;
 
 $channelModel   = $channelModel;
 $payParamsModel = $payParamsModel;
@@ -9,7 +10,7 @@ $sdNApiModel       = $sdNApiModel;
 $sdYApiModel       = $sdYApiModel;
 $syncModel         = $syncModel;
 
-if($channelModel->devType == CHANNEL_DOUBLE){
+if($channelModel->devType == Constant::CHANNEL_DOUBLE){
     $sms2Display    = "display:block;";
 }else{
     $sms2Display    = "display:none;";
@@ -50,6 +51,13 @@ if($sdYApiModel){
     if(is_numeric($sdYApiModel->sendInterval)){
         $sendInterval =  $sdYApiModel->sendInterval;
     }
+    
+    $sendType1 = json_decode($sdYApiModel->sendType1,true);
+    $sendType2 = json_decode($sdYApiModel->sendType2,true);
+}
+if(!is_array($sendType1)){
+    $sendType1   = [];
+    $sendType2   = [];
 }
 
 ?>
@@ -77,7 +85,7 @@ if($sdYApiModel){
 	<!-- api通用设置 -->
 <div class="pay_yapi" api="1">
 <hr>
-	<h1 class="header-1">支付请求通用设置</h1>
+	<h1 class="header-1">支付通用设置</h1>
 	<div class="pay_yapi_content">
     	<div class="form-horizontal">
     	
@@ -123,20 +131,33 @@ if($sdYApiModel){
                   <input type="text" class="form-control" id="yapi_cmd_key1" placeholder="..." value="<?php if($sdYApiModel){echo $sdYApiModel->cmdKey1;}?>">
                 </div>
               </div>
-              
-              <div class="form-group">
-                <label for="yapi_send_type1" class="col-xs-2 control-label">短信一发送方式</label>
-                <div class="col-xs-10">
-                        <select id="yapi_send_type1" class="form-control">
-                          <option value ="0" <?php if($sdYApiModel){if($sdYApiModel->sendType1 == '0'){ echo 'selected="selected"';}}?>>文本短信发送</option>
-                          <option value ="1" <?php if($sdYApiModel){if($sdYApiModel->sendType1 == '1'){ echo 'selected="selected"';}}?>>base64decode后，二进制短信发送</option>
-                          <option value ="2" <?php if($sdYApiModel){if($sdYApiModel->sendType1 == '2'){ echo 'selected="selected"';}}?>>base64decode后，文本短信发送</option>
-                          <option value ="3" <?php if($sdYApiModel){if($sdYApiModel->sendType1 == '3'){ echo 'selected="selected"';}}?>>base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</option>                          
-                        </select>
-                        
+
+       		<div class="form-group">
+                <label class="col-xs-2 control-label">短信一发送方式</label>
+                <div class="col-xs-2 pay_yapi_sendType1">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[0]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[0]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[0]['sendtype'];?>">
                 </div>
-              </div>
-              
+                <div class="col-xs-2 pay_yapi_sendType1">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[1]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[1]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[1]['sendtype'];?>">
+                </div>
+                
+                <div class="col-xs-2 pay_yapi_sendType1">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[2]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[2]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[2]['sendtype'];?>">
+                </div>
+                
+                 <div class="col-xs-2 pay_yapi_sendType1">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[3]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[3]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[3]['sendtype'];?>">
+                </div>               
+            </div>
+                          
 
               <div class="form-group" style="<?php echo $sms2Display;?>">
                 <label for="yapi_spnumber_key2" class="col-xs-2 control-label">短信二端口Key</label>
@@ -150,19 +171,33 @@ if($sdYApiModel){
                 <div class="col-xs-10">
                   <input type="text" class="form-control" id="yapi_cmd_key2" placeholder="..." value="<?php if($sdYApiModel){echo $sdYApiModel->cmdKey2;}?>">
                 </div>
-              </div>
+              </div>                 
               
-              <div class="form-group" style="<?php echo $sms2Display;?>">
-                <label for="yapi_send_type2" class="col-xs-2 control-label">短信二发送方式</label>
-                <div class="col-xs-10">
-                        <select id="yapi_send_type2" class="form-control">
-                          <option value ="0" <?php if($sdYApiModel){if($sdYApiModel->sendType2 == '0'){ echo 'selected="selected"';}}?>>文本短信发送</option>
-                          <option value ="1" <?php if($sdYApiModel){if($sdYApiModel->sendType2 == '1'){ echo 'selected="selected"';}}?>>base64decode后，二进制短信发送</option>
-                          <option value ="2" <?php if($sdYApiModel){if($sdYApiModel->sendType2 == '2'){ echo 'selected="selected"';}}?>>base64decode后，文本短信发送</option>
-                          <option value ="3" <?php if($sdYApiModel){if($sdYApiModel->sendType2 == '3'){ echo 'selected="selected"';}}?>>base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</option>                          
-                        </select>
+            <div class="form-group" style="<?php echo $sms2Display;?>">
+                <label class="col-xs-2 control-label">短信二发送方式</label>
+                <div class="col-xs-2 pay_yapi_sendType2">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[0]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[0]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[0]['sendtype'];?>">
                 </div>
-              </div>                            
+                <div class="col-xs-2 pay_yapi_sendType2">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[1]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[1]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[1]['sendtype'];?>">
+                </div>
+                
+                <div class="col-xs-2 pay_yapi_sendType2">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[2]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[2]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[2]['sendtype'];?>">
+                </div>
+                
+                 <div class="col-xs-2 pay_yapi_sendType2">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[3]['key'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[3]['value'];?>">
+                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[3]['sendtype'];?>">
+                </div>               
+            </div>                         
 
               <div class="form-group" style="<?php echo $sms2Display;?>">
                 <label for="yapi_send_interval" class="col-xs-2 control-label">发送间隔(秒)</label>
@@ -207,95 +242,96 @@ if($sdYApiModel){
 <!-- 不使用api -->
 <div class="pay_napi" api="0">
 <hr>
-	<h1 class="header-1">支付参数设置</h1>
+	<h1 class="header-1">支付通用设置</h1>
 	<div class="pay_napi_content">
-    	<div class="form-horizontal">                        
+    	<div class="form-horizontal">     
+    	<p>0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</p><br>                   
               <div class="form-group napi_cell">                
                         <div class="col-xs-2 napi_fee_div">
-                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php if(isset($newSms1[0]['fee'])){echo $newSms1[0]['fee'];}?>">
+                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php echo $newSms1[0]['fee'];?>">
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php if(isset($newSms1[0]['spnumber'])){ echo $newSms1[0]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php if(isset($newSms1[0]['cmd'])){echo $newSms1[0]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text"  class="form-control napi_sendtype1" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[0]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[0]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[0]['sendtype'];?>"></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php if(isset($newSms2[0]['spnumber'])){echo $newSms2[0]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php if(isset($newSms2[0]['cmd'])){echo $newSms2[0]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text"  class="form-control napi_sendtype2" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[0]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[0]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[0]['sendtype'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
 
               <div class="form-group napi_cell">                
                         <div class="col-xs-2 napi_fee_div">
-                          <input type="text" class="form-control napi_fee" placeholder="价格（单位分）" value="<?php if(isset($newSms1[1]['fee'])){echo $newSms1[1]['fee'];}?>">
+                          <input type="text" class="form-control napi_fee" placeholder="价格（单位分）" value="<?php echo $newSms1[1]['fee'];?>">
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-6"><input type="text" class="form-control napi_spnumber1" placeholder="端口" value="<?php if(isset($newSms1[1]['spnumber'])){ echo $newSms1[1]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text" class="form-control napi_cmd1" placeholder="指令" value="<?php if(isset($newSms1[1]['cmd'])){echo $newSms1[1]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text" class="form-control napi_sendtype1" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text" class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[1]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text" class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[1]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text" class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[1]['sendtype'];?>"></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php if(isset($newSms2[1]['spnumber'])){echo $newSms2[1]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php if(isset($newSms2[1]['cmd'])){echo $newSms2[1]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text" class="form-control napi_sendtype2" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[1]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[1]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text" class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[1]['sendtype'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
 
               <div class="form-group napi_cell">                
                         <div class="col-xs-2 napi_fee_div">
-                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php if(isset($newSms1[2]['fee'])){echo $newSms1[2]['fee'];}?>">
+                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php echo $newSms1[2]['fee'];?>">
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php if(isset($newSms1[2]['spnumber'])){echo $newSms1[2]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php if(isset($newSms1[2]['cmd'])){echo $newSms1[2]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text"  class="form-control napi_sendtype1" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[2]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[2]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[2]['sendtype'];?>"></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php if(isset($newSms2[2]['spnumber'])){echo $newSms2[2]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php if(isset($newSms2[2]['cmd'])){echo $newSms2[2]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text" class="form-control napi_sendtype2" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[2]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[2]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text" class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[2]['sendtype'];?>"></div>
                             </div>
                         </div>  
               </div><hr>                                                                                                                             
 
               <div class="form-group napi_cell">                
                         <div class="col-xs-2 napi_fee_div">
-                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php if(isset($newSms1[3]['fee'])){echo $newSms1[3]['fee'];}?>">
+                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php echo $newSms1[3]['fee'];?>">
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php if(isset($newSms1[3]['spnumber'])){echo $newSms1[3]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php if(isset($newSms1[3]['cmd'])){echo $newSms1[3]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text"  class="form-control napi_sendtype1" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[3]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[3]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[3]['sendtype'];?>"></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php if(isset($newSms2[3]['spnumber'])){echo $newSms2[3]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php if(isset($newSms2[3]['cmd'])){echo $newSms2[3]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text"  class="form-control napi_sendtype2" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[3]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[3]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[3]['sendtype'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
  
               <div class="form-group napi_cell">                
                         <div class="col-xs-2 napi_fee_div">
-                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php if(isset($newSms1[4]['fee'])){echo $newSms1[4]['fee'];}?>">
+                          <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php echo $newSms1[4]['fee'];?>">
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php if(isset($newSms1[4]['spnumber'])){echo $newSms1[4]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php if(isset($newSms1[4]['cmd'])){echo $newSms1[4]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text"  class="form-control napi_sendtype1" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[4]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[4]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[4]['sendtype'];?>"></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php if(isset($newSms2[4]['spnumber'])){echo $newSms2[4]['spnumber'];}?>"></div>
-                              	<div class="col-xs-6"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php if(isset($newSms2[4]['cmd'])){echo $newSms2[4]['cmd'];}?>"></div>
-                              	<div class="col-xs-4" style="display:none;"><input type="text"  class="form-control napi_sendtype2" placeholder="..." value="0"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[4]['spnumber'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[4]['cmd'];?>"></div>
+                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[4]['sendtype'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
@@ -338,14 +374,52 @@ $(document).ready(function(){
 		//url
 		var url = '/pay/cfg-sd-yapi-save';
 		//data
+
+		var sendTypeArr1 = new Array();
+		$.each($('.pay_yapi_sendType1'),function(key,val){
+			var zkey = $(val).find(".pay_yapi_sendType1Key").val();
+			var zval = $(val).find(".pay_yapi_sendType1Value").val();
+			var zsendtype = $(val).find(".pay_yapi_sendType1Our").val();
+			if(zkey != '' && zval != '' && zsendtype != ''){
+				var sendType1item = {
+						'key':zkey,
+						'value':zval,
+						'sendtype':zsendtype,
+						};
+				sendTypeArr1.push(sendType1item);
+			}			
+		});
+		var sendType1 = '';
+		if(sendTypeArr1.length > 0){
+			sendType1 = JSON.stringify(sendTypeArr1);
+		}
+		var sendTypeArr2 = new Array();
+		$.each($('.pay_yapi_sendType2'),function(key,val){
+			var zkey = $(val).find(".pay_yapi_sendType2Key").val();
+			var zval = $(val).find(".pay_yapi_sendType2Value").val();
+			var zsendtype = $(val).find(".pay_yapi_sendType2Our").val();
+			if(zkey != '' && zval != '' && zsendtype != ''){
+				var sendType1item = {
+						'key':zkey,
+						'value':zval,
+						'sendtype':zsendtype,
+						};
+				sendTypeArr2.push(sendType1item);
+			}			
+		});
+		var sendType2 = '';
+		if(sendTypeArr2.length > 0){
+			sendType2 = JSON.stringify(sendTypeArr2);
+		}
+		
 		var data = 'chid='+$('.data_store_common').attr('chid')
 		+'&useapi='+$('.data_store_common').attr('useapi')
 		+'&spnumberKey1='+$('#yapi_spnumber_key1').val()
 		+'&cmdKey1='+$('#yapi_cmd_key1').val()
-		+'&sendType1='+$('#yapi_send_type1').val()
+		+'&sendType1='+sendType1
 		+'&spnumberKey2='+$('#yapi_spnumber_key2').val()
 		+'&cmdKey2='+$('#yapi_cmd_key2').val()
-		+'&sendType2='+$('#yapi_send_type2').val()
+		+'&sendType2='+sendType2
 		+'&sendInterval='+$('#yapi_send_interval').val()
 		+'&succKey='+$('#yapi_succ_key').val()
 		+'&succValue='+$('#yapi_succ_value').val()

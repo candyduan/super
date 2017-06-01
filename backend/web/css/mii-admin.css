@@ -296,7 +296,10 @@ table td {
 .pay_param_content{border:1px solid #000000;padding:10px;}
 .pay_napi_content{border:1px solid #000000;padding:10px;}
 .data_sync_content{border:1px solid #000000;padding:10px;}
+.sms_napi_content{border:1px solid #000000;padding:10px;}
+.sms_yapi_content{border:1px solid #000000;padding:10px;}
 .pay_napi{display:none;}
+.sms_napi{display:none;}
 .napi_cell{border:1px solid #4F9D9D;margin:10px !important;padding:10px !important;}
 .napi_fee_div{border-right:1px solid #4F9D9D;}
 .custom_package_kv{padding-top:5px;padding-bottom:5px;border-bottom:1px solid #000000;}

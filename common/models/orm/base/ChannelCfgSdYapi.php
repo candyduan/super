@@ -11,10 +11,10 @@ use Yii;
  * @property integer $channelId
  * @property string $spnumberKey1
  * @property string $cmdKey1
- * @property integer $sendType1
+ * @property string $sendType1
  * @property string $spnumberKey2
  * @property string $cmdKey2
- * @property integer $sendType2
+ * @property string $sendType2
  * @property integer $sendInterval
  * @property string $succKey
  * @property string $succValue
@@ -43,9 +43,9 @@ class ChannelCfgSdYapi extends \yii\db\ActiveRecord
     {
         return [
             [['channelId'], 'required'],
-            [['channelId', 'sendType1', 'sendType2', 'sendInterval', 'sendMethod', 'respFmt', 'status'], 'integer'],
+            [['channelId', 'sendInterval', 'sendMethod', 'respFmt', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['spnumberKey1', 'cmdKey1', 'spnumberKey2', 'cmdKey2', 'succKey', 'succValue', 'orderIdKey'], 'string', 'max' => 128],
+            [['spnumberKey1', 'cmdKey1', 'sendType1', 'spnumberKey2', 'cmdKey2', 'sendType2', 'succKey', 'succValue', 'orderIdKey'], 'string', 'max' => 128],
             [['url'], 'string', 'max' => 512],
             [['channelId'], 'unique'],
         ];
