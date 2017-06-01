@@ -3,7 +3,7 @@ namespace common\models\orm\extend;
 class DeveloperChannelCount extends \common\models\orm\base\DeveloperChannelCount{
 	
 	public  static function findAllByCountAsc(){		
-		return self::find()->orderBy('count asc')->all();
+		return self::find()->where(['status' => '1'])->orderBy('count asc')->all();
 	}
 	
 public static function findByPk($id){
