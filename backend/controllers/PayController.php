@@ -11,6 +11,10 @@ use common\models\orm\extend\ChannelCfgSdNapi;
 use common\models\orm\extend\ChannelCfgSdYapi;
 use common\models\orm\extend\ChannelCfgSync;
 use common\models\orm\extend\ChannelCfgSd;
+use common\models\orm\extend\ChannelCfgSms;
+use common\models\orm\extend\ChannelCfgSmtParams;
+use common\models\orm\extend\ChannelCfgSmsYapi;
+use common\models\orm\extend\ChannelCfgSmsNapi;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -330,6 +334,28 @@ class PayController extends BController{
     }
     public function actionCfgSmsView(){
         $chid   = Utils::getBackendParam('chid',0);
+        
+        $channelModel       = Channel::findByPk($chid);
+        $mainModel          = ChannelCfgMain::findByChannelId($chid);
+        $payParamsModel     = ChannelCfgPayParams::findByChannelId($chid);
+        $smsModel           = ChannelCfgSms::findByChannelId($chid);
+        $smsYApiModel       = ChannelCfgSmsYapi::findByChannelId($chid);
+        $smsNApiModel       = ChannelCfgSmsNapi::findByChannelId($chid);
+        $syncModel                = ChannelCfgSync::findByChannelId($chid);
+        $smtParamsModel           = ChannelCfgSmtParams::findByChannelId($chid);
+        
+        $data   = array(
+            'channelModel'                => $channelModel,
+            'mainModel'                   => $mainModel,
+            'payParamsModel'              => $payParamsModel,
+            'smsModel'                    => $smsModel,
+            'smsYApiModel'                => $smsYApiModel,
+            'smsNApiModel'                => $smsNApiModel,  
+            'syncModel'                   => $syncModel,
+            'smtParamsModel'              => $smtParamsModel,
+        );
+        
+        return $this->render('cfg-sms-view',$data);
     }
     public function actionCfgUrlView(){
         $chid   = Utils::getBackendParam('chid',0);
