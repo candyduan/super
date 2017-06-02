@@ -121,23 +121,22 @@ group by c.id");
     }
     
     public static function fetchAllAppBelongSdkArrByMedia($media = null){
-        $data= self::find()->select(['app.id','app.name'])
-        ->join('inner join', 'app','app.id = campaignPackage.app')
-        ->join('inner join', 'partner', 'partner.id = campaignPackage.partner')
-        ->where('partner.belong = 1 and campaignPackage.media = :media',array(
-            ':media' => $media
-        ))
-        ->all();
-        return $data;
+        $command = \Yii::$app->db->createCommand("select app.id,app.name
+            from campaignPackage 
+            inner join app on (app.id = campaignPackage.app)
+            inner join partner on (partner.id = campaignPackage.partner)
+            where partner.belong = 1 and campaignPackage.media = $media
+            group by app.id");
+        return $command->queryAll();
+        
     }
     public static function fetchAllCampaignBelongSdkArrByMedia($media){
-        $data= self::find()->select(['campaign.id','campaign.name'])
-        ->join('inner join', 'campaign','campaign.id = campaignPackage.campaign')
-        ->join('inner join', 'partner', 'campaignPackage.partner = partner.id')
-        ->where('partner.belong = 1 and campaignPackage.media = :media',array(
-            ':media' => $media
-        ))
-        ->all();
-        return $data;
+        $command = \Yii::$app->db->createCommand("select campaign.id,campaign.name
+            from campaignPackage
+            inner join campaign on (campaign.id = campaignPackage.campaign)
+            inner join partner on (partner.id = campaignPackage.partner)
+            where partner.belong = 1 and campaignPackage.media = $media
+            group by campaign.id");
+        return $command->queryAll();
     }
 }
