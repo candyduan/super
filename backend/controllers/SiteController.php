@@ -33,7 +33,8 @@ class SiteController extends BController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->isGuest) {
+        $session = \yii::$app->session;
+        if (!empty($session->get('__id'))) {
             return $this->render("/site/index");
         } else {
             $this->redirect("/auth/login");
