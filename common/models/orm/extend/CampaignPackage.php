@@ -121,4 +121,24 @@ group by c.id");
             group by c.id");
         return $command->queryAll();
     }
+    
+    public static function fetchAllAppBelongSdkArrByMedia($media = null){
+        $command = \Yii::$app->db->createCommand("select app.id,app.name
+            from campaignPackage 
+            inner join app on (app.id = campaignPackage.app)
+            inner join partner on (partner.id = campaignPackage.partner)
+            where partner.belong = 1 and campaignPackage.media = $media
+            group by app.id");
+        return $command->queryAll();
+        
+    }
+    public static function fetchAllCampaignBelongSdkArrByMedia($media){
+        $command = \Yii::$app->db->createCommand("select campaign.id,campaign.name
+            from campaignPackage
+            inner join campaign on (campaign.id = campaignPackage.campaign)
+            inner join partner on (partner.id = campaignPackage.partner)
+            where partner.belong = 1 and campaignPackage.media = $media
+            group by campaign.id");
+        return $command->queryAll();
+    }
 }
