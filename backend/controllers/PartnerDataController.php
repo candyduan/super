@@ -57,8 +57,8 @@ class PartnerDataController extends BController
     public function actionCpsGain(){
         self::_setLayout();
         $pid = self::_getPartnerId();
-        $apps = App::fetchAllBelongSdkArrByMedia($pid);
-        $campaigns = Campaign::fetchAllBelongSdkArrByMedia($pid);
+        $apps = CampaignPackage::fetchAllAppBelongSdkArrByMedia($pid);
+        $campaigns = CampaignPackage::fetchAllCampaignBelongSdkArrByMedia($pid);
         $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByMedia($pid);
         return $this->render('cps-gain', ['id' => $pid,'apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
     }
