@@ -119,4 +119,25 @@ group by c.id");
             group by c.id");
         return $command->queryAll();
     }
+    
+    public static function fetchAllAppBelongSdkArrByMedia($media = null){
+        $data= self::find()->select(['app.id','app.name'])
+        ->join('inner join', 'app','app.id = campaignPackage.app')
+        ->join('inner join', 'partner', 'app.id = campaignPackage.partner')
+        ->where('partner.belong = 1 and campaignPackage.media = :media',array(
+            ':media' => $media
+        ))
+        ->all();
+        return $data;
+    }
+    public static function fetchAllCampaignBelongSdkArrByMedia($media){
+        $data= self::find()->select(['campaign.id','campaign.name'])
+        ->join('inner join', 'campaign','campaign.id = campaignPackage.campaign')
+        ->join('inner join', 'partner', 'campaignPackage.partner = partner.id')
+        ->where('partner.belong = 1 and campaignPackage.media = :media',array(
+            ':media' => $media
+        ))
+        ->all();
+        return $data;
+    }
 }
