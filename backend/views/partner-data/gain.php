@@ -8,6 +8,7 @@
     <div class="panel-body">
         <div class="row">
         	<form action="" method="get" id="formSearch" class="form-inline">
+        		<input type="hidden" name="partner" id ="partner" value="<?php echo $id?>">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <select class="form-control" id="app" name="app">
                         <option value="0">应用名：可模糊</option>
