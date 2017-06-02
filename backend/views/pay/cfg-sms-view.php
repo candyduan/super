@@ -36,8 +36,8 @@ if($smsNApiModel){
 }
 ?>
 <ol class="breadcrumb">
-<li>通道配置</li>
-<li class="active"><?php echo '['.$channelModel->id.']'.$channelModel->name;?></li>
+<li><a href="/pay/channel-view">通道配置</a></li>
+<li class="active">sms+类型配置</li>
 </ol>
 
 <div class="main">
@@ -60,8 +60,6 @@ if($smsNApiModel){
     	<h1 class="header-1">支付设置</h1>
     	<div class="sms_yapi_content">
         	<div class="form-horizontal">    
-<p>0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</p><br>
-
        		<div class="form-group">
                 <label for="sms_yapi_url" class="col-xs-2 control-label">支付URL</label>
                 <div class="col-xs-10">

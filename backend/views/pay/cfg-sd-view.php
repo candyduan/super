@@ -62,8 +62,8 @@ if(!is_array($sendType1)){
 
 ?>
 <ol class="breadcrumb">
-<li>通道配置</li>
-<li class="active"><?php echo '['.$channelModel->id.']'.$channelModel->name;?></li>
+<li><a href="/pay/channel-view">通道配置</a></li>
+<li class="active">single或double类型配置</li>
 </ol>
 <div class="main">
 <!-- 标题 -->
@@ -244,8 +244,7 @@ if(!is_array($sendType1)){
 <hr>
 	<h1 class="header-1">支付设置</h1>
 	<div class="pay_napi_content">
-    	<div class="form-horizontal">     
-    	<p>0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</p><br>                   
+    	<div class="form-horizontal">                        
               <div class="form-group napi_cell">                
                         <div class="col-xs-2 napi_fee_div">
                           <input type="text"  class="form-control napi_fee" placeholder="价格（单位分）" value="<?php echo $newSms1[0]['fee'];?>">

@@ -311,6 +311,6 @@ table td {
 .sms_common_content{border:1px solid #000000;padding:10px;}
 .smt_params_content{border:1px solid #000000;padding:10px;}
 .province_map_item{margin-bottom:10px;}
-
+.cfg-tip{color:#ff2d2d;}
 .input_err{border:1px solid #ff2d2d !important;}
 .input_ok{border:1px solid #73bf00 !important;}

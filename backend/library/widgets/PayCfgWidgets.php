@@ -624,7 +624,8 @@ $(document).ready(function(){
     public static function getCfgCommonWidget($channelModel){
         $devTypeName    = Channel::getNameByDevType($channelModel->devType);
         $widget = '
-        <span class="data_store_common" chid="'.$channelModel->id.'" dev_type="'.$channelModel->devType.'" useapi="1">111222</span>
+        <span class="data_store_common" chid="'.$channelModel->id.'" dev_type="'.$channelModel->devType.'" useapi="1">['.$channelModel->id.']'.$channelModel->name.'---开发类型:'.Channel::getNameByDevType($channelModel->devType).'</span>
+        <hr><p class="cfg-tip">说明：<br>1--->0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</p>
             ';
         return $widget;
     }
