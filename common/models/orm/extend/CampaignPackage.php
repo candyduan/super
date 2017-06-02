@@ -123,7 +123,7 @@ group by c.id");
     public static function fetchAllAppBelongSdkArrByMedia($media = null){
         $data= self::find()->select(['app.id','app.name'])
         ->join('inner join', 'app','app.id = campaignPackage.app')
-        ->join('inner join', 'partner', 'app.id = campaignPackage.partner')
+        ->join('inner join', 'partner', 'partner.id = campaignPackage.partner')
         ->where('partner.belong = 1 and campaignPackage.media = :media',array(
             ':media' => $media
         ))
