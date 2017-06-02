@@ -51,7 +51,7 @@ class PartnerDataController extends BController
         $apps = App::fetchAllBelongSdkArrByPid($pid);
         $campaigns = Campaign::fetchAllBelongSdkArrByPid($pid);
         $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByPid($pid);
-        return $this->render('gain', ['apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
+        return $this->render('gain', ['id' => $pid,'apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
     }
     
     public function actionCpsGain(){
@@ -60,7 +60,7 @@ class PartnerDataController extends BController
         $apps = App::fetchAllBelongSdkArrByMedia($pid);
         $campaigns = Campaign::fetchAllBelongSdkArrByMedia($pid);
         $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByMedia($pid);
-        return $this->render('cps-gain', ['apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
+        return $this->render('cps-gain', ['id' => $pid,'apps' =>$apps,'campaigns' => $campaigns,'channels' =>$channels]);
     }
     
     public function actionAjaxGain(){
