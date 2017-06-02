@@ -16,6 +16,9 @@ use common\models\orm\extend\ChannelCfgSmtParams;
 use common\models\orm\extend\ChannelCfgSmsYapi;
 use common\models\orm\extend\ChannelCfgSmsNapi;
 use common\models\orm\extend\ChannelCfgSmsSubmit;
+use common\models\orm\extend\ChannelCfgUrl;
+use common\models\orm\extend\ChannelCfgUrlYapi;
+use common\models\orm\extend\ChannelCfgUrlSubmit;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -501,6 +504,7 @@ class PayController extends BController{
         }
         Utils::jsonOut($out);        
     }
+    
     public function actionCfgSmtParamsSave(){
         $chid           = Utils::getBackendParam('chid');
         $orderIdKey     = Utils::getBackendParam('orderIdKey');
@@ -533,6 +537,112 @@ class PayController extends BController{
     }
     public function actionCfgUrlView(){
         $chid   = Utils::getBackendParam('chid',0);
+        $channelModel       = Channel::findByPk($chid);
+        $mainModel          = ChannelCfgMain::findByChannelId($chid);
+        $payParamsModel     = ChannelCfgPayParams::findByChannelId($chid);
+        $urlModel           = ChannelCfgUrl::findByChannelId($chid);
+        $urlYApiModel       = ChannelCfgUrlYapi::findByChannelId($chid);
+        $submitModel        = ChannelCfgUrlSubmit::findByChannelId($chid);
+        $syncModel          = ChannelCfgSync::findByChannelId($chid);
+        $smtParamsModel     = ChannelCfgSmtParams::findByChannelId($chid);
+        
+        $data   = array(
+            'channelModel'                => $channelModel,
+            'mainModel'                   => $mainModel,
+            'payParamsModel'              => $payParamsModel,
+            'urlModel'                    => $urlModel,
+            'urlYApiModel'                => $urlYApiModel,
+            'submitModel'                 => $submitModel,
+            'syncModel'                   => $syncModel,
+            'smtParamsModel'              => $smtParamsModel,
+        );
+        
+        return $this->render('cfg-url-view',$data);
+    }
+    public function actionCfgUrlYapiSave(){        
+        $chid           = Utils::getBackendParam('chid',0);
+        $url            = Utils::getBackendParam('url');
+        $sendMethod     = Utils::getBackendParam('sendMethod');
+        $respFmt        = Utils::getBackendParam('respFmt');
+        $succKey        = Utils::getBackendParam('succKey');
+        $succValue      = Utils::getBackendParam('succValue');
+        $orderIdKey     = Utils::getBackendParam('orderIdKey');
+        $smtKey         = Utils::getBackendParam('smtKey');
+       
+        
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $urlYApiModel   = ChannelCfgUrlYapi::findByChannelId($chid);
+            if(!$urlYApiModel){
+                $urlYApiModel   = new ChannelCfgUrlYapi();
+                $urlYApiModel->channelId    = $chid;
+            }
+            $urlYApiModel->url          = $url;
+            $urlYApiModel->sendMethod   = $sendMethod;
+            $urlYApiModel->respFmt      = $respFmt;
+            $urlYApiModel->succKey      = $succKey;
+            $urlYApiModel->succValue    = $succValue;
+            $urlYApiModel->orderIdKey   = $orderIdKey;
+            $urlYApiModel->smtKey       = $smtKey;
+
+
+            try{
+                $urlYApiModel->save();
+                ChannelCfgMain::backendOps($chid);
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = $e->getMessage();
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = '该通道不存在';
+        }
+        Utils::jsonOut($out);
+    }
+    public function actionCfgUrlSubmitSave(){
+        $chid           = Utils::getBackendParam('chid');
+        $smtType        = Utils::getBackendParam('smtType');
+        $smtKeywords    = Utils::getBackendParam('smtKeywords');
+        $url            = Utils::getBackendParam('url');
+        $sendMethod     = Utils::getBackendParam('sendMethod');
+        $respFmt        = Utils::getBackendParam('respFmt');
+        $succKey        = Utils::getBackendParam('succKey');
+        $succValue      = Utils::getBackendParam('succValue');
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $urlModel   = ChannelCfgUrl::findByChannelId($chid);
+            if(!$urlModel){
+                $urlModel   = new ChannelCfgUrl();
+                $urlModel->channelId    = $chid;
+            }
+            $urlModel->smtType      = $smtType;
+            $urlModel->smtKeywords  = $smtKeywords;
+            $submitModel    = ChannelCfgUrlSubmit::findByChannelId($chid);
+            if(!$submitModel){
+                $submitModel    = new ChannelCfgUrlSubmit();
+                $submitModel->channelId = $chid;
+            }
+            $submitModel->url           = $url;
+            $submitModel->sendMethod    = $sendMethod;
+            $submitModel->respFmt       = $respFmt;
+            $submitModel->succKey       = $succKey;
+            $submitModel->succValue     = $succValue;
+            try{
+                $urlModel->save();
+                $submitModel->save();
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode'] = Constant::RESULT_CODE_NONE;
+            $out['msg']        = '该通道不存在';
+        }
+        Utils::jsonOut($out);
     }
     
     public function actionDutyView(){

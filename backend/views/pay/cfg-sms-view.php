@@ -278,8 +278,8 @@ if($smsNApiModel){
                     <label for="sms_verifycode_sendMethod" class="col-xs-2 control-label">提交验证码发送方式</label>
                     <div class="col-xs-10">
                             <select id="sms_verifycode_sendMethod" class="form-control">
-                              <option value ="1" <?php if($submitModel){if($submitModel->smtSendMethod == '1'){ echo 'selected="selected"';}}?>>GET</option>
-                              <option value ="2" <?php if($submitModel){if($submitModel->smtSendMethod == '2'){ echo 'selected="selected"';}}?>>POST</option>
+                              <option value ="1" <?php if($submitModel){if($submitModel->sendMethod == '1'){ echo 'selected="selected"';}}?>>GET</option>
+                              <option value ="2" <?php if($submitModel){if($submitModel->sendMethod == '2'){ echo 'selected="selected"';}}?>>POST</option>
                             </select>
                     </div>
                   </div>
@@ -288,9 +288,9 @@ if($smsNApiModel){
                     <label for="sms_verifycode_respFmt" class="col-xs-2 control-label">提交验证码响应格式</label>
                     <div class="col-xs-10">
                             <select id="sms_verifycode_respFmt" class="form-control">
-                              <option value ="1" <?php if($submitModel){if($submitModel->smtRespFmt == '1'){ echo 'selected="selected"';}}?>>JSON</option>
-                              <option value ="2" <?php if($submitModel){if($submitModel->smtRespFmt == '2'){ echo 'selected="selected"';}}?>>XML</option>
-                              <option value ="3" <?php if($submitModel){if($submitModel->smtRespFmt == '3'){ echo 'selected="selected"';}}?>>TEXT</option>
+                              <option value ="1" <?php if($submitModel){if($submitModel->respFmt == '1'){ echo 'selected="selected"';}}?>>JSON</option>
+                              <option value ="2" <?php if($submitModel){if($submitModel->respFmt == '2'){ echo 'selected="selected"';}}?>>XML</option>
+                              <option value ="3" <?php if($submitModel){if($submitModel->respFmt == '3'){ echo 'selected="selected"';}}?>>TEXT</option>
                             </select>
                     </div>
                   </div>
@@ -440,7 +440,7 @@ $(document).ready(function(){
 			$('.sms_verifycode_succValue_div').css('display','none');
 		}
 	});
-
+	$('#sms_verifycode_smtType').trigger('change');
 	$('#sms_verifycode_save').click(function(){
 		//url
 		var url = '/pay/cfg-sms-submit-save';
