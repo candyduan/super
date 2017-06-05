@@ -174,13 +174,13 @@
     	$("#campaign").append(option);
     }
     function onCampaignSelectChange(that){
-        var app = $(that).val();
+        var campaign = $(that).val();
      	$("#channel").empty();
 
      	var channels = <?php echo json_encode($channels);?>;
     	var option = '<option value="0">渠道标识：可模糊</option>';
     	for(var i = 0; i < channels.length;i++){
-        	if(0 == app || app == channels[i].app){
+        	if(0 == campaign || campaign == channels[i].campaign){
         		option +='<option value="' + channels[i].mediaSign+'">'+channels[i].mediaSign+'</option>';
         	}
     	}
