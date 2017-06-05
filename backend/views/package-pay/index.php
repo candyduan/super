@@ -10,7 +10,7 @@
         	<form action="" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     <input type="text"  class="form-control " id='partner' name ='partner'  placeholder="Partner"/>
-                    <select class="form-control" id="app" name="app">
+                    <select class="form-control" id="app" name="app" onchange="onAppSelectChange(this)">
                         <option value="0">选择应用</option>
                         <?php foreach($apps as $value){
                             $id = $value['id'];
@@ -171,5 +171,19 @@
         var m=m<10?"0"+m:m;
        	var d=d<10?"0"+d:d;
         return y+"-"+m+"-"+d;
+    }
+
+    function onAppSelectChange(that){
+        var app = $(that).val();
+     	$("#channel").empty();
+
+     	var channels = <?php echo json_encode($channels);?>;
+    	var option = '<option value="0">选择渠道</option>';
+    	for(var i = 0; i < channels.length;i++){
+        	if(0 == app || app == channels[i].app){
+        		option +='<option value="' + channels[i].id+'">'+channels[i].name+'</option>';
+        	}
+    	}
+    	$("#channel").append(option);
     }
 </script>
