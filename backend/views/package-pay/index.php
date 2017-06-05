@@ -19,9 +19,9 @@
                         }?>
                     </select>
                     <select class="form-control" id="channel" name="channel">
-                        <option value="0">选择渠道</option>
+                        <option value="">选择渠道</option>
                         <?php foreach($channels as $value){
-                            $id = $value['id'];
+                            $id = $value['mediaSign'];
                             $name = $value['name'];
                             echo "<option value='$id'> $name</option>";
                         }?>
@@ -52,6 +52,7 @@
                         <td id="cloumn_app">应用</td>
                         <td id="cloumn_campaign">活动包</td>
                         <td id="cloumn_package">渠道</td>
+                        <td id="cloumn_package_sign">渠道标识</td>
                         <td>激活数</td>
                         <td>活跃数</td>
                         <td>支付用户</td>

@@ -119,7 +119,9 @@ class PackagePayController extends BController
             }
             if($checkM){
                 array_push($item, '【'.$value['chid'].'】'.$value['m']);
+                array_push($item, $value['mediaSign']);
             }else{
+                array_push($item, '-');
                 array_push($item, '-');
             }
             
@@ -222,10 +224,10 @@ class PackagePayController extends BController
                 $app
             ];
         }
-        if($channel > 0){
+        if(Utils::isValid($channel)){
             $where[] = [
                 '=',
-                'campaignPackage.media',
+                'campaignPackage.mediaSign',
                 $channel
             ];
         }
@@ -280,7 +282,7 @@ class PackagePayController extends BController
             $group[] = 'campaignPackage.campaign';
         }
         if($checkM){
-            $group[] = 'campaignPackage.media';
+            $group[] = 'campaignPackage.mediaSign';
         }
         $condition['select'] = $select;
         $condition['where'] = $where;
