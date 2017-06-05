@@ -10,7 +10,7 @@
         	<form action="" method="get" id="formSearch" class="form-inline">
         		<input type="hidden" name="partner" id ="partner" value="<?php echo $id?>">
                 <div class="col-sm-10 col-md-10 col-lg-10">
-                    <select class="form-control" id="app" name="app">
+                    <select class="form-control" id="app" name="app" onchange="onAppSelectChange(this)">
                         <option value="0">应用名：可模糊</option>
                         <?php foreach($apps as $value){
                             $id = $value['id'];
@@ -18,7 +18,7 @@
                             echo "<option value='$id'> $name</option>";
                         }?>
                     </select>
-                    <select class="form-control" id="channel" name="campaign">
+                    <select class="form-control" id="channel" name="campaign" onchange="onCampaignSelectChange(this)">
                         <option value="0">活动名：可模糊</option>
                         <?php foreach($campaigns as $value){
                             $id = $value['id'];
@@ -159,5 +159,31 @@
         var m=m<10?"0"+m:m;
        	var d=d<10?"0"+d:d;
         return y+"-"+m+"-"+d;
+    }
+    function onAppSelectChange(that){
+        var app = $(that).val();
+     	$("#campaign").empty();
+
+     	var campaigns = <?php echo json_encode($campaigns);?>;
+    	var option = '<option value="0">活动名：可模糊</option>';
+    	for(var i = 0; i < campaigns.length;i++){
+        	if(0 == app || app == campaigns[i].app){
+        		option +='<option value="' + campaigns[i].id+'">'+campaigns[i].name+'</option>';
+        	}
+    	}
+    	$("#campaign").append(option);
+    }
+    function onCampaignSelectChange(that){
+        var app = $(that).val();
+     	$("#channel").empty();
+
+     	var channels = <?php echo json_encode($channels);?>;
+    	var option = '<option value="0">渠道标识：可模糊</option>';
+    	for(var i = 0; i < channels.length;i++){
+        	if(0 == app || app == channels[i].app){
+        		option +='<option value="' + channels[i].mediaSign+'">'+channels[i].mediaSign+'</option>';
+        	}
+    	}
+    	$("#channel").append(option);
     }
 </script>
