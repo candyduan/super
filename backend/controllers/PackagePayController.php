@@ -227,7 +227,7 @@ class PackagePayController extends BController
         if(Utils::isValid($channel)){
             $where[] = [
                 '=',
-                'campaignPackage.mediaSign',
+                'campaignPackage.media',
                 $channel
             ];
         }
