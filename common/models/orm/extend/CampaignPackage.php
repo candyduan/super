@@ -113,7 +113,7 @@ group by cp.mediaSign");
         if(!is_numeric($media)){
             return array();
         }
-        $command = \Yii::$app->db->createCommand("select c.id,c.name,cp.mediaSign
+        $command = \Yii::$app->db->createCommand("select c.id,c.name,cp.mediaSign,cp.campaign
             from campaignPackage as cp
             inner join partner as c on (cp.media = c.id)
             inner join partner as p on (cp.partner = p.id)
@@ -133,7 +133,7 @@ group by cp.mediaSign");
         
     }
     public static function fetchAllCampaignBelongSdkArrByMedia($media){
-        $command = \Yii::$app->db->createCommand("select campaign.id,campaign.name
+        $command = \Yii::$app->db->createCommand("select campaign.id,campaign.name,campaign.app
             from campaignPackage
             inner join campaign on (campaign.id = campaignPackage.campaign)
             inner join partner on (partner.id = campaignPackage.partner)
