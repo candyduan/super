@@ -52,6 +52,7 @@
                         <td id="cloumn_app">应用</td>
                         <td id="cloumn_campaign">活动包</td>
                         <td id="cloumn_package">渠道</td>
+                        <td id="cloumn_package_sign">渠道标识</td>
                         <td>激活数</td>
                         <td>活跃数</td>
                         <td>支付用户</td>
