@@ -746,6 +746,9 @@ class PackagePayController extends BController
      	if($checkM){
      		$group[] = 'campaignPackage.media';
      	}
+     	if($checkSdk){
+     	    $group[] = 'sdkPackagePayDay.sdid';
+     	}
      	if($checkProvince){
      		$group[] = 'sdkPackagePayDay.prid';
      	}
