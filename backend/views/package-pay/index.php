@@ -21,7 +21,7 @@
                     <select class="form-control" id="channel" name="channel">
                         <option value="">选择渠道</option>
                         <?php foreach($channels as $value){
-                            $id = $value['mediaSign'];
+                            $id = $value['id'];
                             $name = $value['name'];
                             echo "<option value='$id'> $name</option>";
                         }?>
