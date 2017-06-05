@@ -183,6 +183,8 @@ class RegisterController extends BController{
     			$out['msg']         = Constant::RESULT_MSG_SUCC;
     			$out['item']        = $regChannel->toArray();
     			$out['channelVerifyRule']	= $regChannelVerifyRule;
+    			$syncDomain		= Utils::isFrontendAlpha() ? Constant::DOMAIN_REGISTER_SYNC : Constant::DOMAIN_REGISTER_SYNC_TEST;
+    			$out['syncUrl']	= $syncDomain."/register/sync?sign=".$regChannel->sign;
     		}
     		
     	}

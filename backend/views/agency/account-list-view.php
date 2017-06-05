@@ -48,7 +48,7 @@ function setResult(page){
                         $('#data_list').html(resultHtml);
 
                         $('.btn-ops').click(function(){
-                            var r   = confirm("您确定要进行【"+$('.btn-ops').html()+"】操作吗？");
+                            var r   = confirm("您确定要进行【"+$(this).html()+"】操作吗？");
                             if(!r){
                                 return;
                             }
