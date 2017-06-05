@@ -121,7 +121,7 @@ class Campaign extends \common\models\orm\base\Campaign {
         return $data;
     }
     public static function fetchAllBelongSdkArrByPid($pid){
-        $data= self::find()->select(['campaign.id','campaign.name'])->join('inner join', 'partner', 'campaign.partner = partner.id')
+        $data= self::find()->select(['campaign.id','campaign.name','campaign.app'])->join('inner join', 'partner', 'campaign.partner = partner.id')
         ->where('partner.belong = 1 and partner.id = :pid',array(
             ':pid' => $pid
         ))

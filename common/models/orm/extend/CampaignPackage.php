@@ -100,7 +100,7 @@ where p.belong = 1 group by cp.mediaSign');
         if(!is_numeric($pid)){
             return array();
         }
-        $command = \Yii::$app->db->createCommand("select c.id,c.name,cp.mediaSign
+        $command = \Yii::$app->db->createCommand("select c.id,c.name,cp.mediaSign,cp.campaign
 from campaignPackage as cp
 inner join partner as c on (cp.media = c.id)
 inner join partner as p on (cp.partner = p.id)
