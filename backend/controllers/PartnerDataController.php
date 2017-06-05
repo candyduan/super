@@ -203,7 +203,7 @@ class PartnerDataController extends BController
                 $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],$partner,$value['aid'],$value['cid'],$value['mediaSign']);
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
-                array_push($item, $value['successPay']);
+                array_push($item, number_format($value['successPay'],0));
     
                 $tabledata[] = $item;
             }
