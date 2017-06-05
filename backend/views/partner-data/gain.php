@@ -27,7 +27,7 @@
                         }?>
                     </select>
                     <select class="form-control" id="channel" name="channel">
-                        <option value="0">渠道标识：可模糊</option>
+                        <option value="">渠道标识：可模糊</option>
                         <?php foreach($channels as $value){
                             $id = $value['id'];
                             $mediaSign = $value['mediaSign'];

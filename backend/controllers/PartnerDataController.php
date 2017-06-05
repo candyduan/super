@@ -412,7 +412,7 @@ class PartnerDataController extends BController
             $group[] = 'campaignPackage.campaign';
         }
         if($checkM){
-            $group[] = 'campaignPackage.media';
+            $group[] = 'campaignPackage.mediaSign';
         }
         $condition['select'] = $select;
         $condition['where'] = $where;
