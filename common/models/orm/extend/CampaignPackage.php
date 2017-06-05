@@ -103,7 +103,7 @@ from campaignPackage as cp
 inner join partner as c on (cp.media = c.id)
 inner join partner as p on (cp.partner = p.id)
 where p.belong = 1 and p.id = $pid
-group by c.id");
+group by cp.mediaSign");
         return $command->queryAll();
     }
     
@@ -116,7 +116,7 @@ group by c.id");
             inner join partner as c on (cp.media = c.id)
             inner join partner as p on (cp.partner = p.id)
             where p.belong = 1 and cp.media = $media
-            group by c.id");
+            group by cp.mediaSign");
         return $command->queryAll();
     }
     
