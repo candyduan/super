@@ -14,7 +14,7 @@ class SdkPlayer extends \common\models\orm\base\SdkPlayer{
             ->where($where)
             ->groupBy($group);
        $command = $query->createCommand();
-       Utils::jsonOut(array($command->getSql()));exit;
+       Utils::jsonOut(array($command->getSql(),$select,$where,$group));exit;
        $data = $command->queryAll();
        if(count($data) > 0){
            return $data[0];
