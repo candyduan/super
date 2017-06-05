@@ -24,6 +24,7 @@ class AuthController extends BController{
         }
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $session->set('__outuserid', '');
             $this->redirect("/system/index");
         } else {
             return $this->renderAjax('/auth/login', [

@@ -11,4 +11,14 @@ class ChannelCfgSms extends \common\models\orm\base\ChannelCfgSms{
                     ;
         return $model;
     }
+    
+    public static function backendOps($chid,$api){
+        $model  = self::findByChannelId($chid);
+        if(!$model){
+            $model  = new ChannelCfgSms();
+            $model->channelId   = $chid;
+        }
+        $model->api = $api;
+        return $model->save();
+    }
 }

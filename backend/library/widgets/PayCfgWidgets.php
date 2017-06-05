@@ -624,7 +624,75 @@ $(document).ready(function(){
     public static function getCfgCommonWidget($channelModel){
         $devTypeName    = Channel::getNameByDevType($channelModel->devType);
         $widget = '
-        <span class="data_store_common" chid="'.$channelModel->id.'" dev_type="'.$channelModel->devType.'" useapi="1">111222</span>
+        <span class="data_store_common" chid="'.$channelModel->id.'" dev_type="'.$channelModel->devType.'" useapi="1">['.$channelModel->id.']'.$channelModel->name.'---开发类型:'.Channel::getNameByDevType($channelModel->devType).'</span>
+        <hr><p class="cfg-tip">说明：<br>1--->0:文本短信发送。1:base64decode后，二进制短信发送。2:base64decode后，文本短信发送。3:base64encode后，返给客户端，客户端base64decode后，再以二进制短信发送</p>
+            ';
+        return $widget;
+    }
+    
+    
+    public static function getCfgSmtParamsWidget($smtParamsModel){
+        $orderIdKey = '';
+        $verifyCodeKey  = '';
+        if($smtParamsModel){
+            $orderIdKey     = $smtParamsModel->orderIdKey;
+            $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
+        }
+    
+        $widget = '
+            <div class="smt_params">
+<hr>
+	<h2 class="header-1">验证码请求参数设置</h2>
+		<div class="smt_params_content">
+    		<div class="form-horizontal">
+    
+    		  <div class="form-group">
+                <label for="smt_params_orderidkey" class="col-xs-2 control-label">订单Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_orderidkey" placeholder="..." value="'.$orderIdKey.'">
+                </div>
+              </div>
+    
+    
+              <div class="form-group">
+                <label for="smt_params_verifycodekey" class="col-xs-2 control-label">验证码Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_verifycodekey" placeholder="..." value="'.$verifyCodeKey.'">
+                </div>
+              </div>
+    
+    
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                  <button id="smt_params_save" class="btn btn-default">保存</button>
+                </div>
+              </div>
+    
+    		</div>
+		</div>
+    
+</div>
+<script>
+$(document).ready(function(){
+	$("#smt_params_save").click(function(){
+		//url
+		var url = "/pay/cfg-smt-params-save";
+		//data
+		var data	= "chid="+$(".data_store_common").attr("chid")
+				     +"&orderIdKey="+$("#smt_params_orderidkey").val()
+				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val();
+	     //succFunc
+	     var succFunc	= function(resJson){
+				if(parseInt(resJson.resultCode) == 1){//成功
+					$(".smt_params_content").addClass("input_ok");
+				}else{//失败
+					$(".smt_params_content").addClass("input_err");
+				}
+		  };
+		  Utils.ajax(url,data,succFunc);
+	});
+});
+</script>
             ';
         return $widget;
     }
