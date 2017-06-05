@@ -18,7 +18,7 @@
                             echo "<option value='$id'> $name</option>";
                         }?>
                     </select>
-                    <select class="form-control" id="channel" name="campaign" onchange="onCampaignSelectChange(this)">
+                    <select class="form-control" id="campaign" name="campaign" onchange="onCampaignSelectChange(this)">
                         <option value="0">活动名：可模糊</option>
                         <?php foreach($campaigns as $value){
                             $id = $value['id'];
