@@ -93,7 +93,7 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
 from campaignPackage as cp
 inner join partner as c on (cp.media = c.id) 
 inner join partner as p on (cp.partner = p.id)
-where p.belong = 1 group by c.id');
+where p.belong = 1 group by cp.mediaSign');
         return $command->queryAll();
     }
     public static function fetchAllPartnerBelongSdkArrByPid($pid){
