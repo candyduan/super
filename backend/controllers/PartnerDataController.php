@@ -289,13 +289,11 @@ class PartnerDataController extends BController
                 $cid
             ];
         }
-        if($checkM){
-            $where[] = [
-                '=',
-                'campaignPackage.mediaSign',
-                $media
-            ];
-        }
+        $where[] = [
+            '=',
+            'campaignPackage.mediaSign',
+            $media
+        ];
         //激活用户
         $where[] = [
             '=',
