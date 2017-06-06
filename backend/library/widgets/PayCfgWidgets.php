@@ -634,9 +634,11 @@ $(document).ready(function(){
     public static function getCfgSmtParamsWidget($smtParamsModel){
         $orderIdKey = '';
         $verifyCodeKey  = '';
+        $mobileKey  = '';
         if($smtParamsModel){
             $orderIdKey     = $smtParamsModel->orderIdKey;
             $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
+            $mobileKey      = $smtParamsModel->mobileKey;
         }
     
         $widget = '
@@ -661,7 +663,13 @@ $(document).ready(function(){
                 </div>
               </div>
     
-    
+              <div class="form-group">
+                <label for="smt_params_mobile_key" class="col-xs-2 control-label">手机号Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_mobile_key" placeholder="..." value="'.$mobileKey.'">
+                </div>
+              </div>
+                      
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
                   <button id="smt_params_save" class="btn btn-default">保存</button>
@@ -680,6 +688,7 @@ $(document).ready(function(){
 		//data
 		var data	= "chid="+$(".data_store_common").attr("chid")
 				     +"&orderIdKey="+$("#smt_params_orderidkey").val()
+                     +"&mobileKey="+$("#smt_params_mobile_key").val()
 				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val();
 	     //succFunc
 	     var succFunc	= function(resJson){
