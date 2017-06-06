@@ -122,7 +122,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
             
-                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],$partner,$value['aid'],$value['cid'],$value['mediaSign']);
+                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],$partner,$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],false);
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
@@ -200,7 +200,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
     
-                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['mediaSign'],true);
+                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],true);
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
@@ -221,7 +221,7 @@ class PartnerDataController extends BController
         exit;
     }
     
-    private function _getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$isCps = FALSE){
+    private function _getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$mediaSign,$isCps = FALSE){
         $res = array();
     
         $select = [
@@ -289,22 +289,22 @@ class PartnerDataController extends BController
                 $cid
             ];
         }
-        //激活用户
-        if($isCps){
+        
+        if($checkM){
             $where[] = [
                 '=',
                 'campaignPackage.mediaSign',
+                $mediaSign
+            ];
+        }
+        if($isCps){
+            $where[] = [
+                '=',
+                'campaignPackage.media',
                 $media
             ];
-        }else{
-            if($checkM){
-                $where[] = [
-                    '=',
-                    'campaignPackage.mediaSign',
-                    $media
-                ];
-            }
         }
+        //激活用户
         $where[] = [
             '=',
             'sdkPlayer.isNew',
@@ -323,6 +323,7 @@ class PartnerDataController extends BController
             'campaign.id as cid',
             'campaign.name as c',
             'channel.name as m',
+            'campaignPackage.media as media',
             'campaignPackage.mediaSign as mediaSign',
             'sum(sdkPackagePayDay.cp) as successPay',
         ];
