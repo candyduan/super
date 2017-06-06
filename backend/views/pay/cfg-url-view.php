@@ -216,13 +216,14 @@ $(document).ready(function(){
 	});
 	$('#url_verifycode_smtType').trigger('change');
 	$('#url_verifycode_save').click(function(){
+		alert($('#url_verifycode_url').val());
 		//url
 		var url = '/pay/cfg-url-submit-save';
 		//data
 		var data	= 'chid='+$('.data_store_common').attr('chid')
 					 +'&smtKeywords='+$('#url_verifycode_smtKeywords').val()
 				     +'&smtType='+$('#url_verifycode_smtType').val()
-				     +'&url='+$('#url_verifycode_url').val()
+				     +'&url='+encodeURIComponent($('#url_verifycode_url').val())
 				     +'&sendMethod='+$('#url_verifycode_sendMethod').val()
 				     +'&respFmt='+$('#url_verifycode_respFmt').val()
 				     +'&succKey='+$('#url_verifycode_succKey').val()
