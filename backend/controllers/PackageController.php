@@ -195,7 +195,7 @@ class PackageController extends BController
                     $sdid = $value['sdid'];
                     $sdks[$key]['sdid'] = $sdid;
                     $sdks[$key]['name'] = Sdk::getNameBySdid($sdid);
-                    $sdks[$key]['status'] = MyHtml::iElement('glyphicon-edit glyphicon grey ', 'changeSign',$cpid.','.$sdid, $sdid,'btn_sdk_sign_'.$sdid) .' ';
+                    $sdks[$key]['status'] = MyHtml::iElement('glyphicon-edit glyphicon grey ', 'changeSign',$cpid.','.$sdid, '编辑','btn_sdk_sign_'.$sdid) .' ';
 
                     $packageSdkModel = CampaignPackageSdk::findByCpidSdid($cpid,$sdid);
                     $status = 1;
