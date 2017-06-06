@@ -216,7 +216,6 @@ $(document).ready(function(){
 	});
 	$('#url_verifycode_smtType').trigger('change');
 	$('#url_verifycode_save').click(function(){
-		alert($('#url_verifycode_url').val());
 		//url
 		var url = '/pay/cfg-url-submit-save';
 		//data
