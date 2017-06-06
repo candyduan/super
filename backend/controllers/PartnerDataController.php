@@ -221,7 +221,7 @@ class PartnerDataController extends BController
         exit;
     }
     
-    private function _getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media){
+    private function _getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$isCps = FALSE){
         $res = array();
     
         $select = [
@@ -289,17 +289,28 @@ class PartnerDataController extends BController
                 $cid
             ];
         }
-        $where[] = [
-            '=',
-            'campaignPackage.mediaSign',
-            $media
-        ];
         //激活用户
+        if($isCps){
+            $where[] = [
+                '=',
+                'campaignPackage.mediaSign',
+                $media
+            ];
+        }else{
+            if($checkM){
+                $where[] = [
+                    '=',
+                    'campaignPackage.mediaSign',
+                    $media
+                ];
+            }
+        }
         $where[] = [
             '=',
             'sdkPlayer.isNew',
             1
         ];
+        
         $newUsers = SdkPlayer::getCountByCondition($select,$where);
         $res['newUsers'] = $newUsers['users'];
         return $res;
