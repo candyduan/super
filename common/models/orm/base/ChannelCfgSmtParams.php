@@ -18,6 +18,7 @@ use Yii;
  * @property integer $feeUnit
  * @property string $customs
  * @property string $mobileKey
+ * @property string $cpparamKey
  */
 class ChannelCfgSmtParams extends \yii\db\ActiveRecord
 {
@@ -38,7 +39,7 @@ class ChannelCfgSmtParams extends \yii\db\ActiveRecord
             [['channelId'], 'required'],
             [['channelId', 'status', 'feeUnit'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['orderIdKey', 'verifyCodeKey', 'feeKey', 'customs', 'mobileKey'], 'string', 'max' => 128],
+            [['orderIdKey', 'verifyCodeKey', 'feeKey', 'customs', 'mobileKey', 'cpparamKey'], 'string', 'max' => 128],
             [['channelId'], 'unique'],
         ];
     }
@@ -60,6 +61,7 @@ class ChannelCfgSmtParams extends \yii\db\ActiveRecord
             'feeUnit' => 'Fee Unit',
             'customs' => 'Customs',
             'mobileKey' => 'Mobile Key',
+            'cpparamKey' => 'Cpparam Key',
         ];
     }
 }

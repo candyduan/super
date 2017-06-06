@@ -635,10 +635,12 @@ $(document).ready(function(){
         $orderIdKey = '';
         $verifyCodeKey  = '';
         $mobileKey  = '';
+        $cpparamKey = '';
         if($smtParamsModel){
             $orderIdKey     = $smtParamsModel->orderIdKey;
             $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
             $mobileKey      = $smtParamsModel->mobileKey;
+            $cpparamKey     = $smtParamsModel->cpparamKey;
         }
     
         $widget = '
@@ -669,6 +671,13 @@ $(document).ready(function(){
                   <input type="text" class="form-control" id="smt_params_mobile_key" placeholder="..." value="'.$mobileKey.'">
                 </div>
               </div>
+
+              <div class="form-group">
+                <label for="smt_params_cpparam_key" class="col-xs-2 control-label">透传参数Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_cpparam_key" placeholder="..." value="'.$cpparamKey.'">
+                </div>
+              </div>
                       
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
@@ -689,7 +698,8 @@ $(document).ready(function(){
 		var data	= "chid="+$(".data_store_common").attr("chid")
 				     +"&orderIdKey="+$("#smt_params_orderidkey").val()
                      +"&mobileKey="+$("#smt_params_mobile_key").val()
-				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val();
+                     +"&cpparamKey="+$("#smt_params_cpparam_key").val()
+				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val();                                            
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功

@@ -510,6 +510,7 @@ class PayController extends BController{
         $orderIdKey     = Utils::getBackendParam('orderIdKey');
         $verifyCodeKey  = Utils::getBackendParam('verifyCodeKey');
         $mobileKey      = Utils::getBackendParam('mobileKey');
+        $cpparamKey     = Utils::getBackendParam('cpparamKey');
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
             $smtParamsModel   = ChannelCfgSmtParams::findByChannelId($chid);
@@ -520,6 +521,7 @@ class PayController extends BController{
             $smtParamsModel->orderIdKey       = $orderIdKey;
             $smtParamsModel->verifyCodeKey    = $verifyCodeKey;
             $smtParamsModel->mobileKey        = $mobileKey;
+            $smtParamsModel->cpparamKey       = $cpparamKey;
             try{
                 $smtParamsModel->save();
         
