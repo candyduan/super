@@ -19,6 +19,7 @@ use common\models\orm\extend\CampaignPackage;
 use common\models\orm\extend\CampaignPackageSdk;
 use yii\filters\AccessControl;
 use common\library\BController;
+use backend\library\sdk\SdkUtils;
 /**
  * Campaign controller
  */
@@ -232,6 +233,7 @@ class PackageController extends BController
                     $resultState  = $campaignSdkModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
@@ -264,6 +266,7 @@ class PackageController extends BController
                     $resultState = $campaignSdkModel->insert() == true ?1:0;
                 }
                 $transaction->commit();
+                SdkUtils::refreshFusionSdkCache();
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();
