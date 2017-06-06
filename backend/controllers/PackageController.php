@@ -206,9 +206,9 @@ class PackageController extends BController
                     }
                     $sdks[$key]['sign'] = MyHtml::inputElement($sign, 'input_sdk_sign_'.$sdid, 'changeSaveBtn',$sdid);
                     if(1 == $status){
-                        $sdks[$key]['status'] .=  MyHtml::iElement('glyphicon-ok glyphicon green ', 'changeStatus',$sdid.',0', $sdid);
+                        $sdks[$key]['status'] .=  MyHtml::iElement('glyphicon-ok glyphicon green ', 'changeStatus',$sdid.',0','启用中', $sdid);
                     }else{
-                        $sdks[$key]['status'] .= MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $sdid.',1', $sdid);
+                        $sdks[$key]['status'] .= MyHtml::iElement('glyphicon-remove glyphicon red', 'changeStatus', $sdid.',1','已禁用', $sdid);
                     }
                 }
             }
