@@ -446,7 +446,7 @@ $(document).ready(function(){
 		var data	= 'chid='+$('.data_store_common').attr('chid')
 					 +'&smtKeywords='+$('#sms_verifycode_smtKeywords').val()
 				     +'&smtType='+$('#sms_verifycode_smtType').val()
-				     +'&url='+$('#sms_verifycode_url').val()
+				     +'&url='+encodeURIComponent($('#sms_verifycode_url').val())
 				     +'&sendMethod='+$('#sms_verifycode_sendMethod').val()
 				     +'&respFmt='+$('#sms_verifycode_respFmt').val()
 				     +'&succKey='+$('#sms_verifycode_succKey').val()
