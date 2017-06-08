@@ -2,6 +2,7 @@
 namespace common\models\orm\extend;
 
 use common\library\Utils;
+use yii\db\Query;
 
 class App extends \common\models\orm\base\App {
 
@@ -60,6 +61,25 @@ class App extends \common\models\orm\base\App {
     		}
     		return  $appArr;
     }
+    public static function findAllBelongSdkToArray(){
+        $query = new Query();
+        $datas = $query
+        ->select('app.id as id,app.name as name')
+        ->from('app')
+        ->join('left join', 'partner','app.partner = partner.id')
+        ->where('partner.belong = 1')->createCommand()->queryAll();
+       
+        $appArr = [];
+        if($datas){
+            foreach($datas as $data){
+                $appArr[] =[
+                    'id' => $data['id'],
+                    'name' => '【' . $data['id'] . '】' . $data['name'],
+                ];
+            }
+        }
+        return  $appArr;
+    }
     
     public  static function findByPartner($partner){
     		$datas = self::find()->where("partner={$partner}")->all();
@@ -74,6 +94,24 @@ class App extends \common\models\orm\base\App {
     		}
     		return  $appArr;
     }
-    
+    public  static function findBelongByPartner($partner){
+        $query = new Query();
+        $datas = $query
+        ->select('app.id as id,app.name as name')
+        ->from('app')
+        ->join('left join', 'partner','app.partner = partner.id')
+        ->where('partner.belong = 1 and app.partner = :partner',array(':partner' => $partner))->createCommand()->queryAll();
+         
+        $appArr = [];
+        if($datas){
+            foreach($datas as $data){
+                $appArr[] =[
+                    'id' => $data['id'],
+                    'name' => '【' . $data['id'] . '】' . $data['name'],
+                ];
+            }
+        }
+        return  $appArr;
+    }
     
 }
