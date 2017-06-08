@@ -1,5 +1,6 @@
 <?php 
 use backend\library\widgets\PayCfgWidgets;
+use common\library\Constant;
 
 $channelModel   = $channelModel;
 $mainModel      = $mainModel;
@@ -71,8 +72,10 @@ if($smsNApiModel){
                 <label for="sms_yapi_sendMethod" class="col-xs-2 control-label">支付发送方式</label>
                 <div class="col-xs-10">
                         <select id="sms_yapi_sendMethod" class="form-control">
-                          <option value ="1" <?php if($smsYApiModel){if($smsYApiModel->sendMethod == '1'){ echo 'selected="selected"';}}?>>GET</option>
-                          <option value ="2" <?php if($smsYApiModel){if($smsYApiModel->sendMethod == '2'){ echo 'selected="selected"';}}?>>POST</option>
+                          <option value ="1" <?php if($smsYApiModel){if($smsYApiModel->sendMethod == Constant::HTTP_GET){ echo 'selected="selected"';}}?>>GET</option>
+                          <option value ="2" <?php if($smsYApiModel){if($smsYApiModel->sendMethod == Constant::HTTP_POST_KV){ echo 'selected="selected"';}}?>>POST</option>
+                          <option value ="3" <?php if($smsYApiModel){if($smsYApiModel->sendMethod == Constant::HTTP_POST_JSON){ echo 'selected="selected"';}}?>>POST JSON</option>
+                          <option value ="4" <?php if($smsYApiModel){if($smsYApiModel->sendMethod == Constant::HTTP_POST_XML){ echo 'selected="selected"';}}?>>POST XML</option>
                         </select>
                 </div>
              </div>
@@ -276,8 +279,10 @@ if($smsNApiModel){
                     <label for="sms_verifycode_sendMethod" class="col-xs-2 control-label">提交验证码发送方式</label>
                     <div class="col-xs-10">
                             <select id="sms_verifycode_sendMethod" class="form-control">
-                              <option value ="1" <?php if($submitModel){if($submitModel->sendMethod == '1'){ echo 'selected="selected"';}}?>>GET</option>
-                              <option value ="2" <?php if($submitModel){if($submitModel->sendMethod == '2'){ echo 'selected="selected"';}}?>>POST</option>
+                              <option value ="1" <?php if($submitModel){if($submitModel->sendMethod == Constant::HTTP_GET){ echo 'selected="selected"';}}?>>GET</option>
+                              <option value ="2" <?php if($submitModel){if($submitModel->sendMethod == Constant::HTTP_POST_KV){ echo 'selected="selected"';}}?>>POST</option>
+                              <option value ="3" <?php if($submitModel){if($submitModel->sendMethod == Constant::HTTP_POST_JSON){ echo 'selected="selected"';}}?>>POST JSON</option>
+                              <option value ="4" <?php if($submitModel){if($submitModel->sendMethod == Constant::HTTP_POST_XML){ echo 'selected="selected"';}}?>>POST XML</option>
                             </select>
                     </div>
                   </div>
