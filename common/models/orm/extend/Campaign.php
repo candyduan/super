@@ -114,6 +114,31 @@ class Campaign extends \common\models\orm\base\Campaign {
     		}
     		return  $campaignArr;
     }
+    public static function findAllBelongSdkByPartnerAndApp($partner='',$app=''){
+        $condition = [];
+        if(is_numeric($partner) && $partner){
+            $condition['campaign.partner'] = $partner;
+        }
+        if(is_numeric($app) && $app){
+            $condition['campaign.app'] = $app;
+        }
+        
+        $condition['campaign.belong'] = 1;
+        $datas= self::find()->join('inner join', 'partner', 'campaign.partner = partner.id')
+        ->where($condition)
+        ->all();
+        
+        $campaignArr = [];
+        if($datas){
+            foreach($datas as $data){
+                $campaignArr[] =[
+                    'id' => $data->id,
+                    'name' => '【' . $data->id . '】' . $data->name,
+                ];
+            }
+        }
+        return  $campaignArr;
+    }
     public static function fetchAllBelongSdkArr(){
         $data= self::find()->select(['campaign.id','campaign.name'])->join('inner join', 'partner', 'campaign.partner = partner.id')
         ->where('partner.belong = 1')
