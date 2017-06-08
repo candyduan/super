@@ -636,11 +636,19 @@ $(document).ready(function(){
         $verifyCodeKey  = '';
         $mobileKey  = '';
         $cpparamKey = '';
+        $imsiKey    = '';
+        $imeiKey    = '';
+        $iccidKey   = '';
+        $ipKey      = '';
         if($smtParamsModel){
             $orderIdKey     = $smtParamsModel->orderIdKey;
             $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
             $mobileKey      = $smtParamsModel->mobileKey;
             $cpparamKey     = $smtParamsModel->cpparamKey;
+            $imsiKey        = $smtParamsModel->imsiKey;
+            $imeiKey        = $smtParamsModel->imeiKey;
+            $iccidKey       = $smtParamsModel->iccidKey;
+            $ipKey          = $smtParamsModel->ipKey;
         }
     
         $widget = '
@@ -678,6 +686,34 @@ $(document).ready(function(){
                   <input type="text" class="form-control" id="smt_params_cpparam_key" placeholder="..." value="'.$cpparamKey.'">
                 </div>
               </div>
+
+              <div class="form-group">
+                <label for="smt_params_imsiKey" class="col-xs-2 control-label">IMSI Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_imsiKey" placeholder="..." value="'.$imsiKey.'">
+                </div>
+              </div>
+ 
+              <div class="form-group">
+                <label for="smt_params_imeiKey" class="col-xs-2 control-label">IMEI Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_imeiKey" placeholder="..." value="'.$imeiKey.'">
+                </div>
+              </div>                      
+ 
+              <div class="form-group">
+                <label for="smt_params_iccidKey" class="col-xs-2 control-label">ICCID Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_iccidKey" placeholder="..." value="'.$iccidKey.'">
+                </div>
+              </div>  
+
+              <div class="form-group">
+                <label for="smt_params_ipKey" class="col-xs-2 control-label">IP Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_ipKey" placeholder="..." value="'.$ipKey.'">
+                </div>
+              </div> 
                       
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
@@ -699,6 +735,10 @@ $(document).ready(function(){
 				     +"&orderIdKey="+$("#smt_params_orderidkey").val()
                      +"&mobileKey="+$("#smt_params_mobile_key").val()
                      +"&cpparamKey="+$("#smt_params_cpparam_key").val()
+                     +"&imeiKey="+$("#smt_params_imeiKey").val()
+                     +"&imsiKey="+$("#smt_params_imsiKey").val()
+                     +"&iccidKey="+$("#smt_params_iccidKey").val()
+                     +"&ipKey="+$("#smt_params_ipKey").val()
 				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val();                                            
 	     //succFunc
 	     var succFunc	= function(resJson){
