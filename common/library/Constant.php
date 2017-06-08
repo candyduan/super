@@ -70,4 +70,12 @@ class Constant{
     const PARTNER_ONLY    = 1;
     const PARTNER_CP      = 2;
     const PARTNER_BOTH    = 3;
+    
+    /*
+     * http 请求方式
+     */
+    const HTTP_GET       = 1;
+    const HTTP_POST_KV   = 2;
+    const HTTP_POST_JSON = 3;
+    const HTTP_POST_XML  = 4;  
 }
