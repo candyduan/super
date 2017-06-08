@@ -123,6 +123,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
+                        'ext'           => $item['ext'],
                     );
                 }
                 $sms1   = json_encode($sms1);
@@ -132,12 +133,13 @@ class PayController extends BController{
             $sdNApiModel->sms1             = $sms1;
         
             if(count($sms2Arr) > 0){
-                foreach ($sms2Arr as $item){
-                    $sms2   = array();
+                $sms2   = array();
+                foreach ($sms2Arr as $item){                   
                     $sms2[$item['fee']] = array(
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
+                        'ext'           => $item['ext'],
                     );
                 }
                 $sms2   = json_encode($sms2);
