@@ -465,9 +465,9 @@ class PackagePayController extends BController
      public function actionGetAppWithPartner() {
      	$partner = Utils::getBackendParam('partner');
      	if(is_numeric($partner) && $partner){
-     		$list = App::findByPartner($partner);
+     		$list = App::findBelongByPartner($partner);
      	}else{
-     		$list = App::findAllToArray();
+     		$list = App::findAllBelongSdkToArray();
      	}
      	if($list){
      		$out['list'] = $list;
@@ -486,7 +486,7 @@ class PackagePayController extends BController
      public function actionGetCampaignWithPartnerAndApp() {
      	$partner = Utils::getBackendParam('partner');
      	$app = Utils::getBackendParam('app');
-     	$list = Campaign::findAllByPartnerAndApp($partner,$app);
+     	$list = Campaign::findAllBelongSdkByPartnerAndApp($partner,$app);
      	if($list){
      		$out['list'] = $list;
      		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
@@ -502,8 +502,8 @@ class PackagePayController extends BController
       * 获取渠道
       */
      public function actionGetAppCampaignMediaSdk(){
-     	$app = App::findAllToArray();
-     	$campaign = Campaign::findAllByPartnerAndApp();
+     	$app = App::findAllBelongSdkToArray();
+     	$campaign = Campaign::findAllBelongSdkByPartnerAndApp();
      	$media = Partner::findAllMedia();
      	$sdk	 =  Sdk::findAllSdk();
      	if($media && $sdk && $app && $campaign){
