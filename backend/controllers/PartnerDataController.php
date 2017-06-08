@@ -325,8 +325,12 @@ class PartnerDataController extends BController
             'channel.name as m',
             'campaignPackage.media as media',
             'campaignPackage.mediaSign as mediaSign',
-            'sum(sdkPackagePayDay.cp) as successPay',
         ];
+        if($isChannel){
+            $select[] = 'sum(sdkPackagePayDay.m) as successPay';
+        }else{
+            $select[] = 'sum(sdkPackagePayDay.cp) as successPay';
+        }
     
         $where[] = 'and';
         $where[] = [
