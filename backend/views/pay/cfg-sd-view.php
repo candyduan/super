@@ -100,8 +100,10 @@ if(!is_array($sendType1)){
                 <label for="yapi_send_method" class="col-xs-2 control-label">发送方式</label>
                 <div class="col-xs-10">
                         <select id="yapi_send_method" class="form-control">
-                          <option value ="1" <?php if($sdYApiModel){if($sdYApiModel->sendMethod == '1'){ echo 'selected="selected"';}}?>>GET</option>
-                          <option value ="2" <?php if($sdYApiModel){if($sdYApiModel->sendMethod == '2'){ echo 'selected="selected"';}}?>>POST</option>
+                          <option value ="1" <?php if($sdYApiModel){if($sdYApiModel->sendMethod == Constant::HTTP_GET){ echo 'selected="selected"';}}?>>GET</option>
+                          <option value ="2" <?php if($sdYApiModel){if($sdYApiModel->sendMethod == Constant::HTTP_POST_KV){ echo 'selected="selected"';}}?>>POST</option>
+                          <option value ="3" <?php if($sdYApiModel){if($sdYApiModel->sendMethod == Constant::HTTP_POST_JSON){ echo 'selected="selected"';}}?>>POST JSON</option>
+                          <option value ="4" <?php if($sdYApiModel){if($sdYApiModel->sendMethod == Constant::HTTP_POST_XML){ echo 'selected="selected"';}}?>>POST XML</option>
                         </select>
                 </div>
               </div>
