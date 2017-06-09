@@ -48,21 +48,24 @@ function setResult(page){
             });
             $('#data_list').html(resultHtml);
             $('.cfgMainStatus').click(function(){
-				var chid = $(this).attr('data-chid');
-				//url
-				var mainStatusUrl = '/pay/cfg-main-status';
-				//data
-				var mainStatusData = 'chid='+chid;
-				//succ
-				var mainStatusSucc = function(mainStatusJson){
-// 					console.log(mainStatusJson);
-					if(parseInt(mainStatusJson.resultCode) == 1){
-						setResult($('.pager_number_selected').attr('page'));
-					}else{
-						alert(mainStatusJson.msg);
-					}
-				};
-				Utils.ajax(mainStatusUrl,mainStatusData,mainStatusSucc);
+				if(confirm("确认要改变此状态吗？")){
+					var chid = $(this).attr('data-chid');
+					//url
+					var mainStatusUrl = '/pay/cfg-main-status';
+					//data
+					var mainStatusData = 'chid='+chid;
+					//succ
+					var mainStatusSucc = function(mainStatusJson){
+//	 					console.log(mainStatusJson);
+						if(parseInt(mainStatusJson.resultCode) == 1){
+							alert(mainStatusJson.msg);
+							setResult($('.pager_number_selected').attr('page'));
+						}else{
+							alert(mainStatusJson.msg);
+						}
+					};
+					Utils.ajax(mainStatusUrl,mainStatusData,mainStatusSucc);
+				}
             });
             $('.channel-config-entrance').click(function(){
 				var devType	= parseInt($(this).attr('data-devtypeid'));
