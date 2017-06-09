@@ -62,18 +62,18 @@ class PayCfgWidgets{
                   <input type="text" class="form-control" id="param_mobile_key" placeholder="..." value="'.$mobileKey.'">
                 </div>
               </div>
-    
-              <div class="form-group">
-                <label for="param_imei_key" class="col-xs-2 control-label">IMEI Key</label>
-                <div class="col-xs-10">
-                  <input type="text" class="form-control" id="param_imei_key" placeholder="..." value="'.$imeiKey.'">
-                </div>
-              </div>
-    
+ 
                <div class="form-group">
                 <label for="param_imsi_key" class="col-xs-2 control-label">IMSI Key</label>
                 <div class="col-xs-10">
                   <input type="text" class="form-control" id="param_imsi_key" placeholder="..." value="'.$imsiKey.'">
+                </div>
+              </div>
+                      
+              <div class="form-group">
+                <label for="param_imei_key" class="col-xs-2 control-label">IMEI Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="param_imei_key" placeholder="..." value="'.$imeiKey.'">
                 </div>
               </div>
     

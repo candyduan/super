@@ -123,6 +123,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
+                        'ext'           => $item['ext'],
                     );
                 }
                 $sms1   = json_encode($sms1);
@@ -132,12 +133,13 @@ class PayController extends BController{
             $sdNApiModel->sms1             = $sms1;
         
             if(count($sms2Arr) > 0){
-                foreach ($sms2Arr as $item){
-                    $sms2   = array();
+                $sms2   = array();
+                foreach ($sms2Arr as $item){                   
                     $sms2[$item['fee']] = array(
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
+                        'ext'           => $item['ext'],
                     );
                 }
                 $sms2   = json_encode($sms2);
@@ -437,6 +439,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
+                        'ext'           => $item['ext'],
                     );
                 }
                 $sms1   = json_encode($sms1);
@@ -703,5 +706,29 @@ class PayController extends BController{
     }
     
 
+    public function actionCfgMainStatus(){
+    	$chid	= Utils::getBackendParam('chid');    	
+    	$mainModel	= ChannelCfgMain::findByChannelId($chid);
+    	if(!$mainModel){
+    		$mainModel = new ChannelCfgMain();
+    		$mainModel->channelId	= $chid;
+    	}
+    	if($mainModel->status){
+    		$status = 0;
+    	}else{
+    		$status = 1;
+    	}
+    	$mainModel->status = $status;
+    	try{
+    		$mainModel->save();
+    		$out['resultCode']	= Constant::RESULT_CODE_SUCC;
+    		$out['msg']			= Constant::RESULT_MSG_SUCC;
+    	}catch (\Exception $e){
+    		$out['resultCode']	= Constant::RESULT_CODE_SYSTEM_BUSY;
+    		$out['msg']			= Constant::RESULT_MSG_SYSTEM_BUSY;
+    	}
+    	Utils::jsonOut($out);
+    }
+    
     
 }

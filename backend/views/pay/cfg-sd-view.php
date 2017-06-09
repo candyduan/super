@@ -32,6 +32,7 @@ if($sdNApiModel){
             'spnumber'  => $val['spnumber'],
             'cmd'       => $val['cmd'],
             'sendtype'  => $val['sendtype'],
+            'ext'       => $val['ext'],
         );
         array_push($newSms1, $item);
     }
@@ -41,6 +42,7 @@ if($sdNApiModel){
             'spnumber'  => $val['spnumber'],
             'cmd'       => $val['cmd'],
             'sendtype'  => $val['sendtype'],
+            'ext'       => $val['ext'],
         );
         array_push($newSms2, $item);
     }
@@ -59,7 +61,6 @@ if(!is_array($sendType1)){
     $sendType1   = [];
     $sendType2   = [];
 }
-
 ?>
 <ol class="breadcrumb">
 <li><a href="/pay/channel-view">通道配置</a></li>
@@ -253,14 +254,16 @@ if(!is_array($sendType1)){
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[0]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[0]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[0]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[0]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[0]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[0]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[0]['ext']?:0;?>" <?php if($newSms1[0]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[0]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[0]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[0]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[0]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[0]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[0]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext2" placeholder="是否扩展" value="<?php echo $newSms2[0]['ext']?:0;?>" <?php if($newSms2[0]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                         </div>  
               </div><hr>
@@ -271,14 +274,16 @@ if(!is_array($sendType1)){
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-4"><input type="text" class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[1]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text" class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[1]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text" class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[1]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text" class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[1]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text" class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[1]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text" class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[1]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[1]['ext']?:0;?>" <?php if($newSms1[1]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[1]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[1]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text" class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[1]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[1]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[1]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text" class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[1]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext2" placeholder="是否扩展" value="<?php echo $newSms2[1]['ext']?:0;?>" <?php if($newSms2[1]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                         </div>  
               </div><hr>
@@ -289,14 +294,16 @@ if(!is_array($sendType1)){
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[2]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[2]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[2]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[2]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[2]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[2]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[2]['ext']?:0;?>" <?php if($newSms1[2]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[2]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[2]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text" class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[2]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[2]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[2]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text" class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[2]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext2" placeholder="是否扩展" value="<?php echo $newSms2[2]['ext']?:0;?>" <?php if($newSms2[2]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                         </div>  
               </div><hr>                                                                                                                             
@@ -307,14 +314,16 @@ if(!is_array($sendType1)){
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[3]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[3]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[3]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[3]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[3]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[3]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[3]['ext']?:0;?>" <?php if($newSms1[3]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[3]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[3]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[3]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[3]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[3]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[3]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext2" placeholder="是否扩展" value="<?php echo $newSms2[3]['ext']?:0;?>" <?php if($newSms2[3]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                         </div>  
               </div><hr>
@@ -325,14 +334,16 @@ if(!is_array($sendType1)){
                         </div>
                         <div class="col-xs-10">
                         	<div class="napi_spnumbercmdsendtype1">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[4]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[4]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[4]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[4]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[4]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[4]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[4]['ext']?:0;?>" <?php if($newSms1[4]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                             <div class="napi_spnumbercmdsendtype2" style="<?php echo $sms2Display;?>">
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[4]['spnumber'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[4]['cmd'];?>"></div>
-                              	<div class="col-xs-4"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[4]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber2" placeholder="端口" value="<?php echo $newSms2[4]['spnumber'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd2" placeholder="指令" value="<?php echo $newSms2[4]['cmd'];?>"></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype2" placeholder="发送方式" value="<?php echo $newSms2[4]['sendtype'];?>"></div>
+                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext2" placeholder="是否扩展" value="<?php echo $newSms2[4]['ext']?:0;?>" <?php if($newSms2[4]['ext'] == 1){echo 'checked="checked"';}?>></div>
                             </div>
                         </div>  
               </div><hr>
@@ -358,6 +369,27 @@ if(!is_array($sendType1)){
 
 <script type="text/javascript">
 $(document).ready(function(){
+	$('.napi_ext1').click(function(){
+		 var ovalue = $(this).val();
+		 var nvalue;
+		 	if(ovalue == '0'){
+				nvalue = 1;
+    		}else{
+    			nvalue = 0;
+    		}
+    		$(this).val(nvalue);
+		});
+	$('.napi_ext2').click(function(){
+		 var ovalue = $(this).val();
+		 var nvalue;
+		 	if(ovalue == '0'){
+				nvalue = 1;
+  		}else{
+  			nvalue = 0;
+  		}
+  		$(this).val(nvalue);
+	});
+	
 	$('.btn-yapi').click(function(){
 		$('.data_store_common').attr('useapi',1);
 		$("div[api='0']").css('display','none');
@@ -452,6 +484,7 @@ $(document).ready(function(){
 						'spnumber':	$(cval).find(".napi_spnumber1").val(),
 						'cmd':$(cval).find(".napi_cmd1").val(),
 						'sendtype':$(cval).find(".napi_sendtype1").val(),
+						'ext':$(cval).find(".napi_ext1").val(),
 						};
 				list1.push(item1);
 				if(devType == 2){
@@ -460,6 +493,7 @@ $(document).ready(function(){
 							'spnumber':	$(cval).find(".napi_spnumber2").val(),
 							'cmd':$(cval).find(".napi_cmd2").val(),
 							'sendtype':$(cval).find(".napi_sendtype2").val(),
+							'ext':$(cval).find(".napi_ext2").val(),
 							};
 					list2.push(item2);
 				}
