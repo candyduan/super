@@ -126,6 +126,7 @@ class Channel extends \common\models\orm\base\Channel{
             'provider'  => self::getNameByProvider($model->provider),
             'devType'   => self::getNameByDevType($model->devType),
             'devTypeId' => $model->devType,
+        	'mainStatus'	=> ChannelCfgMain::findByChannelId($model->id)->status,
         );
         return $item;
     }
