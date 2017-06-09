@@ -605,7 +605,7 @@ class PackagePayController extends BController
      		if(0 == $value['allPay']){
      			array_push($item, '-');
      		}else{
-     			array_push($item, number_format($value['successPay']/$value['allPay']*100,0).'%');
+     			array_push($item, number_format($value['successPay']/$value['allPay']*100,2).'%');
      		}
      		$tabledata[] = $item;
      	}
