@@ -4,7 +4,9 @@ namespace common\models\orm\extend;
 use yii\db\Query;
 use common\library\Utils;
 class SdkPayTransaction extends \common\models\orm\base\SdkPayTransaction{
-    public static function getIndexData($select,$where,$group, $start = null,$length = null){
+    const  DISABLE_SDK_STATUS = "sdkPayTransaction.sdkStatus not in(3034,3044,3054,3064,3074,3084,9994)";
+    public static function getIndexData($select,$where = [],$group, $start = null,$length = null){
+        $where[] = SdkPayTransaction::DISABLE_SDK_STATUS;
         $query = new Query();
         $query	->select($select)
         ->from('sdkPayTransaction')
@@ -24,7 +26,8 @@ class SdkPayTransaction extends \common\models\orm\base\SdkPayTransaction{
                 $data = $command->queryAll();
                 return $data;
     }
-    public static function getIndexCount($where,$group){
+    public static function getIndexCount($where = [],$group){
+        $where[] = SdkPayTransaction::DISABLE_SDK_STATUS;
         $count = self::find()->join('inner join', 'sdk',
             'sdkPayTransaction.sdid = sdk.sdid')
             ->join('inner join', 'province',
@@ -32,7 +35,9 @@ class SdkPayTransaction extends \common\models\orm\base\SdkPayTransaction{
             return $count;
     }
     
-    public static function getCountByCondition($select,$where,$group = []){
+    public static function getCountByCondition($select,$where = [],$group = []){
+        $where[] = SdkPayTransaction::DISABLE_SDK_STATUS;
+        
         $query = new Query();
         $query	->select($select)
         ->from('sdkPayTransaction')
