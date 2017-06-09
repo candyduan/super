@@ -575,11 +575,13 @@ class PackagePayController extends BController
      		}
      		if($checkM){
      			array_push($item, '【'.$value['media'].'】' . Partner::getNameById($value['media']));
+     			//渠道标识mediaSign
+     			array_push($item, $value['mediaSign']);
      		}else{
      			array_push($item, '-');
+     			array_push($item, '-');
      		}
-     		//渠道标识mediaSign
-     		array_push($item, $value['mediaSign']);
+     		
      		if($checkSdk){
      			array_push($item, Sdk::getNameById($value['sdk']));
      		}else{
@@ -603,7 +605,7 @@ class PackagePayController extends BController
      		if(0 == $value['allPay']){
      			array_push($item, '-');
      		}else{
-     			array_push($item, number_format($value['successPay']/$value['allPay']*100,0).'%');
+     			array_push($item, number_format($value['successPay']/$value['allPay']*100,2).'%');
      		}
      		$tabledata[] = $item;
      	}
@@ -741,7 +743,7 @@ class PackagePayController extends BController
      		$group[] = 'campaignPackage.app';
      	}
      	if($checkCmp){
-     		$group[] = 'campaignPackage.id';
+     		$group[] = 'campaignPackage.campaign';
      	}
      	if($checkM){
      		$group[] = 'campaignPackage.media';
