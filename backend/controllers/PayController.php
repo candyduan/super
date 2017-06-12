@@ -106,6 +106,7 @@ class PayController extends BController{
     public function actionCfgSdNapiSave(){
         $chid       = Utils::getBackendParam('chid',0);
         $useapi     = Utils::getBackendParam('useapi');
+        $needExt    = Utils::getBackendParam('needExt',0);
         $sms1Arr    = json_decode(Utils::getBackendParam('sms1'),true);
         $sms2Arr    = json_decode(Utils::getBackendParam('sms2'),true);
         
@@ -116,6 +117,7 @@ class PayController extends BController{
                 $sdNApiModel   = new ChannelCfgSdNapi();
                 $sdNApiModel->channelId    = $chid;
             }
+            $sdNApiModel->needExt   = $needExt;
             if(count($sms1Arr) > 0){
                 $sms1   = array();
                 foreach ($sms1Arr as $item){
@@ -123,7 +125,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
-                        'ext'           => $item['ext'],
+                        //'ext'           => $item['ext']?:0,
                     );
                 }
                 $sms1   = json_encode($sms1);
@@ -139,7 +141,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
-                        'ext'           => $item['ext'],
+                        //'ext'           => $item['ext']?:0,
                     );
                 }
                 $sms2   = json_encode($sms2);
@@ -423,6 +425,7 @@ class PayController extends BController{
     public function actionCfgSmsNapiSave(){
         $chid       = Utils::getBackendParam('chid',0);
         $useapi     = Utils::getBackendParam('useapi');
+        $needExt    = Utils::getBackendParam('needExt',0);
         $sms1Arr    = json_decode(Utils::getBackendParam('sms1'),true);
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -431,7 +434,7 @@ class PayController extends BController{
                 $smsNApiModel   = new ChannelCfgSmsNapi();
                 $smsNApiModel->channelId    = $chid;
             }
-            
+            $smsNApiModel->needExt  = $needExt;
             if(count($sms1Arr) > 0){
                 $sms1   = array();
                 foreach ($sms1Arr as $item){
@@ -439,7 +442,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
-                        'ext'           => $item['ext'],
+                        'ext'           => $item['ext']?:0,
                     );
                 }
                 $sms1   = json_encode($sms1);

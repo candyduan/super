@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $csnid
  * @property integer $channelId
+ * @property integer $needExt
  * @property string $sms1
  * @property string $sms2
  * @property string $recordTime
@@ -32,7 +33,7 @@ class ChannelCfgSmsNapi extends \yii\db\ActiveRecord
     {
         return [
             [['channelId'], 'required'],
-            [['channelId', 'status'], 'integer'],
+            [['channelId', 'needExt', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['sms1', 'sms2'], 'string', 'max' => 2048],
             [['channelId'], 'unique'],
@@ -47,6 +48,7 @@ class ChannelCfgSmsNapi extends \yii\db\ActiveRecord
         return [
             'csnid' => 'Csnid',
             'channelId' => 'Channel ID',
+            'needExt' => 'Need Ext',
             'sms1' => 'Sms1',
             'sms2' => 'Sms2',
             'recordTime' => 'Record Time',
