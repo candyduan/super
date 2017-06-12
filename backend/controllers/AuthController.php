@@ -8,6 +8,7 @@ class AuthController extends BController{
      * 未授权页面
      */
     public function actionNoauth(){
+        $this->layout = "system";
         return $this->render('noauth');
     }
     
