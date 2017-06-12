@@ -177,13 +177,18 @@
         var app = $(that).val();
      	$("#channel").empty();
 
-     	var channels = <?php echo json_encode($channels);?>;
-    	var option = '<option value="0">选择渠道</option>';
-    	for(var i = 0; i < channels.length;i++){
-        	if(0 == app || app == channels[i].app){
-        		option +='<option value="' + channels[i].id+'">'+channels[i].name+'</option>';
-        	}
-    	}
-    	$("#channel").append(option);
+		var url = '/package-pay/ajax-get-media';
+		var data = 'app=' + app;
+		var succ = function(resultJson){
+				var channels = resultJson;
+		    	var option = '<option value="0">选择渠道</option>';
+		    	for(var i = 0; i < channels.length;i++){
+		        	if(0 == app || app == channels[i].app){
+		        		option +='<option value="' + channels[i].id+'">'+channels[i].name+'</option>';
+		        	}
+		    	}
+		    	$("#channel").append(option);
+			}
+		Utils.ajax(url, data, succ);
     }
 </script>

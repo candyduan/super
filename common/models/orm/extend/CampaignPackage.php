@@ -88,12 +88,17 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
     	return $item;
     }
     
-    public static function fetchAllPartnerBelongSdkArr(){
-        $command = \Yii::$app->db->createCommand('select c.id,c.name,cp.mediaSign,cp.app 
+    public static function fetchAllPartnerBelongSdkArrByApp($app = null){
+        $where = '';
+        if($app > 0){
+            $where = " and cp.app = $app ";
+        }
+        $sql = 'select c.id,c.name,cp.mediaSign,cp.app 
 from campaignPackage as cp
 inner join partner as c on (cp.media = c.id) 
 inner join partner as p on (cp.partner = p.id)
-where p.belong = 1 group by cp.mediaSign');
+where p.belong = 1 '.$where.' group by cp.media';
+        $command = \Yii::$app->db->createCommand($sql);
         return $command->queryAll();
     }
     public static function fetchAllPartnerBelongSdkArrByPid($pid){
