@@ -288,6 +288,7 @@ table td {
     vertical-align:middle !important;
 }
 .header-1{font-size:16px;}
+.header-2{font-size:14px;}
 .control-label{font-weight:normal !important;text-align:left !important;}
 /*
  * 以下为通道配置化css
