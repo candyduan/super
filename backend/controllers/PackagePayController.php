@@ -57,7 +57,7 @@ class PackagePayController extends BController
     public function actionIndex()
     {
         $apps = App::fetchAllBelongSdkArr();
-        $channels = CampaignPackage::fetchAllPartnerBelongSdkArr();
+        $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByApp();
         return $this->render('index', ['apps' =>$apps,'channels' =>$channels]);
     }
     
@@ -179,6 +179,13 @@ class PackagePayController extends BController
         }else{
             return $tabledata;
         }
+    }
+    
+    public function actionAjaxGetMedia(){
+        $app = Utils::getBackendParam('app');
+        $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByApp($app);
+        Utils::jsonOut($channels);
+        exit;
     }
     private function _getCondition($checkCP,$checkAPP,$checkCmp,$checkM,$partner,$app,$channel,$stime,$etime,$dateType){
         $select = [
