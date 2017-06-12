@@ -123,7 +123,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
-                        'ext'           => $item['ext'],
+                        'ext'           => $item['ext']?:0,
                     );
                 }
                 $sms1   = json_encode($sms1);
@@ -139,7 +139,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
-                        'ext'           => $item['ext'],
+                        'ext'           => $item['ext']?:0,
                     );
                 }
                 $sms2   = json_encode($sms2);
@@ -439,7 +439,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
-                        'ext'           => $item['ext'],
+                        'ext'           => $item['ext']?:0,
                     );
                 }
                 $sms1   = json_encode($sms1);

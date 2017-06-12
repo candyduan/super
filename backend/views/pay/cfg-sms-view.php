@@ -178,7 +178,7 @@ if($smsNApiModel){
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[0]['spnumber'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[0]['cmd'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[0]['sendtype'];?>"></div>
-                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[0]['ext']?:0;?>" <?php if($newSms1[0]['ext'] == 1){echo 'checked="checked"';}?>></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_ext1" placeholder="扩展位数,0-不扩展" value="<?php echo $newSms1[0]['ext'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
@@ -192,7 +192,7 @@ if($smsNApiModel){
                               	<div class="col-xs-3"><input type="text" class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[1]['spnumber'];?>"></div>
                               	<div class="col-xs-3"><input type="text" class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[1]['cmd'];?>"></div>
                               	<div class="col-xs-3"><input type="text" class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[1]['sendtype'];?>"></div>
-                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[1]['ext']?:0;?>" <?php if($newSms1[1]['ext'] == 1){echo 'checked="checked"';}?>></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_ext1" placeholder="扩展位数,0-不扩展" value="<?php echo $newSms1[1]['ext'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
@@ -206,7 +206,7 @@ if($smsNApiModel){
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[2]['spnumber'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[2]['cmd'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[2]['sendtype'];?>"></div>
-                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[2]['ext']?:0;?>" <?php if($newSms1[2]['ext'] == 1){echo 'checked="checked"';}?>></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_ext1" placeholder="扩展位数,0-不扩展" value="<?php echo $newSms1[2]['ext'];?>"></div>
                             </div>
                         </div>  
               </div><hr>                                                                                                                             
@@ -220,7 +220,7 @@ if($smsNApiModel){
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[3]['spnumber'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[3]['cmd'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[3]['sendtype'];?>"></div>
-                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[3]['ext']?:0;?>" <?php if($newSms1[3]['ext'] == 1){echo 'checked="checked"';}?>></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_ext1" placeholder="扩展位数,0-不扩展" value="<?php echo $newSms1[3]['ext'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
@@ -234,7 +234,7 @@ if($smsNApiModel){
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_spnumber1" placeholder="端口" value="<?php echo $newSms1[4]['spnumber'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_cmd1" placeholder="指令" value="<?php echo $newSms1[4]['cmd'];?>"></div>
                               	<div class="col-xs-3"><input type="text"  class="form-control napi_sendtype1" placeholder="发送方式" value="<?php echo $newSms1[4]['sendtype'];?>"></div>
-                              	<div class="col-xs-3"><input type="checkbox"  class="form-control napi_ext1" placeholder="是否扩展" value="<?php echo $newSms1[4]['ext']?:0;?>" <?php if($newSms1[4]['ext'] == 1){echo 'checked="checked"';}?>></div>
+                              	<div class="col-xs-3"><input type="text"  class="form-control napi_ext1" placeholder="扩展位数,0-不扩展" value="<?php echo $newSms1[4]['ext'];?>"></div>
                             </div>
                         </div>  
               </div><hr>
@@ -335,18 +335,7 @@ if($smsNApiModel){
 </div>
 
 <script>
-$(document).ready(function(){
-	$('.napi_ext1').click(function(){
-		 var ovalue = $(this).val();
-		 var nvalue;
-		 	if(ovalue == '0'){
-				nvalue = 1;
-  		}else{
-  			nvalue = 0;
-  		}
-  		$(this).val(nvalue);
-	});
-	
+$(document).ready(function(){	
 	$('.btn-yapi').click(function(){
 		$('.data_store_common').attr('useapi',1);
 		$("div[api='0']").css('display','none');
