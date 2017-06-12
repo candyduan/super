@@ -442,7 +442,7 @@ class PayController extends BController{
                         'spnumber'      => $item['spnumber'],
                         'cmd'           => $item['cmd'],
                         'sendtype'      => $item['sendtype'],
-                        'ext'           => $item['ext']?:0,
+                        //'ext'           => $item['ext']?:0,
                     );
                 }
                 $sms1   = json_encode($sms1);
