@@ -128,7 +128,7 @@ class PayCfgWidgets{
               </div>
     
               <div class="form-group">
-                <label for="param_cpparam_prefix" class="col-xs-2 control-label">透传参数前缀Key</label>
+                <label for="param_cpparam_prefix" class="col-xs-2 control-label">透传参数前缀</label>
                 <div class="col-xs-10">
                   <input type="text" class="form-control" id="param_cpparam_prefix" placeholder="..." value="'.$cpparamPrefix.'">
                 </div>

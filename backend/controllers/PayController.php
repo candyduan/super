@@ -734,4 +734,9 @@ class PayController extends BController{
     }
     
     
+    public function actionChannelCfgUseage(){
+        return $this->render('channel-cfg-useage');
+    }
+    
+    
 }

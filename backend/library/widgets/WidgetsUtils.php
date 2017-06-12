@@ -165,7 +165,7 @@ class WidgetsUtils{
           
         	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
             <link href="/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/css/mii-admin.css?d=201705252" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=20170612" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
             <style type="text/css">
             .navbar{background-color:'.$bcolor.';border:0px;}
