@@ -505,7 +505,9 @@ $(document).ready(function(){
             $succReturn = $channelCfgSyncModel->succReturn;
             $feeFixed   = $channelCfgSyncModel->feeFixed;
         }
-    
+        if($succReturn == ''){
+            $succReturn = 'ok';
+        }
     
         $widget = '
 <div class="data_sync">
