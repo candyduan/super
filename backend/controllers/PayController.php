@@ -185,6 +185,7 @@ class PayController extends BController{
         $url                = Utils::getBackendParam('url');
         $sendMethod         = Utils::getBackendParam('sendMethod');
         $respFmt            = Utils::getBackendParam('respFmt');
+        $delimiter = Utils::getBackendParam('delimiter');
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -212,6 +213,7 @@ class PayController extends BController{
             $sdYApiModel->url          = $url;
             $sdYApiModel->sendMethod   = $sendMethod;
             $sdYApiModel->respFmt      = $respFmt;
+            $sdYApiModel->delimiter = $delimiter;
         
             try{
                 ChannelCfgMain::backendOps($chid);
@@ -386,6 +388,7 @@ class PayController extends BController{
         $url            = Utils::getBackendParam('url');
         $sendMethod     = Utils::getBackendParam('sendMethod');
         $respFmt        = Utils::getBackendParam('respFmt');
+        $delimiter = Utils::getBackendParam('delimiter');
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
             $smsYApiModel   = ChannelCfgSmsYapi::findByChannelId($chid);
@@ -401,6 +404,7 @@ class PayController extends BController{
             $smsYApiModel->url          = $url;
             $smsYApiModel->sendMethod   = $sendMethod;
             $smsYApiModel->respFmt      = $respFmt;
+            $smsYApiModel->delimiter = $delimiter;
             if($sendType1 == '[]'){
                 $sendType1  = '';
             }
@@ -581,6 +585,7 @@ class PayController extends BController{
         $url            = Utils::getBackendParam('url');
         $sendMethod     = Utils::getBackendParam('sendMethod');
         $respFmt        = Utils::getBackendParam('respFmt');
+        $delimiter = Utils::getBackendParam('delimiter');
         $succKey        = Utils::getBackendParam('succKey');
         $succValue      = Utils::getBackendParam('succValue');
         $orderIdKey     = Utils::getBackendParam('orderIdKey');
@@ -601,6 +606,7 @@ class PayController extends BController{
             $urlYApiModel->succValue    = $succValue;
             $urlYApiModel->orderIdKey   = $orderIdKey;
             $urlYApiModel->smtKey       = $smtKey;
+            $urlYApiModel->delimiter = $delimiter;
 
 
             try{
