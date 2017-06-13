@@ -1,3 +1,6 @@
+<style>
+.channel-config-entrance{font-size:18px;cursor:pointer;}
+</style>
 <ol class="breadcrumb">
 <li class="active">通道配置</li>
 </ol>
