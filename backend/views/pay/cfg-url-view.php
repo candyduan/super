@@ -10,6 +10,7 @@ $urlYApiModel   = $urlYApiModel;
 $submitModel    = $submitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
+$outModel       = $outModel;
 ?>
 <ol class="breadcrumb">
 <li><a href="/pay/channel-view">通道配置</a></li>
@@ -184,6 +185,9 @@ $smtParamsModel = $smtParamsModel;
 	<?php echo PayCfgWidgets::getCfgSmtParamsWidget($smtParamsModel);?>
     <!-- 数据同步 -->
 	<?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
+	
+	<!-- 代码外放 -->
+	<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>
 </div>
 
 <script>

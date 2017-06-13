@@ -4,12 +4,12 @@ use common\library\Constant;
 
 $channelModel   = $channelModel;
 $payParamsModel = $payParamsModel;
-$mainModel         = $mainModel;
-$sdModel           = $sdModel;
-$sdNApiModel       = $sdNApiModel;
-$sdYApiModel       = $sdYApiModel;
-$syncModel         = $syncModel;
-
+$mainModel      = $mainModel;
+$sdModel        = $sdModel;
+$sdNApiModel    = $sdNApiModel;
+$sdYApiModel    = $sdYApiModel;
+$syncModel      = $syncModel;
+$outModel       = $outModel;
 if($channelModel->devType == Constant::CHANNEL_DOUBLE){
     $sms2Display    = "display:block;";
 }else{
@@ -375,7 +375,8 @@ if(!is_array($sendType1)){
 <!-- 数据同步 -->
 <?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
 
-	
+<!-- 代码外放 -->
+<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>	
 </div>
 
 <script type="text/javascript">

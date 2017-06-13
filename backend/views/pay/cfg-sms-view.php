@@ -11,7 +11,7 @@ $smsNApiModel   = $smsNApiModel;
 $submitModel    = $submitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
-
+$outModel       = $outModel;
 if($smsYApiModel){
     $sendType1 = json_decode($smsYApiModel->sendType1,true);
 }
@@ -345,6 +345,8 @@ if($smsNApiModel){
 	<?php echo PayCfgWidgets::getCfgSmtParamsWidget($smtParamsModel);?>
     <!-- 数据同步 -->
 	<?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
+	<!-- 代码外放 -->
+	<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>
 </div>
 
 <script>

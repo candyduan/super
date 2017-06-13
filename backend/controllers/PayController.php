@@ -19,6 +19,7 @@ use common\models\orm\extend\ChannelCfgSmsSubmit;
 use common\models\orm\extend\ChannelCfgUrl;
 use common\models\orm\extend\ChannelCfgUrlYapi;
 use common\models\orm\extend\ChannelCfgUrlSubmit;
+use common\models\orm\extend\ChannelCfgOut;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -90,7 +91,7 @@ class PayController extends BController{
         $sdNApiModel        = ChannelCfgSdNapi::findByChannelId($chid);
         $sdYApiModel        = ChannelCfgSdYapi::findByChannelId($chid);
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
-        
+        $outModel           = ChannelCfgOut::findByChannelId($chid);
         $data   = array(
             'channelModel'      => $channelModel,
             'mainModel'         => $mainModel,
@@ -99,6 +100,7 @@ class PayController extends BController{
             'sdNApiModel'       => $sdNApiModel,
             'sdYApiModel'       => $sdYApiModel,
             'syncModel'         => $syncModel,
+            'outModel'          => $outModel,
         );
         
         return $this->render('cfg-sd-view',$data);
@@ -360,7 +362,7 @@ class PayController extends BController{
         $submitModel        = ChannelCfgSmsSubmit::findByChannelId($chid);
         $syncModel                = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel           = ChannelCfgSmtParams::findByChannelId($chid);
-        
+        $outModel           = ChannelCfgOut::findByChannelId($chid);
         $data   = array(
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
@@ -371,6 +373,7 @@ class PayController extends BController{
             'submitModel'                 => $submitModel,
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
+            'outModel'                    => $outModel,
         );
         
         return $this->render('cfg-sms-view',$data);
@@ -566,7 +569,7 @@ class PayController extends BController{
         $submitModel        = ChannelCfgUrlSubmit::findByChannelId($chid);
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel     = ChannelCfgSmtParams::findByChannelId($chid);
-        
+        $outModel           = ChannelCfgOut::findByChannelId($chid);
         $data   = array(
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
@@ -576,6 +579,7 @@ class PayController extends BController{
             'submitModel'                 => $submitModel,
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
+            'outModel'                    => $outModel,
         );
         
         return $this->render('cfg-url-view',$data);
@@ -744,5 +748,28 @@ class PayController extends BController{
         return $this->render('channel-cfg-useage');
     }
     
+    public function actionCfgOutSave(){
+        $chid	        = Utils::getBackendParam('chid');
+        $spSignPrefix   = Utils::getBackendParam('spSignPrefix');
+        $url            = Utils::getBackendParam('url');
+        
+        $outModel   = ChannelCfgOut::findByChannelId($chid);
+        if(!$outModel){
+            $outModel   = new ChannelCfgOut();
+            $outModel->channelId    = $chid;
+        }
+        $outModel->spSignPrefix = $spSignPrefix;
+        $outModel->url          = $url;
+        
+        try{
+            $outModel->save();
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
     
 }

@@ -302,6 +302,7 @@ table td {
 .url_yapi_content{border:1px solid #000000;padding:10px;}
 .sms_verifycode_content{border:1px solid #000000;padding:10px;}
 .url_verifycode_content{border:1px solid #000000;padding:10px;}
+.channel_out_content{border:1px solid #000000;padding:10px;}
 .pay_napi{display:none;}
 .sms_napi{display:none;}
 .napi_cell{border:1px solid #4F9D9D;margin:10px !important;padding:10px !important;}
