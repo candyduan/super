@@ -1,6 +1,7 @@
 <?php
 namespace backend\library\widgets;
 use common\models\orm\extend\Channel;
+use common\models\orm\extend\ChannelCfgOut;
 
 class PayCfgWidgets{
     public static function getCfgPayParamsWidget($payParamsModel){
@@ -751,6 +752,71 @@ $(document).ready(function(){
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
+	});
+});
+</script>
+            ';
+        return $widget;
+    }
+    
+    
+    
+    public static function getCfgOutWidget($outModel){
+        $spSignPrefix   = '';
+        $url            = '';
+        if($outModel){
+            $spSignPrefix    = $outModel->spSignPrefix;
+            $url             = $outModel->url;
+        }
+        
+        $widget = '
+<div class="channel_out">
+<hr>
+	<h1 class="header-1">代码外放</h1>
+	<div class="channel_out_content">
+    	<div class="form-horizontal">
+              <div class="form-group">
+                <label for="channel_out_spSignPrefix" class="col-xs-2 control-label">透传前缀</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="channel_out_spSignPrefix" placeholder="..." value="'.$spSignPrefix.'">
+                </div>
+              </div>
+        
+              <div class="form-group">
+                <label for="channel_out_url" class="col-xs-2 control-label">外放链接</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="channel_out_url" placeholder="..." value="'.$url.'">
+                </div>
+              </div>
+        
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                  <button id="out_save" class="btn btn-default">保存</button>
+                </div>
+              </div>
+                      
+        </div>
+    </div>
+</div>
+        
+<script>
+$(document).ready(function(){
+	$("#out_save").click(function(){
+		//url
+		var url = "/pay/cfg-out-save";
+		//data
+		var data =  "chid="+$(".data_store_common").attr("chid")
+            		+"&spSignPrefix="+$("#channel_out_spSignPrefix").val()
+            		+"&url="+$("#channel_out_url").val();
+		//succFunc
+		var succFunc	= function(resJson){
+				if(parseInt(resJson.resultCode) == 1){//成功
+					$(".channel_out_content").addClass("input_ok");
+				}else{//失败
+					$(".channel_out_content").addClass("input_err");
+				}
+		};
+		Utils.ajax(url,data,succFunc);
 	});
 });
 </script>
