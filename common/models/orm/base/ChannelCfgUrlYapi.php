@@ -19,6 +19,7 @@ use Yii;
  * @property string $recordTime
  * @property string $updateTime
  * @property integer $status
+ * @property string $delimiter
  */
 class ChannelCfgUrlYapi extends \yii\db\ActiveRecord
 {
@@ -41,6 +42,7 @@ class ChannelCfgUrlYapi extends \yii\db\ActiveRecord
             [['recordTime', 'updateTime'], 'safe'],
             [['url'], 'string', 'max' => 512],
             [['succValue', 'succKey', 'orderIdKey', 'smtKey'], 'string', 'max' => 128],
+            [['delimiter'], 'string', 'max' => 45],
             [['channelId'], 'unique'],
         ];
     }
@@ -63,6 +65,7 @@ class ChannelCfgUrlYapi extends \yii\db\ActiveRecord
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
             'status' => 'Status',
+            'delimiter' => 'Delimiter',
         ];
     }
 }
