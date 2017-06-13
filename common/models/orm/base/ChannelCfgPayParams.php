@@ -51,7 +51,8 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
             [['channelId', 'feeUnit', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['mobileKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'feeKey', 'feeCodeKey', 'cpparamKey', 'cpparamPrefix', 'provinceMapKey', 'appNameKey', 'goodNameKey', 'provinceNameKey', 'linkIdKey'], 'string', 'max' => 128],
-            [['feePackages', 'customs'], 'string', 'max' => 512],
+            [['feePackages'], 'string', 'max' => 512],
+            [['customs'], 'string', 'max' => 2048],
             [['provinceMap'], 'string', 'max' => 1024],
             [['channelId'], 'unique'],
         ];
