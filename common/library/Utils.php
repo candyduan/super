@@ -74,7 +74,7 @@ class Utils{
         if(strlen($value) == 0){
             $value  = $default;
         }
-        return $value;
+        return trim($value);
     }
     
     
