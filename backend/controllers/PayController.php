@@ -2,6 +2,7 @@
 namespace backend\controllers;
 use common\library\BController;
 use common\library\Utils;
+use common\models\orm\extend\ChannelCfgToSync;
 use common\models\orm\extend\Channel;
 use common\models\orm\extend\DeveloperChannelCount;
 use common\library\Constant;
@@ -92,6 +93,7 @@ class PayController extends BController{
         $sdYApiModel        = ChannelCfgSdYapi::findByChannelId($chid);
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
         $outModel           = ChannelCfgOut::findByChannelId($chid);
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $data   = array(
             'channelModel'      => $channelModel,
             'mainModel'         => $mainModel,
@@ -101,6 +103,7 @@ class PayController extends BController{
             'sdYApiModel'       => $sdYApiModel,
             'syncModel'         => $syncModel,
             'outModel'          => $outModel,
+            'channelCfgToSync'  => $channelCfgToSync
         );
         
         return $this->render('cfg-sd-view',$data);
@@ -766,6 +769,29 @@ class PayController extends BController{
             $out['resultCode']  = Constant::RESULT_CODE_SUCC;
             $out['msg']         = Constant::RESULT_MSG_SUCC;
         }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
+
+    public function actionCfgSyncSingle() {
+        $chid	        = Utils::getBackendParam('chid');
+        $syncPort   = Utils::getBackendParam('syncPort');
+        $syncCommand           = Utils::getBackendParam('syncCommand');
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
+        if(!$channelCfgToSync) {
+            $channelCfgToSync   = new ChannelCfgToSync();
+            $channelCfgToSync->channelId  = $chid;
+        }
+        $channelCfgToSync->port     = $syncPort;
+        $channelCfgToSync->command  = $syncCommand;
+
+        try{
+            $channelCfgToSync->save();
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e) {
             $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
             $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
         }

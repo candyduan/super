@@ -10,6 +10,8 @@ $sdNApiModel    = $sdNApiModel;
 $sdYApiModel    = $sdYApiModel;
 $syncModel      = $syncModel;
 $outModel       = $outModel;
+$channelCfgToSync   = $channelCfgToSync;
+
 if($channelModel->devType == Constant::CHANNEL_DOUBLE){
     $sms2Display    = "display:block;";
 }else{
@@ -149,26 +151,26 @@ if(!is_array($sendType1)){
        		<div class="form-group">
                 <label class="col-xs-2 control-label">短信一发送方式</label>
                 <div class="col-xs-2 pay_yapi_sendType1">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[0]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[0]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[0]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[0]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[0]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[0]['sendtype'];?>">
                 </div>
                 <div class="col-xs-2 pay_yapi_sendType1">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[1]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[1]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[1]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[1]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[1]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[1]['sendtype'];?>">
                 </div>
                 
                 <div class="col-xs-2 pay_yapi_sendType1">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[2]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[2]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[2]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[2]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[2]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[2]['sendtype'];?>">
                 </div>
                 
                  <div class="col-xs-2 pay_yapi_sendType1">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[3]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[3]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[3]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[3]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[3]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[3]['sendtype'];?>">
                 </div>               
             </div>
                           
@@ -190,26 +192,26 @@ if(!is_array($sendType1)){
             <div class="form-group" style="<?php echo $sms2Display;?>">
                 <label class="col-xs-2 control-label">短信二发送方式</label>
                 <div class="col-xs-2 pay_yapi_sendType2">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[0]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[0]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[0]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[0]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[0]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[0]['sendtype'];?>">
                 </div>
                 <div class="col-xs-2 pay_yapi_sendType2">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[1]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[1]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[1]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[1]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[1]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[1]['sendtype'];?>">
                 </div>
                 
                 <div class="col-xs-2 pay_yapi_sendType2">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[2]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[2]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[2]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[2]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[2]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[2]['sendtype'];?>">
                 </div>
                 
                  <div class="col-xs-2 pay_yapi_sendType2">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[3]['key'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[3]['value'];?>">
-                  <input type="text" class="col-xs-4 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[3]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 pay_yapi_sendType2Key" placeholder="key" value="<?php echo $sendType2[3]['key'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Value" placeholder="value" value="<?php echo $sendType2[3]['value'];?>">
+                  <input type="text" class="col-xs-3 pay_yapi_sendType2Our" placeholder="发送方式" value="<?php echo $sendType2[3]['sendtype'];?>">
                 </div>               
             </div>                         
 
@@ -376,7 +378,10 @@ if(!is_array($sendType1)){
 <?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
 
 <!-- 代码外放 -->
-<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>	
+<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>
+
+<!-- 单同步-->
+<?php echo PayCfgWidgets::getCfgSingleDataSyncWidget($channelCfgToSync)?>
 </div>
 
 <script type="text/javascript">

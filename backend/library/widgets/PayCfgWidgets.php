@@ -775,6 +775,7 @@ $(document).ready(function(){
 	<h1 class="header-1">代码外放</h1>
 	<div class="channel_out_content">
     	<div class="form-horizontal">
+    	
               <div class="form-group">
                 <label for="channel_out_spSignPrefix" class="col-xs-2 control-label">透传前缀</label>
                 <div class="col-xs-10">
@@ -821,6 +822,72 @@ $(document).ready(function(){
 });
 </script>
             ';
+        return $widget;
+    }
+
+    public static function getCfgSingleDataSyncWidget($channelCfgToSync) {
+        $channel        = 0;
+        $syncPort       = '';
+        $syncCommand    = '';
+        if($channelCfgToSync) {
+            $channel    = $channelCfgToSync->channelId;
+            $channelModel= Channel::findByPk($channel);
+            $channelName = $channelModel ? "【$channel】{$channelModel->name}" : 0;
+            $syncPort   = $channelCfgToSync->port;
+            $syncCommand= $channelCfgToSync->command;
+        }
+        $widget = '
+        <div class="channel_out">
+<hr>
+	<h1 class="header-1">单同步</h1>
+	<div class="sync_single_content">
+    	<div class="form-horizontal">
+    	
+              <div class="form-group">
+                <label for="sync_port" class="col-xs-2 control-label">同步端口号</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="sync_port" placeholder="..." value="'.$syncPort.'">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="sync_command" class="col-xs-2 control-label">同步指令(前1位)</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="sync_command" placeholder="..." value="'.$syncCommand.'">
+                </div>
+              </div>
+        
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                  <button id="sync_single_save" class="btn btn-default">保存</button>
+                </div>
+              </div>
+                      
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        var jsonList	= '.json_encode(\common\models\orm\extend\Channel::getTypeHeaderChannelList()).';
+        Utils.myTypeHeder(jsonList,"channel-f","channel","");
+        $("#sync_single_save").click(function(){
+            var url = "/pay/cfg-sync-single";
+            var data =  "chid="+$(".data_store_common").attr("chid")
+                        +"&syncPort="+$("#sync_port").val()
+                        +"&syncCommand="+$("#sync_command").val();
+            var succFunc	= function(resJson){
+                    if(parseInt(resJson.resultCode) == 1){//成功
+                        $(".sync_single_content").addClass("input_ok");
+                    }else{//失败
+                        $(".sync_single_content").addClass("input_err");
+                    }
+            };
+            Utils.ajax(url,data,succFunc);
+        });
+    });
+</script>
+        ';
         return $widget;
     }
 }

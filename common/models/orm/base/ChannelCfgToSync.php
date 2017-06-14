@@ -7,13 +7,13 @@ use Yii;
 /**
  * This is the model class for table "channelCfgToSync".
  *
- * @property integer $id
- * @property integer $channel
- * @property string $syncPort
- * @property string $syncCommand
+ * @property integer $ctsid
+ * @property integer $channelId
+ * @property string $port
+ * @property string $command
+ * @property string $recordTime
+ * @property string $updateTime
  * @property integer $status
- * @property integer $recordTime
- * @property integer $updateTime
  */
 class ChannelCfgToSync extends \yii\db\ActiveRecord
 {
@@ -31,9 +31,9 @@ class ChannelCfgToSync extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'channel', 'status', 'recordTime', 'updateTime'], 'integer'],
-            [['syncPort', 'syncCommand'], 'string', 'max' => 128],
+            [['channelId', 'status'], 'integer'],
+            [['recordTime', 'updateTime'], 'safe'],
+            [['port', 'command'], 'string', 'max' => 128],
         ];
     }
 
@@ -43,13 +43,13 @@ class ChannelCfgToSync extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'channel' => 'Channel',
-            'syncPort' => 'Sync Port',
-            'syncCommand' => 'Sync Command',
-            'status' => 'Status',
+            'ctsid' => 'Ctsid',
+            'channelId' => 'Channel ID',
+            'port' => 'Port',
+            'command' => 'Command',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
+            'status' => 'Status',
         ];
     }
 }
