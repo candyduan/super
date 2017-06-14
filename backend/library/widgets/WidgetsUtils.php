@@ -165,7 +165,8 @@ class WidgetsUtils{
           
         	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
             <link href="/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/css/mii-admin.css?d=20170613" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=20170614" rel="stylesheet">
+            <link href="/css/pnotify.custom.css" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
             <style type="text/css">
             .navbar{background-color:'.$bcolor.';border:0px;}
@@ -178,7 +179,8 @@ class WidgetsUtils{
             <script src="/js/common/jquery.cookie.js"></script>
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
-            <script src="/js/register/Utils.js?d=20170516"></script>
+            <script src="/js/common/pnotify.custom.js"></script>   
+            <script src="/js/register/Utils.js?d=20170614"></script>
             <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 	        <script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
             ';
