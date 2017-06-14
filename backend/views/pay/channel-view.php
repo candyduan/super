@@ -61,10 +61,10 @@ function setResult(page){
 					var mainStatusSucc = function(mainStatusJson){
 //	 					console.log(mainStatusJson);
 						if(parseInt(mainStatusJson.resultCode) == 1){
-							alert(mainStatusJson.msg);
+							Utils.tipBar('success','设置成功',mainStatusJson.msg);
 							setResult($('.pager_number_selected').attr('page'));
 						}else{
-							alert(mainStatusJson.msg);
+							Utils.tipBar('error','设置失败',mainStatusJson.msg);
 						}
 					};
 					Utils.ajax(mainStatusUrl,mainStatusData,mainStatusSucc);
@@ -88,7 +88,7 @@ function setResult(page){
 					url = '/pay/cfg-url-view?chid='+chid;
 					break;
 				default:
-					alert("请设置DEV类型，或该通道目前暂不支持配置化！");
+					Utils.tipBar('error','提示','请设置DEV类型，或该通道目前暂不支持配置化！');
 					return;
 				}
 

@@ -105,13 +105,13 @@ function setResult(page){
 														}
 
 													}else{//fail
-														alert(opsJson.msg);
+														Utils.tipBar('error','失败',opsJson.msg);
 													}
 											};
 											Utils.ajax(opsUrl,opsData,opsSucc);
 										});
 									}else{
-										alert(switchJson.msg);
+										Utils.tipBar('error','失败',switchJson.msg);
 									}
 							};
 							Utils.ajax(switchUrl,switchData,succFunc);

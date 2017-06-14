@@ -36,7 +36,7 @@ function setResult(){
 					if(parseInt(setJson.resultCode) == 1){
 						window.location.reload();
 					}else{
-						alert(setJson.msg);
+						Utils.tipBar('error','失败',setJson.msg);
 					}
 				};
 			Utils.ajax(setUrl,setData,setSucc);
