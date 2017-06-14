@@ -419,9 +419,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.sms_yapi_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.sms_yapi_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
@@ -457,9 +457,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.sms_napi_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.sms_napi_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
@@ -500,9 +500,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.sms_verifycode_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.sms_verifycode_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);

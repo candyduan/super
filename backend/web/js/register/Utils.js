@@ -263,3 +263,31 @@ Utils.getToday	= function(){
 	}
 	return year +'-'+month+'-'+day;
 };
+
+Utils.tipBar = function show_stack_bar_top(type,title,msg){
+    var opts = {
+        title: "Over Here",
+        text: "Check me out. I'm in a different stack.",
+        addclass: "stack-bar-top",
+        cornerclass: "",
+        width: "100%",
+    };
+    switch (type) {
+    case 'error':
+        opts.title = title;
+        opts.text = msg;
+        opts.type = "error";
+        break;
+    case 'info':
+        opts.title = title;
+        opts.text = msg;
+        opts.type = "info";
+        break;
+    case 'success':
+        opts.title = title;
+        opts.text = msg;
+        opts.type = "success";
+        break;
+    }
+    new PNotify(opts);
+};
