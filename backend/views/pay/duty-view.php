@@ -98,15 +98,16 @@
 						var url = '/pay/add-developer-channel-count';
 						var succ = function(resultJson){
 							 if(parseInt(resultJson.resultCode) == 1){	
+								 Utils.tipBar('success','成功',resultJson.msg);
 								 setResult();
 							 }else{
-								 Utils.getNoFooterModal('Alerting', resultJson.msg);
+								 Utils.tipBar('error','失败',resultJson.msg);
 							 }
 						}
 						Utils.ajax(url,data,succ,false);
 					});
 			}else{
-				Utils.getNoFooterModal('Alerting', resultJson.msg);
+				Utils.tipBar('error','失败',resultJson.msg);
 			}	
 		}
 		Utils.ajax(url,data,succ);

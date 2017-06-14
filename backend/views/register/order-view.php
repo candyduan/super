@@ -57,7 +57,7 @@ function setResult(page){
 					if(parseInt(delJson.resultCode) == 1){
 						setResult(page);
 					}else{
-						alert(delJson.msg);
+						Utils.tipBar('error','保存失败',delJson.msg);
 					}
                 };
                 Utils.ajax(delurl,deldata,delsucc);
