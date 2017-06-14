@@ -466,9 +466,9 @@ $(document).ready(function(){
                 //succFunc
                 var succFunc    = function(resJson){
                                 if(parseInt(resJson.resultCode) == 1){//成功
-                                        $(".pay_param_content").addClass("input_ok");
+                                        Utils.tipBar("success","保存成功",resJson.msg); 
                                 }else{//失败
-                                        $(".pay_param_content").addClass("input_err");
+                                        Utils.tipBar("error","保存失败",resJson.msg);
                                 }
                 };
                 Utils.ajax(url,data,succFunc);
@@ -609,9 +609,9 @@ $(document).ready(function(){
 		//succFunc
 		var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$(".data_sync_content").addClass("input_ok");
+					Utils.tipBar("success","保存成功",resJson.msg);
 				}else{//失败
-					$(".data_sync_content").addClass("input_err");
+					Utils.tipBar("error","保存失败",resJson.msg);
 				}
 		};
 		Utils.ajax(url,data,succFunc);
@@ -746,9 +746,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$(".smt_params_content").addClass("input_ok");
+					Utils.tipBar("success","保存成功",resJson.msg); 
 				}else{//失败
-					$(".smt_params_content").addClass("input_err");
+					Utils.tipBar("error","保存失败",resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
@@ -812,9 +812,9 @@ $(document).ready(function(){
 		//succFunc
 		var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$(".channel_out_content").addClass("input_ok");
+					Utils.tipBar("success","保存成功",resJson.msg);
 				}else{//失败
-					$(".channel_out_content").addClass("input_err");
+					Utils.tipBar("error","保存失败",resJson.msg);
 				}
 		};
 		Utils.ajax(url,data,succFunc);
@@ -878,9 +878,9 @@ $(document).ready(function(){
                         +"&syncCommand="+$("#sync_command").val();
             var succFunc	= function(resJson){
                     if(parseInt(resJson.resultCode) == 1){//成功
-                        $(".sync_single_content").addClass("input_ok");
+                        Utils.tipBar("success","保存成功",resJson.msg); 
                     }else{//失败
-                        $(".sync_single_content").addClass("input_err");
+                        Utils.tipBar("error","保存失败",resJson.msg);
                     }
             };
             Utils.ajax(url,data,succFunc);
