@@ -74,7 +74,7 @@ class Utils{
         if(strlen($value) == 0){
             $value  = $default;
         }
-        return trim($value);
+        return str_replace(' ', '', $value);
     }
     
     
