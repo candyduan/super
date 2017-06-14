@@ -798,4 +798,24 @@ class PayController extends BController{
         Utils::jsonOut($out);
     }
     
+    public function actionChannelDevType(){
+    	$chid 		= Utils::getBackendParam('chid');
+    	$devType 	= Utils::getBackendParam('devType');
+    	$channelModel 	= Channel::findByPk($chid);
+    	if ($channelModel){
+    		$channelModel->devType = $devType;
+    		try{
+    			$channelModel->save();
+    			$out['resultCode']	= Constant::RESULT_CODE_SUCC;
+    			$out['msg']			= Constant::RESULT_MSG_SUCC;
+    		}catch (\Exception $e){
+    			$out['resultCode']	= Constant::RESULT_CODE_SYSTEM_BUSY;
+    			$out['msg']			= Constant::RESULT_MSG_SYSTEM_BUSY;
+    		}
+    	}else{
+    		$out['resultCode']	= Constant::RESULT_CODE_NONE;
+    		$out['msg']			= Constant::RESULT_MSG_NONE;
+    	}
+    	Utils::jsonOut($out);
+    }
 }
