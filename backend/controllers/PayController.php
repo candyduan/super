@@ -2,7 +2,7 @@
 namespace backend\controllers;
 use common\library\BController;
 use common\library\Utils;
-use common\models\orm\base\ChannelCfgToSync;
+use common\models\orm\extend\ChannelCfgToSync;
 use common\models\orm\extend\Channel;
 use common\models\orm\extend\DeveloperChannelCount;
 use common\library\Constant;
@@ -93,7 +93,7 @@ class PayController extends BController{
         $sdYApiModel        = ChannelCfgSdYapi::findByChannelId($chid);
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
         $outModel           = ChannelCfgOut::findByChannelId($chid);
-        $channelCfgToSync   = \common\models\orm\extend\ChannelCfgToSync::findByChannelId($chid);
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $data   = array(
             'channelModel'      => $channelModel,
             'mainModel'         => $mainModel,
@@ -779,9 +779,9 @@ class PayController extends BController{
         $chid	        = Utils::getBackendParam('chid');
         $syncPort   = Utils::getBackendParam('syncPort');
         $syncCommand           = Utils::getBackendParam('syncCommand');
-        $channelCfgToSync   = \common\models\orm\extend\ChannelCfgToSync::findByChannelId($chid);
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         if(!$channelCfgToSync) {
-            $channelCfgToSync   = new \common\models\orm\extend\ChannelCfgToSync();
+            $channelCfgToSync   = new ChannelCfgToSync();
             $channelCfgToSync->channelId  = $chid;
         }
         $channelCfgToSync->port     = $syncPort;
