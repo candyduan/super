@@ -83,7 +83,7 @@ class PackageController extends BController
                 isset($payMode[$value['payMode']]) ? $payMode[$value['payMode']] :'',
                 sprintf('%.2f',$value['rate']) . ' %',
                 isset($value['mtype']) ? CampaignPackage::getMTypeName($value['mtype']) :'',
-                sprintf('%.2f',$value['mrate']) . ' %',
+                1 == $value['mtype']?sprintf('%.2f',$value['mrate']) . ' %':number_format($value['mrate']/100,2).'元',
                 sprintf('%.2f',$value['cutRate']) . ' % @' .( $value['cutDay'] == 0 ? '' : date('Y-m-d', $value['cutDay'])),
                 sprintf('%.2f',$value['mcutRate']) . ' % @' . ( $value['mcutDay'] == 0 ? '' : date('Y-m-d', $value['mcutDay'])),
                 MyHtml::aElement('javascript:void(0);' ,'getSdks',$value['id'],'渠道关联配置')
