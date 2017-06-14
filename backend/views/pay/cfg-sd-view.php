@@ -10,6 +10,8 @@ $sdNApiModel    = $sdNApiModel;
 $sdYApiModel    = $sdYApiModel;
 $syncModel      = $syncModel;
 $outModel       = $outModel;
+$channelCfgToSync   = $channelCfgToSync;
+
 if($channelModel->devType == Constant::CHANNEL_DOUBLE){
     $sms2Display    = "display:block;";
 }else{
@@ -376,7 +378,10 @@ if(!is_array($sendType1)){
 <?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
 
 <!-- 代码外放 -->
-<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>	
+<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>
+
+<!-- 单同步-->
+<?php echo PayCfgWidgets::getCfgSingleDataSyncWidget($channelCfgToSync)?>
 </div>
 
 <script type="text/javascript">

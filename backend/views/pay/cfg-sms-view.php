@@ -347,6 +347,8 @@ if($smsNApiModel){
 	<?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
 	<!-- 代码外放 -->
 	<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>
+    <!-- 单同步-->
+    <?php echo PayCfgWidgets::getCfgSingleDataSyncWidget($channelCfgToSync)?>
 </div>
 
 <script>
