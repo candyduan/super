@@ -607,6 +607,8 @@ class PackagePayController extends BController
      		
      	
      		array_push($item, $value['allPay']);
+     		array_push($item, number_format($value['callSucPay'],0));
+     		array_push($item, number_format($value['sdkSucPay'],0));
      		array_push($item, number_format($value['successPay'],0));
      		array_push($item, number_format($value['income'],0));
      		if(0 == $value['allPay']){
@@ -643,6 +645,8 @@ class PackagePayController extends BController
      			'sdkPackagePayDay.provider as provider',
      			'sdkPackagePayDay.date as date',
      			'sum(sdkPackagePayDay.allPay) as allPay',
+     			'sum(sdkPackagePayDay.callSucPay) as callSucPay',
+     			'sum(sdkPackagePayDay.sdkSucPay) as sdkSucPay',
      			'sum(sdkPackagePayDay.successPay) as successPay',
      			'sum(sdkPackagePayDay.income) as income',
      	];
