@@ -140,7 +140,7 @@ class PackageController extends BController
                 $package['cutday'] = $package['cutDay'] == 0 ? '' : date('Y-m-d', $package['cutDay']); //cp优化开始
                 $package['mcutday'] = $package['mcutDay'] == 0 ? '' : date('Y-m-d', $package['mcutDay']);
                 $package['mtype'] = isset($package['mtype']) ? CampaignPackage::getMTypeName($package['mtype']) :'';
-                $package['mrate'] = 1 == $package['mtype'] ? sprintf('%.2f', $package['mrate']) . '%':number_format($package['mrate'],2);
+                $package['mrate'] = 1 == $package['mtype'] ? sprintf('%.2f', $package['mrate']) . '%':number_format($package['mrate']/100,2);
                 $package['sign'] = isset($package['mediaSign']) ? $package['mediaSign'] : '';
                 $package['distname'] = isset($package['media']) ? Partner::getNameById($package['media']) : '';
                 $package['grade'] = $package['grade'] == 0 ? '普通' : 'A级';
