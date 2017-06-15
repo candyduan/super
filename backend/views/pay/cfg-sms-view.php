@@ -12,6 +12,7 @@ $submitModel    = $submitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
 $outModel       = $outModel;
+$channelCfgToSync   = $channelCfgToSync;
 if($smsYApiModel){
     $sendType1 = json_decode($smsYApiModel->sendType1,true);
 }
