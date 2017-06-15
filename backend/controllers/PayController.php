@@ -366,6 +366,7 @@ class PayController extends BController{
         $syncModel                = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel           = ChannelCfgSmtParams::findByChannelId($chid);
         $outModel           = ChannelCfgOut::findByChannelId($chid);
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $data   = array(
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
@@ -377,6 +378,7 @@ class PayController extends BController{
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
             'outModel'                    => $outModel,
+            'channelCfgToSync'            => $channelCfgToSync,
         );
         
         return $this->render('cfg-sms-view',$data);
@@ -573,6 +575,7 @@ class PayController extends BController{
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel     = ChannelCfgSmtParams::findByChannelId($chid);
         $outModel           = ChannelCfgOut::findByChannelId($chid);
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $data   = array(
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
@@ -583,6 +586,7 @@ class PayController extends BController{
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
             'outModel'                    => $outModel,
+            'channelCfgToSync'            => $channelCfgToSync,
         );
         
         return $this->render('cfg-url-view',$data);

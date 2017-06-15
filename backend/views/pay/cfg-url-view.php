@@ -11,6 +11,7 @@ $submitModel    = $submitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
 $outModel       = $outModel;
+$channelCfgToSync = $channelCfgToSync;
 ?>
 <ol class="breadcrumb">
 <li><a href="/pay/channel-view">通道配置</a></li>
