@@ -606,7 +606,7 @@ class PackagePayController extends BController
      		}
      		
      	
-     		array_push($item, $value['allPay']);
+     		array_push($item, number_format($value['allPay'],0));
      		array_push($item, number_format($value['callSucPay'],0));
      		array_push($item, number_format($value['sdkSucPay'],0));
      		array_push($item, number_format($value['successPay'],0));
