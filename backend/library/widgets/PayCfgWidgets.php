@@ -1,6 +1,7 @@
 <?php
 namespace backend\library\widgets;
 use common\models\orm\extend\Channel;
+use common\models\orm\extend\ChannelCfgOut;
 
 class PayCfgWidgets{
     public static function getCfgPayParamsWidget($payParamsModel){
@@ -465,9 +466,9 @@ $(document).ready(function(){
                 //succFunc
                 var succFunc    = function(resJson){
                                 if(parseInt(resJson.resultCode) == 1){//成功
-                                        $(".pay_param_content").addClass("input_ok");
+                                        Utils.tipBar("success","保存成功",resJson.msg); 
                                 }else{//失败
-                                        $(".pay_param_content").addClass("input_err");
+                                        Utils.tipBar("error","保存失败",resJson.msg);
                                 }
                 };
                 Utils.ajax(url,data,succFunc);
@@ -505,7 +506,9 @@ $(document).ready(function(){
             $succReturn = $channelCfgSyncModel->succReturn;
             $feeFixed   = $channelCfgSyncModel->feeFixed;
         }
-    
+        if($succReturn == ''){
+            $succReturn = 'ok';
+        }
     
         $widget = '
 <div class="data_sync">
@@ -606,9 +609,9 @@ $(document).ready(function(){
 		//succFunc
 		var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$(".data_sync_content").addClass("input_ok");
+					Utils.tipBar("success","保存成功",resJson.msg);
 				}else{//失败
-					$(".data_sync_content").addClass("input_err");
+					Utils.tipBar("error","保存失败",resJson.msg);
 				}
 		};
 		Utils.ajax(url,data,succFunc);
@@ -743,9 +746,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$(".smt_params_content").addClass("input_ok");
+					Utils.tipBar("success","保存成功",resJson.msg); 
 				}else{//失败
-					$(".smt_params_content").addClass("input_err");
+					Utils.tipBar("error","保存失败",resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
@@ -753,6 +756,138 @@ $(document).ready(function(){
 });
 </script>
             ';
+        return $widget;
+    }
+    
+    
+    
+    public static function getCfgOutWidget($outModel){
+        $spSignPrefix   = '';
+        $url            = '';
+        if($outModel){
+            $spSignPrefix    = $outModel->spSignPrefix;
+            $url             = $outModel->url;
+        }
+        
+        $widget = '
+<div class="channel_out">
+<hr>
+	<h1 class="header-1">代码外放</h1>
+	<div class="channel_out_content">
+    	<div class="form-horizontal">
+    	
+              <div class="form-group">
+                <label for="channel_out_spSignPrefix" class="col-xs-2 control-label">透传前缀</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="channel_out_spSignPrefix" placeholder="..." value="'.$spSignPrefix.'">
+                </div>
+              </div>
+        
+              <div class="form-group">
+                <label for="channel_out_url" class="col-xs-2 control-label">外放链接</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="channel_out_url" placeholder="..." value="'.$url.'">
+                </div>
+              </div>
+        
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                  <button id="out_save" class="btn btn-default">保存</button>
+                </div>
+              </div>
+                      
+        </div>
+    </div>
+</div>
+        
+<script>
+$(document).ready(function(){
+	$("#out_save").click(function(){
+		//url
+		var url = "/pay/cfg-out-save";
+		//data
+		var data =  "chid="+$(".data_store_common").attr("chid")
+            		+"&spSignPrefix="+$("#channel_out_spSignPrefix").val()
+            		+"&url="+$("#channel_out_url").val();
+		//succFunc
+		var succFunc	= function(resJson){
+				if(parseInt(resJson.resultCode) == 1){//成功
+					Utils.tipBar("success","保存成功",resJson.msg);
+				}else{//失败
+					Utils.tipBar("error","保存失败",resJson.msg);
+				}
+		};
+		Utils.ajax(url,data,succFunc);
+	});
+});
+</script>
+            ';
+        return $widget;
+    }
+
+    public static function getCfgSingleDataSyncWidget($channelCfgToSync) {
+        $channel        = 0;
+        $syncPort       = '';
+        $syncCommand    = '';
+        if($channelCfgToSync) {
+            $channel    = $channelCfgToSync->channelId;
+            $channelModel= Channel::findByPk($channel);
+            $channelName = $channelModel ? "【$channel】{$channelModel->name}" : 0;
+            $syncPort   = $channelCfgToSync->port;
+            $syncCommand= $channelCfgToSync->command;
+        }
+        $widget = '
+        <div class="channel_out">
+<hr>
+	<h1 class="header-1">单同步</h1>
+	<div class="sync_single_content">
+    	<div class="form-horizontal">
+    	
+              <div class="form-group">
+                <label for="sync_port" class="col-xs-2 control-label">同步端口号</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="sync_port" placeholder="..." value="'.$syncPort.'">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="sync_command" class="col-xs-2 control-label">同步指令(前1位)</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="sync_command" placeholder="..." value="'.$syncCommand.'">
+                </div>
+              </div>
+        
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                  <button id="sync_single_save" class="btn btn-default">保存</button>
+                </div>
+              </div>
+                      
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        var jsonList	= '.json_encode(\common\models\orm\extend\Channel::getTypeHeaderChannelList()).';
+        Utils.myTypeHeder(jsonList,"channel-f","channel","");
+        $("#sync_single_save").click(function(){
+            var url = "/pay/cfg-sync-single";
+            var data =  "chid="+$(".data_store_common").attr("chid")
+                        +"&syncPort="+$("#sync_port").val()
+                        +"&syncCommand="+$("#sync_command").val();
+            var succFunc	= function(resJson){
+                    if(parseInt(resJson.resultCode) == 1){//成功
+                        Utils.tipBar("success","保存成功",resJson.msg); 
+                    }else{//失败
+                        Utils.tipBar("error","保存失败",resJson.msg);
+                    }
+            };
+            Utils.ajax(url,data,succFunc);
+        });
+    });
+</script>
+        ';
         return $widget;
     }
 }

@@ -165,13 +165,13 @@
             var method = 'post';
             var successFunc = function (result) {
                 if (parseInt(result) == 1) {
-                    alert(msg_success);
+                    Utils.tipBar('success','成功',msg_success);
                     $('#modalAdminUser').modal('hide');
                     _initDataTable();
                 } else if (parseInt(result) == 0) {
-                    alert( msg_error);
+                    Utils.tipBar('error','失败',msg_error);  
                 } else if (parseInt(result) == -1) {
-                    alert('新增失败！用户名或者邮箱已经存在');
+                    Utils.tipBar('error','失败','新增失败！用户名或者邮箱已经存在');  
                 }
                 $('#btn_submit_adminuser').attr('disabled', false);
             };
@@ -211,10 +211,10 @@
             var method = 'get';
             var success_function = function(result) {
                 if(parseInt(result) > 0){
-                    alert(MESSAGE_DELETE_SUCCESS);
+                    Utils.tipBar('success','成功',MESSAGE_DELETE_SUCCESS);    
                     _initDataTable();
                 }else{
-                    alert(MESSAGE_DELETE_ERROR);
+                    Utils.tipBar('error','失败',MESSAGE_DELETE_ERROR);    
                 }
             };
             callAjaxWithFunction(post_url, post_data, success_function, method);
@@ -229,13 +229,13 @@
         var email  =  $('#email').val();
         if (username == '') {
             error_num = error_num + 1;
-            alert('请填写用户名')
+            Utils.tipBar('error','失败','请填写用户名');    
         } else if (password == '') {
             error_num = error_num + 1;
-            alert('请填写密码');
+            Utils.tipBar('error','失败','请填写密码');    
         } else if (email == '') {
             error_num = error_num + 1;
-            alert('请填写邮箱');
+            Utils.tipBar('error','失败','请填写邮箱');            
         }
         return error_num;
     }

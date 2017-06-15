@@ -2,6 +2,7 @@
 namespace backend\controllers;
 use common\library\BController;
 use common\library\Utils;
+use common\models\orm\extend\ChannelCfgToSync;
 use common\models\orm\extend\Channel;
 use common\models\orm\extend\DeveloperChannelCount;
 use common\library\Constant;
@@ -19,6 +20,7 @@ use common\models\orm\extend\ChannelCfgSmsSubmit;
 use common\models\orm\extend\ChannelCfgUrl;
 use common\models\orm\extend\ChannelCfgUrlYapi;
 use common\models\orm\extend\ChannelCfgUrlSubmit;
+use common\models\orm\extend\ChannelCfgOut;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -90,7 +92,8 @@ class PayController extends BController{
         $sdNApiModel        = ChannelCfgSdNapi::findByChannelId($chid);
         $sdYApiModel        = ChannelCfgSdYapi::findByChannelId($chid);
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
-        
+        $outModel           = ChannelCfgOut::findByChannelId($chid);
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $data   = array(
             'channelModel'      => $channelModel,
             'mainModel'         => $mainModel,
@@ -99,6 +102,8 @@ class PayController extends BController{
             'sdNApiModel'       => $sdNApiModel,
             'sdYApiModel'       => $sdYApiModel,
             'syncModel'         => $syncModel,
+            'outModel'          => $outModel,
+            'channelCfgToSync'  => $channelCfgToSync
         );
         
         return $this->render('cfg-sd-view',$data);
@@ -185,6 +190,7 @@ class PayController extends BController{
         $url                = Utils::getBackendParam('url');
         $sendMethod         = Utils::getBackendParam('sendMethod');
         $respFmt            = Utils::getBackendParam('respFmt');
+        $delimiter = Utils::getBackendParam('delimiter');
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -212,6 +218,7 @@ class PayController extends BController{
             $sdYApiModel->url          = $url;
             $sdYApiModel->sendMethod   = $sendMethod;
             $sdYApiModel->respFmt      = $respFmt;
+            $sdYApiModel->delimiter = $delimiter;
         
             try{
                 ChannelCfgMain::backendOps($chid);
@@ -358,7 +365,7 @@ class PayController extends BController{
         $submitModel        = ChannelCfgSmsSubmit::findByChannelId($chid);
         $syncModel                = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel           = ChannelCfgSmtParams::findByChannelId($chid);
-        
+        $outModel           = ChannelCfgOut::findByChannelId($chid);
         $data   = array(
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
@@ -369,6 +376,7 @@ class PayController extends BController{
             'submitModel'                 => $submitModel,
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
+            'outModel'                    => $outModel,
         );
         
         return $this->render('cfg-sms-view',$data);
@@ -386,6 +394,7 @@ class PayController extends BController{
         $url            = Utils::getBackendParam('url');
         $sendMethod     = Utils::getBackendParam('sendMethod');
         $respFmt        = Utils::getBackendParam('respFmt');
+        $delimiter = Utils::getBackendParam('delimiter');
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
             $smsYApiModel   = ChannelCfgSmsYapi::findByChannelId($chid);
@@ -401,6 +410,7 @@ class PayController extends BController{
             $smsYApiModel->url          = $url;
             $smsYApiModel->sendMethod   = $sendMethod;
             $smsYApiModel->respFmt      = $respFmt;
+            $smsYApiModel->delimiter = $delimiter;
             if($sendType1 == '[]'){
                 $sendType1  = '';
             }
@@ -562,7 +572,7 @@ class PayController extends BController{
         $submitModel        = ChannelCfgUrlSubmit::findByChannelId($chid);
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel     = ChannelCfgSmtParams::findByChannelId($chid);
-        
+        $outModel           = ChannelCfgOut::findByChannelId($chid);
         $data   = array(
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
@@ -572,6 +582,7 @@ class PayController extends BController{
             'submitModel'                 => $submitModel,
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
+            'outModel'                    => $outModel,
         );
         
         return $this->render('cfg-url-view',$data);
@@ -581,6 +592,7 @@ class PayController extends BController{
         $url            = Utils::getBackendParam('url');
         $sendMethod     = Utils::getBackendParam('sendMethod');
         $respFmt        = Utils::getBackendParam('respFmt');
+        $delimiter = Utils::getBackendParam('delimiter');
         $succKey        = Utils::getBackendParam('succKey');
         $succValue      = Utils::getBackendParam('succValue');
         $orderIdKey     = Utils::getBackendParam('orderIdKey');
@@ -601,6 +613,7 @@ class PayController extends BController{
             $urlYApiModel->succValue    = $succValue;
             $urlYApiModel->orderIdKey   = $orderIdKey;
             $urlYApiModel->smtKey       = $smtKey;
+            $urlYApiModel->delimiter = $delimiter;
 
 
             try{
@@ -738,5 +751,71 @@ class PayController extends BController{
         return $this->render('channel-cfg-useage');
     }
     
+    public function actionCfgOutSave(){
+        $chid	        = Utils::getBackendParam('chid');
+        $spSignPrefix   = Utils::getBackendParam('spSignPrefix');
+        $url            = Utils::getBackendParam('url');
+        
+        $outModel   = ChannelCfgOut::findByChannelId($chid);
+        if(!$outModel){
+            $outModel   = new ChannelCfgOut();
+            $outModel->channelId    = $chid;
+        }
+        $outModel->spSignPrefix = $spSignPrefix;
+        $outModel->url          = $url;
+        
+        try{
+            $outModel->save();
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
+
+    public function actionCfgSyncSingle() {
+        $chid	        = Utils::getBackendParam('chid');
+        $syncPort   = Utils::getBackendParam('syncPort');
+        $syncCommand           = Utils::getBackendParam('syncCommand');
+        $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
+        if(!$channelCfgToSync) {
+            $channelCfgToSync   = new ChannelCfgToSync();
+            $channelCfgToSync->channelId  = $chid;
+        }
+        $channelCfgToSync->port     = $syncPort;
+        $channelCfgToSync->command  = $syncCommand;
+
+        try{
+            $channelCfgToSync->save();
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e) {
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
     
+    public function actionChannelDevType(){
+    	$chid 		= Utils::getBackendParam('chid');
+    	$devType 	= Utils::getBackendParam('devType');
+    	$channelModel 	= Channel::findByPk($chid);
+    	if ($channelModel){
+    		$channelModel->devType = $devType;
+    		try{
+    			$channelModel->save();
+    			$out['resultCode']	= Constant::RESULT_CODE_SUCC;
+    			$out['msg']			= Constant::RESULT_MSG_SUCC;
+    		}catch (\Exception $e){
+    			$out['resultCode']	= Constant::RESULT_CODE_SYSTEM_BUSY;
+    			$out['msg']			= Constant::RESULT_MSG_SYSTEM_BUSY;
+    		}
+    	}else{
+    		$out['resultCode']	= Constant::RESULT_CODE_NONE;
+    		$out['msg']			= Constant::RESULT_MSG_NONE;
+    	}
+    	Utils::jsonOut($out);
+    }
 }

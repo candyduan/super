@@ -27,7 +27,7 @@
                         </ul>
                     </li>
                     <li class="">
-                        <a href="javascript:;" data-toggle="collapse" data-target="#operate"><i class="fa fa-fw fa-dashboard"></i>运营中心<i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#operate"><i class="fa fa-fw fa-dashboard"></i>运营工具<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="operate" class="collapse">
                             <li><a class="sidebar-item" href="/pay/duty-view">轮回</a></li>
                         </ul>

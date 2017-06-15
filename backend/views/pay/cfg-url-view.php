@@ -10,6 +10,7 @@ $urlYApiModel   = $urlYApiModel;
 $submitModel    = $submitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
+$outModel       = $outModel;
 ?>
 <ol class="breadcrumb">
 <li><a href="/pay/channel-view">通道配置</a></li>
@@ -53,7 +54,17 @@ $smtParamsModel = $smtParamsModel;
                           <option value ="1" <?php if($urlYApiModel){if($urlYApiModel->respFmt == '1'){ echo 'selected="selected"';}}?>>JSON</option>
                           <option value ="2" <?php if($urlYApiModel){if($urlYApiModel->respFmt == '2'){ echo 'selected="selected"';}}?>>XML</option>
                           <option value ="3" <?php if($urlYApiModel){if($urlYApiModel->respFmt == '3'){ echo 'selected="selected"';}}?>>TEXT</option>
+                          <option value ="4" <?php if($urlYApiModel){if($urlYApiModel->respFmt == '4'){ echo 'selected="selected"';}}?>>TEXT-TO-ARRAY</option>
+                          <option value ="5" <?php if($urlYApiModel){if($urlYApiModel->respFmt == '5'){ echo 'selected="selected"';}}?>>JSON-TO-ARRAY</option>
+                          <option value ="6" <?php if($urlYApiModel){if($urlYApiModel->respFmt == '6'){ echo 'selected="selected"';}}?>>XML-TO-ARRAY</option>
                         </select>
+                </div>
+             </div>
+             
+             <div class="form-group" id="delimiter">
+                <label for="url_yapi_delimiter" class="col-xs-2 control-label">分隔符</label>
+                <div class="col-xs-10">
+                        <input type='text' id='url_yapi_delimiter' class='form-control' value="<?php if($urlYApiModel){echo $urlYApiModel->delimiter;}?>"> 
                 </div>
              </div>
 
@@ -174,10 +185,29 @@ $smtParamsModel = $smtParamsModel;
 	<?php echo PayCfgWidgets::getCfgSmtParamsWidget($smtParamsModel);?>
     <!-- 数据同步 -->
 	<?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
+	<!-- 代码外放 -->
+	<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>
+    <!-- 单同步-->
+    <?php echo PayCfgWidgets::getCfgSingleDataSyncWidget($channelCfgToSync)?>
 </div>
 
 <script>
 $(document).ready(function(){
+	if($('#url_yapi_respFmt').val() > 3){
+		$('#delimiter').css('display','block');
+	}else{
+		$('#delimiter').css('display','none');
+	}
+	
+	$('#url_yapi_respFmt').change(function(){
+		var respFmt = $(this).val();
+		if(respFmt > 3){
+			$('#delimiter').css('display','block');
+		}else{
+			$('#delimiter').css('display','none');
+		}
+	})
+	
 	$('#url_yapi_save').click(function(){
 		//url
 		var url = '/pay/cfg-url-yapi-save';
@@ -186,6 +216,7 @@ $(document).ready(function(){
 				+'&url='+$('#url_yapi_url').val()
 				+'&sendMethod='+$('#url_yapi_sendMethod').val()
 				+'&respFmt='+$('#url_yapi_respFmt').val()
+				+'&delimiter='+encodeURIComponent($('#url_yapi_delimiter').val())
 				+'&succKey='+$('#url_yapi_succKey').val()
 				+'&succValue='+$('#url_yapi_succValue').val()
 				+'&orderIdKey='+$('#url_yapi_orderIdKey').val()
@@ -193,9 +224,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.url_yapi_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.url_yapi_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
@@ -235,9 +266,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.url_verifycode_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.url_verifycode_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);

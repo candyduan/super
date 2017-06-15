@@ -11,7 +11,7 @@ $smsNApiModel   = $smsNApiModel;
 $submitModel    = $submitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
-
+$outModel       = $outModel;
 if($smsYApiModel){
     $sendType1 = json_decode($smsYApiModel->sendType1,true);
 }
@@ -89,11 +89,20 @@ if($smsNApiModel){
                           <option value ="1" <?php if($smsYApiModel){if($smsYApiModel->respFmt == '1'){ echo 'selected="selected"';}}?>>JSON</option>
                           <option value ="2" <?php if($smsYApiModel){if($smsYApiModel->respFmt == '2'){ echo 'selected="selected"';}}?>>XML</option>
                           <option value ="3" <?php if($smsYApiModel){if($smsYApiModel->respFmt == '3'){ echo 'selected="selected"';}}?>>TEXT</option>
+                          <option value ="4" <?php if($smsYApiModel){if($smsYApiModel->respFmt == '4'){ echo 'selected="selected"';}}?>>TEXT-TO-ARRAY</option>
+                          <option value ="5" <?php if($smsYApiModel){if($smsYApiModel->respFmt == '5'){ echo 'selected="selected"';}}?>>JSON-TO-ARRAY</option>
+                          <option value ="6" <?php if($smsYApiModel){if($smsYApiModel->respFmt == '6'){ echo 'selected="selected"';}}?>>XML-TO-ARRAY</option>
                         </select>
                 </div>
              </div>
               
-                                    
+             <div class="form-group" id="delimiter">
+                <label for="sms_yapi_delimiter" class="col-xs-2 control-label">分隔符</label>
+                <div class="col-xs-10">
+                        <input type='text' id='sms_yapi_delimiter' class='form-control' value="<?php if($smsYApiModel){echo $smsYApiModel->delimiter;}?>"> 
+                </div>
+             </div>
+                                
        		<div class="form-group">
                 <label for="sms_yapi_spnumberKey1" class="col-xs-2 control-label">端口Key</label>
                 <div class="col-xs-10">
@@ -111,26 +120,26 @@ if($smsNApiModel){
        		<div class="form-group">
                 <label class="col-xs-2 control-label">短信发送方式</label>
                 <div class="col-xs-2 sms_yapi_sendType1">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[0]['key'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[0]['value'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[0]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[0]['key'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[0]['value'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[0]['sendtype'];?>">
                 </div>
                 <div class="col-xs-2 sms_yapi_sendType1">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[1]['key'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[1]['value'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[1]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[1]['key'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[1]['value'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[1]['sendtype'];?>">
                 </div>
                 
                 <div class="col-xs-2 sms_yapi_sendType1">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[2]['key'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[2]['value'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[2]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[2]['key'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[2]['value'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[2]['sendtype'];?>">
                 </div>
                 
                  <div class="col-xs-2 sms_yapi_sendType1">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[3]['key'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[3]['value'];?>">
-                  <input type="text" class="col-xs-4 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[3]['sendtype'];?>">
+                  <input type="text" class="col-xs-6 sms_yapi_sendType1Key" placeholder="key" value="<?php echo $sendType1[3]['key'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Value" placeholder="value" value="<?php echo $sendType1[3]['value'];?>">
+                  <input type="text" class="col-xs-3 sms_yapi_sendType1Our" placeholder="发送方式" value="<?php echo $sendType1[3]['sendtype'];?>">
                 </div>               
             </div>
 
@@ -336,10 +345,29 @@ if($smsNApiModel){
 	<?php echo PayCfgWidgets::getCfgSmtParamsWidget($smtParamsModel);?>
     <!-- 数据同步 -->
 	<?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
+	<!-- 代码外放 -->
+	<?php echo PayCfgWidgets::getCfgOutWidget($outModel);?>
+    <!-- 单同步-->
+    <?php echo PayCfgWidgets::getCfgSingleDataSyncWidget($channelCfgToSync)?>
 </div>
 
 <script>
-$(document).ready(function(){	
+$(document).ready(function(){
+	if($('#sms_yapi_respFmt').val() > 3){
+		$('#delimiter').css('display','block');
+	}else{
+		$('#delimiter').css('display','none');
+	}
+	
+	$('#sms_yapi_respFmt').change(function(){
+		var respFmt = $(this).val();
+		if(respFmt > 3){
+			$('#delimiter').css('display','block');
+		}else{
+			$('#delimiter').css('display','none');
+		}
+	})
+	
 	$('.btn-yapi').click(function(){
 		$('.data_store_common').attr('useapi',1);
 		$("div[api='0']").css('display','none');
@@ -384,15 +412,16 @@ $(document).ready(function(){
 				+'&orderIdKey='+$('#sms_yapi_orderIdKey').val()
 				+'&url='+$('#sms_yapi_url').val()
 				+'&sendMethod='+$('#sms_yapi_sendMethod').val()
-				+'&respFmt='+$('#sms_yapi_respFmt').val();
+				+'&respFmt='+$('#sms_yapi_respFmt').val()
+				+'&delimiter='+encodeURIComponent($('#sms_yapi_delimiter').val());
 		
 
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.sms_yapi_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.sms_yapi_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
@@ -428,9 +457,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.sms_napi_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.sms_napi_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);
@@ -471,9 +500,9 @@ $(document).ready(function(){
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功
-					$('.sms_verifycode_content').addClass('input_ok');
+					Utils.tipBar('success','保存成功',resJson.msg);
 				}else{//失败
-					$('.sms_verifycode_content').addClass('input_err');
+					Utils.tipBar('error','保存失败',resJson.msg);
 				}
 		  };
 		  Utils.ajax(url,data,succFunc);

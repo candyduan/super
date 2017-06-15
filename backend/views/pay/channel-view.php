@@ -1,3 +1,7 @@
+<style>
+.channel-config-entrance{font-size:18px;cursor:pointer;}
+.chgDevType{cursor:pointer;}
+</style>
 <ol class="breadcrumb">
 <li class="active">通道配置</li>
 </ol>
@@ -19,6 +23,34 @@
     
     <!-- 分页 -->
 	<div class=""><nav><ul class="pager"></ul></nav></div>
+	
+	
+	<div class="modal-chgDevType modal fade" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">更改通道开发类型</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>
+	        	<select class='confrimDevType form-control' style="width:120px;margin-left:30%;">
+					<option value='1'>Single</option>
+					<option value='2'>Double</option>
+					<option value='3'>SMS+</option>
+					<option value='4'>Url+</option>
+				</select>
+	        </p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary btnChgDevType">保存</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+
 </div>
 <script>
 $(document).ready(function(){
@@ -44,9 +76,33 @@ function setResult(page){
                 }else{
                 	cfgMainBtnName = '手';
                 }
-                resultHtml = resultHtml + '<tr><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td>'+val.devType+'</td><td>'+val.status+'</td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
+                resultHtml = resultHtml + '<tr><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td><a class="chgDevType" data-chid="'+val.chid+'">'+val.devType+'</a></td><td>'+val.status+'</td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
             });
             $('#data_list').html(resultHtml);
+
+            $('.chgDevType').click(function(){
+				var chid = $(this).attr('data-chid');
+				$('.modal-chgDevType').modal('show');
+				$('.btnChgDevType').unbind('click');
+				$('.btnChgDevType').click(function(){
+						$('.modal-chgDevType').modal('hide');
+		        		//url
+						var devTypeUrl = '/pay/channel-dev-type';
+						//data
+						var devTypeData = 'chid='+chid+'&devType='+$('.confrimDevType').val();
+						//succ
+						var devTypeSucc = function(devTypeJson){
+							if(parseInt(devTypeJson.resultCode) == 1){
+								Utils.tipBar('success','成功',devTypeJson.msg);
+		 						setResult($('.pager_number_selected').attr('page'));
+							}else{
+								Utils.tipBar('error','失败',devTypeJson.msg);
+							}
+						};
+						Utils.ajax(devTypeUrl,devTypeData,devTypeSucc);					
+					});				
+            });
+            
             $('.cfgMainStatus').click(function(){
 				if(confirm("确认要改变此状态吗？")){
 					var chid = $(this).attr('data-chid');
@@ -58,10 +114,10 @@ function setResult(page){
 					var mainStatusSucc = function(mainStatusJson){
 //	 					console.log(mainStatusJson);
 						if(parseInt(mainStatusJson.resultCode) == 1){
-							alert(mainStatusJson.msg);
+							Utils.tipBar('success','设置成功',mainStatusJson.msg);
 							setResult($('.pager_number_selected').attr('page'));
 						}else{
-							alert(mainStatusJson.msg);
+							Utils.tipBar('error','设置失败',mainStatusJson.msg);
 						}
 					};
 					Utils.ajax(mainStatusUrl,mainStatusData,mainStatusSucc);
@@ -85,7 +141,7 @@ function setResult(page){
 					url = '/pay/cfg-url-view?chid='+chid;
 					break;
 				default:
-					alert("请设置DEV类型，或该通道目前暂不支持配置化！");
+					Utils.tipBar('error','提示','请设置DEV类型，或该通道目前暂不支持配置化！');
 					return;
 				}
 

@@ -135,7 +135,7 @@ ul.alert-dropdown {
     .side-nav li a:hover,
     .side-nav li a:focus {
         outline: none;
-        background-color: #000 !important;
+        /* background-color: #000 !important; */
     }
 }
 
@@ -302,6 +302,8 @@ table td {
 .url_yapi_content{border:1px solid #000000;padding:10px;}
 .sms_verifycode_content{border:1px solid #000000;padding:10px;}
 .url_verifycode_content{border:1px solid #000000;padding:10px;}
+.channel_out_content{border:1px solid #000000;padding:10px;}
+.sync_single_content{border:1px solid #000000;padding:10px;}
 .pay_napi{display:none;}
 .sms_napi{display:none;}
 .napi_cell{border:1px solid #4F9D9D;margin:10px !important;padding:10px !important;}
@@ -316,3 +318,4 @@ table td {
 .cfg-tip{color:#ff2d2d;}
 .input_err{border:1px solid #ff2d2d !important;}
 .input_ok{border:1px solid #73bf00 !important;}
+.stack-bar-top{left:0px !important;top:0px !important;}
