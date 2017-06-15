@@ -851,7 +851,7 @@ $(document).ready(function(){
               </div>
               
               <div class="form-group">
-                <label for="sync_command" class="col-xs-2 control-label">同步指令(前1位)</label>
+                <label for="sync_command" class="col-xs-2 control-label">同步指令(非固定即填前缀)</label>
                 <div class="col-xs-10">
                   <input type="text" class="form-control" id="sync_command" placeholder="..." value="'.$syncCommand.'">
                 </div>
