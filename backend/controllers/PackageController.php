@@ -83,7 +83,7 @@ class PackageController extends BController
                 isset($payMode[$value['payMode']]) ? $payMode[$value['payMode']] :'',
                 sprintf('%.2f',$value['rate']) . ' %',
                 isset($value['mtype']) ? CampaignPackage::getMTypeName($value['mtype']) :'',
-                1 == $value['mtype']?sprintf('%.2f',$value['mrate']) . ' %':number_format($value['mrate']/100,2).'元',
+                1 == $value['mtype']?sprintf('%.2f',$value['mrate']) . ' %':number_format($value['mrate']/100,2),
                 sprintf('%.2f',$value['cutRate']) . ' % @' .( $value['cutDay'] == 0 ? '' : date('Y-m-d', $value['cutDay'])),
                 sprintf('%.2f',$value['mcutRate']) . ' % @' . ( $value['mcutDay'] == 0 ? '' : date('Y-m-d', $value['mcutDay'])),
                 MyHtml::aElement('javascript:void(0);' ,'getSdks',$value['id'],'渠道关联配置')
@@ -140,7 +140,7 @@ class PackageController extends BController
                 $package['cutday'] = $package['cutDay'] == 0 ? '' : date('Y-m-d', $package['cutDay']); //cp优化开始
                 $package['mcutday'] = $package['mcutDay'] == 0 ? '' : date('Y-m-d', $package['mcutDay']);
                 $package['mtype'] = isset($package['mtype']) ? CampaignPackage::getMTypeName($package['mtype']) :'';
-                $package['mrate'] = sprintf('%.2f', $package['mrate']) . '%';
+                $package['mrate'] = 1 == $package['mtype'] ? sprintf('%.2f', $package['mrate']) . '%':number_format($package['mrate'],2);
                 $package['sign'] = isset($package['mediaSign']) ? $package['mediaSign'] : '';
                 $package['distname'] = isset($package['media']) ? Partner::getNameById($package['media']) : '';
                 $package['grade'] = $package['grade'] == 0 ? '普通' : 'A级';
