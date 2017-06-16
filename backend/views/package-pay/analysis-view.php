@@ -61,8 +61,9 @@
                        	<td id="cloumn_sdk">SDK</td>
                        	<td id="cloumn_province">省份</td>
                         <td id="cloumn_provider">运营商</td>
-                        
                         <td>请求总金额</td>
+                        <td>调用成功金额</td>
+                        <td>SDK成功金额</td>
                         <td>信息费</td>
                         <td>收入</td>
                         <td>转化率</td>
@@ -228,7 +229,7 @@
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [0,1,2,3,4,5,6],
+                'aTargets': [0,1,2,3,4,5,6,7,8],
             }],
             "displayLength": 100, //默认每页多少条数据
             "processing": true,
