@@ -114,6 +114,8 @@ class SdkPayController extends BController
             '-'
         );
         $totalAllPay = 0;
+        $toatlCallSucPay = 0;
+        $totalSdkSucPay = 0;
         $totalSuccPay = 0;
         $tabledata = [];
         foreach($data as $value){
@@ -141,8 +143,12 @@ class SdkPayController extends BController
                 array_push($item, '-');
             }
             $allPay = number_format($value['allPay']/100,2);
+            $callSucPay = number_format($value['callSucPay']/100,2);
+            $sdkSucPay = number_format($value['sdkSucPay']/100,2);
             $successPay = number_format($value['successPay']/100,0);
             array_push($item, $allPay);
+            array_push($item, $callSucPay);
+            array_push($item, $sdkSucPay);
             array_push($item, $successPay);
             if(0 == $value['allPay']){
                 array_push($item, '-');
@@ -151,9 +157,13 @@ class SdkPayController extends BController
             }
             $tabledata[] = $item;
             $totalAllPay += $value['allPay'];
+            $totalCallSucPay += $value['callSucPay'];
+            $totalSdkSucPay += $value['sdkSucPay'];
             $totalSuccPay += $value['successPay'];
         }
         array_push($totalItem, number_format($totalAllPay/100,2));
+        array_push($totalItem, number_format($totalCallSucPay/100,2));
+        array_push($totalItem, number_format($totalSdkSucPay/100,2));
         array_push($totalItem, number_format($totalSuccPay/100,0));
         if(0 == $totalAllPay){
             array_push($totalItem, '-');
@@ -185,6 +195,8 @@ class SdkPayController extends BController
             'sdkPayDay.provider as provider',
             'province.name as provinceName',
             'sum(sdkPayDay.allPay) as allPay',
+            'sum(sdkPayDay.callSucPay) as callSucPay',
+            'sum(sdkPayDay.sdkSucPay) as sdkSucPay',
             'sum(sdkPayDay.successPay) as successPay',
             ];
         
@@ -279,7 +291,9 @@ class SdkPayController extends BController
             'sdkPayTransaction.provider as provider',
             'province.name as provinceName',
             'sum(sdkPayTransaction.price) as allPay',
-            'sum(if(sdkPayTransaction.status = 2,sdkPayTransaction.price,0)) as successPay',
+            'sum(if(sdkPayTransaction.sdkStatus != 2117,sdkPayTransaction.price,0)) as callSucPay',
+            'sum(if(sdkPayTransaction.sdkStatus = 1,sdkPayTransaction.price,0)) as sdkSucPay',
+            'sum(if(sdkPayTransaction.status = 2,sdkPayTransaction.successPay,0)) as successPay',
         ];
     
         $where[] = 'and';
