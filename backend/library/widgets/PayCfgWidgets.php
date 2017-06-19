@@ -24,7 +24,7 @@ class PayCfgWidgets{
         $provinceNameKey    = '';
         $provinceMapKey     = '';
         $linkIdKey          = '';
-    
+        $timestampKey       = '';
         if($payParamsModel){
             $mobileKey  = $payParamsModel->mobileKey;
             $imeiKey    = $payParamsModel->imeiKey;
@@ -49,6 +49,7 @@ class PayCfgWidgets{
             $provinceNameKey    = $payParamsModel->provinceNameKey;
             $provinceMapKey     = $payParamsModel->provinceMapKey;
             $linkIdKey          = $payParamsModel->linkIdKey;
+            $timestampKey      = $payParamsModel->timestampKey;
         }
         $widget = '
             <div class="pay_param" api="1">
@@ -120,7 +121,14 @@ class PayCfgWidgets{
                   <input type="text" class="form-control" id="param_linkid_key" placeholder="..." value="'.$linkIdKey.'">
                 </div>
               </div>
-    
+
+               <div class="form-group">
+                <label for="param_timestamp_key" class="col-xs-2 control-label">时间戳Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="param_timestamp_key" placeholder="..." value="'.$timestampKey.'">
+                </div>
+              </div>
+                      
               <div class="form-group">
                 <label for="param_cpparam_key" class="col-xs-2 control-label">透传参数Key</label>
                 <div class="col-xs-10">
@@ -461,6 +469,7 @@ $(document).ready(function(){
                         +"&appNameKey="+$("#param_appname_key").val()
                         +"&goodNameKey="+$("#param_goodname_key").val()
                         +"&linkIdKey="+$("#param_linkid_key").val()
+                        +"&timestampKey="+$("#param_timestamp_key").val()
                         +"&provinceNameKey="+$("#param_provincename_key").val();
     
                 //succFunc
@@ -842,7 +851,7 @@ $(document).ready(function(){
         if($channelCfgToSync) {
             $channel    = $channelCfgToSync->channelId;
             $channelModel= Channel::findByPk($channel);
-            $channelName = $channelModel ? "【$channel】{$channelModel->name}" : 0;
+            $channelName = $channelModel ? "【{$channel}】{$channelModel->name}" : 0;
             $syncPort   = $channelCfgToSync->port;
             $syncCommand= $channelCfgToSync->command;
         }

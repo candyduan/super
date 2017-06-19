@@ -257,6 +257,7 @@ class PayController extends BController{
         $goodNameKey    = Utils::getBackendParam('goodNameKey');
         $provinceNameKey    = Utils::getBackendParam('provinceNameKey');
         $linkIdKey      = Utils::getBackendParam('linkIdKey');
+        $timestampKey   = Utils::getBackendParam('timestampKey');
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -295,6 +296,7 @@ class PayController extends BController{
             $payParamsModel->goodNameKey = $goodNameKey;
             $payParamsModel->provinceNameKey = $provinceNameKey;
             $payParamsModel->linkIdKey       = $linkIdKey;
+            $payParamsModel->timestampKey    = $timestampKey;
             try{
                 ChannelCfgMain::backendOps($chid);
                 $payParamsModel->save();
