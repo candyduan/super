@@ -490,6 +490,7 @@ $(document).ready(function(){
         $feeUnitYuan     = '';
         $succReturn      = '';
         $feeFixed        = '';
+        $cmdKey          = '';
         if($channelCfgSyncModel){
             $succKey    = $channelCfgSyncModel->succKey;
             $succValue  = $channelCfgSyncModel->succValue;
@@ -505,6 +506,7 @@ $(document).ready(function(){
     
             $succReturn = $channelCfgSyncModel->succReturn;
             $feeFixed   = $channelCfgSyncModel->feeFixed;
+            $cmdKey     = $channelCfgSyncModel->cmdKey;
         }
         if($succReturn == ''){
             $succReturn = 'ok';
@@ -570,7 +572,14 @@ $(document).ready(function(){
                   <input type="text" class="form-control" id="sync_feefixed_key" placeholder="如果同步URL没有传递价格，并且该通道价格是固定的，则填写，单位（分）" value="'.$feeFixed.'">
                 </div>
               </div>
-    
+
+              <div class="form-group">
+                <label for="sync_cmd_key" class="col-xs-2 control-label">指令区分价格Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="sync_cmd_key" placeholder="如果价格是根据指令来进行区分的，则这里填写同步参数中指令的key" value="'.$cmdKey.'">
+                </div>
+              </div>
+                      
               <div class="form-group">
                 <label for="sync_succ_return" class="col-xs-2 control-label">成功返回值</label>
                 <div class="col-xs-10">
@@ -604,6 +613,7 @@ $(document).ready(function(){
                     +"&mobileKey="+$("#sync_mobile_key").val()
             		+"&feeKey="+$("#sync_fee_key").val()
             		+"&feeUnit="+$("#sync_fee_unit").val()
+                    +"&cmdKey="+$("#sync_cmd_key").val();
                     +"&feeFixed="+$("#sync_feefixed_key").val()
             		+"&succReturn="+$("#sync_succ_return").val();
 		//succFunc
