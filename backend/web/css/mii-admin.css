@@ -319,3 +319,4 @@ table td {
 .input_err{border:1px solid #ff2d2d !important;}
 .input_ok{border:1px solid #73bf00 !important;}
 .stack-bar-top{left:0px !important;top:0px !important;}
+.channel_used{background-color:#02df82;}
