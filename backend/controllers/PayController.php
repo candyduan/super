@@ -322,6 +322,7 @@ class PayController extends BController{
         $feeUnit    = Utils::getBackendParam('feeUnit');
         $succReturn = Utils::getBackendParam('succReturn');
         $feeFixed   = Utils::getBackendParam('feeFixed');
+        $cmdKey     = Utils::getBackendParam('cmdKey');
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -338,6 +339,7 @@ class PayController extends BController{
             $syncModel->feeUnit      = $feeUnit;
             $syncModel->succReturn   = $succReturn;
             $syncModel->feeFixed     = $feeFixed;
+            $syncModel->cmdKey       = $cmdKey;
             try{
                 ChannelCfgMain::backendOps($chid);
                 $syncModel->save();
