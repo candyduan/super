@@ -76,11 +76,19 @@ function setResult(page){
                 }else{
                 	cfgMainBtnName = '手';
                 }
-                var lineClass = '';
-                if(val.status == '可用'){
-                	lineClass = 'channel_used';
+                var statusClass = '';
+                switch(val.status){
+                	case '可用':
+                		statusClass = 'channel_used';
+                    	break;
+                	case '暂停':
+                		statusClass = 'channel_suspend';
+                    	break;
+                	case '删除':
+                		statusClass = 'channel_delete';
+                    	break;
                 }
-                resultHtml = resultHtml + '<tr class="'+lineClass+'"><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.sign+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td><a class="chgDevType" data-chid="'+val.chid+'">'+val.devType+'</a></td><td>'+val.status+'</td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
+                resultHtml = resultHtml + '<tr><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.sign+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td><a class="chgDevType" data-chid="'+val.chid+'">'+val.devType+'</a></td><td class="'+statusClass+'">'+val.status+'</td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
             });
             $('#data_list').html(resultHtml);
 
