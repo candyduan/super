@@ -613,7 +613,7 @@ $(document).ready(function(){
                     +"&mobileKey="+$("#sync_mobile_key").val()
             		+"&feeKey="+$("#sync_fee_key").val()
             		+"&feeUnit="+$("#sync_fee_unit").val()
-                    +"&cmdKey="+$("#sync_cmd_key").val();
+                    +"&cmdKey="+$("#sync_cmd_key").val()
                     +"&feeFixed="+$("#sync_feefixed_key").val()
             		+"&succReturn="+$("#sync_succ_return").val();
 		//succFunc
