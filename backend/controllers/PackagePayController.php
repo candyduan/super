@@ -29,6 +29,7 @@ use common\library\Constant;
 use common\models\orm\extend\Province;
 use common\models\orm\extend\SdkPlayer;
 use yii\db\Query;
+use common\models\orm\extend\SdkPlayerPay;
 /**
  * SdkPay controller
  */
@@ -386,7 +387,7 @@ class PackagePayController extends BController
         
         //支付用户
         $select = [
-            'count(distinct sdkPayTransaction.scid) as users'
+            'count(distinct sdkPlayerPay.scid) as users'
         ];
         
         $where = [];
@@ -395,37 +396,37 @@ class PackagePayController extends BController
         if( 3 == $dateType){//时段
             $where[] = [
                 '>=',
-                'sdkPayTransaction.recordTime',
-                $stime.' 00:00:00'
+                'sdkPlayerPay.date',
+                $stime
             ];
             $where[] = [
                 '<=',
-                'sdkPayTransaction.recordTime',
-                $etime.' 23:59:59'
+                'sdkPlayerPay.date',
+                $etime
             ];
         }else if(4 == $dateType){//月份
             $sdate = date('Y-m-01',strtotime($date));
             $edate = date("Y-m-d",strtotime("$sdate 1 month -1 day"));
             $where[] = [
                 '>=',
-                'sdkPayTransaction.recordTime',
-                $sdate.' 00:00:00'
+                'sdkPlayerPay.date',
+                $sdate
             ];
             $where[] = [
                 '<=',
-                'sdkPayTransaction.recordTime',
-                $edate.' 23:59:59'
+                'sdkPlayerPay.date',
+                $edate
             ];
         }else{//天
             $where[] = [
                 '>=',
-                'sdkPayTransaction.recordTime',
-                date('Y-m-d',strtotime($date)).' 00:00:00'
+                'sdkPlayerPay.date',
+                date('Y-m-d',strtotime($date))
             ];
             $where[] = [
                 '<=',
-                'sdkPayTransaction.recordTime',
-                date('Y-m-d',strtotime($date)).' 23:59:59'
+                'sdkPlayerPay.date',
+                date('Y-m-d',strtotime($date))
             ];
         }
         
@@ -458,7 +459,7 @@ class PackagePayController extends BController
             ];
         }
         
-        $payUsers = SdkPayTransaction::getCountByCondition($select,$where);
+        $payUsers = SdkPlayerPay::getCountByCondition($select,$where);
         $res['payUsers'] = $payUsers['users'];
         return $res;
     }
