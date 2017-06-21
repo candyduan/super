@@ -1,5 +1,6 @@
 <?php
 namespace common\models\orm\extend;
+use yii\db\Query;
 class SdkPlayerPay extends \common\models\orm\base\SdkPlayerPay{
     public static function getCountByCondition($select,$where = [],$group = []){
     
