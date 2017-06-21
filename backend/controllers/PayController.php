@@ -21,6 +21,7 @@ use common\models\orm\extend\ChannelCfgUrl;
 use common\models\orm\extend\ChannelCfgUrlYapi;
 use common\models\orm\extend\ChannelCfgUrlSubmit;
 use common\models\orm\extend\ChannelCfgOut;
+use common\models\orm\extend\ChannelCfgPaySign;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -258,6 +259,11 @@ class PayController extends BController{
         $provinceNameKey    = Utils::getBackendParam('provinceNameKey');
         $linkIdKey      = Utils::getBackendParam('linkIdKey');
         $timestampKey   = Utils::getBackendParam('timestampKey');
+        $signKey        = Utils::getBackendParam('signKey');
+        
+        $signMethod     = Utils::getBackendParam('signMethod');
+        $signParameters = str_replace('，', ',', Utils::getBackendParam('signParameters'));
+        $signResHandle   = Utils::getBackendParam('signResHandle');
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -297,9 +303,21 @@ class PayController extends BController{
             $payParamsModel->provinceNameKey = $provinceNameKey;
             $payParamsModel->linkIdKey       = $linkIdKey;
             $payParamsModel->timestampKey    = $timestampKey;
+            $payParamsModel->signKey         = $signKey;
             try{
                 ChannelCfgMain::backendOps($chid);
                 $payParamsModel->save();
+                if(Utils::isValid($payParamsModel->signKey)){
+                    $paySignModel   = ChannelCfgPaySign::findByChannelId($chid);
+                    if(!$paySignModel){
+                        $paySignModel   = new ChannelCfgPaySign();
+                        $paySignModel->channelId    = $chid;
+                    }
+                    $paySignModel->method   = $signMethod;
+                    $paySignModel->parameters   = $signParameters;
+                    $paySignModel->resHandle     = $signResHandle;
+                    $paySignModel->save();
+                }
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
                 $out['msg']         = Constant::RESULT_MSG_SUCC;
             }catch (\Exception $e){

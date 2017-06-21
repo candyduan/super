@@ -78,4 +78,18 @@ class Constant{
     const HTTP_POST_KV   = 2;
     const HTTP_POST_JSON = 3;
     const HTTP_POST_XML  = 4;  
+    
+    
+    /*
+     * 支付签名方式
+     */
+    const PAY_SIGN_METHOD_MD5NKEY                     = 1;
+    const PAY_SIGN_METHOD_MD5YKEY_INCLUDE_EMPTY_KEY   = 2;
+    const PAY_SIGN_METHOD_MD5YKEY_BARRING_EMPTY_KEY   = 3;
+    /*
+     * 签名结果处理
+     */
+    const PAY_SIGN_RES_NORMAL   = 0;
+    const PAY_SIGN_RES_LOWER    = 1;
+    const PAY_SIGN_RES_UPPER    = 2;
 }

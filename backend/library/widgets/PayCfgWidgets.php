@@ -1,7 +1,9 @@
 <?php
 namespace backend\library\widgets;
 use common\models\orm\extend\Channel;
-use common\models\orm\extend\ChannelCfgOut;
+use common\library\Utils;
+use common\models\orm\extend\ChannelCfgPaySign;
+use common\library\Constant;
 
 class PayCfgWidgets{
     public static function getCfgPayParamsWidget($payParamsModel){
@@ -25,6 +27,9 @@ class PayCfgWidgets{
         $provinceMapKey     = '';
         $linkIdKey          = '';
         $timestampKey       = '';
+        $signKey            = '';        
+        $signParameters     = '';
+        
         if($payParamsModel){
             $mobileKey  = $payParamsModel->mobileKey;
             $imeiKey    = $payParamsModel->imeiKey;
@@ -49,7 +54,57 @@ class PayCfgWidgets{
             $provinceNameKey    = $payParamsModel->provinceNameKey;
             $provinceMapKey     = $payParamsModel->provinceMapKey;
             $linkIdKey          = $payParamsModel->linkIdKey;
-            $timestampKey      = $payParamsModel->timestampKey;
+            $timestampKey       = $payParamsModel->timestampKey;
+            $signKey            = $payParamsModel->signKey;
+            
+            $paySignModel   = ChannelCfgPaySign::findByChannelId($payParamsModel->channelId);
+            if($paySignModel){
+                $signParameters = $paySignModel->parameters;
+            
+                switch ($paySignModel->method){
+                    case Constant::PAY_SIGN_METHOD_MD5NKEY:
+                        $signMd5NKey            = 'selected="selected"';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = '';                       
+                        break;
+                    case Constant::PAY_SIGN_METHOD_MD5YKEY_INCLUDE_EMPTY_KEY:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = 'selected="selected"';
+                        $signMd5YKeyBarEmpty    = '';             
+                        break;
+                    case Constant::PAY_SIGN_METHOD_MD5YKEY_BARRING_EMPTY_KEY:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = 'selected="selected"';
+                        break;
+                    default:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = '';
+                }
+            
+                switch ($paySignModel->resHandle){
+                    case Constant::PAY_SIGN_RES_NORMAL:
+                        $signResHandleNormal  = 'selected="selected"';
+                        $signResHandleLower   = '';
+                        $signResHandleUpper   = '';
+                        break;
+                    case Constant::PAY_SIGN_RES_LOWER:
+                        $signResHandleNormal  = '';
+                        $signResHandleLower   = 'selected="selected"';
+                        $signResHandleUpper   = '';
+                        break;
+                    case Constant::PAY_SIGN_RES_UPPER:
+                        $signResHandleNormal  = '';
+                        $signResHandleLower   = '';
+                        $signResHandleUpper   = 'selected="selected"';
+                        break;
+                    default:
+                        $signResHandleNormal  = '';
+                        $signResHandleLower   = '';
+                        $signResHandleUpper   = '';
+                }
+            }
         }
         $widget = '
             <div class="pay_param" api="1">
@@ -197,7 +252,46 @@ class PayCfgWidgets{
                 	<button id="param_province_map" class="btn btn-block btn-default btn_param_province_map">点击添加</button>
                 </div>
               </div>
-    
+
+               <div class="form-group">
+                <label for="param_sign_key" class="col-xs-2 control-label">签名Key</label>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" id="param_sign_key" placeholder="..." value="'.$signKey.'">
+                </div>
+                <div class="col-xs-2">
+                  <button class="btn btn-block btn-default btn-signshow" data-display="0">计算方法</button>
+                </div>
+              </div>
+
+               <div class="form-group sign_logic">
+                <label for="param_sign_params" class="col-xs-2 control-label">签名参数</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="param_sign_params" placeholder="依次按顺序输入签名参数，逗号隔开，固定值前输入@" value="'.$signParameters.'">
+                </div>
+              </div>
+
+               <div class="form-group sign_logic">
+                <label for="param_sign_method" class="col-xs-2 control-label">签名算法</label>
+                <div class="col-xs-10">
+                        <select id="param_sign_method" class="form-control">
+                          <option value ="1" '.$signMd5NKey.'>MD5---参数key不参与运算</option>
+                          <option value ="2" '.$signMd5YKeyIncEmpty.'>MD5---参数key参与运算（包括空值Key）</option>
+                          <option value ="3" '.$signMd5YKeyBarEmpty.'>MD5---参数key参与运算（不包括空值Key）</option>
+                        </select>    
+                </div>
+              </div>
+
+               <div class="form-group sign_logic">
+                <label for="param_sign_reshandle" class="col-xs-2 control-label">签名结果</label>
+                <div class="col-xs-10">
+                        <select id="param_sign_reshandle" class="form-control">
+                          <option value ="0" '.$signResHandleNormal.'>不处理</option>
+                          <option value ="1" '.$signResHandleLower.'>转小写</option>
+                          <option value ="2" '.$signResHandleUpper.'>转大写</option>
+                        </select>    
+                </div>
+              </div>
+                              
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
                   <button id="param_save" class="btn btn-default">保存</button>
@@ -331,6 +425,13 @@ class PayCfgWidgets{
     
 <script>
 $(document).ready(function(){
+        $(".btn-signshow").click(function(){
+            if($(".sign_logic").css("display") == "none"){
+                $(".sign_logic").css("display","block");
+            }else{
+                $(".sign_logic").css("display","none");
+            }
+        });
         $(".btn_param_fee_packages").click(function(){
                 $(".custom_package_modal_title").html("价格编码【key为价格，单位分】");
                 $(".custom_package_modal").attr("modal_type","1");
@@ -469,8 +570,12 @@ $(document).ready(function(){
                         +"&appNameKey="+$("#param_appname_key").val()
                         +"&goodNameKey="+$("#param_goodname_key").val()
                         +"&linkIdKey="+$("#param_linkid_key").val()
-                        +"&timestampKey="+$("#param_timestamp_key").val()
-                        +"&provinceNameKey="+$("#param_provincename_key").val();
+                        +"&timestampKey="+$("#param_timestamp_key").val()                        
+                        +"&provinceNameKey="+$("#param_provincename_key").val()
+                        +"&signKey="+$("#param_sign_key").val()
+                        +"&signMethod="+$("#param_sign_method").val()
+                        +"&signParameters="+$("#param_sign_params").val()
+                        +"&signResHandle="+$("#param_sign_reshandle").val();
     
                 //succFunc
                 var succFunc    = function(resJson){
