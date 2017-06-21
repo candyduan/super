@@ -259,14 +259,17 @@ class PayCfgWidgets{
                   <input type="text" class="form-control" id="param_sign_key" placeholder="..." value="'.$signKey.'">
                 </div>
                 <div class="col-xs-2">
-                  <button class="btn btn-block btn-default btn-signshow" data-display="0">计算方法</button>
+                  <button class="btn btn-block btn-default btn-signshow">计算方法</button>
                 </div>
               </div>
 
                <div class="form-group sign_logic">
                 <label for="param_sign_params" class="col-xs-2 control-label">签名参数</label>
-                <div class="col-xs-10">
+                <div class="col-xs-8">
                   <input type="text" class="form-control" id="param_sign_params" placeholder="依次按顺序输入签名参数，逗号隔开，固定值前输入@" value="'.$signParameters.'">
+                </div>
+                <div class="col-xs-2">
+                      <button class="btn btn-block btn-default btn-sign-params-sort" >排序</button>
                 </div>
               </div>
 
@@ -432,6 +435,14 @@ $(document).ready(function(){
                 $(".sign_logic").css("display","none");
             }
         });
+        $(".btn-sign-params-sort").click(function(){
+            var signParamsStr = $("#param_sign_params").val();
+            signParamsStr  = signParamsStr.replace(/，/g,",");
+         	var signParamsArr = signParamsStr.split(",");
+         	signParamsArr.sort();
+         	signParamsStr = signParamsArr.join(",");
+         	$("#param_sign_params").val(signParamsStr);
+        });                      
         $(".btn_param_fee_packages").click(function(){
                 $(".custom_package_modal_title").html("价格编码【key为价格，单位分】");
                 $(".custom_package_modal").attr("modal_type","1");
