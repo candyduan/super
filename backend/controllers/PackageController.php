@@ -83,7 +83,7 @@ class PackageController extends BController
                 isset($payMode[$value['payMode']]) ? $payMode[$value['payMode']] :'',
                 sprintf('%.2f',$value['rate']) . ' %',
                 isset($value['mtype']) ? CampaignPackage::getMTypeName($value['mtype']) :'',
-                1 == $value['mtype']?sprintf('%.2f',$value['mrate']) . ' %':number_format($value['mrate']/100,2),
+                1 == $value['mtype']?sprintf('%.2f',$value['mrate']) . ' %':number_format($value['mrate']/100,1).'元',
                 sprintf('%.2f',$value['cutRate']) . ' % @' .( $value['cutDay'] == 0 ? '' : date('Y-m-d', $value['cutDay'])),
                 sprintf('%.2f',$value['mcutRate']) . ' % @' . ( $value['mcutDay'] == 0 ? '' : date('Y-m-d', $value['mcutDay'])),
                 MyHtml::aElement('javascript:void(0);' ,'getSdks',$value['id'],'渠道关联配置')
@@ -139,15 +139,21 @@ class PackageController extends BController
                 $package['mcutrate'] = $package['mcutRate'];  //cp优化比例
                 $package['cutday'] = $package['cutDay'] == 0 ? '' : date('Y-m-d', $package['cutDay']); //cp优化开始
                 $package['mcutday'] = $package['mcutDay'] == 0 ? '' : date('Y-m-d', $package['mcutDay']);
-                $package['mtype'] = isset($package['mtype']) ? CampaignPackage::getMTypeName($package['mtype']) :'';
-                $package['mrate'] = 1 == $package['mtype'] ? sprintf('%.2f', $package['mrate']) . '%':number_format($package['mrate']/100,2);
+                $package['mtype'] = Utils::getValuesFromArray($package, 'mtype',0);
+                $package['mrate'] = 1 == $package['mtype'] ? sprintf('%.2f', $package['mrate']):number_format($package['mrate']/100,1);
                 $package['sign'] = isset($package['mediaSign']) ? $package['mediaSign'] : '';
+                $package['distid'] = $package['media'];
                 $package['distname'] = isset($package['media']) ? Partner::getNameById($package['media']) : '';
                 $package['grade'] = $package['grade'] == 0 ? '普通' : 'A级';
                 $package['paymode'] = isset($package['payMode']) ? $package['payMode'] :'';
             }
         }
         Utils::jsonOut($package);
+        exit;
+    }
+    public function actionGetMedia() {
+        $channels = CampaignPackage::fetchAllPartnerBelongSdkArrByApp();
+        Utils::jsonOut($channels);
         exit;
     }
 
@@ -159,6 +165,9 @@ class PackageController extends BController
         $cutDay = trim(Utils::getBParam('cutday'));
         $mcutRate = intval(Utils::getBParam('mcutrate'));
         $mcutDay = trim(Utils::getBParam('mcutday'));
+        $mtype = trim(Utils::getBParam('mtype'),0);
+        $mrate = trim(Utils::getBParam('mrate'),0);
+        $media = trim(Utils::getBParam('media'),0);
         if (isset($cpid)) {
             $transaction =  CampaignPackage::getDb()->beginTransaction();
             try {
@@ -169,9 +178,13 @@ class PackageController extends BController
                     $packageModel->cutDay = $cutDay == '' ? 0 : strtotime($cutDay);
                     $packageModel->mcutRate = $mcutRate;;
                     $packageModel->mcutDay = $mcutDay == '' ? 0 : strtotime($mcutDay);
+                    $packageModel->mtype = $mtype;
+                    $packageModel->mrate = 1 == $mtype?$mrate:$mrate * 100;
+                    $packageModel->media = $media;
                     $resultState  = $packageModel->save() == true ? 1: 0;
                 }
                 $transaction->commit();
+                SdkUtils::refreshCampaignPackage($packageModel);
             } catch (ErrorException $e) {
                 $resultState = 0;
                 $transaction->rollBack();

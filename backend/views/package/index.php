@@ -80,21 +80,27 @@
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">推广分成方式:</span>
-                        <input type="text" id="package_push_mode" readonly placeholder="推广分成方式" class="form-control"/>
+                        <select   id="package_push_mode"  placeholder="推广分成方" class="form-control"  onchange="onPushModeSelectChange(this)">
+                            <option value='1'>CPS分成</option>
+                            <option value='2'>CPD分成</option>
+                            <option value='3'>CPA分成</option>
+                        </select>
                         <span class="input-group-addon">渠道优化开始:</span>
                         <input type="text" id="package_mcutday"  placeholder="渠道优化开始"  class="form-control date-picker" data-date-format="yyyy-mm-dd"/>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">大小:</span>
                         <input type="text" id="package_size" readonly placeholder="包大小" class="form-control"/>
-                        <span class="input-group-addon">推广分成比例:</span>
-                        <input type="text" id="package_push_rate" readonly placeholder="推广分成比例" class="form-control"/>
+                        <span class="input-group-addon" id="package_push_rate_title">推广分成比例:</span>
+                        <input type="text" id="package_push_rate" placeholder="推广分成比例" class="form-control"/>
+                        <span class="input-group-addon" id="package_push_rate_unit">%</span>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">渠道标识:</span>
                         <input type="text"  id="package_sign" readonly placeholder="渠道标识" class="form-control" />
                         <span class="input-group-addon">设置渠道:</span>
-                        <input type="text" id="set_package_dist" readonly placeholder="设置渠道" class="form-control"/>
+                        <select   id="set_package_dist"  placeholder="设置渠道" class="form-control">
+                        </select>
                     </div><br /><br />
                     <div class="input-group">
                         <span class="input-group-addon">级别:</span>
@@ -231,9 +237,21 @@
             $('#package_mcutrate').val(result.mcutrate);
             $('#package_mcutday').val(result.mcutday);
             $('#package_push_mode').val(result.mtype);
+            var title = '';
+         	var unit = '';
+         	if(1 == result.mtype){
+         		var title = '推广分成比例:';
+             	var unit = '%';
+         	}else{
+         		var title = '推广分成单价:';
+             	var unit = '元';
+         	}
+         	$('#package_push_rate_title').html(title);
+         	$('#package_push_rate_unit').html(unit);
+         	
             $('#package_push_rate').val(result.mrate);
             $('#package_sign').val(result.sign);
-            $('#set_package_dist').val(result.distname);
+            $('#set_package_dist').empty().append("<option value='" + result.distid + "'>"+result.distname+'</option>');
             $('#package_level').val(result.grade);
             $('#package_paymode').val(result.paymode);
             $('#hidden_cpid').val(cpid);
@@ -255,7 +273,9 @@
                 'cutday': $('#package_cutday').val(),
                 'mcutrate': $('#package_mcutrate').val(),
                 'mcutday': $('#package_mcutday').val(),
-
+                'mtype': $('#package_push_mode').val(),
+                'mrate': $('#package_push_rate').val(),
+                'media': $('#set_package_dist').val(),
             }
             var method = 'get';
             var url = '/package/modify-paymode';
@@ -270,6 +290,23 @@
             }
             callAjaxWithFunction(url, data, success_function, method);
         }
+    });
+
+    $('#set_package_dist').on('click',function(event){
+        event.preventDefault();
+        var method = 'get';
+        var data = [];
+        var url = '/package/get-media';
+        var success_function = function (result) {
+        	$('#set_package_dist').empty();
+        	var str = '';
+			for(var i = 0 ;i < result.length;i++){
+				var item = result[i];
+				str += "<option value='" + item['id'] + "'>"+item['name']+'</option>';
+			}        
+			$('#set_package_dist').append(str);
+        }
+        callAjaxWithFunction(url, data, success_function, method);
     });
 
     function getSdks(cpid){
@@ -358,5 +395,20 @@
         }
 
         return error_num;
+    }
+
+    function onPushModeSelectChange(that){
+        var type = $(that).val();
+     	var title = '';
+     	var unit = '';
+     	if(1 == type){
+     		var title = '推广分成比例:';
+         	var unit = '%';
+     	}else{
+     		var title = '推广分成单价:';
+         	var unit = '元';
+     	}
+     	$('#package_push_rate_title').html(title);
+     	$('#package_push_rate_unit').html(unit);
     }
 </script>
