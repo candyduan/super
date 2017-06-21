@@ -1,7 +1,6 @@
 <?php
 namespace backend\library\widgets;
 use common\models\orm\extend\Channel;
-use common\models\orm\extend\ChannelCfgOut;
 use common\library\Utils;
 use common\models\orm\extend\ChannelCfgPaySign;
 use common\library\Constant;
@@ -63,17 +62,25 @@ class PayCfgWidgets{
                 $signParameters = $paySignModel->parameters;
             
                 switch ($paySignModel->method){
-                    case Constant::PAY_SIGN_METHOD_MD5YKEY:
-                        $signMd5YKey    = 'selected="selected"';
-                        $signMd5NKey    = '';
+                    case Constant::PAY_SIGN_METHOD_MD5NKEY:
+                        $signMd5NKey            = 'selected="selected"';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = '';                       
                         break;
-                    case Constant::PAY_SIGN_METHOD_MD5NKEY;
-                    $signMd5YKey    = '';
-                    $signMd5NKey    = 'selected="selected"';
-                    break;
+                    case Constant::PAY_SIGN_METHOD_MD5YKEY_INCLUDE_EMPTY_KEY:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = 'selected="selected"';
+                        $signMd5YKeyBarEmpty    = '';             
+                        break;
+                    case Constant::PAY_SIGN_METHOD_MD5YKEY_BARRING_EMPTY_KEY:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = 'selected="selected"';
+                        break;
                     default:
-                        $signMd5YKey    = '';
-                        $signMd5NKey    = '';
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = '';
                 }
             
                 switch ($paySignModel->resHandle){
@@ -267,8 +274,9 @@ class PayCfgWidgets{
                 <label for="param_sign_method" class="col-xs-2 control-label">签名算法</label>
                 <div class="col-xs-10">
                         <select id="param_sign_method" class="form-control">
-                          <option value ="1" '.$signMd5YKey.'>MD5,参数key参与运算</option>
-                          <option value ="2" '.$signMd5NKey.'>MD5,参数key不参与运算</option>
+                          <option value ="1" '.$signMd5NKey.'>MD5---参数key不参与运算</option>
+                          <option value ="2" '.$signMd5YKeyIncEmpty.'>MD5---参数key参与运算（包括空值Key）</option>
+                          <option value ="3" '.$signMd5YKeyBarEmpty.'>MD5---参数key参与运算（不包括空值Key）</option>
                         </select>    
                 </div>
               </div>
@@ -277,7 +285,7 @@ class PayCfgWidgets{
                 <label for="param_sign_reshandle" class="col-xs-2 control-label">签名结果</label>
                 <div class="col-xs-10">
                         <select id="param_sign_reshandle" class="form-control">
-                          <option value ="0" '.$signResHandleNormal.'>保持不变</option>
+                          <option value ="0" '.$signResHandleNormal.'>不处理</option>
                           <option value ="1" '.$signResHandleLower.'>转小写</option>
                           <option value ="2" '.$signResHandleUpper.'>转大写</option>
                         </select>    

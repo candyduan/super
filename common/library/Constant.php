@@ -83,9 +83,9 @@ class Constant{
     /*
      * 支付签名方式
      */
-    const PAY_SIGN_METHOD_MD5YKEY   = 1;
-    const PAY_SIGN_METHOD_MD5NKEY   = 2;
-    
+    const PAY_SIGN_METHOD_MD5NKEY                     = 1;
+    const PAY_SIGN_METHOD_MD5YKEY_INCLUDE_EMPTY_KEY   = 2;
+    const PAY_SIGN_METHOD_MD5YKEY_BARRING_EMPTY_KEY   = 3;
     /*
      * 签名结果处理
      */
