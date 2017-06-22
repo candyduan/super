@@ -13,6 +13,12 @@ use Yii;
  * @property integer $newUsers
  * @property integer $actUsers
  * @property integer $payUsers
+ * @property integer $cpNewUsers
+ * @property integer $cpActUsers
+ * @property integer $cpPayUsers
+ * @property integer $mNewUsers
+ * @property integer $mActUsers
+ * @property integer $mPayUsers
  * @property string $recordTime
  * @property string $updateTime
  * @property integer $status
@@ -33,7 +39,7 @@ class SdkPlayerCount extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cpid', 'newUsers', 'actUsers', 'payUsers', 'status'], 'integer'],
+            [['cpid', 'newUsers', 'actUsers', 'payUsers', 'cpNewUsers', 'cpActUsers', 'cpPayUsers', 'mNewUsers', 'mActUsers', 'mPayUsers', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['date'], 'string', 'max' => 20],
             [['date', 'cpid'], 'unique', 'targetAttribute' => ['date', 'cpid'], 'message' => 'The combination of Date and Cpid has already been taken.'],
@@ -52,6 +58,12 @@ class SdkPlayerCount extends \yii\db\ActiveRecord
             'newUsers' => 'New Users',
             'actUsers' => 'Act Users',
             'payUsers' => 'Pay Users',
+            'cpNewUsers' => 'Cp New Users',
+            'cpActUsers' => 'Cp Act Users',
+            'cpPayUsers' => 'Cp Pay Users',
+            'mNewUsers' => 'M New Users',
+            'mActUsers' => 'M Act Users',
+            'mPayUsers' => 'M Pay Users',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
             'status' => 'Status',
