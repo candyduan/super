@@ -291,3 +291,14 @@ Utils.tipBar = function show_stack_bar_top(type,title,msg){
     }
     new PNotify(opts);
 };
+
+Utils.jsonp	= function(url,data,succ){
+    $.ajax({  
+        type: "get",  
+        async: true,  
+        url: url,  
+        data:data,
+        dataType: "jsonp",  
+        success: succ, 
+    });
+};
