@@ -252,6 +252,7 @@
             $('#package_push_rate').val(result.mrate);
             $('#package_sign').val(result.sign);
             $('#set_package_dist').empty().append("<option value='" + result.distid + "'>"+result.distname+'</option>');
+            $('#set_package_dist').val(result.distid);
             $('#package_level').val(result.grade);
             $('#package_paymode').val(result.paymode);
             $('#hidden_cpid').val(cpid);

@@ -31,8 +31,8 @@ class CampaignPackage extends \common\models\orm\base\CampaignPackage {
     public static function getMTypeName($mtype){
         switch ($mtype) {
             case 1: return 'CPS分成';break;
-            case 2: return 'CPD成果';break;
-            case 3: return 'CPA成果';break;
+            case 2: return 'CPD分成';break;
+            case 3: return 'CPA分成';break;
             default: return '';break;
         }
     }
