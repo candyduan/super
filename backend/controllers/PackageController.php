@@ -20,6 +20,8 @@ use common\models\orm\extend\CampaignPackageSdk;
 use yii\filters\AccessControl;
 use common\library\BController;
 use backend\library\sdk\SdkUtils;
+use common\models\orm\extend\CampaignPackageMediaCut;
+use function Faker\time;
 /**
  * Campaign controller
  */
@@ -183,6 +185,41 @@ class PackageController extends BController
                     $packageModel->media = $media;
                     $resultState  = $packageModel->save() == true ? 1: 0;
                 }
+                
+                $mediaCutModel = CampaignPackageMediaCut::findByCpidSdate($cpid,$mcutDay);
+                if($mediaCutModel){//只更新比例
+                    $mediaCutModel->rate = $mcutRate/100;
+                    $mediaCutModel->save();
+                }else{
+                    $mediaCutModel = CampaignPackageMediaCut::findLastUnfinishedByCpid($cpid);
+                    if($mediaCutModel){//更新原比例结束时间
+                        $edate = strtotime(date('Y-m-d'));
+                        if(Utils::isDate($mcutDay)){
+                            $edate = strtotime($mcutDay) - 3600*24;
+                        }
+                        $oldSdate = strtotime($mediaCutModel->sdate);
+                        if($edate < $oldSdate){
+                            $edate = $oldSdate;
+                        }
+                        $mediaCutModel->edate = date('Y-m-d',$edate);
+                        $mediaCutModel->save();
+                    }
+                    
+                    if($mcutRate > 0){//生成新的记录
+                        $sdate = date('Y-m-d');
+                        if(Utils::isDate($mcutDay)){
+                            $sdate = $mcutDay;
+                        }
+                        $mediaCutModel = new CampaignPackageMediaCut();
+                        $mediaCutModel->cpid = $cpid;
+                        $mediaCutModel->rate = $mcutRate/100;
+                        $mediaCutModel->sdate = $sdate;
+                        $mediaCutModel->recordTime = Utils::getNowTime();
+                        $mediaCutModel->status = 1;
+                        $mediaCutModel->save();
+                    }
+                }
+                
                 $transaction->commit();
                 SdkUtils::refreshCampaignPackage($packageModel);
             } catch (ErrorException $e) {

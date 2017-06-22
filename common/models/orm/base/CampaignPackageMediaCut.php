@@ -12,7 +12,7 @@ use Yii;
  * @property double $rate
  * @property string $sdate
  * @property string $edate
- * @property string $campaignPackageMediaCutcol
+ * @property string $recordTime
  * @property string $updateTime
  * @property integer $status
  */
@@ -34,7 +34,7 @@ class CampaignPackageMediaCut extends \yii\db\ActiveRecord
         return [
             [['cpid', 'status'], 'integer'],
             [['rate'], 'number'],
-            [['sdate', 'edate', 'campaignPackageMediaCutcol', 'updateTime'], 'safe'],
+            [['sdate', 'edate', 'recordTime', 'updateTime'], 'safe'],
             [['cpid', 'sdate', 'edate'], 'unique', 'targetAttribute' => ['cpid', 'sdate', 'edate'], 'message' => 'The combination of Cpid, Sdate and Edate has already been taken.'],
         ];
     }
@@ -50,7 +50,7 @@ class CampaignPackageMediaCut extends \yii\db\ActiveRecord
             'rate' => 'Rate',
             'sdate' => 'Sdate',
             'edate' => 'Edate',
-            'campaignPackageMediaCutcol' => 'Campaign Package Media Cutcol',
+            'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
             'status' => 'Status',
         ];
