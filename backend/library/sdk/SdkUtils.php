@@ -1,6 +1,7 @@
 <?php
 namespace backend\library\sdk;
 use common\library\Utils;
+use common\models\orm\extend\CampaignPackage;
 
 class SdkUtils{
     public static function refreshFusionSdkCache(){
@@ -10,5 +11,8 @@ class SdkUtils{
         }
         $url = '/index.php/MC/RFSC';
         Utils::asyncRequest($host, $url);
+    }
+    public static function refreshCampaignPackage(CampaignPackage $model){
+        // TODO
     }
 }

@@ -35,21 +35,4 @@ class SdkPayTransaction extends \common\models\orm\base\SdkPayTransaction{
             return $count;
     }
     
-    public static function getCountByCondition($select,$where = [],$group = []){
-        $where[] = SdkPayTransaction::DISABLE_SDK_STATUS;
-        
-        $query = new Query();
-        $query	->select($select)
-        ->from('sdkPayTransaction')
-        ->join('left join', 'campaignPackage',
-            'sdkPayTransaction.cpid = campaignPackage.id')
-            ->where($where)
-            ->groupBy($group);
-            $command = $query->createCommand();
-            $data = $command->queryAll();
-            if(count($data) > 0){
-                return $data[0];
-            }
-            return null;
-    }
 }
