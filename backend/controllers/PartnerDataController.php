@@ -19,6 +19,9 @@ use common\models\orm\extend\SdkPackagePayDay;
 use common\models\orm\extend\OutUser;
 use common\models\orm\extend\CampaignPackage;
 use common\models\orm\extend\SdkPlayer;
+use common\models\orm\extend\SdkPlayerCount;
+use backend\library\sdk\SdkUtils;
+use backend\library\sdk\SdkConstant;
 /**
  * Partner controller
  */
@@ -175,6 +178,7 @@ class PartnerDataController extends BController
             $data = SdkPackagePayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
             $count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
     
+            $now = time();
             foreach($data as $value){
                 $item = array();
                 if( 3 == $dateType){//时段不显示时间
@@ -200,7 +204,11 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
     
-                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],true);
+                if($now >= strtotime(SdkConstant::NEW_ACT_PAY_USERS_TIME)){
+                    $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],true);
+                }else{
+                    $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],true);
+                }                
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
@@ -221,6 +229,99 @@ class PartnerDataController extends BController
         exit;
     }
     
+    private function _getUsersByDateNew($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$mediaSign,$isCps = FALSE){
+        $res = array();
+        if($isCps){
+            $select = [
+                'sum(sdkPlayerCount.mNewUsers) as newUsers'
+            ];
+        }else{
+            $select = [
+                'sum(sdkPlayerCount.cpNewUsers) as newUsers'
+            ];
+        }
+        
+        $where = [];
+        $where[] = 'and';
+        $where[] = [
+            '=',
+            'sdkPlayerCount.status',
+            1
+        ];
+    
+        if( 3 == $dateType){//时段
+            $where[] = [
+                '>=',
+                'sdkPlayerCount.date',
+                $stime
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayerCount.date',
+                $etime
+            ];
+        }else if(4 == $dateType){//月份
+            $sdate = date('Y-m-01',strtotime($date));
+            $edate = date("Y-m-d",strtotime("$sdate 1 month -1 day"));
+            $where[] = [
+                '>=',
+                'sdkPlayerCount.date',
+                $sdate
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayerCount.date',
+                $edate
+            ];
+        }else{//天
+            $where[] = [
+                '=',
+                'sdkPlayerCount.date',
+                date('Y-m-d',strtotime($date))
+            ];
+        }
+    
+        if($pid > 0){
+            $where[] = [
+                '=',
+                'campaignPackage.partner',
+                $pid
+            ];
+        }
+        
+        if($checkAPP){
+            $where[] = [
+                '=',
+                'campaignPackage.app',
+                $aid
+            ];
+        }
+        if($checkCmp){
+            $where[] = [
+                '=',
+                'campaignPackage.campaign',
+                $cid
+            ];
+        }
+        
+        if($checkM){
+            $where[] = [
+                '=',
+                'campaignPackage.mediaSign',
+                $mediaSign
+            ];
+        }
+        if($isCps){
+            $where[] = [
+                '=',
+                'campaignPackage.media',
+                $media
+            ];
+        }
+        
+        $res = SdkPlayerCount::getCountByCondition($select,$where);
+        return $res;
+    }
     private function _getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$mediaSign,$isCps = FALSE){
         $res = array();
     

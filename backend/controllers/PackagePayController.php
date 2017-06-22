@@ -31,6 +31,7 @@ use common\models\orm\extend\SdkPlayer;
 use yii\db\Query;
 use common\models\orm\extend\SdkPlayerPay;
 use common\models\orm\extend\SdkPlayerCount;
+use backend\library\sdk\SdkConstant;
 /**
  * SdkPay controller
  */
@@ -128,7 +129,7 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            if($now >= strtotime('2017-06-26 00:00:00')){
+            if($now >= strtotime(SdkConstant::NEW_ACT_PAY_USERS_TIME)){
                 $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
             }else{
                 $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
