@@ -844,4 +844,10 @@ class PayController extends BController{
     	}
     	Utils::jsonOut($out);
     }
+    
+    public function actionChannelLogView(){
+        $chid   = Utils::getBackendParam('chid');
+        
+        return $this->render('channel-log-view');
+    }
 }
