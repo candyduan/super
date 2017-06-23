@@ -850,4 +850,8 @@ class PayController extends BController{
         
         return $this->render('channel-log-view');
     }
+    
+    public function actionJsonstringView(){
+        return $this->render('jsonstring-view');
+    }
 }
