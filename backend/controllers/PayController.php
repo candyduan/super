@@ -22,6 +22,7 @@ use common\models\orm\extend\ChannelCfgUrlYapi;
 use common\models\orm\extend\ChannelCfgUrlSubmit;
 use common\models\orm\extend\ChannelCfgOut;
 use common\models\orm\extend\ChannelCfgPaySign;
+use common\models\orm\extend\ChannelCfgSmtSign;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -554,7 +555,13 @@ class PayController extends BController{
         $imeiKey        = Utils::getBackendParam('imeiKey');
         $imsiKey        = Utils::getBackendParam('imsiKey');
         $iccidKey       = Utils::getBackendParam('iccidKey');
-        $ipKey          = Utils::getBackendParam('ipKey');
+        $ipKey          = Utils::getBackendParam('ipKey');        
+        $signKey        = Utils::getBackendParam('signKey');
+        
+        $signMethod     = Utils::getBackendParam('signMethod');
+        $signParameters = str_replace('，', ',', Utils::getBackendParam('signParameters'));
+        $signResHandle   = Utils::getBackendParam('signResHandle');
+        
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
             $smtParamsModel   = ChannelCfgSmtParams::findByChannelId($chid);
@@ -570,9 +577,22 @@ class PayController extends BController{
             $smtParamsModel->imsiKey          = $imsiKey;
             $smtParamsModel->iccidKey         = $iccidKey;
             $smtParamsModel->ipKey            = $ipKey;
+            $smtParamsModel->signKey          = $signKey;
             try{
                 $smtParamsModel->save();
         
+                if(Utils::isValid($smtParamsModel->signKey)){
+                    $smtSignModel   = ChannelCfgSmtSign::findByChannelId($chid);
+                    if(!$smtSignModel){
+                        $smtSignModel   = new ChannelCfgSmtSign();
+                        $smtSignModel->channelId    = $chid;
+                    }
+                    $smtSignModel->method       = $signMethod;
+                    $smtSignModel->parameters   = $signParameters;
+                    $smtSignModel->resHandle    = $signResHandle;
+                    $smtSignModel->save();
+                }
+                
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
                 $out['msg']         = Constant::RESULT_MSG_SUCC;
         
