@@ -88,7 +88,7 @@ function setResult(page){
                 		statusClass = 'channel_delete';
                     	break;
                 }
-                resultHtml = resultHtml + '<tr><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.sign+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td><a class="chgDevType" data-chid="'+val.chid+'">'+val.devType+'</a></td><td class="'+statusClass+'">'+val.status+'</td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><a class="glyphicon glyphicon-cog glyphicon-eye-open" target="_blank" href="/pay/channel-log-view?chid='+val.chid+'"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
+                resultHtml = resultHtml + '<tr><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.sign+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td><a class="chgDevType" data-chid="'+val.chid+'">'+val.devType+'</a></td><td class="'+statusClass+'">'+val.status+'</td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><a class="glyphicon glyphicon-cog glyphicon-eye-open" href="/pay/channel-log-view?chid='+val.chid+'"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
             });
             $('#data_list').html(resultHtml);
 
