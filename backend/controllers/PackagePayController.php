@@ -95,7 +95,6 @@ class PackagePayController extends BController
         $data = SdkPackagePayDay::getIndexData($condition['select'],$condition['where'],$condition['group'], $start,$length);
         $count = SdkPackagePayDay::getIndexCount($condition['where'],$condition['group']);
         
-        $now = time();
         $tabledata = [];
         foreach($data as $value){
             $item = array();
@@ -129,11 +128,7 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            if($now >= strtotime(SdkConstant::NEW_ACT_PAY_USERS_TIME)){// TODO
-                $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
-            }else{
-                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
-            }
+            $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
             
             $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
             $actUser = Utils::getValuesFromArray($usersData, 'actUsers',0);
