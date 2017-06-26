@@ -129,7 +129,7 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            if($now >= strtotime(SdkConstant::NEW_ACT_PAY_USERS_TIME)){
+            if($now >= strtotime(SdkConstant::NEW_ACT_PAY_USERS_TIME)){// TODO
                 $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
             }else{
                 $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
@@ -164,11 +164,12 @@ class PackagePayController extends BController
             array_push($item, number_format($value['income'],2));
             array_push($item, number_format($value['payCp'],2));
             array_push($item, number_format($value['payM'],2));
-            array_push($item, number_format($value['profit'],2));
+            $profit = $value['income'] - $value['payCp'] - $value['payM'];
+            array_push($item, number_format($profit,2));
             if(0 == $value['successPay']){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['profit']/$value['successPay']*100,2).'%');
+                array_push($item, number_format($profit/$value['successPay']*100,2).'%');
             }
             
             $tabledata[] = $item;
