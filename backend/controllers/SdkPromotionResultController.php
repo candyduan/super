@@ -16,6 +16,7 @@ use common\library\Utils;
 use yii\filters\AccessControl;
 use backend\web\util\MyMail;
 use common\library\BController;
+use common\models\orm\extend\SdkPackagePayDay;
 /**
  * SdkPromotionResultController
  */
@@ -132,7 +133,7 @@ class SdkPromotionResultController extends BController
                             $mrate = CampaignPackage::getMrateById($cpid);
                             $amount = '';
                             if (is_numeric($count) && is_numeric($mrate)) {
-                                $amount = $mrate * intval($count) * 100;
+                                $amount = $mrate * intval($count);
                             }
 
                             if (is_numeric($amount)) {
@@ -140,10 +141,16 @@ class SdkPromotionResultController extends BController
                                 $model->cpid = $cpid;
                                 $model->date = $date;
                                 $model->count = $count;
-                                $model->price = $mrate * 100;
+                                $model->price = $mrate;
                                 $model->amount = $amount;
                                 $model->status = 0;
                                 $resultState += $model->save() == true ? 1 : 0;
+                                
+                                $sdkPackagePayDayModel = SdkPackagePayDay::findFirstByDateCpid($date, $cpid);
+                                if($sdkPackagePayDayModel){
+                                    $sdkPackagePayDayModel->payM = $amount;
+                                    $sdkPackagePayDayModel->update();
+                                }
                             }
                         } else {//活动ID 或者标识符写错的时候插入 错误数据
                             $model = new SdkPromotionResult();
