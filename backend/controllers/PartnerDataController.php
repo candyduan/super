@@ -204,7 +204,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
     
-                $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$channel,true);
+                $usersData = self::_getUsersByDateNew($channel,$dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],true);
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
@@ -225,7 +225,7 @@ class PartnerDataController extends BController
         exit;
     }
     
-    private function _getUsersByDateNew($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$mediaSign,$isCps = FALSE){
+    private function _getUsersByDateNew($channel,$dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$mediaSign,$isCps = FALSE){
         $res = array();
         if($isCps){
             $select = [
@@ -300,13 +300,22 @@ class PartnerDataController extends BController
             ];
         }
         
-        if(Utils::isValid($mediaSign)){
+        if(Utils::isValid($channel) && Utils::isValid($mediaSign)){
             $where[] = [
                 '=',
                 'campaignPackage.mediaSign',
                 $mediaSign
             ];
+        }else{
+            if(Utils::isValid($channel)){
+                $where[] = [
+                    '=',
+                    'campaignPackage.mediaSign',
+                    $channel
+                ];
+            } 
         }
+        
         if($isCps){
             $where[] = [
                 '=',
