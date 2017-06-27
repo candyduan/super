@@ -24,6 +24,8 @@ use Yii;
  * @property string $iccidKey
  * @property string $ipKey
  * @property string $signKey
+ * @property string $smsContentKey
+ * @property string $smsNumberKey
  */
 class ChannelCfgSmtParams extends \yii\db\ActiveRecord
 {
@@ -44,7 +46,7 @@ class ChannelCfgSmtParams extends \yii\db\ActiveRecord
             [['channelId'], 'required'],
             [['channelId', 'status', 'feeUnit'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['orderIdKey', 'verifyCodeKey', 'feeKey', 'customs', 'mobileKey', 'cpparamKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'signKey'], 'string', 'max' => 128],
+            [['orderIdKey', 'verifyCodeKey', 'feeKey', 'customs', 'mobileKey', 'cpparamKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'signKey', 'smsContentKey', 'smsNumberKey'], 'string', 'max' => 128],
             [['channelId'], 'unique'],
         ];
     }
@@ -72,6 +74,8 @@ class ChannelCfgSmtParams extends \yii\db\ActiveRecord
             'iccidKey' => 'Iccid Key',
             'ipKey' => 'Ip Key',
             'signKey' => 'Sign Key',
+            'smsContentKey' => 'Sms Content Key',
+            'smsNumberKey' => 'Sms Number Key',
         ];
     }
 }

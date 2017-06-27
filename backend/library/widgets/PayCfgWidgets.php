@@ -779,6 +779,8 @@ $(document).ready(function(){
         $imeiKey    = '';
         $iccidKey   = '';
         $ipKey      = '';
+        $smsContentKey = '';
+        $smsNumberKey  = '';
         if($smtParamsModel){
             $orderIdKey     = $smtParamsModel->orderIdKey;
             $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
@@ -788,7 +790,8 @@ $(document).ready(function(){
             $imeiKey        = $smtParamsModel->imeiKey;
             $iccidKey       = $smtParamsModel->iccidKey;
             $ipKey          = $smtParamsModel->ipKey;
-            
+            $smsContentKey  = $smtParamsModel->smsContentKey;
+            $smsNumberKey   = $smtParamsModel->smsNumberKey;
             $signKey        = $smtParamsModel->signKey;
             
             $smtSignModel   = ChannelCfgSmtSign::findByChannelId($smtParamsModel->channelId);
@@ -905,6 +908,19 @@ $(document).ready(function(){
                 </div>
               </div> 
 
+              <div class="form-group">
+                <label for="smt_params_smsContentKey" class="col-xs-2 control-label">短信内容Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_smsContentKey" placeholder="..." value="'.$smsContentKey.'">
+                </div>
+              </div> 
+                      
+              <div class="form-group">
+                <label for="smt_params_smsNumberKey" class="col-xs-2 control-label">短信端口Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_smsNumberKey" placeholder="..." value="'.$smsNumberKey.'">
+                </div>
+              </div> 
                       
                <div class="form-group">
                 <label for="smt_param_sign_key" class="col-xs-2 control-label">签名Key</label>
@@ -993,6 +1009,8 @@ $(document).ready(function(){
                      +"&imsiKey="+$("#smt_params_imsiKey").val()
                      +"&iccidKey="+$("#smt_params_iccidKey").val()
                      +"&ipKey="+$("#smt_params_ipKey").val()
+                     +"&smsContentKey="+$("#smt_params_smsContentKey").val()
+                     +"&smsNumberKey="+$("#smt_params_smsNumberKey").val()
 				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val()
                      +"&signKey="+$("#smt_param_sign_key").val()
                      +"&signMethod="+$("#smt_param_sign_method").val()
