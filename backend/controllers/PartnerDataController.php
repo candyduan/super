@@ -300,18 +300,18 @@ class PartnerDataController extends BController
             ];
         }
         
-        if(Utils::isValid($channel) && Utils::isValid($mediaSign)){
+        if(Utils::isValid($channel)){
             $where[] = [
                 '=',
                 'campaignPackage.mediaSign',
-                $mediaSign
+                $channel
             ];
         }else{
-            if(Utils::isValid($channel)){
+            if(Utils::isValid($mediaSign)){
                 $where[] = [
                     '=',
                     'campaignPackage.mediaSign',
-                    $channel
+                    $mediaSign
                 ];
             } 
         }
