@@ -233,7 +233,7 @@ class PartnerDataController extends BController
             ];
         }else{
             $select = [
-                'sum(sdkPlayerCount.cpNewUsers) as newUsers'
+                "sum(if(date >= '2017-06-22'),sdkPlayerCount.cpNewUsers,sdkPlayerCount.newUsers) as newUsers"
             ];
         }
         
