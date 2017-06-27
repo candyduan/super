@@ -30,6 +30,8 @@ use common\models\orm\extend\Province;
 use common\models\orm\extend\SdkPlayer;
 use yii\db\Query;
 use common\models\orm\extend\SdkPlayerPay;
+use common\models\orm\extend\SdkPlayerCount;
+use backend\library\sdk\SdkConstant;
 /**
  * SdkPay controller
  */
@@ -126,13 +128,14 @@ class PackagePayController extends BController
                 array_push($item, '-');
             }
             
-            $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
+            $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$value['date'],$value['pid'],$value['aid'],$value['cid'],$value['mediaSign']);
+            
             $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
             $actUser = Utils::getValuesFromArray($usersData, 'actUsers',0);
-            $users = Utils::getValuesFromArray($usersData, 'payUsers',0);
+            $payUsers = Utils::getValuesFromArray($usersData, 'payUsers',0);
             array_push($item, $newUser);
             array_push($item, $actUser);
-            array_push($item, $users);
+            array_push($item, $payUsers);
             
             array_push($item, number_format($value['successPay'],0));
             array_push($item, number_format($value['cp'],0));
@@ -142,25 +145,26 @@ class PackagePayController extends BController
                 array_push($item, number_format($value['successPay']/$newUser,2));
             }
             
-            if($users <= 0){
+            if($payUsers <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['successPay']/$users,2));
+                array_push($item, number_format($value['successPay']/$payUsers,2));
             }
             
             if($actUser <= 0){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($users/$actUser*100,2).'%');
+                array_push($item, number_format($payUsers/$actUser*100,2).'%');
             }
             array_push($item, number_format($value['income'],2));
             array_push($item, number_format($value['payCp'],2));
             array_push($item, number_format($value['payM'],2));
-            array_push($item, number_format($value['profit'],2));
+            $profit = $value['income'] - $value['payCp'] - $value['payM'];
+            array_push($item, number_format($profit,2));
             if(0 == $value['successPay']){
                 array_push($item, '-');
             }else{
-                array_push($item, number_format($value['profit']/$value['successPay']*100,2).'%');
+                array_push($item, number_format($profit/$value['successPay']*100,2).'%');
             }
             
             $tabledata[] = $item;
@@ -298,49 +302,51 @@ class PackagePayController extends BController
         return $condition;
     }
 
-    private function _getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$mediaSign){
+    private function _getUsersByDateNew($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$mediaSign){
         $res = array();
         
         $select = [
-            'count( distinct sdkPlayer.imsi) as users'  
+            'sum(sdkPlayerCount.newUsers) as newUsers',
+            'sum(sdkPlayerCount.actUsers) as actUsers',
+            'sum(sdkPlayerCount.payUsers) as payUsers',
         ];
         $where = [];
         $where[] = 'and';
         $where[] = [
             '=',
-            'sdkPlayer.status',
+            'sdkPlayerCount.status',
             1
         ];
         
         if( 3 == $dateType){//时段
             $where[] = [
                 '>=',
-                'sdkPlayer.date',
-                $stime.' 00:00:00'
+                'sdkPlayerCount.date',
+                date('Y-m-d',strtotime($stime))
             ];
             $where[] = [
                 '<=',
-                'sdkPlayer.date',
-                $etime.' 00:00:00'
+                'sdkPlayerCount.date',
+                date('Y-m-d',strtotime($etime))
             ];
         }else if(4 == $dateType){//月份
             $sdate = date('Y-m-01',strtotime($date));
             $edate = date("Y-m-d",strtotime("$sdate 1 month -1 day"));
             $where[] = [
                 '>=',
-                'sdkPlayer.date',
-                $sdate.' 00:00:00'
+                'sdkPlayerCount.date',
+                $sdate
             ];
             $where[] = [
                 '<=',
-                'sdkPlayer.date',
-                $edate.' 00:00:00'
+                'sdkPlayerCount.date',
+                $edate
             ];
         }else{//天
             $where[] = [
                 '=',
-                'sdkPlayer.date',
-                $date.' 00:00:00'
+                'sdkPlayerCount.date',
+                $date
             ];
         }
         
@@ -372,10 +378,88 @@ class PackagePayController extends BController
                 $mediaSign
             ];
         }
+        $res = SdkPlayerCount::getCountByCondition($select,$where);
+        return $res;
+    }
+    
+    private function _getUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$mediaSign){
+        $res = array();
+    
+        $select = [
+            'count( distinct sdkPlayer.imsi) as users'
+        ];
+        $where = [];
+        $where[] = 'and';
+        $where[] = [
+            '=',
+            'sdkPlayer.status',
+            1
+        ];
+    
+        if( 3 == $dateType){//时段
+            $where[] = [
+                '>=',
+                'sdkPlayer.date',
+                $stime.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayer.date',
+                $etime.' 00:00:00'
+            ];
+        }else if(4 == $dateType){//月份
+            $sdate = date('Y-m-01',strtotime($date));
+            $edate = date("Y-m-d",strtotime("$sdate 1 month -1 day"));
+            $where[] = [
+                '>=',
+                'sdkPlayer.date',
+                $sdate.' 00:00:00'
+            ];
+            $where[] = [
+                '<=',
+                'sdkPlayer.date',
+                $edate.' 00:00:00'
+            ];
+        }else{//天
+            $where[] = [
+                '=',
+                'sdkPlayer.date',
+                $date.' 00:00:00'
+            ];
+        }
+    
+        if($checkCP){
+            $where[] = [
+                '=',
+                'campaignPackage.partner',
+                $pid
+            ];
+        }
+        if($checkAPP){
+            $where[] = [
+                '=',
+                'campaignPackage.app',
+                $aid
+            ];
+        }
+        if($checkCmp){
+            $where[] = [
+                '=',
+                'campaignPackage.campaign',
+                $cid
+            ];
+        }
+        if($checkM){
+            $where[] = [
+                '=',
+                'campaignPackage.mediaSign',
+                $mediaSign
+            ];
+        }
         //活跃用户
         $actUsers = SdkPlayer::getCountByCondition($select,$where);
         $res['actUsers'] = $actUsers['users'];
-        
+    
         //激活用户
         $where[] = [
             '=',
@@ -384,15 +468,15 @@ class PackagePayController extends BController
         ];
         $newUsers = SdkPlayer::getCountByCondition($select,$where);
         $res['newUsers'] = $newUsers['users'];
-        
+    
         //支付用户
         $select = [
             'count(distinct sdkPlayerPay.scid) as users'
         ];
-        
+    
         $where = [];
         $where[] = 'and';
-        
+    
         if( 3 == $dateType){//时段
             $where[] = [
                 '>=',
@@ -429,7 +513,7 @@ class PackagePayController extends BController
                 date('Y-m-d',strtotime($date))
             ];
         }
-        
+    
         if($checkCP){
             $where[] = [
                 '=',
@@ -458,11 +542,12 @@ class PackagePayController extends BController
                 $mediaSign
             ];
         }
-        
+    
         $payUsers = SdkPlayerPay::getCountByCondition($select,$where);
         $res['payUsers'] = $payUsers['users'];
         return $res;
     }
+    
      public function actionAnalysis(){
      	return $this->render('analysis-view');
      }
