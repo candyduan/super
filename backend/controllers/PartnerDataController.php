@@ -125,7 +125,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
             
-                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],$partner,$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],false);
+                $usersData = self::_getUsersByDateNew($channel,$dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],false);
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
