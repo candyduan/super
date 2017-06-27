@@ -71,4 +71,8 @@ class SdkPackagePayDay extends \common\models\orm\base\SdkPackagePayDay{
 	    ->where($where)->groupBy($group)->count();
     	return $count;
     }
+    
+    public static function findFirstByDateCpid($date,$cpid){
+        return self::find()->where(['date' => $date,'cpid' => $cpid])->one();
+    }
 }
