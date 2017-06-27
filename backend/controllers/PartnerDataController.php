@@ -285,14 +285,14 @@ class PartnerDataController extends BController
             ];
         }
         
-        if($checkAPP){
+        if($aid > 0){
             $where[] = [
                 '=',
                 'campaignPackage.app',
                 $aid
             ];
         }
-        if($checkCmp){
+        if($cid > 0){
             $where[] = [
                 '=',
                 'campaignPackage.campaign',
@@ -300,7 +300,7 @@ class PartnerDataController extends BController
             ];
         }
         
-        if($checkM){
+        if(Utils::isValid($mediaSign)){
             $where[] = [
                 '=',
                 'campaignPackage.mediaSign',
