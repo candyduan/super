@@ -346,7 +346,7 @@ class PackagePayController extends BController
             $where[] = [
                 '=',
                 'sdkPlayerCount.date',
-                $date
+                date('Y-m-d',strtotime($date))
             ];
         }
         
