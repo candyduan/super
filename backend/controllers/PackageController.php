@@ -142,7 +142,7 @@ class PackageController extends BController
                 $package['cutday'] = $package['cutDay'] == 0 ? '' : date('Y-m-d', $package['cutDay']); //cp优化开始
                 $package['mcutday'] = $package['mcutDay'] == 0 ? '' : date('Y-m-d', $package['mcutDay']);
                 $package['mtype'] = Utils::getValuesFromArray($package, 'mtype',0);
-                $package['mrate'] = 1 == $package['mtype'] ? sprintf('%.2f', $package['mrate']):number_format($package['mrate']/100,1);
+                $package['mrate'] = 1 == $package['mtype'] ? $package['mrate']:number_format($package['mrate']/100,1);
                 $package['sign'] = isset($package['mediaSign']) ? $package['mediaSign'] : '';
                 $package['distid'] = $package['media'];
                 $package['distname'] = isset($package['media']) ? Partner::getNameById($package['media']) : '';
