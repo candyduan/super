@@ -170,24 +170,25 @@ class SdkPromotionResultController extends BController
 
     public function actionModifyStatus(){
         $resultState = 0;
-        $resultModels = SdkPromotionResult::findAll('status = 0');
+        $resultModels = SdkPromotionResult::findAll(['status' => 0]);
+        
         $transaction =  SdkPromotionResult::getDb()->beginTransaction();
         try {
+            foreach ($resultModels as $resultModel){
+                $sdkPackagePayDayModel = SdkPackagePayDay::findFirstByDateCpid($resultModel->date, $resultModel->cpid);
+                $flag = true;
+                if($sdkPackagePayDayModel){
+                    $sdkPackagePayDayModel->payM = $resultModel->amount/100;
+                    $flag = $sdkPackagePayDayModel->save(false);
+                }
+
+            }
             $resultState = SdkPromotionResult::updateAll(['status' => 1], ['status' => 0]);
             $transaction->commit();
         } catch (ErrorException $e) {
             $resultState = 0;
             $transaction->rollBack();
             MyMail::sendMail($e->getMessage(), 'Error From modify Sdkpromotion status');
-        }
-        if($resultState > 0){
-            foreach ($resultModels as $resultModel){
-                $sdkPackagePayDayModel = SdkPackagePayDay::findFirstByDateCpid($resultModel->date, $resultModel->cpid);
-                if($sdkPackagePayDayModel){
-                    $sdkPackagePayDayModel->payM = $amount;
-                    $sdkPackagePayDayModel->update();
-                }
-            }
         }
         echo json_encode($resultState);
         exit;
