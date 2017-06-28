@@ -189,7 +189,7 @@ class PackageController extends BController
                 $mediaCutModel = CampaignPackageMediaCut::findByCpidSdate($cpid,$mcutDay);
                 if($mediaCutModel){//只更新比例
                     $mediaCutModel->rate = $mcutRate/100;
-                    $mediaCutModel->save();
+                    $mediaCutModel->save(false);
                 }else{
                     $mediaCutModel = CampaignPackageMediaCut::findLastUnfinishedByCpid($cpid);
                     if($mediaCutModel){//更新原比例结束时间
@@ -202,7 +202,7 @@ class PackageController extends BController
                             $edate = $oldSdate;
                         }
                         $mediaCutModel->edate = date('Y-m-d',$edate);
-                        $mediaCutModel->save();
+                        $mediaCutModel->save(false);
                     }
                     
                     if($mcutRate > 0){//生成新的记录
@@ -216,7 +216,7 @@ class PackageController extends BController
                         $mediaCutModel->sdate = $sdate;
                         $mediaCutModel->recordTime = Utils::getNowTime();
                         $mediaCutModel->status = 1;
-                        $mediaCutModel->save();
+                        $mediaCutModel->save(false);
                     }
                 }
                 
