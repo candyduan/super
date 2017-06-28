@@ -169,6 +169,9 @@ class PackageController extends BController
         $mcutDay = trim(Utils::getBParam('mcutday'));
         $mtype = trim(Utils::getBParam('mtype'),0);
         $mrate = trim(Utils::getBParam('mrate'),0);
+        if(!is_numeric($mrate)){
+            $mrate = 0;
+        }
         $media = trim(Utils::getBParam('media'),0);
         if (isset($cpid)) {
             $transaction =  CampaignPackage::getDb()->beginTransaction();
