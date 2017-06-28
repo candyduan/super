@@ -145,12 +145,6 @@ class SdkPromotionResultController extends BController
                                 $model->amount = $amount;
                                 $model->status = 0;
                                 $resultState += $model->save() == true ? 1 : 0;
-                                
-                                $sdkPackagePayDayModel = SdkPackagePayDay::findFirstByDateCpid($date, $cpid);
-                                if($sdkPackagePayDayModel){
-                                    $sdkPackagePayDayModel->payM = $amount;
-                                    $sdkPackagePayDayModel->update();
-                                }
                             }
                         } else {//活动ID 或者标识符写错的时候插入 错误数据
                             $model = new SdkPromotionResult();
@@ -176,6 +170,7 @@ class SdkPromotionResultController extends BController
 
     public function actionModifyStatus(){
         $resultState = 0;
+        $resultModels = SdkPromotionResult::findAll('status = 0');
         $transaction =  SdkPromotionResult::getDb()->beginTransaction();
         try {
             $resultState = SdkPromotionResult::updateAll(['status' => 1], ['status' => 0]);
@@ -184,8 +179,16 @@ class SdkPromotionResultController extends BController
             $resultState = 0;
             $transaction->rollBack();
             MyMail::sendMail($e->getMessage(), 'Error From modify Sdkpromotion status');
+        }
+        if($resultState > 0){
+            foreach ($resultModels as $resultModel){
+                $sdkPackagePayDayModel = SdkPackagePayDay::findFirstByDateCpid($resultModel->date, $resultModel->cpid);
+                if($sdkPackagePayDayModel){
+                    $sdkPackagePayDayModel->payM = $amount;
+                    $sdkPackagePayDayModel->update();
+                }
             }
-
+        }
         echo json_encode($resultState);
         exit;
     }
