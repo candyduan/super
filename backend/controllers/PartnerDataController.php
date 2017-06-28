@@ -125,7 +125,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
             
-                $usersData = self::_getUsersByDate($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],$partner,$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],false);
+                $usersData = self::_getUsersByDateNew($channel,$dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],false);
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
@@ -204,7 +204,7 @@ class PartnerDataController extends BController
                     array_push($item, '-');
                 }
     
-                $usersData = self::_getUsersByDateNew($dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],true);
+                $usersData = self::_getUsersByDateNew($channel,$dateType,$stime,$etime,$checkAPP,$checkCampaign,$checkM,$value['date'],'',$value['aid'],$value['cid'],$value['media'],$value['mediaSign'],true);
                 $newUser = Utils::getValuesFromArray($usersData, 'newUsers',0);
                 array_push($item, $newUser);
                 array_push($item, number_format($value['successPay'],0));
@@ -225,7 +225,7 @@ class PartnerDataController extends BController
         exit;
     }
     
-    private function _getUsersByDateNew($dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$mediaSign,$isCps = FALSE){
+    private function _getUsersByDateNew($channel,$dateType,$stime,$etime,$checkAPP,$checkCmp,$checkM,$date,$pid,$aid,$cid,$media,$mediaSign,$isCps = FALSE){
         $res = array();
         if($isCps){
             $select = [
@@ -233,7 +233,7 @@ class PartnerDataController extends BController
             ];
         }else{
             $select = [
-                'sum(sdkPlayerCount.cpNewUsers) as newUsers'
+                 "sum(if(sdkPlayerCount.date >= '2017-06-28',sdkPlayerCount.cpNewUsers,sdkPlayerCount.newUsers)) as newUsers"
             ];
         }
         
@@ -285,14 +285,14 @@ class PartnerDataController extends BController
             ];
         }
         
-        if($checkAPP){
+        if($aid > 0){
             $where[] = [
                 '=',
                 'campaignPackage.app',
                 $aid
             ];
         }
-        if($checkCmp){
+        if($cid > 0){
             $where[] = [
                 '=',
                 'campaignPackage.campaign',
@@ -300,13 +300,24 @@ class PartnerDataController extends BController
             ];
         }
         
-        if($checkM){
+        if(Utils::isValid($channel)){
             $where[] = [
                 '=',
                 'campaignPackage.mediaSign',
-                $mediaSign
+                $channel
             ];
+        }else{
+            if($checkM){
+                if(Utils::isValid($mediaSign)){
+                    $where[] = [
+                        '=',
+                        'campaignPackage.mediaSign',
+                        $mediaSign
+                    ];
+                }
+            }
         }
+        
         if($isCps){
             $where[] = [
                 '=',

@@ -12,7 +12,6 @@ use Yii;
  * @property integer $method
  * @property string $parameters
  * @property integer $resHandle
- * @property string $connector
  * @property string $recordTime
  * @property string $updateTime
  * @property integer $status
@@ -37,7 +36,6 @@ class ChannelCfgSmtSign extends \yii\db\ActiveRecord
             [['channelId', 'method', 'resHandle', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['parameters'], 'string', 'max' => 1024],
-            [['connector'], 'string', 'max' => 128],
             [['channelId'], 'unique'],
         ];
     }
@@ -53,7 +51,6 @@ class ChannelCfgSmtSign extends \yii\db\ActiveRecord
             'method' => 'Method',
             'parameters' => 'Parameters',
             'resHandle' => 'Res Handle',
-            'connector' => 'Connector',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
             'status' => 'Status',
