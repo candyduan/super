@@ -165,7 +165,7 @@ class WidgetsUtils{
           
         	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
             <link href="/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/css/mii-admin.css?d=20170617" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=20170619" rel="stylesheet">
             <link href="/css/pnotify.custom.css" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
             <style type="text/css">
@@ -180,7 +180,7 @@ class WidgetsUtils{
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
             <script src="/js/common/pnotify.custom.js"></script>   
-            <script src="/js/register/Utils.js?d=20170614"></script>
+            <script src="/js/register/Utils.js?d=20170615"></script>
             <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 	        <script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
             ';

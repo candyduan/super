@@ -4,6 +4,7 @@ use common\models\orm\extend\Channel;
 use common\library\Utils;
 use common\models\orm\extend\ChannelCfgPaySign;
 use common\library\Constant;
+use common\models\orm\extend\ChannelCfgSmtSign;
 
 class PayCfgWidgets{
     public static function getCfgPayParamsWidget($payParamsModel){
@@ -259,21 +260,21 @@ class PayCfgWidgets{
                   <input type="text" class="form-control" id="param_sign_key" placeholder="..." value="'.$signKey.'">
                 </div>
                 <div class="col-xs-2">
-                  <button class="btn btn-block btn-default btn-signshow">计算方法</button>
+                  <button class="btn btn-block btn-default btn-pay-sign-show">计算方法</button>
                 </div>
               </div>
 
-               <div class="form-group sign_logic">
+               <div class="form-group pay_sign_logic">
                 <label for="param_sign_params" class="col-xs-2 control-label">签名参数</label>
                 <div class="col-xs-8">
                   <input type="text" class="form-control" id="param_sign_params" placeholder="依次按顺序输入签名参数，逗号隔开，固定值前输入@" value="'.$signParameters.'">
                 </div>
                 <div class="col-xs-2">
-                      <button class="btn btn-block btn-default btn-sign-params-sort" >排序</button>
+                      <button class="btn btn-block btn-default btn-pay-sign-params-sort" >排序</button>
                 </div>
               </div>
 
-               <div class="form-group sign_logic">
+               <div class="form-group pay_sign_logic">
                 <label for="param_sign_method" class="col-xs-2 control-label">签名算法</label>
                 <div class="col-xs-10">
                         <select id="param_sign_method" class="form-control">
@@ -284,7 +285,7 @@ class PayCfgWidgets{
                 </div>
               </div>
 
-               <div class="form-group sign_logic">
+               <div class="form-group pay_sign_logic">
                 <label for="param_sign_reshandle" class="col-xs-2 control-label">签名结果</label>
                 <div class="col-xs-10">
                         <select id="param_sign_reshandle" class="form-control">
@@ -428,14 +429,14 @@ class PayCfgWidgets{
     
 <script>
 $(document).ready(function(){
-        $(".btn-signshow").click(function(){
-            if($(".sign_logic").css("display") == "none"){
-                $(".sign_logic").css("display","block");
+        $(".btn-pay-sign-show").click(function(){
+            if($(".pay_sign_logic").css("display") == "none"){
+                $(".pay_sign_logic").css("display","block");
             }else{
-                $(".sign_logic").css("display","none");
+                $(".pay_sign_logic").css("display","none");
             }
         });
-        $(".btn-sign-params-sort").click(function(){
+        $(".btn-pay-sign-params-sort").click(function(){
             var signParamsStr = $("#param_sign_params").val();
             signParamsStr  = signParamsStr.replace(/，/g,",");
          	var signParamsArr = signParamsStr.split(",");
@@ -778,6 +779,8 @@ $(document).ready(function(){
         $imeiKey    = '';
         $iccidKey   = '';
         $ipKey      = '';
+        $smsContentKey = '';
+        $smsNumberKey  = '';
         if($smtParamsModel){
             $orderIdKey     = $smtParamsModel->orderIdKey;
             $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
@@ -787,6 +790,58 @@ $(document).ready(function(){
             $imeiKey        = $smtParamsModel->imeiKey;
             $iccidKey       = $smtParamsModel->iccidKey;
             $ipKey          = $smtParamsModel->ipKey;
+            $smsContentKey  = $smtParamsModel->smsContentKey;
+            $smsNumberKey   = $smtParamsModel->smsNumberKey;
+            $signKey        = $smtParamsModel->signKey;
+            
+            $smtSignModel   = ChannelCfgSmtSign::findByChannelId($smtParamsModel->channelId);
+            if($smtSignModel){
+                $signParameters = $smtSignModel->parameters;
+            
+                switch ($smtSignModel->method){
+                    case Constant::PAY_SIGN_METHOD_MD5NKEY:
+                        $signMd5NKey            = 'selected="selected"';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = '';
+                        break;
+                    case Constant::PAY_SIGN_METHOD_MD5YKEY_INCLUDE_EMPTY_KEY:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = 'selected="selected"';
+                        $signMd5YKeyBarEmpty    = '';
+                        break;
+                    case Constant::PAY_SIGN_METHOD_MD5YKEY_BARRING_EMPTY_KEY:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = 'selected="selected"';
+                        break;
+                    default:
+                        $signMd5NKey            = '';
+                        $signMd5YKeyIncEmpty    = '';
+                        $signMd5YKeyBarEmpty    = '';
+                }
+            
+                switch ($smtSignModel->resHandle){
+                    case Constant::PAY_SIGN_RES_NORMAL:
+                        $signResHandleNormal  = 'selected="selected"';
+                        $signResHandleLower   = '';
+                        $signResHandleUpper   = '';
+                        break;
+                    case Constant::PAY_SIGN_RES_LOWER:
+                        $signResHandleNormal  = '';
+                        $signResHandleLower   = 'selected="selected"';
+                        $signResHandleUpper   = '';
+                        break;
+                    case Constant::PAY_SIGN_RES_UPPER:
+                        $signResHandleNormal  = '';
+                        $signResHandleLower   = '';
+                        $signResHandleUpper   = 'selected="selected"';
+                        break;
+                    default:
+                        $signResHandleNormal  = '';
+                        $signResHandleLower   = '';
+                        $signResHandleUpper   = '';
+                }
+            }
         }
     
         $widget = '
@@ -852,6 +907,67 @@ $(document).ready(function(){
                   <input type="text" class="form-control" id="smt_params_ipKey" placeholder="..." value="'.$ipKey.'">
                 </div>
               </div> 
+
+              <div class="form-group">
+                <label for="smt_params_smsContentKey" class="col-xs-2 control-label">短信内容Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_smsContentKey" placeholder="..." value="'.$smsContentKey.'">
+                </div>
+              </div> 
+                      
+              <div class="form-group">
+                <label for="smt_params_smsNumberKey" class="col-xs-2 control-label">短信端口Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_smsNumberKey" placeholder="..." value="'.$smsNumberKey.'">
+                </div>
+              </div> 
+                      
+               <div class="form-group">
+                <label for="smt_param_sign_key" class="col-xs-2 control-label">签名Key</label>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" id="smt_param_sign_key" placeholder="..." value="'.$signKey.'">
+                </div>
+                <div class="col-xs-2">
+                  <button class="btn btn-block btn-default btn-smt-sign-show">计算方法</button>
+                </div>
+              </div>
+
+               <div class="form-group smt_sign_logic">
+                <label for="smt_param_sign_params" class="col-xs-2 control-label">签名参数</label>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" id="smt_param_sign_params" placeholder="依次按顺序输入签名参数，逗号隔开，固定值前输入@" value="'.$signParameters.'">
+                </div>
+                <div class="col-xs-2">
+                      <button class="btn btn-block btn-default btn-smt-sign-params-sort" >排序</button>
+                </div>
+              </div>
+
+               <div class="form-group smt_sign_logic">
+                <label for="smt_param_sign_method" class="col-xs-2 control-label">签名算法</label>
+                <div class="col-xs-10">
+                        <select id="smt_param_sign_method" class="form-control">
+                          <option value ="1" '.$signMd5NKey.'>MD5---参数key不参与运算</option>
+                          <option value ="2" '.$signMd5YKeyIncEmpty.'>MD5---参数key参与运算（包括空值Key）</option>
+                          <option value ="3" '.$signMd5YKeyBarEmpty.'>MD5---参数key参与运算（不包括空值Key）</option>
+                        </select>    
+                </div>
+              </div>
+
+               <div class="form-group smt_sign_logic">
+                <label for="smt_param_sign_reshandle" class="col-xs-2 control-label">签名结果</label>
+                <div class="col-xs-10">
+                        <select id="smt_param_sign_reshandle" class="form-control">
+                          <option value ="0" '.$signResHandleNormal.'>不处理</option>
+                          <option value ="1" '.$signResHandleLower.'>转小写</option>
+                          <option value ="2" '.$signResHandleUpper.'>转大写</option>
+                        </select>    
+                </div>
+              </div>                      
+                      
+                      
+                      
+                      
+                      
                       
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
@@ -864,7 +980,23 @@ $(document).ready(function(){
     
 </div>
 <script>
-$(document).ready(function(){
+$(document).ready(function(){                              
+        $(".btn-smt-sign-show").click(function(){
+            if($(".smt_sign_logic").css("display") == "none"){
+                $(".smt_sign_logic").css("display","block");
+            }else{
+                $(".smt_sign_logic").css("display","none");
+            }
+        });
+        $(".btn-smt-sign-params-sort").click(function(){
+            var signParamsStr = $("#smt_param_sign_params").val();
+            signParamsStr  = signParamsStr.replace(/，/g,",");
+         	var signParamsArr = signParamsStr.split(",");
+         	signParamsArr.sort();
+         	signParamsStr = signParamsArr.join(",");
+         	$("#smt_param_sign_params").val(signParamsStr);
+        });
+                              
 	$("#smt_params_save").click(function(){
 		//url
 		var url = "/pay/cfg-smt-params-save";
@@ -877,7 +1009,13 @@ $(document).ready(function(){
                      +"&imsiKey="+$("#smt_params_imsiKey").val()
                      +"&iccidKey="+$("#smt_params_iccidKey").val()
                      +"&ipKey="+$("#smt_params_ipKey").val()
-				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val();                                            
+                     +"&smsContentKey="+$("#smt_params_smsContentKey").val()
+                     +"&smsNumberKey="+$("#smt_params_smsNumberKey").val()
+				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val()
+                     +"&signKey="+$("#smt_param_sign_key").val()
+                     +"&signMethod="+$("#smt_param_sign_method").val()
+                     +"&signParameters="+$("#smt_param_sign_params").val()
+                     +"&signResHandle="+$("#smt_param_sign_reshandle").val();
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功

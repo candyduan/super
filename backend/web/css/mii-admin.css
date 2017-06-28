@@ -322,4 +322,6 @@ table td {
 .channel_used{color:#02df82;}
 .channel_suspend{color:#46a3ff;}
 .channel_delete{color:#ff5151;}
-.sign_logic{display:none;}
+.pay_sign_logic{display:none;}
+.smt_sign_logic{display:none;}
+.glyphicon-cog{font-size:18px;}

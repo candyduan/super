@@ -5,9 +5,9 @@ namespace common\models\orm\base;
 use Yii;
 
 /**
- * This is the model class for table "channelCfgPaySign".
+ * This is the model class for table "channelCfgSmtSign".
  *
- * @property integer $cpsid
+ * @property integer $cssid
  * @property integer $channelId
  * @property integer $method
  * @property string $parameters
@@ -17,14 +17,14 @@ use Yii;
  * @property string $updateTime
  * @property integer $status
  */
-class ChannelCfgPaySign extends \yii\db\ActiveRecord
+class ChannelCfgSmtSign extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'channelCfgPaySign';
+        return 'channelCfgSmtSign';
     }
 
     /**
@@ -48,7 +48,7 @@ class ChannelCfgPaySign extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'cpsid' => 'Cpsid',
+            'cssid' => 'Cssid',
             'channelId' => 'Channel ID',
             'method' => 'Method',
             'parameters' => 'Parameters',
