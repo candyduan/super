@@ -172,7 +172,7 @@ class PackageController extends BController
         if(!is_numeric($mrate)){
             $mrate = 0;
         }
-        $media = trim(Utils::getBParam('media'),0);
+        $media = trim(Utils::getBParam('media',0));
         if (isset($cpid)) {
             $transaction =  CampaignPackage::getDb()->beginTransaction();
             try {
