@@ -791,6 +791,8 @@ $(document).ready(function(){
         $ipKey      = '';
         $smsContentKey = '';
         $smsNumberKey  = '';
+        $timestampKey   = '';
+        $unixTimestampKey   = '';
         if($smtParamsModel){
             $orderIdKey     = $smtParamsModel->orderIdKey;
             $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
@@ -802,6 +804,8 @@ $(document).ready(function(){
             $ipKey          = $smtParamsModel->ipKey;
             $smsContentKey  = $smtParamsModel->smsContentKey;
             $smsNumberKey   = $smtParamsModel->smsNumberKey;
+            $timestampKey   = $smtParamsModel->timestampKey;
+            $unixTimestampKey   = $smtParamsModel->unixTimestampKey;
             $signKey        = $smtParamsModel->signKey;
             
             $smtSignModel   = ChannelCfgSmtSign::findByChannelId($smtParamsModel->channelId);
@@ -931,6 +935,20 @@ $(document).ready(function(){
                   <input type="text" class="form-control" id="smt_params_smsNumberKey" placeholder="..." value="'.$smsNumberKey.'">
                 </div>
               </div> 
+
+               <div class="form-group">
+                <label for="smt_params_timestampKey" class="col-xs-2 control-label">时间字符串Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_timestampKey" placeholder="..." value="'.$timestampKey.'">
+                </div>
+              </div>
+
+               <div class="form-group">
+                <label for="smt_params_unixTimestampKey" class="col-xs-2 control-label">时间戳Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_unixTimestampKey" placeholder="..." value="'.$unixTimestampKey.'">
+                </div>
+              </div>
                       
                <div class="form-group">
                 <label for="smt_param_sign_key" class="col-xs-2 control-label">签名Key</label>
@@ -1021,6 +1039,8 @@ $(document).ready(function(){
                      +"&ipKey="+$("#smt_params_ipKey").val()
                      +"&smsContentKey="+$("#smt_params_smsContentKey").val()
                      +"&smsNumberKey="+$("#smt_params_smsNumberKey").val()
+                     +"&timestampKey="+$("#smt_params_timestampKey").val()
+                     +"&unixTimestampKey="+$("#smt_params_unixTimestampKey").val()
 				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val()
                      +"&signKey="+$("#smt_param_sign_key").val()
                      +"&signMethod="+$("#smt_param_sign_method").val()
