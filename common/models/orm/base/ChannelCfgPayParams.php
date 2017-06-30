@@ -28,6 +28,7 @@ use Yii;
  * @property string $provinceNameKey
  * @property string $linkIdKey
  * @property string $timestampKey
+ * @property string $unixTimestampKey
  * @property string $signKey
  * @property string $recordTime
  * @property string $updateTime
@@ -52,7 +53,7 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
             [['channelId'], 'required'],
             [['channelId', 'feeUnit', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['mobileKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'feeKey', 'feeCodeKey', 'cpparamKey', 'cpparamPrefix', 'provinceMapKey', 'appNameKey', 'goodNameKey', 'provinceNameKey', 'linkIdKey', 'timestampKey', 'signKey'], 'string', 'max' => 128],
+            [['mobileKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'feeKey', 'feeCodeKey', 'cpparamKey', 'cpparamPrefix', 'provinceMapKey', 'appNameKey', 'goodNameKey', 'provinceNameKey', 'linkIdKey', 'timestampKey', 'unixTimestampKey', 'signKey'], 'string', 'max' => 128],
             [['feePackages'], 'string', 'max' => 512],
             [['customs'], 'string', 'max' => 2048],
             [['provinceMap'], 'string', 'max' => 1024],
@@ -87,6 +88,7 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
             'provinceNameKey' => 'Province Name Key',
             'linkIdKey' => 'Link Id Key',
             'timestampKey' => 'Timestamp Key',
+            'unixTimestampKey' => 'Unix Timestamp Key',
             'signKey' => 'Sign Key',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',

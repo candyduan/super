@@ -260,6 +260,7 @@ class PayController extends BController{
         $provinceNameKey    = Utils::getBackendParam('provinceNameKey');
         $linkIdKey      = Utils::getBackendParam('linkIdKey');
         $timestampKey   = Utils::getBackendParam('timestampKey');
+        $unixTimestampKey   = Utils::getBackendParam('unixTimestampKey');
         $signKey        = Utils::getBackendParam('signKey');
         
         $signMethod     = Utils::getBackendParam('signMethod');
@@ -304,6 +305,7 @@ class PayController extends BController{
             $payParamsModel->provinceNameKey = $provinceNameKey;
             $payParamsModel->linkIdKey       = $linkIdKey;
             $payParamsModel->timestampKey    = $timestampKey;
+            $payParamsModel->unixTimestampKey   = $unixTimestampKey;
             $payParamsModel->signKey         = $signKey;
             try{
                 ChannelCfgMain::backendOps($chid);
