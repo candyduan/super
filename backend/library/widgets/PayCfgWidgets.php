@@ -28,6 +28,7 @@ class PayCfgWidgets{
         $provinceMapKey     = '';
         $linkIdKey          = '';
         $timestampKey       = '';
+        $unixTimestampKey   = '';
         $signKey            = '';        
         $signParameters     = '';
         
@@ -56,6 +57,7 @@ class PayCfgWidgets{
             $provinceMapKey     = $payParamsModel->provinceMapKey;
             $linkIdKey          = $payParamsModel->linkIdKey;
             $timestampKey       = $payParamsModel->timestampKey;
+            $unixTimestampKey   = $payParamsModel->unixTimestampKey;
             $signKey            = $payParamsModel->signKey;
             
             $paySignModel   = ChannelCfgPaySign::findByChannelId($payParamsModel->channelId);
@@ -179,9 +181,16 @@ class PayCfgWidgets{
               </div>
 
                <div class="form-group">
-                <label for="param_timestamp_key" class="col-xs-2 control-label">时间戳Key</label>
+                <label for="param_timestamp_key" class="col-xs-2 control-label">时间字符串Key</label>
                 <div class="col-xs-10">
                   <input type="text" class="form-control" id="param_timestamp_key" placeholder="..." value="'.$timestampKey.'">
+                </div>
+              </div>
+
+               <div class="form-group">
+                <label for="param_unixtimestamp_key" class="col-xs-2 control-label">时间戳Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="param_unixtimestamp_key" placeholder="..." value="'.$unixTimestampKey.'">
                 </div>
               </div>
                       
@@ -582,7 +591,8 @@ $(document).ready(function(){
                         +"&appNameKey="+$("#param_appname_key").val()
                         +"&goodNameKey="+$("#param_goodname_key").val()
                         +"&linkIdKey="+$("#param_linkid_key").val()
-                        +"&timestampKey="+$("#param_timestamp_key").val()                        
+                        +"&timestampKey="+$("#param_timestamp_key").val()   
+                        +"&unixTimestampKey="+$("#param_unixtimestamp_key").val()   
                         +"&provinceNameKey="+$("#param_provincename_key").val()
                         +"&signKey="+$("#param_sign_key").val()
                         +"&signMethod="+$("#param_sign_method").val()
