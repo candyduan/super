@@ -560,6 +560,8 @@ class PayController extends BController{
         $ipKey          = Utils::getBackendParam('ipKey');   
         $smsNumberKey   = Utils::getBackendParam('smsNumberKey');
         $smsContentKey  = Utils::getBackendParam('smsContentKey');
+        $timestampKey   = Utils::getBackendParam('timestampKey');
+        $unixTimestampKey   = Utils::getBackendParam('unixTimestampKey');
         $signKey        = Utils::getBackendParam('signKey');
         
         $signMethod     = Utils::getBackendParam('signMethod');
@@ -583,6 +585,8 @@ class PayController extends BController{
             $smtParamsModel->ipKey            = $ipKey;
             $smtParamsModel->smsContentKey    = $smsContentKey;
             $smtParamsModel->smsNumberKey     = $smsNumberKey;
+            $smtParamsModel->timestampKey     = $timestampKey;
+            $smtParamsModel->unixTimestampKey = $unixTimestampKey;
             $smtParamsModel->signKey          = $signKey;
             try{
                 $smtParamsModel->save();
