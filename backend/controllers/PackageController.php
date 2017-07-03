@@ -167,8 +167,8 @@ class PackageController extends BController
         $cutDay = trim(Utils::getBParam('cutday'));
         $mcutRate = intval(Utils::getBParam('mcutrate'));
         $mcutDay = trim(Utils::getBParam('mcutday'));
-        $mtype = trim(Utils::getBParam('mtype'),0);
-        $mrate = trim(Utils::getBParam('mrate'),0);
+        $mtype = trim(Utils::getBParam('mtype',0));
+        $mrate = trim(Utils::getBParam('mrate',0));
         if(!is_numeric($mrate)){
             $mrate = 0;
         }
