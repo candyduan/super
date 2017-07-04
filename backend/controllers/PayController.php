@@ -23,6 +23,8 @@ use common\models\orm\extend\ChannelCfgUrlSubmit;
 use common\models\orm\extend\ChannelCfgOut;
 use common\models\orm\extend\ChannelCfgPaySign;
 use common\models\orm\extend\ChannelCfgSmtSign;
+use common\models\orm\extend\ChannelCfgSmsSdkSubmit;
+use common\models\orm\extend\ChannelCfgUrlSdkSubmit;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -388,6 +390,7 @@ class PayController extends BController{
         $smsYApiModel       = ChannelCfgSmsYapi::findByChannelId($chid);
         $smsNApiModel       = ChannelCfgSmsNapi::findByChannelId($chid);
         $submitModel        = ChannelCfgSmsSubmit::findByChannelId($chid);
+        $sdkSubmitModel     = ChannelCfgSmsSdkSubmit::findByChannelId($chid);
         $syncModel                = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel           = ChannelCfgSmtParams::findByChannelId($chid);
         $outModel           = ChannelCfgOut::findByChannelId($chid);
@@ -400,6 +403,7 @@ class PayController extends BController{
             'smsYApiModel'                => $smsYApiModel,
             'smsNApiModel'                => $smsNApiModel, 
             'submitModel'                 => $submitModel,
+            'sdkSubmitModel'              => $sdkSubmitModel,
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
             'outModel'                    => $outModel,
@@ -512,7 +516,8 @@ class PayController extends BController{
         $sendMethod     = Utils::getBackendParam('sendMethod');
         $respFmt        = Utils::getBackendParam('respFmt');
         $succKey        = Utils::getBackendParam('succKey');
-        $succValue      = Utils::getBackendParam('succValue');    
+        $succValue      = Utils::getBackendParam('succValue');  
+        $portFixed      = Utils::getBackendParam('portFixed');
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
             $smsModel   = ChannelCfgSms::findByChannelId($chid);
@@ -532,9 +537,19 @@ class PayController extends BController{
             $submitModel->respFmt       = $respFmt;
             $submitModel->succKey       = $succKey;
             $submitModel->succValue     = $succValue;
+            
             try{
                 $smsModel->save();
                 $submitModel->save();
+                if(Utils::isValid($portFixed)){
+                    $sdkSubmitModel = ChannelCfgSmsSdkSubmit::findByChannelId($chid);
+                    if(!$sdkSubmitModel){
+                        $sdkSubmitModel = new ChannelCfgSmsSdkSubmit();
+                        $sdkSubmitModel->channelId  = $chid;
+                    }
+                    $sdkSubmitModel->portFixed  = $portFixed;
+                    $sdkSubmitModel->save();
+                }
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
                 $out['msg']         = Constant::RESULT_MSG_SUCC;
             }catch (\Exception $e){
@@ -624,6 +639,7 @@ class PayController extends BController{
         $urlModel           = ChannelCfgUrl::findByChannelId($chid);
         $urlYApiModel       = ChannelCfgUrlYapi::findByChannelId($chid);
         $submitModel        = ChannelCfgUrlSubmit::findByChannelId($chid);
+        $sdkSubmitModel     = ChannelCfgUrlSdkSubmit::findByChannelId($chid);
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
         $smtParamsModel     = ChannelCfgSmtParams::findByChannelId($chid);
         $outModel           = ChannelCfgOut::findByChannelId($chid);
@@ -635,6 +651,7 @@ class PayController extends BController{
             'urlModel'                    => $urlModel,
             'urlYApiModel'                => $urlYApiModel,
             'submitModel'                 => $submitModel,
+            'sdkSubmitModel'              => $sdkSubmitModel,
             'syncModel'                   => $syncModel,
             'smtParamsModel'              => $smtParamsModel,
             'outModel'                    => $outModel,
@@ -696,6 +713,7 @@ class PayController extends BController{
         $respFmt        = Utils::getBackendParam('respFmt');
         $succKey        = Utils::getBackendParam('succKey');
         $succValue      = Utils::getBackendParam('succValue');
+        $portFixed      = Utils::getBackendParam('portFixed');
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
             $urlModel   = ChannelCfgUrl::findByChannelId($chid);
@@ -718,6 +736,15 @@ class PayController extends BController{
             try{
                 $urlModel->save();
                 $submitModel->save();
+                if(Utils::isValid($portFixed)){
+                    $sdkSubmitModel = ChannelCfgUrlSdkSubmit::findByChannelId($chid);
+                    if(!$sdkSubmitModel){
+                        $sdkSubmitModel = new ChannelCfgUrlSdkSubmit();
+                        $sdkSubmitModel->channelId  = $chid;
+                    }
+                    $sdkSubmitModel->portFixed  = $portFixed;
+                    $sdkSubmitModel->save();
+                }
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
                 $out['msg']         = Constant::RESULT_MSG_SUCC;
             }catch (\Exception $e){
