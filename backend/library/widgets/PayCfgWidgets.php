@@ -31,7 +31,9 @@ class PayCfgWidgets{
         $unixTimestampKey   = '';
         $signKey            = '';        
         $signParameters     = '';
-        
+        $cpparamHandle0      = '';
+        $cpparamHandle1      = '';
+        $cpparamHandle2      = '';
         if($payParamsModel){
             $mobileKey  = $payParamsModel->mobileKey;
             $imeiKey    = $payParamsModel->imeiKey;
@@ -59,7 +61,13 @@ class PayCfgWidgets{
             $timestampKey       = $payParamsModel->timestampKey;
             $unixTimestampKey   = $payParamsModel->unixTimestampKey;
             $signKey            = $payParamsModel->signKey;
-            
+            if($payParamsModel->cpparamHandle == 0){
+                $cpparamHandle0  = 'selected="selected"';
+            }elseif($payParamsModel->cpparamHandle == 1){
+                $cpparamHandle1  = 'selected="selected"';
+            }elseif ($payParamsModel->cpparamHandle == 2){
+                $cpparamHandle2  = 'selected="selected"';
+            }
             $paySignModel   = ChannelCfgPaySign::findByChannelId($payParamsModel->channelId);
             if($paySignModel){
                 $signParameters = $paySignModel->parameters;
@@ -207,7 +215,18 @@ class PayCfgWidgets{
                   <input type="text" class="form-control" id="param_cpparam_prefix" placeholder="..." value="'.$cpparamPrefix.'">
                 </div>
               </div>
-    
+              
+              <div class="form-group">
+                <label for="param_cpparam_handle" class="col-xs-2 control-label">透传参数处理</label>
+                <div class="col-xs-10">
+                        <select id="param_cpparam_handle" class="form-control">
+                          <option value ="0" '.$cpparamHandle0.'>不处理</option>
+                          <option value ="1" '.$cpparamHandle1.'>转小写</option>
+                          <option value ="2" '.$cpparamHandle2.'>转大写</option>
+                        </select>                        
+                </div>
+              </div> 
+                              
                <div class="form-group">
                 <label for="param_fee_key" class="col-xs-2 control-label">价格Key</label>
                 <div class="col-xs-10">
@@ -588,6 +607,7 @@ $(document).ready(function(){
                         +"&provinceMapKey="+$("#param_provincemap_key").val()
                         +"&cpparamKey="+$("#param_cpparam_key").val()
                         +"&cpparamPrefix="+$("#param_cpparam_prefix").val()
+                        +"&cpparamHandle="+$("#param_cpparam_handle").val()      
                         +"&appNameKey="+$("#param_appname_key").val()
                         +"&goodNameKey="+$("#param_goodname_key").val()
                         +"&linkIdKey="+$("#param_linkid_key").val()

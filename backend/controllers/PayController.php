@@ -257,6 +257,7 @@ class PayController extends BController{
         $provinceMapKey = Utils::getBackendParam('provinceMapKey');
         $cpparamKey = Utils::getBackendParam('cpparamKey');
         $cpparamPrefix = Utils::getBackendParam('cpparamPrefix');
+        $cpparamHandle  = Utils::getBackendParam('cpparamHandle');
         $appNameKey = Utils::getBackendParam('appNameKey');
         $goodNameKey    = Utils::getBackendParam('goodNameKey');
         $provinceNameKey    = Utils::getBackendParam('provinceNameKey');
@@ -302,6 +303,7 @@ class PayController extends BController{
             $payParamsModel->provinceMapKey  = $provinceMapKey;
             $payParamsModel->cpparamKey  = $cpparamKey;
             $payParamsModel->cpparamPrefix   = $cpparamPrefix;
+            $payParamsModel->cpparamHandle   = $cpparamHandle;
             $payParamsModel->appNameKey  = $appNameKey;
             $payParamsModel->goodNameKey = $goodNameKey;
             $payParamsModel->provinceNameKey = $provinceNameKey;
