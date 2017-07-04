@@ -21,6 +21,7 @@ use Yii;
  * @property string $customs
  * @property string $cpparamKey
  * @property string $cpparamPrefix
+ * @property integer $cpparamHandle
  * @property string $provinceMap
  * @property string $provinceMapKey
  * @property string $appNameKey
@@ -28,6 +29,7 @@ use Yii;
  * @property string $provinceNameKey
  * @property string $linkIdKey
  * @property string $timestampKey
+ * @property string $unixTimestampKey
  * @property string $signKey
  * @property string $recordTime
  * @property string $updateTime
@@ -50,9 +52,9 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
     {
         return [
             [['channelId'], 'required'],
-            [['channelId', 'feeUnit', 'status'], 'integer'],
+            [['channelId', 'feeUnit', 'cpparamHandle', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['mobileKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'feeKey', 'feeCodeKey', 'cpparamKey', 'cpparamPrefix', 'provinceMapKey', 'appNameKey', 'goodNameKey', 'provinceNameKey', 'linkIdKey', 'timestampKey', 'signKey'], 'string', 'max' => 128],
+            [['mobileKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'feeKey', 'feeCodeKey', 'cpparamKey', 'cpparamPrefix', 'provinceMapKey', 'appNameKey', 'goodNameKey', 'provinceNameKey', 'linkIdKey', 'timestampKey', 'unixTimestampKey', 'signKey'], 'string', 'max' => 128],
             [['feePackages'], 'string', 'max' => 512],
             [['customs'], 'string', 'max' => 2048],
             [['provinceMap'], 'string', 'max' => 1024],
@@ -80,6 +82,7 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
             'customs' => 'Customs',
             'cpparamKey' => 'Cpparam Key',
             'cpparamPrefix' => 'Cpparam Prefix',
+            'cpparamHandle' => 'Cpparam Handle',
             'provinceMap' => 'Province Map',
             'provinceMapKey' => 'Province Map Key',
             'appNameKey' => 'App Name Key',
@@ -87,6 +90,7 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
             'provinceNameKey' => 'Province Name Key',
             'linkIdKey' => 'Link Id Key',
             'timestampKey' => 'Timestamp Key',
+            'unixTimestampKey' => 'Unix Timestamp Key',
             'signKey' => 'Sign Key',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',

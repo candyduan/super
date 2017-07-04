@@ -28,9 +28,12 @@ class PayCfgWidgets{
         $provinceMapKey     = '';
         $linkIdKey          = '';
         $timestampKey       = '';
+        $unixTimestampKey   = '';
         $signKey            = '';        
         $signParameters     = '';
-        
+        $cpparamHandle0      = '';
+        $cpparamHandle1      = '';
+        $cpparamHandle2      = '';
         if($payParamsModel){
             $mobileKey  = $payParamsModel->mobileKey;
             $imeiKey    = $payParamsModel->imeiKey;
@@ -56,8 +59,15 @@ class PayCfgWidgets{
             $provinceMapKey     = $payParamsModel->provinceMapKey;
             $linkIdKey          = $payParamsModel->linkIdKey;
             $timestampKey       = $payParamsModel->timestampKey;
+            $unixTimestampKey   = $payParamsModel->unixTimestampKey;
             $signKey            = $payParamsModel->signKey;
-            
+            if($payParamsModel->cpparamHandle == 0){
+                $cpparamHandle0  = 'selected="selected"';
+            }elseif($payParamsModel->cpparamHandle == 1){
+                $cpparamHandle1  = 'selected="selected"';
+            }elseif ($payParamsModel->cpparamHandle == 2){
+                $cpparamHandle2  = 'selected="selected"';
+            }
             $paySignModel   = ChannelCfgPaySign::findByChannelId($payParamsModel->channelId);
             if($paySignModel){
                 $signParameters = $paySignModel->parameters;
@@ -179,9 +189,16 @@ class PayCfgWidgets{
               </div>
 
                <div class="form-group">
-                <label for="param_timestamp_key" class="col-xs-2 control-label">时间戳Key</label>
+                <label for="param_timestamp_key" class="col-xs-2 control-label">时间字符串Key</label>
                 <div class="col-xs-10">
                   <input type="text" class="form-control" id="param_timestamp_key" placeholder="..." value="'.$timestampKey.'">
+                </div>
+              </div>
+
+               <div class="form-group">
+                <label for="param_unixtimestamp_key" class="col-xs-2 control-label">时间戳Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="param_unixtimestamp_key" placeholder="..." value="'.$unixTimestampKey.'">
                 </div>
               </div>
                       
@@ -198,7 +215,18 @@ class PayCfgWidgets{
                   <input type="text" class="form-control" id="param_cpparam_prefix" placeholder="..." value="'.$cpparamPrefix.'">
                 </div>
               </div>
-    
+              
+              <div class="form-group">
+                <label for="param_cpparam_handle" class="col-xs-2 control-label">透传参数处理</label>
+                <div class="col-xs-10">
+                        <select id="param_cpparam_handle" class="form-control">
+                          <option value ="0" '.$cpparamHandle0.'>不处理</option>
+                          <option value ="1" '.$cpparamHandle1.'>转小写</option>
+                          <option value ="2" '.$cpparamHandle2.'>转大写</option>
+                        </select>                        
+                </div>
+              </div> 
+                              
                <div class="form-group">
                 <label for="param_fee_key" class="col-xs-2 control-label">价格Key</label>
                 <div class="col-xs-10">
@@ -579,10 +607,12 @@ $(document).ready(function(){
                         +"&provinceMapKey="+$("#param_provincemap_key").val()
                         +"&cpparamKey="+$("#param_cpparam_key").val()
                         +"&cpparamPrefix="+$("#param_cpparam_prefix").val()
+                        +"&cpparamHandle="+$("#param_cpparam_handle").val()      
                         +"&appNameKey="+$("#param_appname_key").val()
                         +"&goodNameKey="+$("#param_goodname_key").val()
                         +"&linkIdKey="+$("#param_linkid_key").val()
-                        +"&timestampKey="+$("#param_timestamp_key").val()                        
+                        +"&timestampKey="+$("#param_timestamp_key").val()   
+                        +"&unixTimestampKey="+$("#param_unixtimestamp_key").val()   
                         +"&provinceNameKey="+$("#param_provincename_key").val()
                         +"&signKey="+$("#param_sign_key").val()
                         +"&signMethod="+$("#param_sign_method").val()
@@ -781,6 +811,8 @@ $(document).ready(function(){
         $ipKey      = '';
         $smsContentKey = '';
         $smsNumberKey  = '';
+        $timestampKey   = '';
+        $unixTimestampKey   = '';
         if($smtParamsModel){
             $orderIdKey     = $smtParamsModel->orderIdKey;
             $verifyCodeKey  = $smtParamsModel->verifyCodeKey;
@@ -792,6 +824,8 @@ $(document).ready(function(){
             $ipKey          = $smtParamsModel->ipKey;
             $smsContentKey  = $smtParamsModel->smsContentKey;
             $smsNumberKey   = $smtParamsModel->smsNumberKey;
+            $timestampKey   = $smtParamsModel->timestampKey;
+            $unixTimestampKey   = $smtParamsModel->unixTimestampKey;
             $signKey        = $smtParamsModel->signKey;
             
             $smtSignModel   = ChannelCfgSmtSign::findByChannelId($smtParamsModel->channelId);
@@ -921,6 +955,20 @@ $(document).ready(function(){
                   <input type="text" class="form-control" id="smt_params_smsNumberKey" placeholder="..." value="'.$smsNumberKey.'">
                 </div>
               </div> 
+
+               <div class="form-group">
+                <label for="smt_params_timestampKey" class="col-xs-2 control-label">时间字符串Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_timestampKey" placeholder="..." value="'.$timestampKey.'">
+                </div>
+              </div>
+
+               <div class="form-group">
+                <label for="smt_params_unixTimestampKey" class="col-xs-2 control-label">时间戳Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="smt_params_unixTimestampKey" placeholder="..." value="'.$unixTimestampKey.'">
+                </div>
+              </div>
                       
                <div class="form-group">
                 <label for="smt_param_sign_key" class="col-xs-2 control-label">签名Key</label>
@@ -1011,6 +1059,8 @@ $(document).ready(function(){
                      +"&ipKey="+$("#smt_params_ipKey").val()
                      +"&smsContentKey="+$("#smt_params_smsContentKey").val()
                      +"&smsNumberKey="+$("#smt_params_smsNumberKey").val()
+                     +"&timestampKey="+$("#smt_params_timestampKey").val()
+                     +"&unixTimestampKey="+$("#smt_params_unixTimestampKey").val()
 				     +"&verifyCodeKey="+$("#smt_params_verifycodekey").val()
                      +"&signKey="+$("#smt_param_sign_key").val()
                      +"&signMethod="+$("#smt_param_sign_method").val()

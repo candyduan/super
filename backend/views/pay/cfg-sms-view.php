@@ -9,6 +9,7 @@ $smsModel       = $smsModel;
 $smsYApiModel   = $smsYApiModel;
 $smsNApiModel   = $smsNApiModel;
 $submitModel    = $submitModel;
+$sdkSubmitModel = $sdkSubmitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
 $outModel       = $outModel;
@@ -332,7 +333,14 @@ if($smsNApiModel){
                       <input type="text" class="form-control" id="sms_verifycode_succValue" placeholder="..." value="<?php if($submitModel){echo $submitModel->succValue;}?>">
                     </div>
                   </div>
-              
+
+                  <div class="form-group sms_verifycode_portFixed_div">
+                    <label for="sms_verifycode_portFixed" class="col-xs-2 control-label">固定端口</label>
+                    <div class="col-xs-10">
+                      <input type="text" class="form-control" id="sms_verifycode_portFixed" placeholder="..." value="<?php if($sdkSubmitModel){echo $sdkSubmitModel->portFixed;}?>">
+                    </div>
+                  </div>
+                                
                   <div class="form-group">
                     <div class="col-xs-10 col-xs-offset-2">
                       <button id="sms_verifycode_save" class="btn btn-default">保存</button>
@@ -476,6 +484,7 @@ $(document).ready(function(){
 			$('.sms_verifycode_respFmt_div').css('display','block');
 			$('.sms_verifycode_succKey_div').css('display','block');
 			$('.sms_verifycode_succValue_div').css('display','block');
+			$('.sms_verifycode_portFixed_div').css('display','none');
 		}else{//client
 			$('.smt_params').css('display','none');
 			$('.sms_verifycode_url_div').css('display','none');
@@ -483,6 +492,7 @@ $(document).ready(function(){
 			$('.sms_verifycode_respFmt_div').css('display','none');
 			$('.sms_verifycode_succKey_div').css('display','none');
 			$('.sms_verifycode_succValue_div').css('display','none');
+			$('.sms_verifycode_portFixed_div').css('display','block');
 		}
 	});
 	$('#sms_verifycode_smtType').trigger('change');
@@ -497,7 +507,8 @@ $(document).ready(function(){
 				     +'&sendMethod='+$('#sms_verifycode_sendMethod').val()
 				     +'&respFmt='+$('#sms_verifycode_respFmt').val()
 				     +'&succKey='+$('#sms_verifycode_succKey').val()
-				     +'&succValue='+$('#sms_verifycode_succValue').val();
+				     +'&succValue='+$('#sms_verifycode_succValue').val()
+				     +'&portFixed='+$('#sms_verifycode_portFixed').val();
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功

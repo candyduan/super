@@ -8,6 +8,7 @@ $payParamsModel = $payParamsModel;
 $urlModel       = $urlModel;
 $urlYApiModel   = $urlYApiModel;
 $submitModel    = $submitModel;
+$sdkSubmitModel = $sdkSubmitModel;
 $syncModel      = $syncModel;
 $smtParamsModel = $smtParamsModel;
 $outModel       = $outModel;
@@ -172,7 +173,14 @@ $channelCfgToSync = $channelCfgToSync;
                       <input type="text" class="form-control" id="url_verifycode_succValue" placeholder="..." value="<?php if($submitModel){echo $submitModel->succValue;}?>">
                     </div>
                   </div>
-              
+ 
+                   <div class="form-group url_verifycode_portFixed_div">
+                    <label for="url_verifycode_portFixed" class="col-xs-2 control-label">固定端口</label>
+                    <div class="col-xs-10">
+                      <input type="text" class="form-control" id="url_verifycode_portFixed" placeholder="..." value="<?php if($sdkSubmitModel){echo $sdkSubmitModel->portFixed;}?>">
+                    </div>
+                  </div>
+                               
                   <div class="form-group">
                     <div class="col-xs-10 col-xs-offset-2">
                       <button id="url_verifycode_save" class="btn btn-default">保存</button>
@@ -242,6 +250,7 @@ $(document).ready(function(){
 			$('.url_verifycode_respFmt_div').css('display','block');
 			$('.url_verifycode_succKey_div').css('display','block');
 			$('.url_verifycode_succValue_div').css('display','block');
+			$('.url_verifycode_portFixed_div').css('display','none');
 		}else{//client
 			$('.smt_params').css('display','none');
 			$('.url_verifycode_url_div').css('display','none');
@@ -249,6 +258,7 @@ $(document).ready(function(){
 			$('.url_verifycode_respFmt_div').css('display','none');
 			$('.url_verifycode_succKey_div').css('display','none');
 			$('.url_verifycode_succValue_div').css('display','none');
+			$('.url_verifycode_portFixed_div').css('display','block');
 		}
 	});
 	$('#url_verifycode_smtType').trigger('change');
@@ -263,7 +273,8 @@ $(document).ready(function(){
 				     +'&sendMethod='+$('#url_verifycode_sendMethod').val()
 				     +'&respFmt='+$('#url_verifycode_respFmt').val()
 				     +'&succKey='+$('#url_verifycode_succKey').val()
-				     +'&succValue='+$('#url_verifycode_succValue').val();
+				     +'&succValue='+$('#url_verifycode_succValue').val()
+				     +'&portFixed='+$('#url_verifycode_portFixed').val();
 	     //succFunc
 	     var succFunc	= function(resJson){
 				if(parseInt(resJson.resultCode) == 1){//成功

@@ -26,6 +26,8 @@ use Yii;
  * @property string $signKey
  * @property string $smsContentKey
  * @property string $smsNumberKey
+ * @property string $timestampKey
+ * @property string $unixTimestampKey
  */
 class ChannelCfgSmtParams extends \yii\db\ActiveRecord
 {
@@ -46,7 +48,7 @@ class ChannelCfgSmtParams extends \yii\db\ActiveRecord
             [['channelId'], 'required'],
             [['channelId', 'status', 'feeUnit'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['orderIdKey', 'verifyCodeKey', 'feeKey', 'customs', 'mobileKey', 'cpparamKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'signKey', 'smsContentKey', 'smsNumberKey'], 'string', 'max' => 128],
+            [['orderIdKey', 'verifyCodeKey', 'feeKey', 'customs', 'mobileKey', 'cpparamKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'signKey', 'smsContentKey', 'smsNumberKey', 'timestampKey', 'unixTimestampKey'], 'string', 'max' => 128],
             [['channelId'], 'unique'],
         ];
     }
@@ -76,6 +78,8 @@ class ChannelCfgSmtParams extends \yii\db\ActiveRecord
             'signKey' => 'Sign Key',
             'smsContentKey' => 'Sms Content Key',
             'smsNumberKey' => 'Sms Number Key',
+            'timestampKey' => 'Timestamp Key',
+            'unixTimestampKey' => 'Unix Timestamp Key',
         ];
     }
 }
