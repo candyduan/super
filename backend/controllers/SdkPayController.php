@@ -142,9 +142,9 @@ class SdkPayController extends BController
             }else{
                 array_push($item, '-');
             }
-            $allPay = number_format($value['allPay']/100,2);
-            $callSucPay = number_format($value['callSucPay']/100,2);
-            $sdkSucPay = number_format($value['sdkSucPay']/100,2);
+            $allPay = number_format($value['allPay']/100,0);
+            $callSucPay = number_format($value['callSucPay']/100,0);
+            $sdkSucPay = number_format($value['sdkSucPay']/100,0);
             $successPay = number_format($value['successPay']/100,0);
             array_push($item, $allPay);
             array_push($item, $callSucPay);
