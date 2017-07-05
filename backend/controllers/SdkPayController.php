@@ -161,9 +161,9 @@ class SdkPayController extends BController
             $totalSdkSucPay += $value['sdkSucPay'];
             $totalSuccPay += $value['successPay'];
         }
-        array_push($totalItem, number_format($totalAllPay/100,2));
-        array_push($totalItem, number_format($totalCallSucPay/100,2));
-        array_push($totalItem, number_format($totalSdkSucPay/100,2));
+        array_push($totalItem, number_format($totalAllPay/100,0));
+        array_push($totalItem, number_format($totalCallSucPay/100,0));
+        array_push($totalItem, number_format($totalSdkSucPay/100,0));
         array_push($totalItem, number_format($totalSuccPay/100,0));
         if(0 == $totalAllPay){
             array_push($totalItem, '-');
