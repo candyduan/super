@@ -8,11 +8,25 @@ pre{background-color:#f0f0f0;color:#00a600;}
 <div class="main">
     <div class="logContents">
     </div>
+    <div class="row">
+    	<div class="col-xs-2"><button class="interval_ops btn btn-default btn-block">暂停</button></div>
+    </div>
 </div>
 <script>
 $(document).ready(function(){
 	setResult();
-	setInterval('setResult()',3000); 
+	var timeId = setInterval('setResult()',3000); 
+
+	$('.interval_ops').click(function(){
+		var opsName	= $('.interval_ops').html();
+		if(opsName == '暂停'){
+			clearInterval(timeId);
+			$('.interval_ops').html('继续');
+		}else{
+			timeId = setInterval('setResult()',3000); 
+			$('.interval_ops').html('暂停');
+		}
+	});
 });
 function setResult(){
 	//url
