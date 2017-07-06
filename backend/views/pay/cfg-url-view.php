@@ -101,7 +101,7 @@ $channelCfgToSync = $channelCfgToSync;
                 <div class="col-xs-10">
                         <select id="url_yapi_respHandle" class="form-control">
                           <option value ="0" <?php if($urlYApiModel){if($urlYApiModel->respHandle == '0'){ echo 'selected="selected"';}}?>>不处理</option>
-                          <option value ="1" <?php if($urlYApiModel){if($urlYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode</option>
+                          <option value ="1" <?php if($urlYApiModel){if($urlYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode,JSON格式</option>
                         </select>                        
                 </div>
               </div>

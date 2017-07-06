@@ -170,7 +170,7 @@ if($smsNApiModel){
                 <div class="col-xs-10">
                         <select id="sms_yapi_respHandle" class="form-control">
                           <option value ="0" <?php if($smsYApiModel){if($smsYApiModel->respHandle == '0'){ echo 'selected="selected"';}}?>>不处理</option>
-                          <option value ="1" <?php if($smsYApiModel){if($smsYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode</option>
+                          <option value ="1" <?php if($smsYApiModel){if($smsYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode,JSON格式</option>
                         </select>                        
                 </div>
               </div>
