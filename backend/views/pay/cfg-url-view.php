@@ -95,7 +95,17 @@ $channelCfgToSync = $channelCfgToSync;
                   <input type="text" class="form-control" id="url_yapi_smtKey" placeholder="..." value="<?php if($urlYApiModel){echo $urlYApiModel->smtKey;}?>">
                 </div>
             </div>  
-            
+
+              <div class="form-group">
+                <label for="url_yapi_respHandle" class="col-xs-2 control-label">响应结果处理</label>
+                <div class="col-xs-10">
+                        <select id="url_yapi_respHandle" class="form-control">
+                          <option value ="0" <?php if($urlYApiModel){if($urlYApiModel->respHandle == '0'){ echo 'selected="selected"';}}?>>不处理</option>
+                          <option value ="1" <?php if($urlYApiModel){if($urlYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode</option>
+                        </select>                        
+                </div>
+              </div>
+                          
              <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
                   <button id="url_yapi_save" class="btn btn-default">保存</button>
@@ -225,6 +235,7 @@ $(document).ready(function(){
 				+'&url='+$('#url_yapi_url').val()
 				+'&sendMethod='+$('#url_yapi_sendMethod').val()
 				+'&respFmt='+$('#url_yapi_respFmt').val()
+				+'&respHandle='+$('#url_yapi_respHandle').val()				
 				+'&delimiter='+encodeURIComponent($('#url_yapi_delimiter').val())
 				+'&succKey='+$('#url_yapi_succKey').val()
 				+'&succValue='+$('#url_yapi_succValue').val()

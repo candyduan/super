@@ -244,7 +244,16 @@ if(!is_array($sendType1)){
                 </div>
               </div> 
               
-
+              <div class="form-group">
+                <label for="yapi_resp_handle" class="col-xs-2 control-label">响应结果处理</label>
+                <div class="col-xs-10">
+                        <select id="yapi_resp_handle" class="form-control">
+                          <option value ="0" <?php if($sdYApiModel){if($sdYApiModel->respHandle == '0'){ echo 'selected="selected"';}}?>>不处理</option>
+                          <option value ="1" <?php if($sdYApiModel){if($sdYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode</option>
+                        </select>                        
+                </div>
+              </div> 
+              
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
                   <button id="yapi_save" class="btn btn-default">保存</button>
@@ -471,6 +480,7 @@ $(document).ready(function(){
 		+'&url='+$('#yapi_url').val()
 		+'&sendMethod='+$('#yapi_send_method').val()
 		+'&respFmt='+$('#yapi_resp_fmt').val()
+		+'&respHandle='+$('#yapi_resp_handle').val()		
 		+'&delimiter='+encodeURIComponent($('#sg_yapi_delimiter').val());
 		//succFunc
 		var succFunc	= function(resJson){

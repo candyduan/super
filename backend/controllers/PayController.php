@@ -194,7 +194,8 @@ class PayController extends BController{
         $url                = Utils::getBackendParam('url');
         $sendMethod         = Utils::getBackendParam('sendMethod');
         $respFmt            = Utils::getBackendParam('respFmt');
-        $delimiter = Utils::getBackendParam('delimiter');
+        $delimiter          = Utils::getBackendParam('delimiter');
+        $respHandle         = Utils::getBackendParam('respHandle');
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -223,6 +224,7 @@ class PayController extends BController{
             $sdYApiModel->sendMethod   = $sendMethod;
             $sdYApiModel->respFmt      = $respFmt;
             $sdYApiModel->delimiter = $delimiter;
+            $sdYApiModel->respHandle    = $respHandle;
         
             try{
                 ChannelCfgMain::backendOps($chid);
@@ -430,6 +432,8 @@ class PayController extends BController{
         $sendMethod     = Utils::getBackendParam('sendMethod');
         $respFmt        = Utils::getBackendParam('respFmt');
         $delimiter = Utils::getBackendParam('delimiter');
+        $respHandle         = Utils::getBackendParam('respHandle');
+        
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
             $smsYApiModel   = ChannelCfgSmsYapi::findByChannelId($chid);
@@ -446,6 +450,7 @@ class PayController extends BController{
             $smsYApiModel->sendMethod   = $sendMethod;
             $smsYApiModel->respFmt      = $respFmt;
             $smsYApiModel->delimiter = $delimiter;
+            $smsYApiModel->respHandle   = $respHandle;
             if($sendType1 == '[]'){
                 $sendType1  = '';
             }
@@ -674,7 +679,7 @@ class PayController extends BController{
         $succValue      = Utils::getBackendParam('succValue');
         $orderIdKey     = Utils::getBackendParam('orderIdKey');
         $smtKey         = Utils::getBackendParam('smtKey');
-       
+        $respHandle     = Utils::getBackendParam('respHandle');
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
@@ -691,7 +696,7 @@ class PayController extends BController{
             $urlYApiModel->orderIdKey   = $orderIdKey;
             $urlYApiModel->smtKey       = $smtKey;
             $urlYApiModel->delimiter = $delimiter;
-
+            $urlYApiModel->respHandle   = $respHandle;
 
             try{
                 $urlYApiModel->save();
