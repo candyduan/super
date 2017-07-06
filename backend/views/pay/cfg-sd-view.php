@@ -249,7 +249,7 @@ if(!is_array($sendType1)){
                 <div class="col-xs-10">
                         <select id="yapi_resp_handle" class="form-control">
                           <option value ="0" <?php if($sdYApiModel){if($sdYApiModel->respHandle == '0'){ echo 'selected="selected"';}}?>>不处理</option>
-                          <option value ="1" <?php if($sdYApiModel){if($sdYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode</option>
+                          <option value ="1" <?php if($sdYApiModel){if($sdYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode,JSON格式</option>
                         </select>                        
                 </div>
               </div> 
