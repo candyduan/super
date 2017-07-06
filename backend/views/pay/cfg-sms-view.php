@@ -164,7 +164,17 @@ if($smsNApiModel){
                   <input type="text" class="form-control" id="sms_yapi_orderIdKey" placeholder="..." value="<?php if($smsYApiModel){echo $smsYApiModel->orderIdKey;}?>">
                 </div>
             </div>   
-            
+
+              <div class="form-group">
+                <label for="sms_yapi_respHandle" class="col-xs-2 control-label">响应结果处理</label>
+                <div class="col-xs-10">
+                        <select id="sms_yapi_respHandle" class="form-control">
+                          <option value ="0" <?php if($smsYApiModel){if($smsYApiModel->respHandle == '0'){ echo 'selected="selected"';}}?>>不处理</option>
+                          <option value ="1" <?php if($smsYApiModel){if($smsYApiModel->respHandle == '1'){ echo 'selected="selected"';}}?>>UrlDecode</option>
+                        </select>                        
+                </div>
+              </div>
+                          
              <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-2">
                   <button id="sms_yapi_save" class="btn btn-default">保存</button>
@@ -422,6 +432,7 @@ $(document).ready(function(){
 				+'&url='+$('#sms_yapi_url').val()
 				+'&sendMethod='+$('#sms_yapi_sendMethod').val()
 				+'&respFmt='+$('#sms_yapi_respFmt').val()
+				+'&respHandle='+$('#sms_yapi_respHandle').val()				
 				+'&delimiter='+encodeURIComponent($('#sms_yapi_delimiter').val());
 		
 

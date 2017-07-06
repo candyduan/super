@@ -16,10 +16,11 @@ use Yii;
  * @property string $succKey
  * @property string $orderIdKey
  * @property string $smtKey
+ * @property string $delimiter
+ * @property integer $respHandle
  * @property string $recordTime
  * @property string $updateTime
  * @property integer $status
- * @property string $delimiter
  */
 class ChannelCfgUrlYapi extends \yii\db\ActiveRecord
 {
@@ -38,7 +39,7 @@ class ChannelCfgUrlYapi extends \yii\db\ActiveRecord
     {
         return [
             [['channelId'], 'required'],
-            [['channelId', 'sendMethod', 'respFmt', 'status'], 'integer'],
+            [['channelId', 'sendMethod', 'respFmt', 'respHandle', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['url'], 'string', 'max' => 512],
             [['succValue', 'succKey', 'orderIdKey', 'smtKey'], 'string', 'max' => 128],
@@ -62,10 +63,11 @@ class ChannelCfgUrlYapi extends \yii\db\ActiveRecord
             'succKey' => 'Succ Key',
             'orderIdKey' => 'Order Id Key',
             'smtKey' => 'Smt Key',
+            'delimiter' => 'Delimiter',
+            'respHandle' => 'Resp Handle',
             'recordTime' => 'Record Time',
             'updateTime' => 'Update Time',
             'status' => 'Status',
-            'delimiter' => 'Delimiter',
         ];
     }
 }
