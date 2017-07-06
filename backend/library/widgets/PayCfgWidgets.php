@@ -640,6 +640,7 @@ $(document).ready(function(){
         $succKey         = '';
         $succValue       = '';
         $cpparamKey      = '';
+        $spOidKey        = '';
         $mobileKey       = '';
         $feeKey          = '';
         $feeUnitFen      = '';
@@ -651,6 +652,7 @@ $(document).ready(function(){
             $succKey    = $channelCfgSyncModel->succKey;
             $succValue  = $channelCfgSyncModel->succValue;
             $cpparamKey = $channelCfgSyncModel->cpparamKey;
+            $spOidKey   = $channelCfgSyncModel->spOidKey;
             $mobileKey  = $channelCfgSyncModel->mobileKey;
             $feeKey     = $channelCfgSyncModel->feeKey;
     
@@ -695,7 +697,14 @@ $(document).ready(function(){
                   <input type="text" class="form-control" id="sync_cpparam_key" placeholder="..." value="'.$cpparamKey.'">
                 </div>
               </div>
-    
+                      
+              <div class="form-group">
+                <label for="sync_spoid_key" class="col-xs-2 control-label">SP订单号Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="sync_spoid_key" placeholder="..." value="'.$spOidKey.'">
+                </div>
+              </div>
+                      
               <div class="form-group">
                 <label for="sync_mobile_key" class="col-xs-2 control-label">手机号Key</label>
                 <div class="col-xs-10">
@@ -766,6 +775,7 @@ $(document).ready(function(){
             		+"&succKey="+$("#sync_succ_key").val()
             		+"&succValue="+$("#sync_succ_value").val()
             		+"&cpparamKey="+$("#sync_cpparam_key").val()
+                    +"&spOidKey="+$("#sync_spoid_key").val()
                     +"&mobileKey="+$("#sync_mobile_key").val()
             		+"&feeKey="+$("#sync_fee_key").val()
             		+"&feeUnit="+$("#sync_fee_unit").val()

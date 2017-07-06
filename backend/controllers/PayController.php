@@ -344,6 +344,7 @@ class PayController extends BController{
         $succKey    = Utils::getBackendParam('succKey');
         $succValue  = Utils::getBackendParam('succValue');
         $cpparamKey = Utils::getBackendParam('cpparamKey');
+        $spOidKey   = Utils::getBackendParam('spOidKey');
         $mobileKey  = Utils::getBackendParam('mobileKey');
         $feeKey     = Utils::getBackendParam('feeKey');
         $feeUnit    = Utils::getBackendParam('feeUnit');
@@ -361,6 +362,7 @@ class PayController extends BController{
             $syncModel->succKey      = $succKey;
             $syncModel->succValue    = $succValue;
             $syncModel->cpparamKey   = $cpparamKey;
+            $syncModel->spOidKey     = $spOidKey;
             $syncModel->mobileKey    = $mobileKey;
             $syncModel->feeKey       = $feeKey;
             $syncModel->feeUnit      = $feeUnit;

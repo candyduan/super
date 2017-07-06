@@ -12,6 +12,7 @@ use Yii;
  * @property string $succKey
  * @property string $succValue
  * @property string $cpparamKey
+ * @property string $spOidKey
  * @property string $feeKey
  * @property integer $feeUnit
  * @property string $cmdKey
@@ -41,7 +42,7 @@ class ChannelCfgSync extends \yii\db\ActiveRecord
             [['channelId'], 'required'],
             [['channelId', 'feeUnit', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
-            [['succKey', 'succValue', 'cpparamKey', 'feeKey', 'cmdKey', 'succReturn', 'mobileKey', 'feeFixed'], 'string', 'max' => 128],
+            [['succKey', 'succValue', 'cpparamKey', 'spOidKey', 'feeKey', 'cmdKey', 'succReturn', 'mobileKey', 'feeFixed'], 'string', 'max' => 128],
             [['channelId'], 'unique'],
         ];
     }
@@ -57,6 +58,7 @@ class ChannelCfgSync extends \yii\db\ActiveRecord
             'succKey' => 'Succ Key',
             'succValue' => 'Succ Value',
             'cpparamKey' => 'Cpparam Key',
+            'spOidKey' => 'Sp Oid Key',
             'feeKey' => 'Fee Key',
             'feeUnit' => 'Fee Unit',
             'cmdKey' => 'Cmd Key',
