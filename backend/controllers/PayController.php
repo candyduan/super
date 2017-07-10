@@ -41,7 +41,7 @@ class PayController extends BController{
         $mid    = Utils::getBackendParam('mid');
         $chid   = Utils::getBackendParam('chid');
         $page   = Utils::getBackendParam('page',1);
-        
+        $channelStatus = Utils::getBackendParam('channelStatus','-1');
         
         if(is_numeric($chid) && $chid > 0){
             $channelModel   = Channel::findByPk($chid);
@@ -55,9 +55,9 @@ class PayController extends BController{
                 $res    = [];
             }
         }elseif (is_numeric($mid) && $mid > 0){
-             $res   = Channel::findByMerchantNeedPaginator($mid,$page);
+             $res   = Channel::findByMerchantStatusNeedPaginator($mid,$channelStatus,$page);
         }else{
-            $res    = Channel::findAllNeedPaginator($page);
+            $res    = Channel::findByStatusNeedPaginator($channelStatus,$page);
         }
         
         $models = $res['models'];

@@ -15,10 +15,13 @@ class Channel extends \common\models\orm\base\Channel{
         return $model;
     }
     
-    public static function findByMerchantNeedPaginator($merchant,$page = 1,$perpage = 20){
+    public static function findByMerchantStatusNeedPaginator($merchant,$status = '-1',$page = 1,$perpage = 20){
         $condition  = array(
             'merchant'  => $merchant,
         );
+        if($status >= 0){
+            $condition['status']    = $status;
+        }
         $data = self::find()->where($condition);
         $totalCount = $data->count();
         $pages      = ceil($totalCount/$perpage);
@@ -31,8 +34,12 @@ class Channel extends \common\models\orm\base\Channel{
         ];
     }
     
-    public static function findAllNeedPaginator($page = 1,$perpage = 20){
-        $data = self::find()->orderBy('id DESC');
+    public static function findByStatusNeedPaginator($status = '-1',$page = 1,$perpage = 20){
+        if($status >= 0){
+            $data = self::find()->where(['status' => $status])->orderBy('id DESC');
+        }else{
+            $data = self::find()->orderBy('id DESC');
+        }
         $totalCount = $data->count();
         $pages      = ceil($totalCount/$perpage);
         $pagination = new Pagination(['totalCount' => $totalCount,'pageSize' => $perpage,'page' => $page]);
