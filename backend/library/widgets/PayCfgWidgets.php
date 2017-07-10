@@ -21,6 +21,7 @@ class PayCfgWidgets{
         $customs         = '';
         $provinceMap     = '';
         $cpparamKey      = '';
+        $cpparamLen      = '10';
         $cpparamPrefix   = '';
         $appNameKey     = '';
         $goodNameKey    = '';
@@ -52,6 +53,7 @@ class PayCfgWidgets{
             }
     
             $cpparamKey     = $payParamsModel->cpparamKey;
+            $cpparamLen     = $payParamsModel->cpparamLen;
             $cpparamPrefix  = $payParamsModel->cpparamPrefix;
             $appNameKey     = $payParamsModel->appNameKey;
             $goodNameKey    = $payParamsModel->goodNameKey;
@@ -209,6 +211,13 @@ class PayCfgWidgets{
                 </div>
               </div>
     
+              <div class="form-group">
+                <label for="param_cpparam_len" class="col-xs-2 control-label">透传参数长度</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="param_cpparam_len" placeholder="..." value="'.$cpparamLen.'">
+                </div>
+              </div>
+                      
               <div class="form-group">
                 <label for="param_cpparam_prefix" class="col-xs-2 control-label">透传参数前缀</label>
                 <div class="col-xs-10">
@@ -606,6 +615,7 @@ $(document).ready(function(){
                         +"&provinceMap="+$(".data_store_params").attr("province_map")
                         +"&provinceMapKey="+$("#param_provincemap_key").val()
                         +"&cpparamKey="+$("#param_cpparam_key").val()
+                        +"&cpparamLen="+$("#param_cpparam_len").val()
                         +"&cpparamPrefix="+$("#param_cpparam_prefix").val()
                         +"&cpparamHandle="+$("#param_cpparam_handle").val()      
                         +"&appNameKey="+$("#param_appname_key").val()
