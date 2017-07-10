@@ -22,7 +22,7 @@
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#regchannel"><i class="fa fa-fw fa-dashboard"></i>通道中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="regchannel" class="collapse">
-                            <li><a class="sidebar-item" href="/register/merchant-view">通道商列表</a></li>
+                            <li><a class="sidebar-item" href="/merchant/merchant-view?from=2">通道商列表</a></li>
                             <li><a class="sidebar-item" href="/register/channel-view">通道列表</a></li>
                             <li><a class="sidebar-item" href="/register/save-channel-view">添加/编辑通道</a></li>
                             <li><a class="sidebar-item" href="/register/mutex-view">通道组管理</a></li>

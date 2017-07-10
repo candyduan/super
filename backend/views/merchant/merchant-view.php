@@ -111,7 +111,7 @@ $("#selectMerchantObj").typeahead({
 
 function setResult(page){
     //url
-    var url = '/register/merchant-result';
+    var url = '/merchant/merchant-result';
     //data
   	var merchantId  = $('#merchantId').val();
     var data = 'merchantId='+merchantId+'&page='+page;
@@ -120,7 +120,14 @@ function setResult(page){
             if(parseInt(resultJson.resultCode) == 1){
                     var resultHtml = '';
                     $.each(resultJson.list,function(key,val){
-                            resultHtml = resultHtml + '<tr><td>'+val.id+'</td><td>'+val.name+'</td><td>'+val.holder+'</td><td>按'+val.payCircle+'结算</td><td>'+val.tax+'</td><td><a class="btn btn-default " href="/register/channel-view?mid='+val.id+'"> 查看 </a><button type="submit" class="btn btn-default editMerchant_btn" mid="'+val.id+'"> 编辑 </button></td>';
+                        var from = Utils.getQueryString('from');
+                        var viewSee;
+                        if(from == 1){
+                        	viewSee = '/pay/channel-view?mid='+val.id;
+                        }else{
+                        	viewSee = '/register/channel-view?mid='+val.id;
+                        }
+                        resultHtml = resultHtml + '<tr><td>'+val.id+'</td><td>'+val.name+'</td><td>'+val.holder+'</td><td>按'+val.payCircle+'结算</td><td>'+val.tax+'</td><td><a class="btn btn-default " href="'+viewSee+'"> 查看 </a><button type="submit" class="btn btn-default editMerchant_btn" mid="'+val.id+'"> 编辑 </button></td>';
                     });
                     $('#data_list').html(resultHtml);
 	                Utils.setPagination(page,resultJson.pages);
@@ -133,7 +140,7 @@ function setResult(page){
 				
 				var mid = $(this).attr('mid');
 				var data = 'mid='+mid;
-				var url = '/register/get-merchant-info';
+				var url = '/merchant/get-merchant-info';
 				var payCircle;
 				var succ =function(resultJson){
 					if(resultJson.resultCode == 1){
@@ -177,7 +184,7 @@ $('#addMerchantBtn').click(function(){
 	$('#tax').val('');
 	$('#memo').val('');
 	$('#mid').val('');
-	var url = '/register/holder-result';
+	var url = '/merchant/holder-result';
 	var data = '';
 	var succ = function(resultJson){
 	        if(parseInt(resultJson.resultCode) == 1){
@@ -206,7 +213,7 @@ $('#saveMerchant').click(function(){
 		return;
 	}
 	
-	var url = '/register/merchant-set-save';
+	var url = '/merchant/merchant-set-save';
 	var data = 'name='+merchantName+'&addr='+merchantAddr+'&holder='+merchantHolder+'&payCircle='+payCircle+'&tax='+tax+'&memo='+memo+'&mid='+mid; 
 	var succ = function(resultJson){
 		if(resultJson.resultCode == 1){

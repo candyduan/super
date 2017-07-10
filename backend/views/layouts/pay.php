@@ -22,13 +22,14 @@
                     <li class="">
                         <a href="javascript:;" data-toggle="collapse" data-target="#channel"><i class="fa fa-fw fa-dashboard"></i>通道中心<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="channel" class="collapse">
-                        	<li><a class="sidebar-item" href="/pay/channel-cfg-useage">使用说明</a></li>
-                            <li><a class="sidebar-item" href="/pay/channel-view">通道配置</a></li>
+                        	<li><a class="sidebar-item" href="/merchant/merchant-view?from=1">通道商列表</a></li>
+                            <li><a class="sidebar-item" href="/pay/channel-view">通道管理</a></li>
                         </ul>
                     </li>
                     <li class="">
                         <a href="javascript:;" data-toggle="collapse" data-target="#operate"><i class="fa fa-fw fa-dashboard"></i>运营工具<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="operate" class="collapse">
+                            <li><a class="sidebar-item" href="/pay/channel-cfg-useage">通道配置文档</a></li>
                             <li><a class="sidebar-item" href="/pay/jsonstring-view">JSON解析</a></li>
                         </ul>
                     </li>                                      
