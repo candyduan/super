@@ -922,4 +922,18 @@ class PayController extends BController{
     public function actionJsonstringView(){
         return $this->render('jsonstring-view');
     }
+    
+    /*
+     * 通道地域覆盖展示
+     */
+    public function actionChannelCoverView(){
+        return $this->render('channel-cover-view');
+    }
+    
+    /*
+     * 通道组管理
+     */
+    public function actionMutexView(){
+        return $this->render('mutex-view');
+    }
 }

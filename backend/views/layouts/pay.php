@@ -24,6 +24,8 @@
                         <ul id="channel" class="collapse">
                         	<li><a class="sidebar-item" href="/merchant/merchant-view?from=1">通道商列表</a></li>
                             <li><a class="sidebar-item" href="/pay/channel-view">通道管理</a></li>
+                            <li><a class="sidebar-item" href="/pay/channel-cover-view">通道地域覆盖</a></li>
+                            <li><a class="sidebar-item" href="/pay/mutex-view">通道组管理</a></li>
                         </ul>
                     </li>
                     <li class="">
