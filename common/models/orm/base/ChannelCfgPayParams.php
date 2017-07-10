@@ -20,6 +20,7 @@ use Yii;
  * @property string $feePackages
  * @property string $customs
  * @property string $cpparamKey
+ * @property integer $cpparamLen
  * @property string $cpparamPrefix
  * @property integer $cpparamHandle
  * @property string $provinceMap
@@ -52,7 +53,7 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
     {
         return [
             [['channelId'], 'required'],
-            [['channelId', 'feeUnit', 'cpparamHandle', 'status'], 'integer'],
+            [['channelId', 'feeUnit', 'cpparamLen', 'cpparamHandle', 'status'], 'integer'],
             [['recordTime', 'updateTime'], 'safe'],
             [['mobileKey', 'imeiKey', 'imsiKey', 'iccidKey', 'ipKey', 'feeKey', 'feeCodeKey', 'cpparamKey', 'cpparamPrefix', 'provinceMapKey', 'appNameKey', 'goodNameKey', 'provinceNameKey', 'linkIdKey', 'timestampKey', 'unixTimestampKey', 'signKey'], 'string', 'max' => 128],
             [['feePackages'], 'string', 'max' => 512],
@@ -81,6 +82,7 @@ class ChannelCfgPayParams extends \yii\db\ActiveRecord
             'feePackages' => 'Fee Packages',
             'customs' => 'Customs',
             'cpparamKey' => 'Cpparam Key',
+            'cpparamLen' => 'Cpparam Len',
             'cpparamPrefix' => 'Cpparam Prefix',
             'cpparamHandle' => 'Cpparam Handle',
             'provinceMap' => 'Province Map',
