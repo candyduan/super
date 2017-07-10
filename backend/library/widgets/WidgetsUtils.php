@@ -130,7 +130,9 @@ class WidgetsUtils{
             	url = url.replace("http://","").replace(domain,"").replace(":8082","");
                 var selected = false;
             	$.each($(".sidebar-item"),function(key,val){
-            		if($(val).attr("href") == url){
+                    sidebarUrl = $(val).attr("href").split("?");
+                    sidebarUrl = sidebarUrl[0];
+            		if(sidebarUrl == url){
             			$(val).addClass("selected");
             			$(val).parent().parent().addClass("in");
                         selected = true;

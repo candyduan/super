@@ -231,9 +231,9 @@ class AdminUserController extends BController
                 'partner-data'
             ],
             'agency' => ['agency'], //主动上行
-            'register' => ['register'],//注册中介
+            'register' => ['register','merchant'],//注册中介
             'system' => ['system','modify-password'], //个人中心
-            'pay' => ['pay'], //支付SDK
+            'pay' => ['pay','merchant'], //支付SDK
             'admin-user' => ['admin-user','out-user'] //用户管理
         ];
     }

@@ -63,7 +63,12 @@ function setResult(page){
 	//url
 	var url ='/pay/channel-result';
 	//data
-	var data = 'chid='+$('#channel').val()+'&mid='+$('#merchant').val()+'&page='+page;
+    var mid = $('#merchant').val();
+    if(mid == ''){
+    	mid  = Utils.getQueryString('mid');
+    }
+  	var merchantId  = mid;
+	var data = 'chid='+$('#channel').val()+'&mid='+merchantId+'&page='+page;
 	//succ
 	var succ	= function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
