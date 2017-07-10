@@ -10,6 +10,17 @@
 	<div class="form-inline searchbar">	
 		  <?php echo backend\library\widgets\WidgetsUtils::getSearchMerchant();?>
 		  <?php echo backend\library\widgets\WidgetsUtils::getSearchPayChannel();?>
+		  
+		  <div class="form-group">
+    		  <select class="form-control" id="channel_status">
+        		<option value="-1">-- 通道状态 --</option>
+        		<option value="0">-- 可用 --</option>
+        		<option value="1">-- 暂停 --</option>
+        		<option value="2">-- 删除 --</option>
+        		<option value="3">-- 测试 --</option>
+        	 </select>
+    	  </div>
+    	  
           <button type="submit" class="btn btn-default searchbar_smt" id="search"> 搜索 </button>
 	</div>
 	
@@ -68,7 +79,7 @@ function setResult(page){
     	mid  = Utils.getQueryString('mid');
     }
   	var merchantId  = mid;
-	var data = 'chid='+$('#channel').val()+'&mid='+merchantId+'&page='+page;
+	var data = 'chid='+$('#channel').val()+'&mid='+merchantId+'&page='+page+'&channelStatus='+$('#channel_status').val();
 	//succ
 	var succ	= function(resultJson){
 		if(parseInt(resultJson.resultCode) == 1){
