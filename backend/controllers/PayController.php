@@ -25,6 +25,7 @@ use common\models\orm\extend\ChannelCfgPaySign;
 use common\models\orm\extend\ChannelCfgSmtSign;
 use common\models\orm\extend\ChannelCfgSmsSdkSubmit;
 use common\models\orm\extend\ChannelCfgUrlSdkSubmit;
+use common\models\orm\extend\ChannelGroup;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -931,9 +932,44 @@ class PayController extends BController{
     }
     
     /*
-     * 通道组管理
+     * 通道组列表
      */
     public function actionMutexView(){
         return $this->render('mutex-view');
+    }
+    
+    /*
+     * 通道组数据
+     */
+    public function actionMutexResult(){
+        $page   = Utils::getBackendParam('page',1);
+        
+        $res    = ChannelGroup::findAllNeedPaginator($page);
+        
+        $pages  = $res['pages'];
+        $models = $res['models'];
+        
+        if($pages > 0 && $pages >= $page){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $out['pages']       = $pages;
+            $out['page']        = $page;
+            
+            $list   = [];
+            foreach ($models as $channlGroupModel){
+                $item   = ChannelGroup::getItemArrByModel($channlGroupModel);
+                array_push($list, $item);
+            }
+            $out['list']    = $list;
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            if($page > 1){
+                $msg    = Constant::RESULT_MSG_NOMORE;
+            }else{
+                $msg    = Constant::RESULT_MSG_NONE;
+            }
+            $out['msg'] = $msg;
+        }
+        Utils::jsonOut($out);
     }
 }
