@@ -2,7 +2,7 @@
 pre{background-color:#f0f0f0;color:#00a600;}
 </style>
 <ol class="breadcrumb">
-<li class=""><a href="/pay/channel-view">通道配置</a></li>
+<li class=""><a href="/pay/channel-view">通道管理</a></li>
 <li class="active">通道日志查询</li>
 </ol>
 <div class="main">

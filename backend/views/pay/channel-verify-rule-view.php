@@ -5,7 +5,7 @@ $succRuleModels    = $succRuleModels;
 
 ?>
 <ol class="breadcrumb">
-<li><a href="/pay/channel-view">通道配置</a></li>
+<li><a href="/pay/channel-view">通道管理</a></li>
 <li class="active">短信屏蔽规则</li>
 <li class="channelName"><?php echo $channelModel->name;?></li>
 </ol>

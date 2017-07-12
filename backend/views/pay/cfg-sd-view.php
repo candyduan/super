@@ -66,7 +66,7 @@ if(!is_array($sendType1)){
 }
 ?>
 <ol class="breadcrumb">
-<li><a href="/pay/channel-view">通道配置</a></li>
+<li><a href="/pay/channel-view">通道管理</a></li>
 <li class="active">single或double类型配置</li>
 </ol>
 <div class="main">

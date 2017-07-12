@@ -3,7 +3,7 @@
 .chgDevType{cursor:pointer;}
 </style>
 <ol class="breadcrumb">
-<li class="active">通道配置</li>
+<li class="active">通道管理</li>
 </ol>
 <div class="main">
 	<!-- 搜索栏 -->
@@ -27,7 +27,7 @@
     <!-- 数据栏 -->
     <div class="databar">
     	<table class="table table-bordered table-hover">
-    	<thead><tr><td>通道商</td><td>通道</td><td>标识</td><td>负责人</td><td>运营商</td><td>级别</td><td>DEV类型</td><td>短信</td><td>状态</td><td>操作</td><td>日志</td><td>方式</td></tr></thead>
+    	<thead><tr><td>通道商</td><td>通道</td><td>标识</td><td>负责人</td><td>运营商</td><td>级别</td><td>DEV</td><td>短信</td><td>状态</td><td>接入</td><td>日志</td><td>方式</td></tr></thead>
     	<tbody id="data_list"></tbody>
     	</table>
     </div>
