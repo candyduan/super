@@ -26,7 +26,7 @@ use common\models\orm\extend\ChannelCfgSmtSign;
 use common\models\orm\extend\ChannelCfgSmsSdkSubmit;
 use common\models\orm\extend\ChannelCfgUrlSdkSubmit;
 use common\models\orm\extend\ChannelGroup;
-use function Faker\time;
+use common\models\orm\extend\ChannelVerifyRule;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -1093,5 +1093,19 @@ class PayController extends BController{
             $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
         }
         Utils::jsonOut($out);
+    }
+    
+    
+    public function actionChannelVerifyRuleView(){
+        $chid   = Utils::getBackendParam('chid');
+        $channelModel   = Channel::findByPk($chid);
+        $verifyRuleModels   = ChannelVerifyRule::findByChannelType($chid,0);
+        $succRuleModels     = ChannelVerifyRule::findByChannelType($chid,1);
+        $data   = array(
+            'channelModel'      => $channelModel,
+            'verifyRuleModels'  => $verifyRuleModels,
+            'succRuleModels'    => $succRuleModels,
+        );
+        return $this->render('channel-verify-rule-view',$data);   
     }
 }
