@@ -40,12 +40,12 @@
 					<div>
 						<div class="input-group">
 							<span class="input-group-addon">通道商名称</span>
-							<input type="text" class="form-control mutexName" placeholder="" aria-describedby="basic-addon1" id="merchantName" value="">
+							<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" id="merchantName" value="">
 						</div>
 						
 						<div class="input-group">
 							<span class="input-group-addon">公司地址</span>
-							<input type="text" class="form-control mutexName" placeholder="" aria-describedby="basic-addon1" id="merchantAddr" value="">
+							<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" id="merchantAddr" value="">
 						</div>
 		
 						<div class="input-group">
@@ -64,12 +64,12 @@
 						
 						<div class="input-group">
 							<span class="input-group-addon">结算税率(%)</span>
-							<input type="text" class="form-control mutexName" placeholder="" aria-describedby="basic-addon1" id="tax" value="">
+							<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" id="tax" value="">
 						</div>
 						
 						<div class="input-group">
 							<span class="input-group-addon">备注</span>
-							<input type="text" class="form-control mutexName" placeholder="" aria-describedby="basic-addon1" id="memo" value="">
+							<input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" id="memo" value="">
 						</div>
 						
 						<input type='hidden' value='' id='mid'>

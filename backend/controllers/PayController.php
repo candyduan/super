@@ -934,14 +934,14 @@ class PayController extends BController{
     /*
      * 通道组列表
      */
-    public function actionMutexView(){
-        return $this->render('mutex-view');
+    public function actionCgroupView(){
+        return $this->render('cgroup-view');
     }
     
     /*
      * 通道组数据
      */
-    public function actionMutexResult(){
+    public function actionCgroupResult(){
         $page   = Utils::getBackendParam('page',1);
         
         $res    = ChannelGroup::findAllNeedPaginator($page);
@@ -969,6 +969,123 @@ class PayController extends BController{
                 $msg    = Constant::RESULT_MSG_NONE;
             }
             $out['msg'] = $msg;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionCgroupSetView(){
+        return $this->render('cgroup-set-view');
+    }
+    public function actionCgroupDetailResult(){
+        $id = Utils::getBackendParam('id');
+        $channelGroupModel  = ChannelGroup::findByPk($id);
+        if($channelGroupModel){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $out['item']        = $channelGroupModel->toArray();
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionCgroupSetSave(){
+        $id     = Utils::getBackendParam('id');
+        $name   = Utils::getBackendParam('name');
+        $uniqueLimit    = Utils::getBackendParam('uniqueLimit');
+        $cdTime = Utils::getBackendParam('cdTime');
+        $dayLimit   = Utils::getBackendParam('dayLimit');
+        $dayRequestLimit    = Utils::getBackendParam('dayRequestLimit');
+        $monthLimit = Utils::getBackendParam('monthLimit');
+        $monthRequestLimit  = Utils::getBackendParam('monthRequestLimit');
+        
+        if(is_numeric($id)){
+            $channelGroupModel  = ChannelGroup::findByPk($id);
+        }else{
+            $channelGroupModel  = new ChannelGroup();
+        }
+        $channelGroupModel->name    = $name;
+        $channelGroupModel->uniqueLimit = $uniqueLimit;
+        $channelGroupModel->cdTime  = $cdTime;
+        $channelGroupModel->dayLimit    = $dayLimit;
+        $channelGroupModel->dayRequestLimit = $dayRequestLimit;
+        $channelGroupModel->monthLimit  = $monthLimit;
+        $channelGroupModel->monthRequestLimit   = $monthRequestLimit;
+        try{
+            $channelGroupModel->oldSave();
+            //TODO delete MS_Channel_Groups cache
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionCgroupChannelListView(){
+        return $this->render('cgroup-channel-list-view');
+    }
+    public function actionCgroupChannelListResult(){
+        $gid    = Utils::getBackendParam('gid');        
+        $channelModels  = Channel::findByGroupId($gid);
+        
+        $channelGroupItem   = ChannelGroup::getItemArrByModel(ChannelGroup::findByPk($gid));
+        $out['item']    = $channelGroupItem;
+        if(count($channelModels) > 0){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $list   = [];
+            foreach ($channelModels as $channelModel){
+                $item   = Channel::getItemArrByModel($channelModel);
+                array_push($list, $item);
+            }
+            $out['list']    = $list;
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionCgroupJoin(){
+        $chid   = Utils::getBackendParam('chid');
+        $gid    = Utils::getBackendParam('gid');
+        
+        if($chid > 0 && $gid > 0){
+            $channelModel   = Channel::findByPk($chid);
+            try{
+                $channelModel->groupID  = $gid;
+                $channelModel->save();
+                
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+                
+                //TODO 更新通道cache
+            }catch (\Exception $e){
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
+            $out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+        }
+        Utils::jsonOut($out);
+    }
+    public function actionCgroupMove(){
+        $chid   = Utils::getBackendParam('chid');
+        $channelModel   = Channel::findByPk($chid);
+        try{
+            $channelModel->groupID = 0;
+            $channelModel->save();
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            
+            //TODO 更新通道cache
+        }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
         }
         Utils::jsonOut($out);
     }

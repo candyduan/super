@@ -324,4 +324,4 @@ table td {
 .channel_delete{color:#ff5151;}
 .pay_sign_logic{display:none;}
 .smt_sign_logic{display:none;}
-.glyphicon-cog{font-size:18px;}
+.glyphicon{font-size:18px;cursor:pointer;}
