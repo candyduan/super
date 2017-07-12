@@ -1,6 +1,7 @@
 <?php
 namespace common\library;
 use yii\helpers\ArrayHelper;
+use yii;
 class Utils{
     public static function jsonOut($out){
         \Yii::$app->getResponse()->format = \Yii\web\Response::FORMAT_JSON;
@@ -219,6 +220,26 @@ class Utils{
     		header('Expires:0');
     		header('Pragma:public');
     		return "\xFF\xFE".mb_convert_encoding($dataStr, 'UCS-2LE', 'UTF-8' );
+    }
+    
+    
+    public static function cacheSet($key, $val, $time=86400000){
+        try {
+            Yii::$app->cache->set(Constant::CACHE_PREFIX.$key, $val,$time);
+            $res = true;
+        } catch (\Exception $e) {
+            $res = false;
+        }
+        return $res;
+    }
+    
+    public static function cacheGet($key){
+        try {
+            $res = Yii::$app->cache->get(Constant::CACHE_PREFIX.$key);
+        }catch(\Exception $e) {
+            $res    = null;
+        }
+        return $res;
     }
     
 }

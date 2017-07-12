@@ -24,4 +24,15 @@ class ChannelGroup extends \common\models\orm\base\ChannelGroup{
         $item['name']   = '['.$item['id'].']'.$item['name'];
         return $item;
     }
+    
+    public static function findByPk($id){
+        $condition  = array(
+            'id'    => $id,
+        );
+        $model  = self::find()
+                        ->where($condition)
+                        ->one()
+                        ;
+        return $model;
+    }
 }

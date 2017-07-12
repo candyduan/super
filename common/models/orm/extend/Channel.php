@@ -147,4 +147,15 @@ class Channel extends \common\models\orm\base\Channel{
         return $res;
     }
     
+    public static function findByGroupId($gid){
+        $condition  = array(
+            'groupID'   => $gid,
+        );
+        $models = self::find()
+                        ->where($condition)
+                        ->all()
+                        ;
+        return $models;
+    }
+    
 }

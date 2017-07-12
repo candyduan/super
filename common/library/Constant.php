@@ -92,4 +92,7 @@ class Constant{
     const PAY_SIGN_RES_NORMAL   = 0;
     const PAY_SIGN_RES_LOWER    = 1;
     const PAY_SIGN_RES_UPPER    = 2;
+    
+    
+    const CACHE_PREFIX  = 'pre_';
 }
