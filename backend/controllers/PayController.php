@@ -26,6 +26,7 @@ use common\models\orm\extend\ChannelCfgSmtSign;
 use common\models\orm\extend\ChannelCfgSmsSdkSubmit;
 use common\models\orm\extend\ChannelCfgUrlSdkSubmit;
 use common\models\orm\extend\ChannelGroup;
+use function Faker\time;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -82,7 +83,7 @@ class PayController extends BController{
             }else{
                 $msg    = Constant::RESULT_MSG_NONE;
             }
-            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
             $out['msg']         = $msg;
         }
         Utils::jsonOut($out);
@@ -1057,6 +1058,7 @@ class PayController extends BController{
             $channelModel   = Channel::findByPk($chid);
             try{
                 $channelModel->groupID  = $gid;
+                $channelModel->updateTime   = time();
                 $channelModel->save();
                 
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
@@ -1078,6 +1080,9 @@ class PayController extends BController{
         $channelModel   = Channel::findByPk($chid);
         try{
             $channelModel->groupID = 0;
+            $channelModel->groupUnique  = 0;
+            $channelModel->groupLimit   = 0;
+            $channelModel->updateTime   = time();
             $channelModel->save();
             $out['resultCode']  = Constant::RESULT_CODE_SUCC;
             $out['msg']         = Constant::RESULT_MSG_SUCC;

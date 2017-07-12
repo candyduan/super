@@ -133,7 +133,8 @@ class Channel extends \common\models\orm\base\Channel{
             'provider'  => self::getNameByProvider($model->provider),
             'devType'   => self::getNameByDevType($model->devType),
             'devTypeId' => $model->devType,
-        	'mainStatus'	=> $model->id ? ChannelCfgMain::findByChannelId($model->id)->status : 0,
+        	'mainStatus'=> $model->id ? ChannelCfgMain::findByChannelId($model->id)->status : 0,
+            'grade'     => $model->grade == 0 ? '普通' : 'A级',
         );
         return $item;
     }
