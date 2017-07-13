@@ -20,9 +20,9 @@ $succRuleModels    = $succRuleModels;
     ?>
     	<div class="verify_<?= $verifyItem?> form-horizontal" style="border:1px solid #000;padding:5px;margin-top:3px;margin-bottom:3px;">
     	          <div class="form-group">
-                    <label for="verify_port_01" class="col-xs-2 control-label">端口号：</label>
+                    <label for="verify_<?= $verifyItem?>_port" class="col-xs-2 control-label">端口号：</label>
                     <div class="col-xs-10">
-                      <input type="text" class="form-control input_required" id="verify_01_port" placeholder="唯一端口号，必填" value="<?php echo $verifyRuleModels[$verifyItem]->port;?>">
+                      <input type="text" class="form-control input_required" id="verify_<?= $verifyItem?>_port" placeholder="唯一端口号，必填" value="<?php echo $verifyRuleModels[$verifyItem]->port;?>">
                     </div>
                   </div>
                   <div class="form-group">
@@ -35,7 +35,7 @@ $succRuleModels    = $succRuleModels;
                   </div>
                   
                   <div class="form-group">
-                    <label for="verify_01_memo" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+                    <label for="verify_<?= $verifyItem?>_memo" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
                     <div class="col-xs-10">
                       <textarea class="form-control" id="verify_<?= $verifyItem?>_memo" placeholder="备注，不超过500个字符"><?php echo $verifyRuleModels[$verifyItem]->memo;?></textarea>
                     </div>
@@ -44,7 +44,7 @@ $succRuleModels    = $succRuleModels;
                   
                   <div class="form-group">
                     <div class="col-xs-10 col-xs-offset-2">
-                      <button id="yapi_save" class="btn btn-default">保存</button>
+                      <button id="verify_<?= $verifyItem?>_save" data-cvrid="<?php echo $verifyRuleModels[$verifyItem]->id;?>" class="btn btn-default">保存</button>
                     </div>
                   </div> 
     	</div>
@@ -62,9 +62,9 @@ $succRuleModels    = $succRuleModels;
     ?>
         <div class="succ_<?= $succItem?> form-horizontal" style="border:1px solid #000;padding:5px;margin-top:3px;margin-bottom:3px;">
                   <div class="form-group">
-                    <label for="succ_port_01" class="col-xs-2 control-label">端口号：</label>
+                    <label for="succ_<?= $succItem?>_port" class="col-xs-2 control-label">端口号：</label>
                     <div class="col-xs-10">
-                      <input type="text" class="form-control input_required" id="succ_01_port" placeholder="唯一端口号，必填" value="<?php echo $succRuleModels[$succItem]->port;?>">
+                      <input type="text" class="form-control input_required" id="succ_<?= $succItem?>_port" placeholder="唯一端口号，必填" value="<?php echo $succRuleModels[$succItem]->port;?>">
                     </div>
                   </div>
                   <div class="form-group">
@@ -75,7 +75,7 @@ $succRuleModels    = $succRuleModels;
                   </div>
                   
                   <div class="form-group">
-                    <label for="succ_01_memo" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+                    <label for="succ_<?= $succItem?>_memo" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
                     <div class="col-xs-10">
                       <textarea class="form-control" id="succ_<?= $succItem?>_memo" placeholder="备注，不超过500个字符"><?php echo $succRuleModels[$succItem]->memo;?></textarea>
                     </div>
@@ -84,10 +84,66 @@ $succRuleModels    = $succRuleModels;
                   
                   <div class="form-group">
                     <div class="col-xs-10 col-xs-offset-2">
-                      <button id="yapi_save" class="btn btn-default">保存</button>
+                      <button id="succ_<?= $succItem?>_save" data-cvrid="<?php echo $succRuleModels[$succItem]->id;?>" class="btn btn-default">保存</button>
                     </div>
                   </div> 
         </div>
     <?php }?>   
     </div>
 </div>
+<script>
+$(document).ready(function(){
+	var verifyClick	= function(id){
+		var chid	= Utils.getQueryString('chid');
+		var cvrid	= $('#verify_'+id+'_save').attr('data-cvrid');
+		var port	= $('#verify_'+id+'_port').val();
+		var keys1	= $('#verify_'+id+'_keys1').val();
+		var keys2	= $('#verify_'+id+'_keys2').val();
+		var keys3	= $('#verify_'+id+'_keys3').val();
+		var memo	= $('#verify_'+id+'_memo').val();
+
+		var url 	= '/pay/channel-verify-rule-save';
+		var data	= 'chid='+chid+'&cvrid='+cvrid+'&port='+port+'&keys1='+keys1+'&keys2='+keys2+'&keys3'+keys3+'&memo='+memo+'&type=0';
+		var succFunc= function(resJson){
+			if(parseInt(resJson.resultCode) == 1){
+				Utils.tipBar('success','成功',resJson.msg);
+			}else{
+				Utils.tipBar('error','失败',resJson.msg);
+			}
+		};
+
+		Utils.ajax(url,data,succFunc);
+	};
+	var succClick	= function(id){
+		var chid	= Utils.getQueryString('chid');
+		var cvrid	= $('#succ_'+id+'_save').attr('data-cvrid');
+		var port	= $('#succ_'+id+'_port').val();
+		var keys2	= $('#succ_'+id+'_keys2').val();
+		var memo	= $('#succ_'+id+'_memo').val();
+
+		var url 	= '/pay/channel-verify-rule-save';
+		var data	= 'chid='+chid+'&cvrid='+cvrid+'&port='+port+'&keys2='+keys2+'&memo='+memo+'&type=1';
+		var succFunc= function(resJson){
+			if(parseInt(resJson.resultCode) == 1){
+				Utils.tipBar('success','成功',resJson.msg);
+			}else{
+				Utils.tipBar('error','失败',resJson.msg);
+			}
+		};
+
+		Utils.ajax(url,data,succFunc);
+	};
+	$('#verify_0_save').click(function(){
+		verifyClick(0);
+	});
+	$('#verify_1_save').click(function(){
+		verifyClick(1);
+	});
+	$('#succ_0_save').click(function(){
+		succClick(0);
+	});
+	$('#succ_1_save').click(function(){
+		succClick(1);
+	});
+});
+</script>

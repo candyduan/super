@@ -644,8 +644,10 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
     {
 	    	if ($this->getIsNewRecord()) {
 	    		$this->recordTime   = time();
+	    		$this->updateTime   = time();
 	    		return $this->insert($runValidation, $attributeNames);
 	    	} else {
+	    	    $this->updateTime   = time();
 	    		return $this->update($runValidation, $attributeNames) !== false;
 	    	}
     } 
