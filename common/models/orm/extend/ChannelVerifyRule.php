@@ -12,4 +12,14 @@ class ChannelVerifyRule extends \common\models\orm\base\ChannelVerifyRule{
                         ;
         return $models;
     }
+    public static function findByPk($id){
+        $condition  = array(
+            'id'    => $id,
+        );
+        $model  = self::find()
+                    ->where($condition)
+                    ->one()
+                    ;
+        return $model;
+    }
 }

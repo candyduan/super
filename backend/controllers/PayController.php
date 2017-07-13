@@ -1108,4 +1108,39 @@ class PayController extends BController{
         );
         return $this->render('channel-verify-rule-view',$data);   
     }
+    
+    public function actionChannelVerifyRuleSave(){        
+        $cvrid  = Utils::getBackendParam('cvrid');
+        $chid   = Utils::getBackendParam('chid');
+        $port   = Utils::getBackendParam('port');
+        $keys1  = str_replace('，', ',', Utils::getBackendParam('keys1'));
+        $keys2  = str_replace('，', ',', Utils::getBackendParam('keys2'));
+        $keys3  = str_replace('，', ',', Utils::getBackendParam('keys3'));
+        $type   = Utils::getBackendParam('type');
+        $memo   = Utils::getBackendParam('memo');
+        if($cvrid > 0){
+            $ruleModel  = ChannelVerifyRule::findByPk($cvrid);
+        }else{
+            $ruleModel  = new ChannelVerifyRule();
+        }
+        $ruleModel->channel = $chid;
+        $ruleModel->port    = $port;
+        $ruleModel->keys1   = $keys1;
+        $ruleModel->keys2   = $keys2;
+        $ruleModel->keys3   = $keys3;
+        $ruleModel->type    = $type;
+        $ruleModel->memo    = $memo;
+        $ruleModel->updateTime  = time();
+        
+        try{
+            $ruleModel->oldSave();            
+            //TODO 刷新该表缓存
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
 }
