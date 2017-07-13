@@ -27,11 +27,7 @@
     <!-- 数据栏 -->
     <div class="databar">
     	<table class="table table-bordered table-hover">
-<<<<<<< HEAD
-    	<thead><tr><td>通道商</td><td>通道</td><td>标识</td><td>负责人</td><td>运营商</td><td>级别</td><td>DEV类型</td><td>短信</td><td>状态</td><td>操作</td><td>日志</td><td>方式</td></tr></thead>
-=======
     	<thead><tr><td>通道商</td><td>通道</td><td>标识</td><td>负责人</td><td>运营商</td><td>级别</td><td>DEV</td><td>短信</td><td>状态</td><td>接入</td><td>日志</td><td>方式</td></tr></thead>
->>>>>>> develop
     	<tbody id="data_list"></tbody>
     	</table>
     </div>
