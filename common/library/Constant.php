@@ -95,4 +95,10 @@ class Constant{
     
     
     const CACHE_PREFIX  = 'pre_';
+    
+    /*
+     * 是否需要加防拨测链接
+     */
+    const DIALTEST_YES   = 1;
+    const DIALTEST_NO    = 0;
 }
