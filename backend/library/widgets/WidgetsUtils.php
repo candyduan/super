@@ -167,7 +167,7 @@ class WidgetsUtils{
           
         	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
             <link href="/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/css/mii-admin.css?d=20170619" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=20170620" rel="stylesheet">
             <link href="/css/pnotify.custom.css" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
             <style type="text/css">

@@ -27,7 +27,13 @@ use common\models\orm\extend\ChannelCfgSmsSdkSubmit;
 use common\models\orm\extend\ChannelCfgUrlSdkSubmit;
 use common\models\orm\extend\ChannelGroup;
 use common\models\orm\extend\ChannelCfgDialtest;
-use function Faker\time;
+use common\models\orm\extend\ChannelVerifyRule;
+use common\models\orm\extend\TimeLimit;
+use common\models\orm\extend\TimeProvinceLimit;
+use common\models\orm\extend\Province;
+use common\models\orm\extend\ChannelPrice;
+use common\library\ShortHash;
+use common\models\orm\extend\ChannelProvincePrice;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -1140,4 +1146,298 @@ class PayController extends BController{
         }
         Utils::jsonOut($out);
     }
+    
+    
+    public function actionChannelVerifyRuleView(){
+        $chid   = Utils::getBackendParam('chid');
+        $channelModel   = Channel::findByPk($chid);
+        $verifyRuleModels   = ChannelVerifyRule::findByChannelType($chid,0);
+        $succRuleModels     = ChannelVerifyRule::findByChannelType($chid,1);
+        $data   = array(
+            'channelModel'      => $channelModel,
+            'verifyRuleModels'  => $verifyRuleModels,
+            'succRuleModels'    => $succRuleModels,
+        );
+        return $this->render('channel-verify-rule-view',$data);   
+    }
+    
+    public function actionChannelVerifyRuleSave(){        
+        $cvrid  = Utils::getBackendParam('cvrid');
+        $chid   = Utils::getBackendParam('chid');
+        $port   = Utils::getBackendParam('port');
+        $keys1  = str_replace('，', ',', Utils::getBackendParam('keys1'));
+        $keys2  = str_replace('，', ',', Utils::getBackendParam('keys2'));
+        $keys3  = str_replace('，', ',', Utils::getBackendParam('keys3'));
+        $type   = Utils::getBackendParam('type');
+        $memo   = Utils::getBackendParam('memo');
+        if($cvrid > 0){
+            $ruleModel  = ChannelVerifyRule::findByPk($cvrid);
+        }else{
+            $ruleModel  = new ChannelVerifyRule();
+        }
+        $ruleModel->channel = $chid;
+        $ruleModel->port    = $port;
+        $ruleModel->keys1   = $keys1;
+        $ruleModel->keys2   = $keys2;
+        $ruleModel->keys3   = $keys3;
+        $ruleModel->type    = $type;
+        $ruleModel->memo    = $memo;
+        $ruleModel->updateTime  = time();
+        
+        try{
+            $ruleModel->oldSave();            
+            //TODO 刷新该表缓存
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e){
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    
+    public function actionChannelTimeLimitView(){
+        return $this->render('channel-time-limit-view');
+    }
+    
+    public function actionChannelTimeLimitResult(){
+        $chid   = Utils::getBackendParam('chid');
+        $channelModel   = Channel::findByPk($chid);
+        
+        $timeLimit = TimeLimit::getItemArrByChid($chid);
+        $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+        $out['msg']         = Constant::RESULT_MSG_SUCC;
+        $out['channel']     = Channel::getItemArrByModel($channelModel);
+        $out['timeLimit']   = $timeLimit;
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelTimeLimitSave(){
+        $chid   = Utils::getBackendParam('chid');
+        $h0      = Utils::getBackendParam('h0');    
+        $h1      = Utils::getBackendParam('h1');
+        $h2      = Utils::getBackendParam('h2');
+        $h3      = Utils::getBackendParam('h3');
+        $h4      = Utils::getBackendParam('h4');
+        $h5      = Utils::getBackendParam('h5');
+        $h6      = Utils::getBackendParam('h6');
+        $h7      = Utils::getBackendParam('h7');
+        $h8      = Utils::getBackendParam('h8');
+        $h9      = Utils::getBackendParam('h9');
+        $h10      = Utils::getBackendParam('h10');
+        $h11      = Utils::getBackendParam('h11');
+        $h12      = Utils::getBackendParam('h12');
+        $h13      = Utils::getBackendParam('h13');
+        $h14      = Utils::getBackendParam('h14');
+        $h15      = Utils::getBackendParam('h15');
+        $h16      = Utils::getBackendParam('h16');
+        $h17      = Utils::getBackendParam('h17');
+        $h18      = Utils::getBackendParam('h18');
+        $h19      = Utils::getBackendParam('h19');
+        $h20      = Utils::getBackendParam('h20');
+        $h21      = Utils::getBackendParam('h21');
+        $h22      = Utils::getBackendParam('h22');
+        $h23      = Utils::getBackendParam('h23');
+        
+        $timeLimitModel = TimeLimit::findByChid($chid);
+        if(!$timeLimitModel){
+            $timeLimitModel = new TimeLimit();
+            $timeLimitModel->channel    = $chid;
+        }
+        $hours  = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+        $timeLimitModel->h0 = $h0;
+        $timeLimitModel->h1 = $h1;
+        $timeLimitModel->h2 = $h2;
+        $timeLimitModel->h3 = $h3;
+        $timeLimitModel->h4 = $h4;
+        $timeLimitModel->h5 = $h5;
+        $timeLimitModel->h6 = $h6;
+        $timeLimitModel->h7 = $h7;
+        $timeLimitModel->h8 = $h8;
+        $timeLimitModel->h9 = $h9;
+        $timeLimitModel->h10    = $h10;
+        $timeLimitModel->h11    = $h11;
+        $timeLimitModel->h12    = $h12;
+        $timeLimitModel->h13    = $h13;
+        $timeLimitModel->h14    = $h14;
+        $timeLimitModel->h15    = $h15;
+        $timeLimitModel->h16    = $h16;
+        $timeLimitModel->h17    = $h17;
+        $timeLimitModel->h18    = $h18;
+        $timeLimitModel->h19    = $h19;
+        $timeLimitModel->h20    = $h20;
+        $timeLimitModel->h21    = $h21;
+        $timeLimitModel->h22    = $h22;
+        $timeLimitModel->h23    = $h23;
+        
+        $timeProvinceModels = [];
+        $provinces  = Province::getAllProvinceId();
+        foreach ($provinces as $provinceId){
+            $timeProvinceModel  = TimeProvinceLimit::findByChidProvince($chid,$provinceId);
+            if(!$timeProvinceModel){
+                $timeProvinceModel  = new TimeProvinceLimit();
+                $timeProvinceModel->channel = $chid;
+                $timeProvinceModel->province    = $provinceId;
+            }
+            $timeProvinceModel->h0     = $h0;
+            $timeProvinceModel->h1     = $h1;
+            $timeProvinceModel->h2     = $h2;
+            $timeProvinceModel->h3     = $h3;
+            $timeProvinceModel->h4     = $h4;
+            $timeProvinceModel->h5     = $h5;
+            $timeProvinceModel->h6     = $h6;
+            $timeProvinceModel->h7     = $h7;
+            $timeProvinceModel->h8     = $h8;
+            $timeProvinceModel->h9     = $h9;
+            $timeProvinceModel->h10    = $h10;
+            $timeProvinceModel->h11    = $h11;
+            $timeProvinceModel->h12    = $h12;
+            $timeProvinceModel->h13    = $h13;
+            $timeProvinceModel->h14    = $h14;
+            $timeProvinceModel->h15    = $h15;
+            $timeProvinceModel->h16    = $h16;
+            $timeProvinceModel->h17    = $h17;
+            $timeProvinceModel->h18    = $h18;
+            $timeProvinceModel->h19    = $h19;
+            $timeProvinceModel->h20    = $h20;
+            $timeProvinceModel->h21    = $h21;
+            $timeProvinceModel->h22    = $h22;
+            $timeProvinceModel->h23    = $h23;
+            
+            array_push($timeProvinceModels, $timeProvinceModel);
+        }
+        $tra    = TimeLimit::getDb()->beginTransaction();
+        try {
+            $timeLimitModel->origSave();
+            foreach ($timeProvinceModels as $timeProvinceModel){                
+                $timeProvinceModel->origSave();
+            }
+            
+            $tra->commit();
+            //TODO cache
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e){
+            $tra->rollBack();
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            $out['msg']         = $e->getMessage();
+        }
+        Utils::jsonOut($out);
+    }
+    
+    
+    public function actionChannelPriceView(){
+       return $this->render('channel-price-view'); 
+    }
+    
+    public function actionChannelPriceResult(){
+        $chid   = Utils::getBackendParam('chid');
+        
+        $models = ChannelPrice::findByChid($chid);
+        if($models > 0){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $list   = [];
+            foreach ($models as $channelPriceModel){
+                $item   = $channelPriceModel->toArray();
+                $item['updateTime'] = date('Y-m-d H:i:s',$item['updateTime']);
+                array_push($list, $item);
+            }
+            $out['list']    = $list;
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        $channelModel       = Channel::findByPk($chid);
+        $out['channel']     = Channel::getItemArrByModel($channelModel);
+        
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelPriceSave(){
+        $chid   = Utils::getBackendParam('chid');
+        $price   = Utils::getBackendParam('price');
+        
+        if($price > 0){
+            $channelPriceModel  = ChannelPrice::findByChidPrice($chid,$price);
+            if(!$channelPriceModel){
+                $channelPriceModel  = new ChannelPrice();
+                $channelPriceModel->channel = $chid;
+                $channelPriceModel->code    = ShortHash::MD5_24($chid.$price.time());
+            }
+            $channelPriceModel->price   = $price;
+            $channelPriceModel->status  = 0;
+            
+            //为通道的所有省份新增该价格点
+            $channelProvincePriceModels = [];
+            $provinceIds    = Province::getAllProvinceId();
+            foreach ($provinceIds as $provinceId){
+                $channelProvincePriceModel  = ChannelProvincePrice::findByChidProvincePrice($chid,$provinceId,$price);
+                if($channelProvincePriceModel){
+                    continue;
+                }else{
+                    $channelProvincePriceModel  = new ChannelProvincePrice();
+                    $channelProvincePriceModel->channel   = $chid;
+                    $channelProvincePriceModel->province  = $provinceId;
+                    $channelProvincePriceModel->price     = $price;
+                    $channelProvincePriceModel->status    = 0;
+                    array_push($channelProvincePriceModels, $channelProvincePriceModel);
+                }
+            }
+            $tra   = ChannelPrice::getDb()->beginTransaction();
+            try{
+                $channelPriceModel->oldSave();
+                foreach ($channelProvincePriceModels as $channelProvincePriceModel){
+                    $channelProvincePriceModel->oldSave();
+                }
+                $tra->commit();
+                //TODO cache
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch(\Exception $e){
+                $tra->rollBack();
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
+            $out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelPriceOps(){
+        $cpid   = Utils::getBackendParam('cpid');
+        
+        $channelPriceModel  = ChannelPrice::findByPk($cpid);
+        if($channelPriceModel){           
+            $channelProvincePriceModels = ChannelProvincePrice::findByChidPrice($channelPriceModel->channel,$channelPriceModel->price);
+            $tra   = ChannelPrice::getDb()->beginTransaction();
+            try {
+                $status = $channelPriceModel->status == 0 ? 1 : 0;
+                $channelPriceModel->status  = $status;
+                $channelPriceModel->oldSave();
+                foreach ($channelProvincePriceModels as $channelProvincePriceModel){
+                    $channelProvincePriceModel->status  = $status;
+                    $channelProvincePriceModel->oldSave();
+                }
+                
+                $tra->commit();
+                //TODO cache
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $tra->rollBack();
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
+    }
+    
 }

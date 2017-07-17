@@ -326,3 +326,4 @@ table td {
 .pay_sign_logic{display:none;}
 .smt_sign_logic{display:none;}
 .glyphicon{font-size:18px;cursor:pointer;}
+.input_required{border-color:red !important;}

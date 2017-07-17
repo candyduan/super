@@ -15,7 +15,7 @@ $outModel       = $outModel;
 $channelCfgToSync = $channelCfgToSync;
 ?>
 <ol class="breadcrumb">
-<li><a href="/pay/channel-view">通道配置</a></li>
+<li><a href="/pay/channel-view">通道管理</a></li>
 <li class="active">url+类型配置</li>
 </ol>
 
