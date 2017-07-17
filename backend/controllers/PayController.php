@@ -30,6 +30,9 @@ use common\models\orm\extend\ChannelVerifyRule;
 use common\models\orm\extend\TimeLimit;
 use common\models\orm\extend\TimeProvinceLimit;
 use common\models\orm\extend\Province;
+use common\models\orm\extend\ChannelPrice;
+use common\library\ShortHash;
+use common\models\orm\extend\ChannelProvincePrice;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -1277,4 +1280,118 @@ class PayController extends BController{
         }
         Utils::jsonOut($out);
     }
+    
+    
+    public function actionChannelPriceView(){
+       return $this->render('channel-price-view'); 
+    }
+    
+    public function actionChannelPriceResult(){
+        $chid   = Utils::getBackendParam('chid');
+        
+        $models = ChannelPrice::findByChid($chid);
+        if($models > 0){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $list   = [];
+            foreach ($models as $channelPriceModel){
+                $item   = $channelPriceModel->toArray();
+                $item['updateTime'] = date('Y-m-d H:i:s',$item['updateTime']);
+                array_push($list, $item);
+            }
+            $out['list']    = $list;
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        $channelModel       = Channel::findByPk($chid);
+        $out['channel']     = Channel::getItemArrByModel($channelModel);
+        
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelPriceSave(){
+        $chid   = Utils::getBackendParam('chid');
+        $price   = Utils::getBackendParam('price');
+        
+        if($price > 0){
+            $channelPriceModel  = ChannelPrice::findByChidPrice($chid,$price);
+            if(!$channelPriceModel){
+                $channelPriceModel  = new ChannelPrice();
+                $channelPriceModel->channel = $chid;
+                $channelPriceModel->code    = ShortHash::MD5_24($chid.$price.time());
+            }
+            $channelPriceModel->price   = $price;
+            $channelPriceModel->status  = 0;
+            
+            //为通道的所有省份新增该价格点
+            $channelProvincePriceModels = [];
+            $provinceIds    = Province::getAllProvinceId();
+            foreach ($provinceIds as $provinceId){
+                $channelProvincePriceModel  = ChannelProvincePrice::findByChidProvincePrice($chid,$provinceId,$price);
+                if($channelProvincePriceModel){
+                    continue;
+                }else{
+                    $channelProvincePriceModel  = new ChannelProvincePrice();
+                    $channelProvincePriceModel->channel   = $chid;
+                    $channelProvincePriceModel->province  = $provinceId;
+                    $channelProvincePriceModel->price     = $price;
+                    $channelProvincePriceModel->status    = 0;
+                    array_push($channelProvincePriceModels, $channelProvincePriceModel);
+                }
+            }
+            $tra   = ChannelPrice::getDb()->beginTransaction();
+            try{
+                $channelPriceModel->oldSave();
+                foreach ($channelProvincePriceModels as $channelProvincePriceModel){
+                    $channelProvincePriceModel->oldSave();
+                }
+                $tra->commit();
+                //TODO cache
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch(\Exception $e){
+                $tra->rollBack();
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_PARAMS_ERR;
+            $out['msg']         = Constant::RESULT_MSG_PARAMS_ERR;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelPriceOps(){
+        $cpid   = Utils::getBackendParam('cpid');
+        
+        $channelPriceModel  = ChannelPrice::findByPk($cpid);
+        if($channelPriceModel){           
+            $channelProvincePriceModels = ChannelProvincePrice::findByChidPrice($channelPriceModel->channel,$channelPriceModel->price);
+            $tra   = ChannelPrice::getDb()->beginTransaction();
+            try {
+                $status = $channelPriceModel->status == 0 ? 1 : 0;
+                $channelPriceModel->status  = $status;
+                $channelPriceModel->oldSave();
+                foreach ($channelProvincePriceModels as $channelProvincePriceModel){
+                    $channelProvincePriceModel->status  = $status;
+                    $channelProvincePriceModel->oldSave();
+                }
+                
+                $tra->commit();
+                //TODO cache
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $tra->rollBack();
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
+    }
+    
 }
