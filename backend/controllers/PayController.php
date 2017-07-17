@@ -27,6 +27,9 @@ use common\models\orm\extend\ChannelCfgSmsSdkSubmit;
 use common\models\orm\extend\ChannelCfgUrlSdkSubmit;
 use common\models\orm\extend\ChannelGroup;
 use common\models\orm\extend\ChannelVerifyRule;
+use common\models\orm\extend\TimeLimit;
+use common\models\orm\extend\TimeProvinceLimit;
+use common\models\orm\extend\Province;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -1140,6 +1143,137 @@ class PayController extends BController{
         }catch (\Exception $e){
             $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
             $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+        }
+        Utils::jsonOut($out);
+    }
+    
+    
+    public function actionChannelTimeLimitView(){
+        return $this->render('channel-time-limit-view');
+    }
+    
+    public function actionChannelTimeLimitResult(){
+        $chid   = Utils::getBackendParam('chid');
+        $channelModel   = Channel::findByPk($chid);
+        
+        $timeLimit = TimeLimit::getItemArrByChid($chid);
+        $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+        $out['msg']         = Constant::RESULT_MSG_SUCC;
+        $out['channel']     = Channel::getItemArrByModel($channelModel);
+        $out['timeLimit']   = $timeLimit;
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelTimeLimitSave(){
+        $chid   = Utils::getBackendParam('chid');
+        $h0      = Utils::getBackendParam('h0');    
+        $h1      = Utils::getBackendParam('h1');
+        $h2      = Utils::getBackendParam('h2');
+        $h3      = Utils::getBackendParam('h3');
+        $h4      = Utils::getBackendParam('h4');
+        $h5      = Utils::getBackendParam('h5');
+        $h6      = Utils::getBackendParam('h6');
+        $h7      = Utils::getBackendParam('h7');
+        $h8      = Utils::getBackendParam('h8');
+        $h9      = Utils::getBackendParam('h9');
+        $h10      = Utils::getBackendParam('h10');
+        $h11      = Utils::getBackendParam('h11');
+        $h12      = Utils::getBackendParam('h12');
+        $h13      = Utils::getBackendParam('h13');
+        $h14      = Utils::getBackendParam('h14');
+        $h15      = Utils::getBackendParam('h15');
+        $h16      = Utils::getBackendParam('h16');
+        $h17      = Utils::getBackendParam('h17');
+        $h18      = Utils::getBackendParam('h18');
+        $h19      = Utils::getBackendParam('h19');
+        $h20      = Utils::getBackendParam('h20');
+        $h21      = Utils::getBackendParam('h21');
+        $h22      = Utils::getBackendParam('h22');
+        $h23      = Utils::getBackendParam('h23');
+        
+        $timeLimitModel = TimeLimit::findByChid($chid);
+        if(!$timeLimitModel){
+            $timeLimitModel = new TimeLimit();
+            $timeLimitModel->channel    = $chid;
+        }
+        $hours  = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+        $timeLimitModel->h0 = $h0;
+        $timeLimitModel->h1 = $h1;
+        $timeLimitModel->h2 = $h2;
+        $timeLimitModel->h3 = $h3;
+        $timeLimitModel->h4 = $h4;
+        $timeLimitModel->h5 = $h5;
+        $timeLimitModel->h6 = $h6;
+        $timeLimitModel->h7 = $h7;
+        $timeLimitModel->h8 = $h8;
+        $timeLimitModel->h9 = $h9;
+        $timeLimitModel->h10    = $h10;
+        $timeLimitModel->h11    = $h11;
+        $timeLimitModel->h12    = $h12;
+        $timeLimitModel->h13    = $h13;
+        $timeLimitModel->h14    = $h14;
+        $timeLimitModel->h15    = $h15;
+        $timeLimitModel->h16    = $h16;
+        $timeLimitModel->h17    = $h17;
+        $timeLimitModel->h18    = $h18;
+        $timeLimitModel->h19    = $h19;
+        $timeLimitModel->h20    = $h20;
+        $timeLimitModel->h21    = $h21;
+        $timeLimitModel->h22    = $h22;
+        $timeLimitModel->h23    = $h23;
+        
+        $timeProvinceModels = [];
+        $provinces  = Province::getAllProvinceId();
+        foreach ($provinces as $provinceId){
+            $timeProvinceModel  = TimeProvinceLimit::findByChidProvince($chid,$provinceId);
+            if(!$timeProvinceModel){
+                $timeProvinceModel  = new TimeProvinceLimit();
+                $timeProvinceModel->channel = $chid;
+                $timeProvinceModel->province    = $provinceId;
+            }
+            $timeProvinceModel->h0     = $h0;
+            $timeProvinceModel->h1     = $h1;
+            $timeProvinceModel->h2     = $h2;
+            $timeProvinceModel->h3     = $h3;
+            $timeProvinceModel->h4     = $h4;
+            $timeProvinceModel->h5     = $h5;
+            $timeProvinceModel->h6     = $h6;
+            $timeProvinceModel->h7     = $h7;
+            $timeProvinceModel->h8     = $h8;
+            $timeProvinceModel->h9     = $h9;
+            $timeProvinceModel->h10    = $h10;
+            $timeProvinceModel->h11    = $h11;
+            $timeProvinceModel->h12    = $h12;
+            $timeProvinceModel->h13    = $h13;
+            $timeProvinceModel->h14    = $h14;
+            $timeProvinceModel->h15    = $h15;
+            $timeProvinceModel->h16    = $h16;
+            $timeProvinceModel->h17    = $h17;
+            $timeProvinceModel->h18    = $h18;
+            $timeProvinceModel->h19    = $h19;
+            $timeProvinceModel->h20    = $h20;
+            $timeProvinceModel->h21    = $h21;
+            $timeProvinceModel->h22    = $h22;
+            $timeProvinceModel->h23    = $h23;
+            
+            array_push($timeProvinceModels, $timeProvinceModel);
+        }
+        $tra    = TimeLimit::getDb()->beginTransaction();
+        try {
+            $timeLimitModel->origSave();
+            foreach ($timeProvinceModels as $timeProvinceModel){                
+                $timeProvinceModel->origSave();
+            }
+            
+            $tra->commit();
+            //TODO cache
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+        }catch (\Exception $e){
+            $tra->rollBack();
+            $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+            $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            $out['msg']         = $e->getMessage();
         }
         Utils::jsonOut($out);
     }
