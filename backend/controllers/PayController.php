@@ -26,6 +26,7 @@ use common\models\orm\extend\ChannelCfgSmtSign;
 use common\models\orm\extend\ChannelCfgSmsSdkSubmit;
 use common\models\orm\extend\ChannelCfgUrlSdkSubmit;
 use common\models\orm\extend\ChannelGroup;
+use common\models\orm\extend\ChannelCfgDialtest;
 use function Faker\time;
 
 class PayController extends BController{
@@ -100,6 +101,7 @@ class PayController extends BController{
         $syncModel          = ChannelCfgSync::findByChannelId($chid);
         $outModel           = ChannelCfgOut::findByChannelId($chid);
         $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
+        $DialtestModel 		= ChannelCfgDialtest::findByChannelId($chid);
         $data   = array(
             'channelModel'      => $channelModel,
             'mainModel'         => $mainModel,
@@ -109,7 +111,8 @@ class PayController extends BController{
             'sdYApiModel'       => $sdYApiModel,
             'syncModel'         => $syncModel,
             'outModel'          => $outModel,
-            'channelCfgToSync'  => $channelCfgToSync
+        	'channelCfgToSync'  => $channelCfgToSync,
+        	'DialtestModel'		=> $DialtestModel,
         );
         
         return $this->render('cfg-sd-view',$data);
@@ -244,6 +247,49 @@ class PayController extends BController{
         }
         Utils::jsonOut($out);
     }
+    
+    public function actionCfgDialtestSave(){
+    	$chid               = Utils::getBackendParam('chid');
+    	$useapi             = Utils::getBackendParam('useapi');
+    	$dialYes			= Utils::getBackendParam('dialYes');
+    	$dialurl            = Utils::getBackendParam('dialurl');
+    	$dialSuccKey       	= Utils::getBackendParam('dialSuccKey');
+    	$dialSuccVal        = Utils::getBackendParam('dialSuccVal');
+    	$dialParam          = Utils::getBackendParam('dialParam');
+    	$dialSign			= Utils::getBackendParam('dialSign');
+    	
+    	$channelModel   = Channel::findByPk($chid);
+    	if($channelModel){
+    		$dialtestModel   = ChannelCfgDialtest::findByChannelId($chid);
+    		if(!$dialtestModel){
+    			$dialtestModel   = new ChannelCfgDialtest();
+    			$dialtestModel->channelId = $chid;
+    		}
+    		$dialtestModel->dialYes		= $dialYes;
+    		$dialtestModel->dialurl 	= $dialurl;
+    		$dialtestModel->dialSuccKey = $dialSuccKey;
+    		$dialtestModel->dialSuccVal = $dialSuccVal;
+    		$dialtestModel->dialParam	= $dialParam;
+    		$dialtestModel->dialSign	= $dialSign;
+    		
+    		try{
+    			ChannelCfgMain::backendOps($chid);
+    			ChannelCfgSd::backendOps($chid, $useapi);
+    			$dialtestModel->save();
+    			
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		}catch (\Exception $e){
+    			$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+    			$out['msg']         = $e->getMessage();
+    		}
+    	}else{
+    		$out['resultCode'] = Constant::RESULT_CODE_NONE;
+    		$out['msg']        = '该通道不存在';
+    	}
+    	Utils::jsonOut($out);
+    }
+    
     public function actionCfgPayParamsSave(){
         $chid       = Utils::getBackendParam('chid');
         $useapi     = Utils::getBackendParam('useapi');

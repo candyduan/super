@@ -10,6 +10,7 @@ $sdNApiModel    = $sdNApiModel;
 $sdYApiModel    = $sdYApiModel;
 $syncModel      = $syncModel;
 $outModel       = $outModel;
+$DialtestModel	= $DialtestModel;
 $channelCfgToSync   = $channelCfgToSync;
 
 if($channelModel->devType == Constant::CHANNEL_DOUBLE){
@@ -383,6 +384,68 @@ if(!is_array($sendType1)){
 </div>
 
 
+<div class="pay_dialtest">
+<hr>
+	<h1 class="header-1">防拨测设置</h1>
+	<div class="pay_dialtest_content">
+    	<div class="form-horizontal">
+    	
+    		 <div class="form-group">
+                <label for="dialtest_yes" class="col-xs-2 control-label">是否需要添加防拨测链接</label>
+                <div class="col-xs-10">
+                        <select id="dialtest_yes" class="form-control">
+                          <option value ="0" <?php if($DialtestModel){if($DialtestModel->dialYes == Constant::DIALTEST_NO){ echo 'selected="selected"';}}?>>NO</option>
+                          <option value ="1" <?php if($DialtestModel){if($DialtestModel->dialYes == Constant::DIALTEST_YES){ echo 'selected="selected"';}}?>>YES</option>
+                        </select>
+                </div>
+              </div>
+    	
+              <div class="form-group">
+                <label for="dialtest_url" class="col-xs-2 control-label">防拨测URL</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="dialtest_url" placeholder="请输入需要请求的API Url" value="<?php if($DialtestModel){echo $DialtestModel->dialurl;}?>">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="dialtest_succ_key" class="col-xs-2 control-label">返回成功Key</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="dialtest_succ_key" placeholder="..." value="<?php if($DialtestModel){echo $DialtestModel->dialSuccKey;}?>">
+                </div>
+              </div> 
+
+              <div class="form-group">
+                <label for="dialtest_succ_value" class="col-xs-2 control-label">返回成功值</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="dialtest_succ_value" placeholder="..." value="<?php if($DialtestModel){echo $DialtestModel->dialSuccVal;}?>">
+                </div>
+              </div> 
+              
+              <div class="form-group">
+                <label for="dialtest_params" class="col-xs-2 control-label">防拨测链接参数</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="dialtest_params" placeholder="依次按顺序输入防拨测参数 ，隔开，固定值前面输入@" value="<?php if($DialtestModel){echo $DialtestModel->dialParam;}?>">
+                </div>
+              </div> 
+              
+              <div class="form-group">
+                <label for="dialtest_sign" class="col-xs-2 control-label">sign校验参数</label>
+                <div class="col-xs-10">
+                  <input type="text" class="form-control" id="dialtest_sign" placeholder="依次按顺序输入需要sign校验的参数 ，隔开，固定值前面输入@" value="<?php if($DialtestModel){echo $DialtestModel->dialSign;}?>">
+                </div>
+              </div> 
+                            
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                  <button id="Dialtest_save" class="btn btn-default">保存</button>
+                </div>
+              </div> 
+                                                                                                                                                            
+        </div>
+    </div>
+</div>
+
+
 <!-- 数据同步 -->
 <?php echo PayCfgWidgets::getCfgDataSyncWidget($syncModel);?>
 
@@ -550,5 +613,30 @@ $(document).ready(function(){
 		};
 		Utils.ajax(url,data,succFunc);
 	});	
+
+
+	$('#Dialtest_save').click(function(){
+		//url
+		var url = '/pay/cfg-dialtest-save';
+		//data
+		var data = 'chid='+$('.data_store_common').attr('chid')
+		+'&useapi='+$('.data_store_common').attr('useapi')
+		+'&dialYes='+$('#dialtest_yes').val()
+		+'&dialurl='+$('#dialtest_url').val()
+		+'&dialSuccKey='+$('#dialtest_succ_key').val()
+		+'&dialSuccVal='+$('#dialtest_succ_value').val()
+		+'&dialParam='+$('#dialtest_params').val()
+		+'&dialSign='+$('#dialtest_sign').val();
+		//succFunc
+		var succFunc	= function(resJson){
+				if(parseInt(resJson.resultCode) == 1){//成功
+					Utils.tipBar('success','保存成功',resJson.msg);
+				}else{//失败
+					Utils.tipBar('error','保存失败',resJson.msg);
+				}
+		};
+		Utils.ajax(url,data,succFunc);
+	});	
+
 });
 </script>
