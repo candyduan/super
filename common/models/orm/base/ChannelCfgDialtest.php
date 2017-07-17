@@ -37,8 +37,8 @@ class ChannelCfgDialtest extends \yii\db\ActiveRecord
         return [
         	[['channelId', 'dialYes', 'status'], 'integer'],
         	[['recordTime', 'updateTime'], 'safe'],
-            [['dialurl', 'dialParam'], 'string', 'max' => 255],
-        	[['dialSign', 'dialSuccKey', 'dialSuccVal'], 'string', 'max' => 45],
+        	[['dialurl', 'dialParam', 'dialSign'], 'string', 'max' => 255],
+        	[['dialSuccKey', 'dialSuccVal'], 'string', 'max' => 45],
             [['channelId'], 'unique'],
         ];
     }
