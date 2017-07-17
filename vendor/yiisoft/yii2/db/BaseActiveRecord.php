@@ -653,6 +653,15 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
     } 
     
     
+    public function origSave($runValidation = true, $attributeNames = null)
+    {
+        if ($this->getIsNewRecord()) {
+            return $this->insert($runValidation, $attributeNames);
+        } else {
+            return $this->update($runValidation, $attributeNames) !== false;
+        }
+    }
+    
 
     /**
      * Saves the changes to this active record into the associated database table.
