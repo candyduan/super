@@ -617,26 +617,33 @@ $(document).ready(function(){
 
 
 	$('#Dialtest_save').click(function(){
-		//url
-		var url = '/pay/cfg-dialtest-save';
-		//data
-		var data = 'chid='+$('.data_store_common').attr('chid')
-		+'&useapi='+$('.data_store_common').attr('useapi')
-		+'&dialYes='+$('#dialtest_yes').val()
-		+'&dialurl='+$('#dialtest_url').val()
-		+'&dialSuccKey='+$('#dialtest_succ_key').val()
-		+'&dialSuccVal='+$('#dialtest_succ_value').val()
-		+'&dialParam='+$('#dialtest_params').val()
-		+'&dialSign='+$('#dialtest_sign').val();
-		//succFunc
-		var succFunc	= function(resJson){
-				if(parseInt(resJson.resultCode) == 1){//成功
-					Utils.tipBar('success','保存成功',resJson.msg);
-				}else{//失败
-					Utils.tipBar('error','保存失败',resJson.msg);
-				}
-		};
-		Utils.ajax(url,data,succFunc);
+		var dialurl = $('#dialtest_url').val();
+		if(dialurl){
+			//url
+			var url = '/pay/cfg-dialtest-save';
+			//data
+			var data = 'chid='+$('.data_store_common').attr('chid')
+			+'&useapi='+$('.data_store_common').attr('useapi')
+			+'&dialYes='+$('#dialtest_yes').val()
+			+'&dialurl='+$('#dialtest_url').val()
+			+'&dialSuccKey='+$('#dialtest_succ_key').val()
+			+'&dialSuccVal='+$('#dialtest_succ_value').val()
+			+'&dialParam='+$('#dialtest_params').val()
+			+'&dialSign='+$('#dialtest_sign').val();
+			//succFunc
+			var succFunc	= function(resJson){
+					if(parseInt(resJson.resultCode) == 1){//成功
+						Utils.tipBar('success','保存成功',resJson.msg);
+					}else{//失败
+						Utils.tipBar('error','保存失败',resJson.msg);
+					}
+			};
+			Utils.ajax(url,data,succFunc);
+			
+		}else{
+			Utils.tipBar('error','保存失败','URL不能为空');
+		}
+
 	});	
 
 });
