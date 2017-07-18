@@ -22,7 +22,7 @@
         		<option value="800">-- 08元 --</option>
         		<option value="700">-- 07元 --</option>
         		<option value="600">-- 06元 --</option>
-        		<option value="500">-- 07元 --</option>
+        		<option value="500">-- 05元 --</option>
         		<option value="400">-- 04元 --</option>
         		<option value="300">-- 03元 --</option>
         		<option value="200">-- 02元 --</option>
