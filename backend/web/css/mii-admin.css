@@ -320,10 +320,10 @@ table td {
 .input_err{border:1px solid #ff2d2d !important;}
 .input_ok{border:1px solid #73bf00 !important;}
 .stack-bar-top{left:0px !important;top:0px !important;}
-.channel_used{color:#02df82;}
-.channel_suspend{color:#46a3ff;}
-.channel_delete{color:#ff5151;}
-.channel_test{color:#9A32CD;}
+.channel_used a{color:#02df82 !important;}
+.channel_suspend a{color:#46a3ff !important;}
+.channel_delete a{color:#ff5151 !important;}
+.channel_test a{color:#9A32CD !important;}
 .pay_sign_logic{display:none;}
 .smt_sign_logic{display:none;}
 .glyphicon{font-size:18px;cursor:pointer;}
