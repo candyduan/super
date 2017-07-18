@@ -5,6 +5,7 @@ pre{background-color:#f0f0f0;color:#00a600;}
 <li class=""><a href="/pay/channel-view">通道管理</a></li>
 <li class="active">通道日志查询</li>
 </ol>
+<?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
     <div class="logContents">
     </div>

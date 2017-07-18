@@ -9,7 +9,7 @@ $succRuleModels    = $succRuleModels;
 <li class="active">短信</li>
 <li class="channelName"><?php echo $channelModel->name;?></li>
 </ol>
-
+<?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
 <h1 class="header-1">验证码规则</h1>
 <h1 class="header-2">1. 每一条需拦截的验证码短信，只允许设置一条拦截规则<br>2. 当后台管理中未配置规则时，默认使用代码中配置的规则</h1>

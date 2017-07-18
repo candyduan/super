@@ -75,8 +75,11 @@ function setResult(page){
                 	case '删除':
                 		statusClass = 'channel_delete';
                     	break;
+                	case '测试':
+                    	statusClass	= 'channel_test';
+                    	break;
                 }
-                resultHtml = resultHtml + '<tr><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.sign+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td>'+val.grade+'</td><td>'+val.devType+'</td><td><a class="glyphicon glyphicon-envelope" href="/pay/channel-verify-rule-view?chid='+val.chid+'"></a></td><td><a class="glyphicon glyphicon-time" href="/pay/channel-time-limit-view?chid='+val.chid+'"></a></td><td><a class="glyphicon glyphicon-usd" href="/pay/channel-price-view?chid='+val.chid+'"></a></td><td class="'+statusClass+'">'+val.status+'</td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><a class="glyphicon glyphicon-cog glyphicon-eye-open" href="/pay/channel-log-view?chid='+val.chid+'"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
+                resultHtml = resultHtml + '<tr><td>'+val.merchant+'</td><td>'+val.name+'</td><td>'+val.sign+'</td><td>'+val.holder+'</td><td>'+val.provider+'</td><td>'+val.grade+'</td><td>'+val.devType+'</td><td><a class="glyphicon glyphicon-envelope" href="/pay/channel-verify-rule-view?chid='+val.chid+'"></a></td><td><a class="glyphicon glyphicon-time" href="/pay/channel-time-limit-view?chid='+val.chid+'"></a></td><td><a class="glyphicon glyphicon-usd" href="/pay/channel-price-view?chid='+val.chid+'"></a></td><td class="'+statusClass+'"><a href="/pay/channel-status-view?chid='+val.chid+'">'+val.status+'</a></td><td><a data-devtypeid="'+val.devTypeId+'" data-chid="'+val.chid+'" class="glyphicon glyphicon-cog channel-config-entrance"></a></td><td><a class="glyphicon glyphicon-cog glyphicon-eye-open" href="/pay/channel-log-view?chid='+val.chid+'"></a></td><td><button class="cfgMainStatus btn" data-chid='+val.chid+'>'+cfgMainBtnName+'</button></td></tr>';
             });
             $('#data_list').html(resultHtml);
             $('.cfgMainStatus').click(function(){

@@ -6,7 +6,7 @@
 <li class="active">时段</li>
 <li class="channelName"></li>
 </ol>
-
+<?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
 	<div>
     <?php for($i=0;$i<=23;$i++){ ?>

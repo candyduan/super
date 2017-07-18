@@ -34,6 +34,7 @@ use common\models\orm\extend\Province;
 use common\models\orm\extend\ChannelPrice;
 use common\library\ShortHash;
 use common\models\orm\extend\ChannelProvincePrice;
+use common\models\orm\extend\ChannelMonitorRule;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -109,6 +110,7 @@ class PayController extends BController{
         $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $DialtestModel 		= ChannelCfgDialtest::findByChannelId($chid);
         $data   = array(
+            'chid'              => $chid,
             'channelModel'      => $channelModel,
             'mainModel'         => $mainModel,
             'payParamsModel'    => $payParamsModel,
@@ -458,6 +460,7 @@ class PayController extends BController{
         $outModel           = ChannelCfgOut::findByChannelId($chid);
         $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $data   = array(
+            'chid'                        => $chid,
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
             'payParamsModel'              => $payParamsModel,
@@ -710,6 +713,7 @@ class PayController extends BController{
         $outModel           = ChannelCfgOut::findByChannelId($chid);
         $channelCfgToSync   = ChannelCfgToSync::findByChannelId($chid);
         $data   = array(
+            'chid'                        => $chid,
             'channelModel'                => $channelModel,
             'mainModel'                   => $mainModel,
             'payParamsModel'              => $payParamsModel,
@@ -969,8 +973,10 @@ class PayController extends BController{
     
     public function actionChannelLogView(){
         $chid   = Utils::getBackendParam('chid');
-        
-        return $this->render('channel-log-view');
+        $data   = array(
+            'chid'  => $chid,
+        );
+        return $this->render('channel-log-view',$data);
     }
     
     public function actionJsonstringView(){
@@ -1154,6 +1160,7 @@ class PayController extends BController{
         $verifyRuleModels   = ChannelVerifyRule::findByChannelType($chid,0);
         $succRuleModels     = ChannelVerifyRule::findByChannelType($chid,1);
         $data   = array(
+            'chid'              => $chid,
             'channelModel'      => $channelModel,
             'verifyRuleModels'  => $verifyRuleModels,
             'succRuleModels'    => $succRuleModels,
@@ -1198,7 +1205,11 @@ class PayController extends BController{
     
     
     public function actionChannelTimeLimitView(){
-        return $this->render('channel-time-limit-view');
+        $chid   = Utils::getBackendParam('chid');
+        $data   = array(
+            'chid'  => $chid,
+        );
+        return $this->render('channel-time-limit-view',$data);
     }
     
     public function actionChannelTimeLimitResult(){
@@ -1329,7 +1340,11 @@ class PayController extends BController{
     
     
     public function actionChannelPriceView(){
-       return $this->render('channel-price-view'); 
+       $chid    = Utils::getBackendParam('chid');
+       $data    = array(
+           'chid'   => $chid,
+       );
+       return $this->render('channel-price-view',$data); 
     }
     
     public function actionChannelPriceResult(){
@@ -1439,5 +1454,66 @@ class PayController extends BController{
         }
         Utils::jsonOut($out);
     }
+    
+    
+    public function actionChannelStatusView(){
+        $chid   = Utils::getBackendParam('chid');
+        $data   = array(
+            'chid'  => $chid,
+        );
+        return $this->render('channel-status-view',$data);
+    }
+    
+    public function actionChannelStatusResult(){
+        $chid   = Utils::getBackendParam('chid');
+        
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $out['channel']        = Channel::getItemArrByModel($channelModel);
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
+    }
+    public function actionChannelStatusSet(){
+        $chid   = Utils::getBackendParam('chid');
+        $status = Utils::getBackendParam('status');
+        
+        $channelModel   = Channel::findByPk($chid);
+        if($channelModel){
+            $channelMonitorModel    = ChannelMonitorRule::findbyChid($chid);
+            $tra    = Channel::getDb()->beginTransaction();
+            try{
+                $channelModel->status   = $status;
+                $channelModel->oldSave();
+                if($channelMonitorModel){
+                    if($status == 0){//通道状态变为使用中时：启用通道监控规则
+                        $channelMonitorModel->status = 1;
+                    }else{//通道状态分为非使用中是：停用通道监控规则
+                        $channelMonitorModel->status = 0;
+                    }
+                    $channelMonitorModel->oldSave();
+                }
+                $tra->commit();
+                
+                //TODO cache
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+            }catch (\Exception $e){
+                $tra->rollBack();
+                $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+                $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+            }
+
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
+    }
+    
     
 }
