@@ -3,6 +3,7 @@
 </style>
 <ol class="breadcrumb">
 <li class="active">通道管理</li>
+<li><a href="/pay/channel-detail-view">添加</a></li>
 </ol>
 <div class="main">
 	<!-- 搜索栏 -->
