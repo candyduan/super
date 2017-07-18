@@ -3,6 +3,7 @@ namespace backend\library\widgets;
 use common\models\orm\extend\AdminTheme;
 use common\models\orm\extend\AgencyAccount;
 use common\models\orm\extend\Channel;
+use common\library\Constant;
 
 class WidgetsUtils{
     public static function getMainMenu($layout = ''){
@@ -167,7 +168,7 @@ class WidgetsUtils{
           
         	<link rel="stylesheet" href="/ace/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
             <link href="/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/css/mii-admin.css?d=20170621" rel="stylesheet">
+            <link href="/css/mii-admin.css?d=20170622" rel="stylesheet">
             <link href="/css/pnotify.custom.css" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
             <style type="text/css">
@@ -198,6 +199,36 @@ class WidgetsUtils{
             $str .= '<option value ="'.$agencyAccountModel->aaid.'">'.$agencyAccountModel->name.'</option>';
         }
         $str .='</select>';
+        return $str;
+    }
+    
+    public static function getChannelQuickIn($chid){
+        $channelModel   = Channel::findByPk($chid);
+        switch ($channelModel){
+            case Constant::CHANNEL_SINGLE:
+            case Constant::CHANNEL_DOUBLE:
+                $cfgUrl = '/pay/cfg-sd-view?chid='.$chid;
+                break;
+            case Constant::CHANNEL_URLP:
+                $cfgUrl = '/pay/cfg-url-view?chid='.$chid;
+                break;
+            case Constant::CHANNEL_SMSP:
+                $cfgUrl = '/pay/cfg-sms-view?chid='.$chid;
+                break;
+            default:
+                $cfgUrl = '';
+        }
+        
+        $str = '
+            <div style="position:fixed;z-index:9999;right:0px;top:7%;">
+            <a class="channel_quick_in" href="/pay/channel-verify-rule-view?chid='.$chid.'">短信</a><br>
+            <a class="channel_quick_in" href="/pay/channel-time-limit-view?chid='.$chid.'">时段</a><br>
+            <a class="channel_quick_in" href="/pay/channel-price-view?chid='.$chid.'">价目</a><br>
+            <a class="channel_quick_in" href="/pay/channel-status-view?chid='.$chid.'">状态</a><br>
+            <a class="channel_quick_in" href="'.$cfgUrl.'">接入</a><br>
+            <a class="channel_quick_in" href="/pay/channel-log-view?chid='.$chid.'">日志</a>
+            </div>
+            ';
         return $str;
     }
 }

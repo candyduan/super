@@ -70,6 +70,7 @@ if(!is_array($sendType1)){
 <li><a href="/pay/channel-view">通道管理</a></li>
 <li class="active">single或double类型配置</li>
 </ol>
+<?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
 <!-- 标题 -->
 <?php echo PayCfgWidgets::getCfgCommonWidget($channelModel);?>

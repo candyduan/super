@@ -7,7 +7,7 @@
 <li class="active">价目</li>
 <li class="channelName"></li>
 </ol>
-
+<?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
 
 	<!-- 搜索栏 -->
