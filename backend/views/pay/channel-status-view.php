@@ -23,6 +23,7 @@
 </div>
 <script>
 $(document).ready(function(){
+	Utils.setChannelName();
 	setResult();
 	$('.channelStatusBtn').click(function(){
 		$('.channelStatusBtn').removeClass('channelStatusSelected');
@@ -56,7 +57,6 @@ function setResult(){
 	var url = '/pay/channel-status-result';
 	var data='chid='+Utils.getQueryString('chid');
 	var succ=function(resJson){
-			$('.channelName').html(resJson.channel.name);
 			$.each($('.channelStatusBtn'),function(key,val){
 				if($(val).html() == resJson.channel.status){
 					$(val).addClass('channelStatusSelected');

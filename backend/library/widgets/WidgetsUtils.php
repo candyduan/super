@@ -183,7 +183,7 @@ class WidgetsUtils{
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
             <script src="/js/common/pnotify.custom.js"></script>   
-            <script src="/js/register/Utils.js?d=20170615"></script>
+            <script src="/js/register/Utils.js?d=20170616"></script>
             <script src="/ace/assets/js/jquery.dataTables.min.js"></script>
 	        <script src="/ace/assets/js/jquery.dataTables.bootstrap.min.js"></script>
             ';

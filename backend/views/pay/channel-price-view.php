@@ -43,6 +43,7 @@
 </div>
 <script>
 $(document).ready(function(){
+	Utils.setChannelName();
 	setResult();
 
 	$('.addChannelPrice').click(function(){
@@ -64,7 +65,6 @@ function setResult(){
 	var data='chid='+Utils.getQueryString('chid');
 	var succ= function(resJson){
 			if(parseInt(resJson.resultCode) == 1){
-				$('.channelName').html(resJson.channel.name);
                 var resultHtml = '';
                 $.each(resJson.list,function(key,val){
                     var opsBtnName;

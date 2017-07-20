@@ -7,7 +7,7 @@ $succRuleModels    = $succRuleModels;
 <ol class="breadcrumb">
 <li><a href="/pay/channel-view">通道管理</a></li>
 <li class="active">短信</li>
-<li class="channelName"><?php echo $channelModel->name;?></li>
+<li class="channelName"></li>
 </ol>
 <?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
@@ -98,6 +98,7 @@ $succRuleModels    = $succRuleModels;
 </div>
 <script>
 $(document).ready(function(){
+	Utils.setChannelName();
 	var verifyClick	= function(id){
 		var chid	= Utils.getQueryString('chid');
 		var cvrid	= $('#verify_'+id+'_save').attr('data-cvrid');

@@ -3,7 +3,8 @@ pre{background-color:#f0f0f0;color:#00a600;}
 </style>
 <ol class="breadcrumb">
 <li class=""><a href="/pay/channel-view">通道管理</a></li>
-<li class="active">通道日志查询</li>
+<li class="active">日志</li>
+<li class="channelName"></li>
 </ol>
 <?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
@@ -15,6 +16,7 @@ pre{background-color:#f0f0f0;color:#00a600;}
 </div>
 <script>
 $(document).ready(function(){
+	Utils.setChannelName();
 	setResult();
 	var timeId = setInterval('setResult()',3000); 
 
@@ -29,6 +31,7 @@ $(document).ready(function(){
 		}
 	});
 });
+
 function setResult(){
 	//url
 	var url = 'http://120.27.153.169:82/index.php/tools/readChannelLog';

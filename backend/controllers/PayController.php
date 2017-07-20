@@ -1222,7 +1222,7 @@ class PayController extends BController{
         $timeLimit = TimeLimit::getItemArrByChid($chid);
         $out['resultCode']  = Constant::RESULT_CODE_SUCC;
         $out['msg']         = Constant::RESULT_MSG_SUCC;
-        $out['channel']     = Channel::getItemArrByModel($channelModel);
+        //$out['channel']     = Channel::getItemArrByModel($channelModel);
         $out['timeLimit']   = $timeLimit;
         Utils::jsonOut($out);
     }
@@ -1371,7 +1371,7 @@ class PayController extends BController{
             $out['msg']         = Constant::RESULT_MSG_NONE;
         }
         $channelModel       = Channel::findByPk($chid);
-        $out['channel']     = Channel::getItemArrByModel($channelModel);
+        //$out['channel']     = Channel::getItemArrByModel($channelModel);
         
         Utils::jsonOut($out);
     }
@@ -1530,6 +1530,26 @@ class PayController extends BController{
             'chid'  => $chid,
         );
         return $this->render('channel-detail-view',$data);
+    }
+    
+    
+    public function actionChannelInfoResult(){
+        $chid   = Utils::getBackendParam('chid');
+        if($chid > 0){
+            $channelModel   = Channel::findByPk($chid);
+            if($channelModel){
+                $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC;
+                $out['channel']     = Channel::getItemArrByModel($channelModel);
+            }else{
+                $out['resultCode']  = Constant::RESULT_CODE_NONE;
+                $out['msg']         = Constant::RESULT_MSG_NONE;
+            }
+        }else{
+            $out['resultCode']  = Constant::RESULT_CODE_NONE;
+            $out['msg']         = Constant::RESULT_MSG_NONE;
+        }
+        Utils::jsonOut($out);
     }
     
 }

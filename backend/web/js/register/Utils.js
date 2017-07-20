@@ -302,3 +302,14 @@ Utils.jsonp	= function(url,data,succ){
         success: succ, 
     });
 };
+
+Utils.setChannelName	= function(){
+	var url = '/pay/channel-info-result';
+	var data='chid='+Utils.getQueryString('chid');
+	var succ=function(resJson){
+		if(parseInt(resJson.resultCode) == 1){
+			$('.channelName').html(resJson.channel.name);
+		}
+	};
+	Utils.ajax(url,data,succ);
+};

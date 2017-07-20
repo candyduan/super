@@ -68,7 +68,8 @@ if(!is_array($sendType1)){
 ?>
 <ol class="breadcrumb">
 <li><a href="/pay/channel-view">通道管理</a></li>
-<li class="active">single或double类型配置</li>
+<li class="active">接入</li>
+<li class="channelName"></li>
 </ol>
 <?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
@@ -459,6 +460,7 @@ if(!is_array($sendType1)){
 
 <script type="text/javascript">
 $(document).ready(function(){
+	Utils.setChannelName();
 	if($('#yapi_resp_fmt').val() > 3){
 		$('#delimiter').css('display','block');
 	}else{
