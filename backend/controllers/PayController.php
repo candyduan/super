@@ -1515,5 +1515,12 @@ class PayController extends BController{
         Utils::jsonOut($out);
     }
     
+    public function actionChannelDetailView(){
+        $chid   = Utils::getBackendParam('chid');
+        $data   = array(
+            'chid'  => $chid,
+        );
+        return $this->render('channel-detail-view',$data);
+    }
     
 }
