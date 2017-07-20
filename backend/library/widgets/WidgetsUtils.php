@@ -221,6 +221,7 @@ class WidgetsUtils{
         
         $str = '
             <div style="position:fixed;z-index:9999;right:0.7%;top:7%;">
+            <a class="channel_quick_in" href="/pay/channel-detail-view?chid='.$chid.'">详情</a><br>
             <a class="channel_quick_in" href="/pay/channel-verify-rule-view?chid='.$chid.'">短信</a><br>
             <a class="channel_quick_in" href="/pay/channel-time-limit-view?chid='.$chid.'">时段</a><br>
             <a class="channel_quick_in" href="/pay/channel-price-view?chid='.$chid.'">价目</a><br>
