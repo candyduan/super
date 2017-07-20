@@ -373,6 +373,7 @@ if($smsNApiModel){
 
 <script>
 $(document).ready(function(){
+	Utils.setChannelName();
 	if($('#sms_yapi_respFmt').val() > 3){
 		$('#delimiter').css('display','block');
 	}else{

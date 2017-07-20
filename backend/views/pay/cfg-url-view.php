@@ -213,6 +213,7 @@ $channelCfgToSync = $channelCfgToSync;
 
 <script>
 $(document).ready(function(){
+	Utils.setChannelName();
 	if($('#url_yapi_respFmt').val() > 3){
 		$('#delimiter').css('display','block');
 	}else{
