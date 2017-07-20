@@ -12,6 +12,8 @@ pre{background-color:#f0f0f0;color:#00a600;}
     </div>
     <div class="row">
     	<div class="col-xs-2"><button class="interval_ops btn btn-default btn-block">暂停</button></div>
+    	<div class="col-xs-2"><a class="download_log_today btn btn-default btn-block" href="http://120.27.153.169:82/index.php/tools/log?chid=<?php echo $chid;?>">今日日志</a></div>
+    	<div class="col-xs-2"><a class="download_log_all btn btn-default btn-block" href="http://120.27.153.169:8000/" target="_blank">全部日志</a></div>
     </div>
 </div>
 <script>
