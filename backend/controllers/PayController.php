@@ -1493,7 +1493,7 @@ class PayController extends BController{
         
         $channelModel   = Channel::findByPk($chid);
         if($channelModel){
-            $channelMonitorModel    = ChannelMonitorRule::findbyChid($chid);
+            $channelMonitorModel    = ChannelMonitorRule::findByChid($chid);
             $tra    = Channel::getDb()->beginTransaction();
             try{
                 $channelModel->status   = $status;
@@ -1508,9 +1508,11 @@ class PayController extends BController{
                 }
                 $tra->commit();
                 
-                //TODO cache
+                //cache
+                sleep(1);
+                $cFlag  = OrigApi::ChannelStatusChg();
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
-                $out['msg']         = Constant::RESULT_MSG_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC.'缓存:'.$cFlag;
             }catch (\Exception $e){
                 $tra->rollBack();
                 $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
