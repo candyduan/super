@@ -242,4 +242,12 @@ class Utils{
         return $res;
     }
     
+    public static function isAlphaBackend(){
+        if(!strstr($_SERVER['HTTP_HOST'], 'backend.maimob.net')){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
 }

@@ -35,6 +35,7 @@ use common\models\orm\extend\ChannelPrice;
 use common\library\ShortHash;
 use common\models\orm\extend\ChannelProvincePrice;
 use common\models\orm\extend\ChannelMonitorRule;
+use backend\library\cache\OrigApi;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -1192,10 +1193,12 @@ class PayController extends BController{
         $ruleModel->updateTime  = time();
         
         try{
-            $ruleModel->oldSave();            
-            //TODO 刷新该表缓存
+            $ruleModel->oldSave();      
+            sleep(1);            
+            //刷新该表缓存
+            $cFlag = OrigApi::deleteChannelVerifyRuleCache();
             $out['resultCode']  = Constant::RESULT_CODE_SUCC;
-            $out['msg']         = Constant::RESULT_MSG_SUCC;
+            $out['msg']         = Constant::RESULT_MSG_SUCC.',缓存：'.$cFlag;
         }catch (\Exception $e){
             $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
             $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
