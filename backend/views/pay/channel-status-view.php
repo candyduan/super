@@ -17,7 +17,7 @@
      <div class="clearfix"></div>
      <div class="col-xs-3"><button class="btn btn-default btn-block channelStatusBtn" data-status="3">测试</button></div>
      <div class="clearfix"></div>
-     <div class="col-xs-3"><input type="text" class="form-control channelStatusCfm" placeholder="请输入ok确认你的行为" ></input></div>
+     <div class="col-xs-3"><input type="text" class="form-control channelStatusCfm" placeholder="请输入小写的ok确认你的行为" style="text-align: center;"></input></div>
      <div class="clearfix"></div><hr>
      <div class="col-xs-3"><button class="btn btn-default btn-block channelStatusSubmit">提交</button></div>
 </div>

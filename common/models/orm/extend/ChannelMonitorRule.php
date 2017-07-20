@@ -1,7 +1,7 @@
 <?php
 namespace common\models\orm\extend;
 class ChannelMonitorRule extends \common\models\orm\base\ChannelMonitorRule{
-    public static function findbyChid($chid){
+    public static function findByChid($chid){
         $condition  = array(
             'channel'   => $chid,
         );

@@ -37,4 +37,17 @@ class OrigApi {
         }
         return $flag;
     }
+    
+    public static function ChannelStatusChg(){
+        $url    = 'http://'.self::getCacheHost().'/index.php/cache/ChannelStatusChg?sign='.self::SIGN;
+        $res    = Utils::zsCurl($url);
+        $arr    = json_decode($res,true);
+        
+        if($arr['resultCode'] == 1){
+            $flag   = true;
+        }else{
+            $flag   = false;
+        }
+        return $flag;
+    }
 }
