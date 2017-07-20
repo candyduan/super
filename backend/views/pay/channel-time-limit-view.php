@@ -17,13 +17,13 @@
 </div>
 <script>
 $(document).ready(function(){
+	Utils.setChannelName();
 	setResult();
 });
 function setResult(){
 	var url = '/pay/channel-time-limit-result';
 	var data='chid='+Utils.getQueryString('chid');
 	var succ= function(resJson){
-		$('.channelName').html(resJson.channel.name);
 		$('#h0').attr('data-val',resJson.timeLimit.h0);
 		$('#h1').attr('data-val',resJson.timeLimit.h1);
 		$('#h2').attr('data-val',resJson.timeLimit.h2);

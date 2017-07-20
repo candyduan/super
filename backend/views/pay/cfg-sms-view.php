@@ -42,7 +42,8 @@ if($smsNApiModel){
 ?>
 <ol class="breadcrumb">
 <li><a href="/pay/channel-view">通道管理</a></li>
-<li class="active">sms+类型配置</li>
+<li class="active">接入</li>
+<li class="channelName"></li>
 </ol>
 <?php echo backend\library\widgets\WidgetsUtils::getChannelQuickIn($chid);?>
 <div class="main">
