@@ -39,7 +39,7 @@ $succRuleModels    = $succRuleModels;
                   <div class="form-group">
                     <label for="verify_<?= $verifyItem?>_memo" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
                     <div class="col-xs-10">
-                      <textarea class="form-control" id="verify_<?= $verifyItem?>_memo" placeholder="备注，不超过500个字符"><?php echo $verifyRuleModels[$verifyItem]->memo;?></textarea>
+                      <textarea rows="6" class="form-control" id="verify_<?= $verifyItem?>_memo" placeholder="备注，不超过500个字符"><?php echo $verifyRuleModels[$verifyItem]->memo;?></textarea>
                     </div>
                   </div>
                   
@@ -80,7 +80,7 @@ $succRuleModels    = $succRuleModels;
                   <div class="form-group">
                     <label for="succ_<?= $succItem?>_memo" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
                     <div class="col-xs-10">
-                      <textarea class="form-control" id="succ_<?= $succItem?>_memo" placeholder="备注，不超过500个字符"><?php echo $succRuleModels[$succItem]->memo;?></textarea>
+                      <textarea rows="6" class="form-control" id="succ_<?= $succItem?>_memo" placeholder="备注，不超过500个字符"><?php echo $succRuleModels[$succItem]->memo;?></textarea>
                     </div>
                   </div>
                   
