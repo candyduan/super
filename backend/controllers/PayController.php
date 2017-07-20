@@ -1413,9 +1413,11 @@ class PayController extends BController{
                     $channelProvincePriceModel->oldSave();
                 }
                 $tra->commit();
-                //TODO cache
+                //cache
+                sleep(1);
+                $cFlag  = OrigApi::FreshAllChannelInfo();
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
-                $out['msg']         = Constant::RESULT_MSG_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC.'缓存:'.$cFlag;
             }catch(\Exception $e){
                 $tra->rollBack();
                 $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
@@ -1445,9 +1447,11 @@ class PayController extends BController{
                 }
                 
                 $tra->commit();
-                //TODO cache
+                //cache
+                sleep(1);
+                $cFlag  = OrigApi::FreshAllChannelInfo();
                 $out['resultCode']  = Constant::RESULT_CODE_SUCC;
-                $out['msg']         = Constant::RESULT_MSG_SUCC;
+                $out['msg']         = Constant::RESULT_MSG_SUCC.'缓存:'.$cFlag;
             }catch (\Exception $e){
                 $tra->rollBack();
                 $out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
