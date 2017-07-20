@@ -225,8 +225,8 @@ class WidgetsUtils{
             <a class="channel_quick_in" href="/pay/channel-verify-rule-view?chid='.$chid.'">短信</a><br>
             <a class="channel_quick_in" href="/pay/channel-time-limit-view?chid='.$chid.'">时段</a><br>
             <a class="channel_quick_in" href="/pay/channel-price-view?chid='.$chid.'">价目</a><br>
-            <a class="channel_quick_in" href="/pay/channel-status-view?chid='.$chid.'">状态</a><br>
             <a class="channel_quick_in" href="'.$cfgUrl.'">接入</a><br>
+            <a class="channel_quick_in" href="/pay/channel-status-view?chid='.$chid.'">状态</a><br>
             <a class="channel_quick_in" href="/pay/channel-log-view?chid='.$chid.'">日志</a>
             </div>
             ';
