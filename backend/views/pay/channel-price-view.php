@@ -17,6 +17,7 @@
         		<option value="0">-- 请选择金额 --</option>
         		<option value="2000">-- 20元 --</option>
         		<option value="1500">-- 15元 --</option>
+        		<option value="1200">-- 12元 --</option>
         		<option value="1000">-- 10元 --</option>
         		<option value="900">-- 09元 --</option>
         		<option value="800">-- 08元 --</option>
