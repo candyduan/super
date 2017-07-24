@@ -203,7 +203,7 @@ class WidgetsUtils{
     
     public static function getChannelQuickIn($chid){
         $channelModel   = Channel::findByPk($chid);
-        switch ($channelModel){
+        switch ($channelModel->devType){
             case Constant::CHANNEL_SINGLE:
             case Constant::CHANNEL_DOUBLE:
                 $cfgUrl = '/pay/cfg-sd-view?chid='.$chid;
