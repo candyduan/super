@@ -1375,14 +1375,14 @@ class PayController extends BController{
     					$priceList[$k]['time'] = $time;
     				}
     			}
-    			$templateModel->price = json_decode($priceList);
+    			$templateModel->price = json_encode($priceList);
     			try {
     				$templateModel->save();
     				$out['resultCode']  = Constant::RESULT_CODE_SUCC;
     				$out['msg']         = Constant::RESULT_MSG_SUCC;
     			} catch (\Exception $e) {
     				$out['resultCode']  = Constant::RESULT_CODE_NONE;
-    				$out['msg']         = '修改失败';
+    				$out['msg']         = '修改失败'.$e->getMessage();
     			}
     		}else{
     			$out['resultCode']  = Constant::RESULT_CODE_NONE;

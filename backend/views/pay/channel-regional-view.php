@@ -180,22 +180,22 @@
 			$('#channelProvinceTemplate').modal('show');
 			
 			$('.priceStatusChange').click(function(){
-// 				alert($(this).attr('status'));
-// 				if($(this).attr('status')==1){
-// 					$(this).removeClass('glyphicon-ok').addClass('glyphicon-remove').attr('status','0');
-					
-// 				}else{
-// 					$(this).removeClass('glyphicon-remove').addClass('glyphicon-ok').attr('status','1');
-// 				}
-
-
+				var obj = $(this);
+				var status = $(this).attr('status');
 				var price = $(this).attr('tel');
 				var time = getCurrentTime();
 				var url = '/pay/channel-province-template-price-status-change';
 				var data = 'price='+price+'&chid='+Utils.getQueryString('chid')+'&time='+time;
 				var succ = function(resJson){
 					if(parseInt(resJson.resultCode) == 1){
-						
+						if(status == 1){
+							obj.removeClass('glyphicon-ok').addClass('glyphicon-remove').attr('status','0');
+						}else{
+							obj.removeClass('glyphicon-remove').addClass('glyphicon-ok').attr('status','1');
+						}
+						Utils.getNoFooterModal('success','保存成功');
+					}else{
+						Utils.getErrModal('error',resJson.msg);
 					}
 				}
 				Utils.ajax(url,data,succ);
@@ -273,7 +273,7 @@
 							$('#newPrice').val('');
 							$('#checkPrice').html('--');
 							$('#newPriceT').toggle();
-							newPriceHtml += '<tr><td>'+newPrice+'</td><td>'+time+'</td><td><span class="glyphicon glyphicon-remove priceStatusChange" tel="'+newPrice+'" aria-hidden="true"></span></td></tr>';
+							newPriceHtml += '<tr><td>'+newPrice+'</td><td>'+time+'</td><td><span class="glyphicon glyphicon-remove priceStatusChange" tel="'+newPrice+'" status="'+0+'" aria-hidden="true"></span></td></tr>';
 							$('#priceList').append(newPriceHtml);	
 						}else{
 							$('#newPrice').val('');
@@ -281,16 +281,34 @@
 							$('#newPriceT').toggle();
 							Utils.getErrModal('error',resJson.msg);
 						}
-					}	
+
+						$('.priceStatusChange').click(function(){
+							var obj = $(this);
+							var status = $(this).attr('status');
+							var price = $(this).attr('tel');
+							var time = getCurrentTime();
+							var url = '/pay/channel-province-template-price-status-change';
+							var data = 'price='+price+'&chid='+Utils.getQueryString('chid')+'&time='+time;
+							var succ = function(resJson){
+								if(parseInt(resJson.resultCode) == 1){
+									if(status == 1){
+										obj.removeClass('glyphicon-ok').addClass('glyphicon-remove').attr('status','0');
+									}else{
+										obj.removeClass('glyphicon-remove').addClass('glyphicon-ok').attr('status','1');
+									}
+									Utils.getNoFooterModal('success','保存成功');
+								}else{
+									Utils.getErrModal('error',resJson.msg);
+								}
+							}
+							Utils.ajax(url,data,succ);
+						})	
+					}
 					Utils.ajax(url,data,succ); 
 				}
 			})
 		})
 	})
-	
-
-	
-	
 	
 	function getCurrentTime(){
 		var time = new Date();
