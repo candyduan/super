@@ -171,6 +171,7 @@ class WidgetsUtils{
             <link href="/css/mii-admin.css?d=20170624" rel="stylesheet">
             <link href="/css/pnotify.custom.css" rel="stylesheet">
             <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        		<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
             <style type="text/css">
             .navbar{background-color:'.$bcolor.';border:0px;}
             .nav{background-color:'.$bcolor.';margin-top:-1px;}
@@ -182,6 +183,7 @@ class WidgetsUtils{
             <script src="/js/common/jquery.cookie.js"></script>
             <script src="/js/common/bootstrap.min.js"></script>
           	<script src="/js/common/bootstrap3-typeahead.min.js"></script>
+            	<script src="/js/common/bootstrap-datetimepicker.js"></script>
             <script src="/js/common/pnotify.custom.js"></script>   
             <script src="/js/register/Utils.js?d=20170615"></script>
             <script src="/ace/assets/js/jquery.dataTables.min.js"></script>

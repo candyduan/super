@@ -36,6 +36,9 @@ use common\library\ShortHash;
 use common\models\orm\extend\ChannelProvincePrice;
 use common\models\orm\extend\ChannelMonitorRule;
 use backend\library\cache\OrigApi;
+use common\models\orm\extend\ProvinceLimit;
+use common\models\orm\extend\ChannelProvinceTemplate;
+use yii\base\Object;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -1204,6 +1207,188 @@ class PayController extends BController{
             $out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
         }
         Utils::jsonOut($out);
+    }
+    
+    public function  actionChannelRegionalView(){
+    	$chid   = Utils::getBackendParam('chid');
+    	$data   = array(
+    			'chid'  => $chid,
+    	);
+    	return $this->render('channel-regional-view',$data);
+    }
+    
+    public function actionChannelRegionalLimitResult(){
+    		$chid = Utils::getBackendParam('chid');
+    		$channelModel = Channel::findByPk($chid);
+    		if($channelModel){
+    			$provinceChannelInfo = [];
+    			$provinceAll = Province::find()->all();
+    			foreach($provinceAll as $pModel){
+    				$provinceLimitModel = ProvinceLimit::find()->where(['channel'=>$chid,'province'=>$pModel->id])->one();
+    				$channelProvincePriceModel = ChannelProvincePrice::find()->where(['channel'=>$chid,'province'=>$pModel->id])->one();
+    				$timeProvinceLimitModel = TimeProvinceLimit::find()->where(['channel'=>$chid,'province'=>$pModel->id])->one();
+    				$priceStatusArr = [];
+    				foreach($channelProvincePriceModel as $priceModel){
+    					$priceStatusArr[] = $priceModel;
+    				}
+    				$provinceChannelInfo[$pModel->id]['chid'] = $chid;
+    				$provinceChannelInfo[$pModel->id]['pid'] = $pModel->id;
+    				$provinceChannelInfo[$pModel->id]['name'] = $pModel->name;
+    				$provinceChannelInfo[$pModel->id]['channelName'] = Channel::findByPk($chid)->name;
+    				$provinceChannelInfo[$pModel->id]['status'] = $provinceLimitModel->opened == 1 ? '●' : ($provinceLimitModel->opened == 0 ? '--' : '○');
+    				$provinceChannelInfo[$pModel->id]['dayLimit'] = $provinceChannelInfo->dayLimit . ' / ' . $provinceChannelInfo->dayRequestLimit;
+    				if(in_array('1', $priceStatusArr) && !in_array('0',$priceStatusArr)){
+    					$provinceChannelInfo[$pModel->id]['priceStatus'] = '--';
+    				}elseif(in_array('0', $priceStatusArr) && !in_array('1', $priceStatusArr)){
+    					$provinceChannelInfo[$pModel->id]['priceStatus'] = '●';
+    				}else{
+    					$provinceChannelInfo[$pModel->id]['priceStatus'] = '○';
+    				}
+    				$provinceChannelInfo[$pModel->id]['timeProvinceLimit'] = '待定';
+    				$provinceChannelInfo[$pModel->id]['unfreezeTime'] = empty($provinceLimitModel->unfreezeTime) ? '' : date('Y-m-d H:i:s',$provinceLimitModel->unfreezeTime);
+    			}
+    			$out['list'] = $provinceChannelInfo;
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+    			$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    public function actionChannelProvinceTemplatePriceLimitSave(){
+	    	$chid = Utils::getBackendParam('chid');
+	    	$dayLimit = Utils::getBackendParam('dayLimitTemp');
+	    	$monthLimit = Utils::getBackendParam('monthLimitTemp');
+	    	$playerDayLimit = Utils::getBackendParam('playerDayLimitTemp');
+	    	$playerMonthLimit = Utils::getBackendParam('playerMonthLimitTemp');
+	    	$dayRequestLimit = Utils::getBackendParam('dayRequestLimitTemp');
+	    	$monthRequestLimit = Utils::getBackendParam('monthRequestLimitTemp');
+	    	$playerDayRequestLimit = Utils::getBackendParam('playerDayRequestLimitTemp');
+	    	$playerMonthRequestLimit = Utils::getBackendParam('playerMonthRequestLimitTemp');
+	    	$freezeTime = date('Y-m-d H:i:s', Utils::getBackendParam('freezeTimeTemp'));
+	    	$channelModel = Channel::findByPk($chid);
+	    	if($channelModel){
+	    		$channelProvinceTemplate = ChannelProvinceTemplate::find()->where(['channelId' => $chid])->one();
+	    		if(!$channelProvinceTemplate){
+	    			$channelProvinceTemplate = new ChannelProvinceTemplate();
+	    			$channelProvinceTemplate->channelId = $chid;
+	    		}
+	    		$channelProvinceTemplate->dayLimit = $dayLimit ? ($dayLimit *100) : 0;
+	    		$channelProvinceTemplate->monthLimit = $monthLimit ? ($monthLimit * 100) : 0;
+	    		$channelProvinceTemplate->playerDayLimit = $playerDayLimit ? ($playerDayLimit * 100) : 0;
+	    		$channelProvinceTemplate->playerMonthLimit = $playerMonthLimit ? ($playerMonthLimit * 100) : 0;
+	    		$channelProvinceTemplate->dayRequestLimit = $dayRequestLimit ? ($dayRequestLimit * 100) : 0;
+	    		$channelProvinceTemplate->monthRequestLimit = $monthRequestLimit ? ($monthRequestLimit * 100) : 0;
+	    		$channelProvinceTemplate->playerDayRequestLimit = $playerDayRequestLimit ? ($playerDayRequestLimit * 100) : 0;
+	    		$channelProvinceTemplate->playerMonthRequestLimit = $playerMonthRequestLimit ? ($playerMonthRequestLimit * 100) : 0;
+	    		$channelProvinceTemplate->unFreezeTime = $freezeTime;
+	    		
+	    		try {
+	    			$channelProvinceTemplate->save();
+	    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+	    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+	    		} catch (\Exception $e) {
+	    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+	    			$out['msg']         = Constant::RESULT_MSG_NONE.$e->getMessage();
+	    		}
+	    	}
+	    	Utils::jsonOut($out);
+    }
+  
+    
+    public function actionChannelProvinceTemplateView(){
+    		$chid = Utils::getBackendParam('chid');
+    		$templateModel = ChannelProvinceTemplate::find()->where(['channelId' => $chid])->one();
+    		if($templateModel){
+    			$template = [];
+    			$template['dayLimit'] = $templateModel->dayLimit / 100;
+    			$template['monthLimit'] = $templateModel->monthLimit / 100;
+    			$template['playerDayLimit'] = $templateModel->playerDayLimit /100;
+    			$template['playerMonthLimit'] = $templateModel->playerMonthLimit /100;
+    			$template['dayRequestLimit'] = $templateModel->dayRequestLimit /100;
+    			$template['monthRequestLimit'] = $templateModel->monthRequestLimit /100;
+    			$template['playerDayRequestLimit'] = $templateModel->playerDayRequestLimit / 100;
+    			$template['playerMonthRequestLimit'] = $templateModel->playerMonthRequestLimit /100;
+    			$template['unFreezeTime'] = $templateModel->unFreezeTime;
+    			$template['opened'] = $templateModel->opened;
+    			$template['price'] = json_decode($templateModel->price, true);
+    			$template['time'] = json_decode($templateModel->time, true);
+    			$out['data'] = $template;
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = Constant::RESULT_MSG_NONE;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    public function actionChannelProvinceTemplateNewpriceAdd(){
+    		$chid = Utils::getBackendParam('chid');
+    		$newPrice = Utils::getBackendParam('newPrice');
+    		$time = Utils::getBackendParam('time');
+    		$newPriceArr = ['price'=>$newPrice,'time'=>$time,'status'=>0];
+    		$templateModel = ChannelProvinceTemplate::find()->where(['channelId' => $chid])->one();
+    		if(!$templateModel){
+    			$templateModel = new ChannelProvinceTemplate();
+    			$templateModel->price = json_encode([$newPriceArr]);
+    		}else{
+    			$oldPrices = json_decode($templateModel->price,true);
+    			if(!empty($oldPrices)){
+    				foreach ($oldPrices as $oldPrice){
+    					if($oldPrice['price'] == $newPrice){
+    						$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    						$out['msg']         = '此价格点已存在';
+    						Utils::jsonOut($out);
+    						exit;
+    					}
+    				}
+    			array_push($oldPrices, $newPriceArr);
+    			$templateModel->price = json_encode($oldPrices);
+    			}else{
+    				$templateModel->price = json_encode([$newPriceArr]);
+    			}
+    		}
+    		try {
+    			$templateModel->save();
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		} catch (\Exception $e) {
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = Constant::RESULT_MSG_NONE;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    public function actionChannelProvinceTemplatePriceStatusChange(){
+    		$chid = Utils::getBackendParam('chid');
+    		$price = Utils::getBackendParam('price');
+    		$time = Utils::getBackendParam('time');
+    		$templateModel = ChannelProvinceTemplate::find()->where(['channelId' => $chid])->one();
+    		if($templateModel){
+    			$priceList = json_decode($templateModel->price,true);
+    			foreach ($priceList as $k=>$p){
+    				if($p['price'] == $price){
+    					$priceList[$k]['status'] == 1 ? ($priceList[$k]['status']=0) : ($priceList[$k]['status']=1);
+    					$priceList[$k]['time'] = $time;
+    				}
+    			}
+    			$templateModel->price = json_decode($priceList);
+    			try {
+    				$templateModel->save();
+    				$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    				$out['msg']         = Constant::RESULT_MSG_SUCC;
+    			} catch (\Exception $e) {
+    				$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    				$out['msg']         = '修改失败';
+    			}
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = '通道省份模板不存在';
+    		}
+    		Utils::jsonOut($out);
     }
     
     
