@@ -520,7 +520,7 @@ class PackagePayController extends BController
      		
      		$usersData = self::_getAnalysisUsersByDate($dateType,$stime,$etime
      		    ,$checkCp,$checkApp,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider
-     		    ,$value['date'],$value['partner'],$value['app'],$value['campaign'],$value['mediaSign'],$value['sdk'],$value['province'],$value['provider']);
+     		    ,$value['date'],$value['partner'],$value['app'],$value['campaign'],$value['mediaSign'],$value['sdk'],$value['province'],$value['provider'],$province);
      		$newUsers = $usersData['newUsers'];
      		if(!is_numeric($newUsers)){
      		    $newUsers = 0;
@@ -595,7 +595,7 @@ class PackagePayController extends BController
      }
      
      private function _getAnalysisUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,
-         $date,$pid,$aid,$cid,$mediaSign,$sdid,$prid,$provider){
+         $date,$pid,$aid,$cid,$mediaSign,$sdid,$prid,$provider,$province){
          $res = array();
      
          $where = [];
@@ -672,6 +672,14 @@ class PackagePayController extends BController
                  'tmp.prid',
                  $prid
              ];
+         }else{
+             if(Utils::isValid($province)){
+                 $where[] = [
+                     'in',
+                     'tmp.prid',
+                     explode(',', $province)
+                 ];
+             }
          }
          if($checkProvider){
              $where[] = [
