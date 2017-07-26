@@ -465,6 +465,8 @@ class PackagePayController extends BController
      	$checkCmp = Utils::getBackendParam('checkCampaginPackage') ? true : false;
      	$checkM = Utils::getBackendParam('checkMedia') ? true : false;
      	$checkSdk = Utils::getBackendParam('checkSdk') ? true : false;
+     	$checkActUser = Utils::getBackendParam('checkActUser') ? true : false;
+     	$checkPayUser = Utils::getBackendParam('checkPayUser') ? true : false;
      	$checkProvince = Utils::getBackendParam('checkProvince') ? true : false;
      	$checkProvider = Utils::getBackendParam('checkProvider') ? true : false;
      	
@@ -514,6 +516,16 @@ class PackagePayController extends BController
      		}else{
      			array_push($item, '-');
      		}
+     		if($checkActUser){
+     		    array_push($item, 'TODO');
+     		}else{
+     		    array_push($item, '-');
+     		}
+     		if($checkPayUser){
+     		    array_push($item, 'TODO');
+     		}else{
+     		    array_push($item, '-');
+     		}
      		if($checkProvince){
      			array_push($item, Province::getNameById($value['province']));
      		}else{
@@ -525,11 +537,22 @@ class PackagePayController extends BController
      			array_push($item, '-');
      		}
      		
-     	
      		array_push($item, number_format($value['allPay'],0));
      		array_push($item, number_format($value['callSucPay'],0));
      		array_push($item, number_format($value['sdkSucPay'],0));
      		array_push($item, number_format($value['successPay'],0));
+     		
+     		if($checkActUser){
+     		    array_push($item, 'TODO');
+     		}else{
+     		    array_push($item, '-');
+     		}
+     		if($checkPayUser){
+     		    array_push($item, 'TODO');
+     		}else{
+     		    array_push($item, '-');
+     		}
+     		
      		array_push($item, number_format($value['income'],0));
      		if(0 == $value['allPay']){
      			array_push($item, '-');
