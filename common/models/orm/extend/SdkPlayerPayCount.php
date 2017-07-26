@@ -13,7 +13,6 @@ class SdkPlayerPayCount extends \common\models\orm\base\SdkPlayerPayCount{
             ->groupBy($group);
             $command = $query->createCommand();
             $data = $command->queryAll();
-            var_dump($data);exit;
             if(count($data) > 0){
                 return $data[0]['payUsers'];
             }
