@@ -37,6 +37,8 @@
                     <input type="checkbox" id="checkSdk" name="checkSdk"/>SDK
                     <input type="checkbox" id="checkProvince" name="checkProvince"/>省
                     <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商
+                    <input type="checkbox" id="checkNewUser" name="checkNewUser"/>激活
+                    <input type="checkbox" id="checkPayUser" name="checkPayUser"/>支付
                     
 					<i class="glyphicon pointer green glyphicon-glass" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
                     <i class="glyphicon pointer green glyphicon-phone" onclick="setProvider(this)" title="运营商" value="0" id="inputProvider"></i>
@@ -59,12 +61,16 @@
                         <td>渠道</td>
                         <td>渠道标识</td>
                        	<td id="cloumn_sdk">SDK</td>
+                       	<td >激活</td>
+                       	<td >支付</td>
                        	<td id="cloumn_province">省份</td>
                         <td id="cloumn_provider">运营商</td>
                         <td>请求总金额</td>
                         <td>调用成功金额</td>
                         <td>SDK成功金额</td>
                         <td>信息费</td>
+                        <td >ARPU</td>
+                        <td >付ARPU</td>
                         <td>收入</td>
                         <td>转化率</td>
                     </tr>
@@ -229,7 +235,7 @@
             //"order": [[ 5, "desc" ]],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [0,1,2,3,4,5,6,7,8],
+                'aTargets': [0,1,2,3,4,5,6,7,8,9,10,11,12],
             }],
             "displayLength": 100, //默认每页多少条数据
             "processing": true,
