@@ -237,7 +237,9 @@
                 'bSortable': false,
                 'aTargets': [0,1,2,3,4,5,6,7,8,9,10,11,12],
             }],
+            "aLengthMenu":[10,15,50,100,1000],
             "displayLength": 100, //默认每页多少条数据
+            
             "processing": true,
             "language": {
                 "processing": "数据加载中，请稍候......",
