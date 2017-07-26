@@ -519,8 +519,8 @@ class PackagePayController extends BController
      		}
      		
      		$usersData = self::_getAnalysisUsersByDate($dateType,$stime,$etime
-     		    ,$checkCp,$checkApp,$checkCmp,$checkM,$checkSdk
-     		    ,$value['date'],$value['partner'],$value['app'],$value['campaign'],$value['mediaSign'],$value['sdk']);
+     		    ,$checkCp,$checkApp,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider
+     		    ,$value['date'],$value['partner'],$value['app'],$value['campaign'],$value['mediaSign'],$value['sdk'],$value['province'],$value['provider']);
      		$newUsers = $usersData['newUsers'];
      		$actUsers = $usersData['actUsers'];
      		$payUsers = $usersData['payUsers'];
@@ -584,7 +584,8 @@ class PackagePayController extends BController
      	}
      }
      
-     private function _getAnalysisUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$checkSdk,$date,$pid,$aid,$cid,$mediaSign,$sdid){
+     private function _getAnalysisUsersByDate($dateType,$stime,$etime,$checkCP,$checkAPP,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider,
+         $date,$pid,$aid,$cid,$mediaSign,$sdid,$prid,$provider){
          $res = array();
      
          $where = [];
@@ -653,6 +654,20 @@ class PackagePayController extends BController
                  '=',
                  'campaignPackage.mediaSign',
                  $mediaSign
+             ];
+         }
+         if($checkProvince){
+             $where[] = [
+                 '=',
+                 'tmp.prid',
+                 $prid
+             ];
+         }
+         if($checkProvider){
+             $where[] = [
+                 '=',
+                 'tmp.provider',
+                 $provider
              ];
          }
          $select = [
