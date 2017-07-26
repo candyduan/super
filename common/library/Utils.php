@@ -54,6 +54,18 @@ class Utils{
         }
     }
     
+    public static function getProviderName($provider){
+        switch ($provider){
+            case 1:
+                return '移动';
+            case 2:
+                return '联通';
+            case 3:
+                return '电信';
+            default:
+                return '未知';
+        }
+    }
     public static function getFrontendParam($key,$default = ''){
         $request    = \Yii::$app->getRequest();
         $value      = $request->get($key);

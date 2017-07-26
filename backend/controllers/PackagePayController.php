@@ -549,7 +549,8 @@ class PackagePayController extends BController
      			array_push($item, '-');
      		}
      		if($checkProvider){
-     			array_push($item, $value['provider'] == 1 ? '移动' : ($value['provider'] == 2 ? '联通' : '电信')) ;
+     		    $providerName = Utils::getProviderName($value['provider']);
+     			array_push($item, $providerName) ;
      		}else{
      			array_push($item, '-');
      		}
