@@ -551,12 +551,12 @@ class PackagePayController extends BController
      		array_push($item, number_format($value['successPay'],0));
      		
      		if($checkNewUser && 0 != $newUsers){
-     		    array_push($item, $value['successPay']/$newUsers);
+     		    array_push($item, number_format($value['successPay']/$newUsers,2));
      		}else{
      		    array_push($item, '-');
      		}
      		if($checkPayUser && 0 != $payUsers){
-     		    array_push($item, $value['successPay']/$payUsers);
+     		    array_push($item, number_format($value['successPay']/$payUsers,2));
      		}else{
      		    array_push($item, '-');
      		}
