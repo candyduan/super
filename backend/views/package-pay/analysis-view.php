@@ -37,7 +37,7 @@
                     <input type="checkbox" id="checkSdk" name="checkSdk"/>SDK
                     <input type="checkbox" id="checkProvince" name="checkProvince"/>省
                     <input type="checkbox" id="checkProvider" name="checkProvider"/>运营商
-                    <input type="checkbox" id="checkActUser" name="checkActUser"/>激活
+                    <input type="checkbox" id="checkNewUser" name="checkNewUser"/>激活
                     <input type="checkbox" id="checkPayUser" name="checkPayUser"/>支付
                     
 					<i class="glyphicon pointer green glyphicon-glass" onclick="setDateType(this)" title="时段" value="3" id="inputDateType"></i> 
