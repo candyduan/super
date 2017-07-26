@@ -522,8 +522,17 @@ class PackagePayController extends BController
      		    ,$checkCp,$checkApp,$checkCmp,$checkM,$checkSdk,$checkProvince,$checkProvider
      		    ,$value['date'],$value['partner'],$value['app'],$value['campaign'],$value['mediaSign'],$value['sdk'],$value['province'],$value['provider']);
      		$newUsers = $usersData['newUsers'];
+     		if(!is_numeric($newUsers)){
+     		    $newUsers = 0;
+     		}
      		$actUsers = $usersData['actUsers'];
+     		if(!is_numeric($actUsers)){
+     		    $actUsers = 0;
+     		}
      		$payUsers = $usersData['payUsers'];
+     		if(!is_numeric($payUsers)){
+     		    $payUsers = 0;
+     		}
      		if($checkNewUser){
      		    array_push($item, $newUsers);
      		}else{
