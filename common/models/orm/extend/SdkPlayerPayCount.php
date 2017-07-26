@@ -14,7 +14,11 @@ class SdkPlayerPayCount extends \common\models\orm\base\SdkPlayerPayCount{
             $command = $query->createCommand();
             $data = $command->queryAll();
             if(count($data) > 0){
-                return $data[0]['payUsers'];
+                $payUsers = $data[0]['payUsers'];
+                if(!is_numeric($payUsers)){
+                    $payUsers = 0;
+                }
+                return $payUsers;
             }
             return 0;
     }
