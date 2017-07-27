@@ -167,6 +167,7 @@
 	function setResult(){
 		var url = '/pay/channel-regional-limit-result';
 		var data = 'chid='+Utils.getQueryString('chid');
+		var chid = Utils.getQueryString('chid');
 		var succ = function(resJson){
 			console.log(resJson);
 			if(parseInt(resJson.resultCode) == 1){
@@ -175,7 +176,7 @@
 					$.each(resJson.list,function(key,val){
 						resultHtml +='<tr>';
 						resultHtml +='<td><input type="checkbox" name="province" data-val="'+val.pid+'"></td>';
-						resultHtml +='<td>'+val.name+'</td>';
+						resultHtml +='<td><a href="/pay/channel-province-view?chid='+val.chid+'&pid='+val.pid+'">'+val.name+'</a></td>';
 						resultHtml +='<td>'+val.status+'</td>';
 						resultHtml +='<td>'+val.dayLimit+'</td>';
 						resultHtml +='<td>'+val.priceStatus+'</td>';
@@ -490,9 +491,9 @@
 		alert(data);
 		var succ = function(resJson){
 			if(parseInt(resJson.resultCode) == 1){
-				
+				Utils.getNoFooterModal('success','一键同步完成');
 			}else{
-
+				Utils.getErrModal('error',resJson.msg);
 			}
 		}
 		Utils.ajax(url,data,succ);
