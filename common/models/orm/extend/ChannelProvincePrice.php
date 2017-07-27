@@ -25,4 +25,17 @@ class ChannelProvincePrice extends \common\models\orm\base\ChannelProvincePrice{
                         ;
         return $models;
     }
+    
+    public  static function findByChannelProvincePrice($chid,$province,$price){
+	    	$condition  = array(
+	    			'channel'   => $chid,
+	    			'province' => $province,
+	    			'price'     => $price,
+	    	);
+	    	$model  = self::find()
+	    	->where($condition)
+	    	->one();
+	    	;
+	    	return $model;
+    }
 }

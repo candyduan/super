@@ -13,7 +13,7 @@
 		<button class="btn btn-primary" type="submit" id="templateBtn">
 		<span>模板设置</span>
 		</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button class="btn btn-danger" id="keyBtn">
+		<button class="btn btn-danger" id="oneKeyBtn">
 		<span>一键操作</span>
 		</button>&nbsp;
 	 </div>
@@ -26,7 +26,7 @@
 	    	<table class="table table-bordered table-hover" text-align='center'>
 		    	<thead>
 		    		<tr>
-		    			<td>全选</td>
+		    			<td><input type='checkbox' id='checkAll' >全选</td>
 		    			<td>省份</td>
 		    			<td>状态</td>
 		    			<td>单省日限额</td>
@@ -54,17 +54,13 @@
                         <div class="panel-body">
                             	<div class="col-sm-12 col-md-12 col-lg-12">
                                        <ul class="nav nav-tabs" role="tablist">
-										    <li role="presentation" class="active"><a href="#provinceLimitDiv" aria-controls="provinceLimitDiv" role="tab" data-toggle="tab">Home</a></li>
-										    <li role="presentation"><a href="#payLimitDiv" aria-controls="payLimitDiv" role="tab" data-toggle="tab">Profile</a></li>
-										    <li role="presentation"><a href="#priceLimitDiv" aria-controls="priceLimitDiv" role="tab" data-toggle="tab">Messages</a></li>
-										    <li role="presentation"><a href="#timeLimitDiv" aria-controls="timeLimitDiv" role="tab" data-toggle="tab">Settings</a></li>
+										    <li role="presentation" class="active"><a href="#payLimitDiv" aria-controls="payLimitDiv" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span></a></li>
+										    <li role="presentation"><a href="#priceLimitDiv" aria-controls="priceLimitDiv" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-xbt" aria-hidden="true"></span></a></li>
+										    <li role="presentation"><a href="#timeLimitDiv" aria-controls="timeLimitDiv" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span></a></li>
  	 									</ul>
                                 </div><hr><hr>
                                 <div class="tab-content">
-								  <div role="tabpanel" class="tab-pane fade in active" id="provinceLimitDiv">
-								  		
-								  </div>
-								  <div role="tabpanel" class="tab-pane fade" id="payLimitDiv">
+								  <div role="tabpanel" class="tab-pane fade in active"" id="payLimitDiv">
 								   		<div class="input-group">
   											<span class="input-group-addon" id="basic-addon1">日限额</span>
   											<input type="text" class="form-control" placeholder="日支付限额：元" aria-describedby="basic-addon1" id="dayLimitTemp" value=''>
@@ -106,17 +102,60 @@
 															</button>
 											    			</td>
 											    		</tr>
+											    		<tr style="display:none" id="newPriceT">
+												    		<td><input type="text" id="newPrice" value=""></td>
+												    		<td>-</td>
+												    		<td id="checkPrice">--</td>
+											    		</tr>
 												</thead>
 										   	 	<tbody id="priceList"></tbody>
 										    	</table>
 									    </div>
 								  </div>
-								  <div role="tabpanel" class="tab-pane fade" id="timeLimitDiv">..4.</div>
+								  <div role="tabpanel" class="tab-pane fade" id="timeLimitDiv">
+								  	 <?php for($i=0;$i<=23;$i++){ ?>
+										<div class="hour swhour-close" id="h<?php echo $i;?>" data-val="0"><?php echo $i;?></div>
+    									<?php }?>
+    										<div class="text-center">
+								  			<button type="button" class="btn btn-primary" id='timeLimitTemCommit'>开放时间模板设置</button>
+								  		</div>
+								  </div>
 								</div>
                             </div>
                         </div>
                     </div>
                 </div>
+        </div>
+    </div>
+</div>
+
+<!-- 一键操作窗口 -->
+<div id="oneKeyDiv" class="modal fade" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <span><i class="glyphicon glyphicon-globe"></i></span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="height:200px">
+            		<div>
+	                <div class="inline">
+	                    <span> 省份屏蔽: </span>
+	                    <button type="submit" class="btn" id="btn_comfirm_open" data-val=''> 全省开通</button>
+	                    <button type="submit" class="btn" id="btn_comfirm_ban" 'data-val='''> 全省屏蔽</button>
+	                    <input type='hidden' id='allProvinceStatus' value=''>
+	                </div>
+                </div>
+                <div >
+              	  <div class="inline">
+                    <span> 模板启用: </span>
+                    <input id='templateOn' type="checkbox" name='templateOn' data-val="" >
+                   </div>
+                </div>
+                <div class="text-center">
+					<button type="button" class="btn btn-primary" id='oneKeyCommit'>一键地域设置</button>
+				</div>
+            </div>
         </div>
     </div>
 </div>
@@ -135,7 +174,7 @@
 				var resultHtml = '';
 					$.each(resJson.list,function(key,val){
 						resultHtml +='<tr>';
-						resultHtml +='<td>'+2222+'</td>';
+						resultHtml +='<td><input type="checkbox" name="province" data-val="'+val.pid+'"></td>';
 						resultHtml +='<td>'+val.name+'</td>';
 						resultHtml +='<td>'+val.status+'</td>';
 						resultHtml +='<td>'+val.dayLimit+'</td>';
@@ -157,7 +196,7 @@
 			if(parseInt(resJson.resultCode) == 1){
 				var template = resJson.data;
 				var price = template.price;
-				var priceHtml = '<tr style="display:none" id="newPriceT"><td><input type="text" id="newPrice" value=""></td><td>-</td><td id="checkPrice">--</td></tr>';
+				var priceHtml = '';
 				$('#dayLimitTemp').val(template.dayLimit);
 				$('#dayRequestLimitTemp').val(template.dayRequestLimit);
 				$('#monthLimitTemp').val(template.monthLimit);
@@ -174,6 +213,38 @@
 					priceHtml += '<td>'+(v.status == 1 ? '<span class="glyphicon glyphicon-ok priceStatusChange"  tel="'+v.price+'" status="'+v.status+'"  aria-hidden="true"></span>' : '<span class="glyphicon glyphicon-remove priceStatusChange" tel="'+v.price+'" status="'+v.status+'" aria-hidden="true"></span>')+'</td>';
 					priceHtml += '</tr>';
 				})
+				$('#h0').attr('data-val',template.time.h0);
+				$('#h1').attr('data-val',template.time.h1);
+				$('#h2').attr('data-val',template.time.h2);
+				$('#h3').attr('data-val',template.time.h3);
+				$('#h4').attr('data-val',template.time.h4);
+				$('#h5').attr('data-val',template.time.h5);
+				$('#h6').attr('data-val',template.time.h6);
+				$('#h7').attr('data-val',template.time.h7);
+				$('#h8').attr('data-val',template.time.h8);
+				$('#h9').attr('data-val',template.time.h9);
+				$('#h10').attr('data-val',template.time.h10);
+				$('#h11').attr('data-val',template.time.h11);
+				$('#h12').attr('data-val',template.time.h12);
+				$('#h13').attr('data-val',template.time.h13);
+				$('#h14').attr('data-val',template.time.h14);
+				$('#h15').attr('data-val',template.time.h15);
+				$('#h16').attr('data-val',template.time.h16);
+				$('#h17').attr('data-val',template.time.h17);
+				$('#h18').attr('data-val',template.time.h18);
+				$('#h19').attr('data-val',template.time.h19);
+				$('#h20').attr('data-val',template.time.h20);
+				$('#h21').attr('data-val',template.time.h21);
+				$('#h22').attr('data-val',template.time.h22);
+				$('#h23').attr('data-val',template.time.h23);
+				$.each(template.time,function(k,v){
+					if(v == 1){
+						$('#'+k).removeClass('swhour-close').addClass('swhour-open');
+					}else{
+						$('#'+k).removeClass('swhour-open').addClass('swhour-close');
+					}
+				})
+				
 				$('#priceList').html(priceHtml);
 					
 			}
@@ -320,10 +391,112 @@
 		var second=time.getSeconds();
 		return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
 	};
+
+	$('.hour').click(function(){
+		if($(this).attr('data-val') == 1){
+			$(this).attr('data-val','0').removeClass('swhour-open').addClass('swhour-close');
+		}else{
+			$(this).attr('data-val','1').removeClass('swhour-close').addClass('swhour-open');
+		}
+	})
+
+	$('#timeLimitTemCommit').click(function(){
+		var url = '/pay/channel-province-template-time-limit-save';
+		var data= 'chid='+Utils.getQueryString('chid')
+				+'&h0='+$('#h0').attr('data-val')
+				+'&h1='+$('#h1').attr('data-val')
+				+'&h2='+$('#h2').attr('data-val')
+				+'&h3='+$('#h3').attr('data-val')
+				+'&h4='+$('#h4').attr('data-val')
+				+'&h5='+$('#h5').attr('data-val')
+				+'&h6='+$('#h6').attr('data-val')
+				+'&h7='+$('#h7').attr('data-val')
+				+'&h8='+$('#h8').attr('data-val')
+				+'&h9='+$('#h9').attr('data-val')
+				+'&h10='+$('#h10').attr('data-val')
+				+'&h11='+$('#h11').attr('data-val')
+				+'&h12='+$('#h12').attr('data-val')
+				+'&h13='+$('#h13').attr('data-val')
+				+'&h14='+$('#h14').attr('data-val')
+				+'&h15='+$('#h15').attr('data-val')
+				+'&h16='+$('#h16').attr('data-val')
+				+'&h17='+$('#h17').attr('data-val')
+				+'&h18='+$('#h18').attr('data-val')
+				+'&h19='+$('#h19').attr('data-val')
+				+'&h20='+$('#h20').attr('data-val')
+				+'&h21='+$('#h21').attr('data-val')
+				+'&h22='+$('#h22').attr('data-val')
+				+'&h23='+$('#h23').attr('data-val');
+		var succ = function(resJson){
+			if(parseInt(resJson.resultCode) == 1){
+				Utils.getNoFooterModal('success','保存成功');
+			}else{
+				Utils.getErrModal('error',resJson.msg);
+			}
+		};
+		Utils.ajax(url,data,succ); 
+	})
 	
 	$(".form_datetime").datetimepicker({
 		format: 'yyyy-mm-dd hh:ii:ss',
 		todayBtn:1,
 		todayHighlight:1,
 	});
+
+	//一键启用模板加地域设置
+	
+	$('#checkAll').click(function(){
+		var isChecked = this.checked;
+		$('[name=province]:checkbox').prop('checked',isChecked);
+	})
+	
+	$('#oneKeyBtn').click(function(){
+		$('#btn_comfirm_open').removeClass('btn-success');
+		$('#btn_comfirm_ban').removeClass('btn-danger');
+		$('#allProvinceStatus').val('');
+		$('#templateOn').prop('checked',false).attr('data-val','0');
+		$('#oneKeyDiv').modal('show');
+	})
+	
+	$('#btn_comfirm_open').click(function(){
+		$(this).addClass('btn-success');
+		$('#btn_comfirm_ban').removeClass('btn-danger');
+		$('#allProvinceStatus').val('1');
+	});
+
+	$('#btn_comfirm_ban').click(function(){
+		$(this).addClass('btn-danger');
+		$('#btn_comfirm_open').removeClass('btn-success');
+		$('#allProvinceStatus').val('2');
+	});
+
+	$('#oneKeyCommit').click(function(){
+		var province = '';
+		$('[name=province]:checked').each(function(){
+			province += $(this).attr('data-val')+',';	
+		})
+		if(province == ''){
+			Utils.getNoFooterModal('Alert','请选择省份');
+			return false;
+		}
+		var allProvinceStatus = $('#allProvinceStatus').val();
+		if(allProvinceStatus == ''){
+			Utils.getNoFooterModal('Alert','请选择全省开通或全省屏蔽');
+			return false;
+		}
+		var templateOn = $('#templateOn').prop('checked') ? 1 : 0;
+		var url = '/pay/channel-province-one-key-sync';
+		var data = 'chid='+Utils.getQueryString('chid')+'&province='+province+'&allProvinceStatus='+allProvinceStatus+'&templateOn='+templateOn;
+		alert(data);
+		var succ = function(resJson){
+			if(parseInt(resJson.resultCode) == 1){
+				
+			}else{
+
+			}
+		}
+		Utils.ajax(url,data,succ);
+	})
+
+	
 </script>

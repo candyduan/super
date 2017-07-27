@@ -22,4 +22,8 @@ class TimeProvinceLimit extends \common\models\orm\base\TimeProvinceLimit{
                         ;
         return $model;
     }
+    
+    public static function findbyChannelAndProvince($chid,$province){
+    		return TimeProvinceLimit::find()->where(['channel'=>$chid,'province'=>$province])->one();
+    }
 }

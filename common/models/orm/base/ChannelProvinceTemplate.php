@@ -43,7 +43,7 @@ class ChannelProvinceTemplate extends \yii\db\ActiveRecord
             [['channelId'], 'required'],
             [['channelId', 'dayLimit', 'monthLimit', 'playerDayLimit', 'playerMonthLimit', 'dayRequestLimit', 'monthRequestLimit', 'playerDayRequestLimit', 'playerMonthRequestLimit', 'opened'], 'integer'],
             [['unFreezeTime', 'recordTime', 'updateTime'], 'safe'],
-            [['price', 'time'], 'string', 'max' => 300],
+            [['price', 'time'], 'string', 'max' => 500],
         ];
     }
 
