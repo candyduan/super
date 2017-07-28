@@ -60,7 +60,7 @@
  	 									</ul>
                                 </div><hr><hr>
                                 <div class="tab-content">
-								  <div role="tabpanel" class="tab-pane fade in active"" id="payLimitDiv">
+								  <div role="tabpanel" class="tab-pane fade in active" id="payLimitDiv">
 								   		<div class="input-group">
   											<span class="input-group-addon" id="basic-addon1">日限额</span>
   											<input type="text" class="form-control" placeholder="日支付限额：元" aria-describedby="basic-addon1" id="dayLimitTemp" value=''>
@@ -142,7 +142,7 @@
 	                <div class="inline">
 	                    <span> 省份屏蔽: </span>
 	                    <button type="submit" class="btn" id="btn_comfirm_open" data-val=''> 全省开通</button>
-	                    <button type="submit" class="btn" id="btn_comfirm_ban" 'data-val='''> 全省屏蔽</button>
+	                    <button type="submit" class="btn" id="btn_comfirm_ban" data-val=''> 全省屏蔽</button>
 	                    <input type='hidden' id='allProvinceStatus' value=''>
 	                </div>
                 </div>
@@ -265,9 +265,9 @@
 						}else{
 							obj.removeClass('glyphicon-remove').addClass('glyphicon-ok').attr('status','1');
 						}
-						Utils.getNoFooterModal('success','保存成功');
+						Utils.tipBar('success','地域更新成功',resJson.msg);
 					}else{
-						Utils.getErrModal('error',resJson.msg);
+						Utils.tipBar('error','地域更新失败',resJson.msg);
 					}
 				}
 				Utils.ajax(url,data,succ);
@@ -301,9 +301,9 @@
 							+'&freezeTimeTemp='+freezeTimeTemp;
 		var succ = function(resJson){
 			if(parseInt(resJson.resultCode) == 1){
-				Utils.getNoFooterModal('success','保存成功');
+				Utils.tipBar('success','保存成功',resJson.msg);
 			}else{
-				Utils.getErrModal('error',resJson.msg);
+				Utils.tipBar('error','保存失败',resJson.msg);
 			}
 		}
 		Utils.ajax(url,data,succ); 
@@ -346,12 +346,13 @@
 							$('#checkPrice').html('--');
 							$('#newPriceT').toggle();
 							newPriceHtml += '<tr><td>'+newPrice+'</td><td>'+time+'</td><td><span class="glyphicon glyphicon-remove priceStatusChange" tel="'+newPrice+'" status="'+0+'" aria-hidden="true"></span></td></tr>';
-							$('#priceList').append(newPriceHtml);	
+							$('#priceList').append(newPriceHtml);
+							Utils.tipBar('success','价格点设置成功',resJson.msg);	
 						}else{
 							$('#newPrice').val('');
 							$('#checkPrice').html('--')
 							$('#newPriceT').toggle();
-							Utils.getErrModal('error',resJson.msg);
+							Utils.tipBar('error','价格点设置失败',resJson.msg);
 						}
 
 						$('.priceStatusChange').click(function(){
@@ -368,9 +369,9 @@
 									}else{
 										obj.removeClass('glyphicon-remove').addClass('glyphicon-ok').attr('status','1');
 									}
-									Utils.getNoFooterModal('success','保存成功');
+									Utils.tipBar('success','保存成功',resJson.msg);
 								}else{
-									Utils.getErrModal('error',resJson.msg);
+									Utils.tipBar('error','保存失败',resJson.msg);
 								}
 							}
 							Utils.ajax(url,data,succ);
@@ -430,9 +431,9 @@
 				+'&h23='+$('#h23').attr('data-val');
 		var succ = function(resJson){
 			if(parseInt(resJson.resultCode) == 1){
-				Utils.getNoFooterModal('success','保存成功');
+				Utils.tipBar('success','保存成功',resJson.msg);
 			}else{
-				Utils.getErrModal('error',resJson.msg);
+				Utils.tipBar('error','保存失败',resJson.msg);
 			}
 		};
 		Utils.ajax(url,data,succ); 
@@ -491,9 +492,9 @@
 		alert(data);
 		var succ = function(resJson){
 			if(parseInt(resJson.resultCode) == 1){
-				Utils.getNoFooterModal('success','一键同步完成');
+				Utils.tipBar('success','一键同步完成',resJson.msg);
 			}else{
-				Utils.getErrModal('error',resJson.msg);
+				Utils.tipBar('error','一键同步失败',resJson.msg);
 			}
 		}
 		Utils.ajax(url,data,succ);

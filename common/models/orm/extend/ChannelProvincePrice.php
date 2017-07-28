@@ -32,10 +32,22 @@ class ChannelProvincePrice extends \common\models\orm\base\ChannelProvincePrice{
 	    			'province' => $province,
 	    			'price'     => $price,
 	    	);
-	    	$model  = self::find()
+	    	$model = self::find()
 	    	->where($condition)
 	    	->one();
 	    	;
 	    	return $model;
+    }
+    
+    public static function findByChannelAndProvince($cid,$pid){
+	    	$condition  = array(
+	    			'channel'   => $cid,
+	    			'province' => $pid,
+	    	);
+	    	$models = self::find()
+	    	->where($condition)
+	    	->all();
+	    	;
+	    	return $models;
     }
 }

@@ -39,6 +39,8 @@ use backend\library\cache\OrigApi;
 use common\models\orm\extend\ProvinceLimit;
 use common\models\orm\extend\ChannelProvinceTemplate;
 use yii\base\Object;
+use common\models\orm\extend\City;
+use common\models\orm\extend\CityLimit;
 
 class PayController extends BController{
     public $layout = "pay";
@@ -1470,11 +1472,19 @@ class PayController extends BController{
     		$provinceLimitModels = [];
     		$channelProvincePriceModels = [];
     		$timeProvinceLimitModels = [];
+    		$cityLimitAllModels = [];
     		
     		foreach($provinceArr as $province){
     			$provinceLimitModel = ProvinceLimit::findByChannelAndProvince($chid,$province);
     			if($provinceLimitModel){
     				$provinceLimitModel->opened = $allProvinceStatus;
+    				//cityLimit  删除
+    				$cityLimitModels = CityLimit::findByChannelAndProvince($chid, $province);
+    				if($cityLimitModels){
+    					foreach($cityLimitModels as $cityLimitModel){
+    						$cityLimitAllModels[] = $cityLimitModel;
+    					}
+    				}
     				if($templateOn){
     					//provinceLimit
     					$provinceLimitModel->dayLimit = $channelProvinceTemplateModel->dayLimit;
@@ -1546,6 +1556,9 @@ class PayController extends BController{
     			foreach($timeProvinceLimitModels as $timeProvinceLimitModel){
     				$timeProvinceLimitModel->origSave();
     			}
+    			foreach($cityLimitAllModels as $cityLimitAllModel){
+    				$cityLimitAllModel->delete();
+    			}
     			$tran->commit();
     			//cache
     			sleep(1);
@@ -1560,7 +1573,336 @@ class PayController extends BController{
     		Utils::jsonOut($out);
     }
     
+    public function actionChannelProvinceView(){
+	    	$chid   = Utils::getBackendParam('chid');
+	    	$pid   = Utils::getBackendParam('pid');
+	    	$cityModels = City::findAll(['province'=>$pid]);
+	    	$citys = [];
+	    	foreach($cityModels as $cityModel){
+	    		$citys[]=[
+	    				'id' => $cityModel->id,
+	    				'name' => $cityModel->name
+	    		];
+	    	}
+	    	$data   = array(
+    			'chid'  => $chid,
+	    		'pid' => $pid,
+	    		'citys' => $citys
+	    	);
+	    	return $this->render('channel-province-view',$data);
+    }
     
+    public function actionChannelProvinceResult(){
+	    	$chid   = Utils::getBackendParam('chid');
+	    	$pid   = Utils::getBackendParam('pid');
+	    $provinceLimitModel =	ProvinceLimit::findByChannelAndProvince($chid, $pid);
+	    $provinceLimit = [];
+	    $cityLimitList = [];
+	    $channelProvincePriceList = [];
+	    $timeProvinceLimit = [];
+	    if($provinceLimitModel){
+	    		$provinceLimit = [
+	    			'dayLimit' => $provinceLimitModel->dayLimit/100,
+	    			'monthLimit' =>	$provinceLimitModel->monthLimit/100,
+	    			'playerDayLimit' => $provinceLimitModel->playerDayLimit/100,
+	    			'playerMonthLimit' => $provinceLimitModel->playerMonthLimit/100,
+	    			'dayRequestLimit' => $provinceLimitModel->dayRequestLimit/100,
+	    			'monthRequestLimit' => $provinceLimitModel->monthRequestLimit/100,
+	    			'playerDayRequestLimit' => $provinceLimitModel->playerDayRequestLimit/100,
+	    			'playerMonthRequestLimit' => $provinceLimitModel->playerMonthRequestLimit/100,
+	    			'unfreezeTime' => date('Y-m-d H:i:s',$provinceLimitModel->unfreezeTime),
+	    			'opened' => $provinceLimitModel->opened
+	    		];
+	    }
+	    $cityLimitModels = CityLimit::findByChannelAndProvince($chid,$pid);
+	    
+	    if($cityLimitModels){
+	    		foreach($cityLimitModels as $cityLimitModel){
+	    			$cityLimitList[] = [
+	    					'id' => $cityLimitModel->city,
+	    					'deleted' => $cityLimitModel->deleted
+	    			];
+	    		}
+	    }
+	    $channelProvincePriceModels = ChannelProvincePrice::findByChannelAndProvince($chid,$pid);
+	    
+	    if($channelProvincePriceModels){
+	    		foreach ($channelProvincePriceModels as $channelProvincePriceModel){
+	    			$channelProvincePriceList[] = [
+	    				'price' => $channelProvincePriceModel->price,
+	    				'status' => $channelProvincePriceModel->status,
+	    				'updateTime' => date('Y-m-d H:i:s',$channelProvincePriceModel->updateTime)
+	    			];
+	    		}
+	    }
+	    $timeProvinceLimitModel = TimeProvinceLimit::findByChidProvince($chid, $pid);
+	    
+	    if($timeProvinceLimitModel){
+	    		$timeProvinceLimit = [
+	    			'h0' => $timeProvinceLimitModel->h0,
+    				'h1' => $timeProvinceLimitModel->h1,
+    				'h2' => $timeProvinceLimitModel->h2,
+    				'h3' => $timeProvinceLimitModel->h3,
+    				'h4' => $timeProvinceLimitModel->h4,
+    				'h5' => $timeProvinceLimitModel->h5,
+    				'h6' => $timeProvinceLimitModel->h6,
+    				'h7' => $timeProvinceLimitModel->h7,
+    				'h8' => $timeProvinceLimitModel->h8,
+    				'h9' => $timeProvinceLimitModel->h9,
+    				'h10' => $timeProvinceLimitModel->h10,
+    				'h11' => $timeProvinceLimitModel->h11,
+    				'h12' => $timeProvinceLimitModel->h12,
+    				'h13' => $timeProvinceLimitModel->h13,
+    				'h14' => $timeProvinceLimitModel->h14,
+    				'h15' => $timeProvinceLimitModel->h15,
+    				'h16' => $timeProvinceLimitModel->h16,
+    				'h17' => $timeProvinceLimitModel->h17,
+    				'h18' => $timeProvinceLimitModel->h18,
+    				'h19' => $timeProvinceLimitModel->h19,
+    				'h20' => $timeProvinceLimitModel->h20,
+    				'h21' => $timeProvinceLimitModel->h21,
+    				'h22' => $timeProvinceLimitModel->h22,
+    				'h23' => $timeProvinceLimitModel->h23
+	    		];
+	    }
+	    $out['resultCode']  = Constant::RESULT_CODE_SUCC;
+        $out['msg']         = Constant::RESULT_MSG_SUCC;
+        $out['provinceLimit']     = $provinceLimit;
+        $out['cityLimitList']   = $cityLimitList;
+        $out['channelProvincePriceList'] = $channelProvincePriceList;
+        $out['timeProvinceLimit'] = $timeProvinceLimit;
+        Utils::jsonOut($out);
+    }
+    
+    public function actionChannelProvinceSave(){
+    		$chid   = Utils::getBackendParam('chid');
+    		$pid   = Utils::getBackendParam('pid');
+    		$opened = Utils::getBackendParam('opened');
+    		$cityOpenArr   = explode(',',trim(Utils::getBackendParam('cityOpen'),','));
+    		$cityBanArr   = explode(',',trim(Utils::getBackendParam('cityBan'),','));
+    		$cityChangeModels = [];
+    		$cityLimitAllDel =[];
+    		$provinceLimitModel =	ProvinceLimit::findByChannelAndProvince($chid, $pid);
+    		if($provinceLimitModel){
+    			$provinceLimitModel->opened = $opened;
+    			if($opened == 2){
+    				//开放城市
+    				foreach($cityOpenArr as $city){
+    					$cityOpenModel = CityLimit::findByChannelAndProvinceAndCity($chid, $pid, $city);
+    					if(!$cityOpenModel){
+    						$cityOpenModel = new CityLimit();
+    						$cityOpenModel->channel = $chid;
+    						$cityOpenModel->city = $city;
+    						$cityOpenModel->province = $pid;
+    					}
+    					$cityOpenModel->deleted =1;
+    					array_push($cityChangeModels, $cityOpenModel);
+    				}
+    				//屏蔽城市
+    				foreach($cityBanArr as $city){
+    					$cityBanModel = CityLimit::findByChannelAndProvinceAndCity($chid, $pid, $city);
+    					if(!$cityBanModel){
+    						$cityBanModel = new CityLimit();
+    						$cityBanModel->channel = $chid;
+    						$cityBanModel->city = $city;
+    						$cityBanModel->province = $pid;
+    					}
+    					$cityBanModel->deleted =0;
+    					array_push($cityChangeModels, $cityBanModel);
+    				}
+    			}else{
+    				$cityLimitModels = CityLimit::findByChannelAndProvince($chid,$pid);
+    				if($cityLimitModels){
+    					foreach($cityLimitModels as $cityLimitModel){
+    						array_push($cityLimitAllDel,$cityLimitModel);
+    					}
+    				}
+    			}
+    			$tran = ChannelProvinceTemplate::getDb()->beginTransaction();
+    			try {
+	    			$provinceLimitModel->origSave();
+	    			if($cityChangeModels){
+	    				foreach($cityChangeModels as $cityChangeModel){
+	    					$cityChangeModel->origSave();
+	    				}
+	    			}
+	    			if($cityLimitAllDel){
+	    				foreach($cityLimitAllDel as $cityDel){
+	    					$cityDel->delete();
+	    				}
+	    			}
+	    			$tran->commit();
+	    			//cache
+	    			sleep(1);
+	    			$cFlag  = OrigApi::FreshAllChannelInfo();
+	    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+	    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    			} catch (\Exception $e) {
+    				$tran->rollBack();
+    				$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+    				$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    			}
+    		}else{
+    			$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+    			$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    		}
+    		Utils::jsonOut($out);
+    }
+   
+    public function actionChannelProvincePriceLimitSave(){
+	    	$chid   = Utils::getBackendParam('chid');
+	    	$pid   = Utils::getBackendParam('pid');
+	    	$dayLimit = Utils::getBackendParam('dayLimit')*100;
+	    	$monthLimit = Utils::getBackendParam('monthLimit')*100;
+	    	$playerDayLimit = Utils::getBackendParam('playerDayLimit')*100;
+	    	$playerMonthLimit = Utils::getBackendParam('playerMonthLimit')*100;
+	    	$dayRequestLimit = Utils::getBackendParam('dayRequestLimit')*100;
+	    	$monthRequestLimit = Utils::getBackendParam('monthRequestLimit')*100;
+	    	$playerDayRequestLimit = Utils::getBackendParam('playerDayRequestLimit')*100;
+	    	$playerMonthRequestLimit = Utils::getBackendParam('playerMonthRequestLimit')*100;
+	    	$unfreezeTime = Utils::getBackendParam('unfreezeTime');
+	    	$provinceLimitModel = ProvinceLimit::findByChannelAndProvince($chid, $pid);
+	    	if($provinceLimitModel){
+	    		$provinceLimitModel->dayLimit = $dayLimit;
+	    		$provinceLimitModel->monthLimit = $monthLimit;
+	    		$provinceLimitModel->playerDayLimit = $playerDayLimit;
+	    		$provinceLimitModel->playerMonthLimit = $playerMonthLimit;
+	    		$provinceLimitModel->dayRequestLimit = $dayRequestLimit;
+	    		$provinceLimitModel->monthRequestLimit = $monthRequestLimit;
+	    		$provinceLimitModel->playerDayRequestLimit = $playerDayRequestLimit;
+	    		$provinceLimitModel->playerMonthRequestLimit = $playerMonthRequestLimit;
+	    		$provinceLimitModel->unfreezeTime = $unfreezeTime;
+	    	}
+	    	try {
+	    		$provinceLimitModel->origSave();
+	    		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+	    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+	    	} catch (\Exception $e) {
+	    		$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+	    		$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+	    	}
+	    	Utils::jsonOut($out);
+    }
+    
+    public function actionChannelProvincePriceAdd(){
+    		$chid   = Utils::getBackendParam('chid');
+    		$pid   = Utils::getBackendParam('pid');
+    		$newPrice = Utils::getBackendParam('newPrice');
+    		$channelProvincePrice = ChannelProvincePrice::findByChannelProvincePrice($chid, $pid, $newPrice);
+    		if($channelProvincePrice){
+    			$out['resultCode']  = Constant::RESULT_CODE_NONE;
+    			$out['msg']         = '此价格点已存在';
+    			Utils::jsonOut($out);
+    			exit;
+    		}
+    		$channelProvincePrice = new ChannelProvincePrice();
+    		$channelProvincePrice->channel = $chid;
+    		$channelProvincePrice->province = $pid;
+    		$channelProvincePrice->price = $newPrice;
+    		$channelProvincePrice->status = 0;
+    		try {
+    			$channelProvincePrice->oldSave();
+    			//cache
+    			sleep(1);
+    			$cFlag  = OrigApi::FreshAllChannelInfo();
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		} catch (\Exception $e) {
+    			$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+    			$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    public function actionChannelProvincePriceStatusChange(){
+    		$chid   = Utils::getBackendParam('chid');
+    		$pid   = Utils::getBackendParam('pid');
+    		$price   = Utils::getBackendParam('price');
+    		$channelProvincePriceModel = ChannelProvincePrice::findByChannelProvincePrice($chid, $pid, $price);
+    		if($channelProvincePriceModel){
+    			$channelProvincePriceModel->status = ($channelProvincePriceModel->status == 0 ? 1 : 0);
+    		}
+    		try {
+    			$channelProvincePriceModel->oldSave();
+    			//cache
+    			sleep(1);
+    			$cFlag  = OrigApi::FreshAllChannelInfo();
+    			$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+    			$out['msg']         = Constant::RESULT_MSG_SUCC;
+    		} catch (\Exception $e) {
+    			$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+    			$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+    		}
+    		Utils::jsonOut($out);
+    }
+    
+    public function actionChannelProvinceTimeLimitSave(){
+	    	$chid   = Utils::getBackendParam('chid');
+	    	$pid   = Utils::getBackendParam('pid');
+	    	$h0      = Utils::getBackendParam('h0');
+	    	$h1      = Utils::getBackendParam('h1');
+	    	$h2      = Utils::getBackendParam('h2');
+	    	$h3      = Utils::getBackendParam('h3');
+	    	$h4      = Utils::getBackendParam('h4');
+	    	$h5      = Utils::getBackendParam('h5');
+	    	$h6      = Utils::getBackendParam('h6');
+	    	$h7      = Utils::getBackendParam('h7');
+	    	$h8      = Utils::getBackendParam('h8');
+	    	$h9      = Utils::getBackendParam('h9');
+	    	$h10      = Utils::getBackendParam('h10');
+	    	$h11      = Utils::getBackendParam('h11');
+	    	$h12      = Utils::getBackendParam('h12');
+	    	$h13      = Utils::getBackendParam('h13');
+	    	$h14      = Utils::getBackendParam('h14');
+	    	$h15      = Utils::getBackendParam('h15');
+	    	$h16      = Utils::getBackendParam('h16');
+	    	$h17      = Utils::getBackendParam('h17');
+	    	$h18      = Utils::getBackendParam('h18');
+	    	$h19      = Utils::getBackendParam('h19');
+	    	$h20      = Utils::getBackendParam('h20');
+	    	$h21      = Utils::getBackendParam('h21');
+	    	$h22      = Utils::getBackendParam('h22');
+	    	$h23      = Utils::getBackendParam('h23');
+	    	$timeProvinceLimitModel = TimeProvinceLimit::findbyChannelAndProvince($chid, $pid);
+	    	if($timeProvinceLimitModel){
+	    		$timeProvinceLimitModel->h0 = $h0;
+	    		$timeProvinceLimitModel->h1 = $h1;
+	    		$timeProvinceLimitModel->h2 = $h2;
+	    		$timeProvinceLimitModel->h3 = $h3;
+	    		$timeProvinceLimitModel->h4 = $h4;
+	    		$timeProvinceLimitModel->h5 = $h5;
+	    		$timeProvinceLimitModel->h6 = $h6;
+	    		$timeProvinceLimitModel->h7 = $h7;
+	    		$timeProvinceLimitModel->h8 = $h8;
+	    		$timeProvinceLimitModel->h9 = $h9;
+	    		$timeProvinceLimitModel->h10 = $h10;
+	    		$timeProvinceLimitModel->h11 = $h11;
+	    		$timeProvinceLimitModel->h12 = $h12;
+	    		$timeProvinceLimitModel->h13 = $h13;
+	    		$timeProvinceLimitModel->h14 = $h14;
+	    		$timeProvinceLimitModel->h15 = $h15;
+	    		$timeProvinceLimitModel->h16 = $h16;
+	    		$timeProvinceLimitModel->h17 = $h17;
+	    		$timeProvinceLimitModel->h18 = $h18;
+	    		$timeProvinceLimitModel->h19 = $h19;
+	    		$timeProvinceLimitModel->h20 = $h20;
+	    		$timeProvinceLimitModel->h21 = $h21;
+	    		$timeProvinceLimitModel->h22 = $h22;
+	    		$timeProvinceLimitModel->h23 = $h23;
+	    	}
+	    	try {
+	    		$timeProvinceLimitModel->origSave();
+	    		//cache
+	    		sleep(1);
+	    		$cFlag  = OrigApi::FreshAllChannelInfo();
+	    		$out['resultCode']  = Constant::RESULT_CODE_SUCC;
+	    		$out['msg']         = Constant::RESULT_MSG_SUCC;
+	    	} catch (\Exception $e) {
+	    		$out['resultCode']  = Constant::RESULT_CODE_SYSTEM_BUSY;
+	    		$out['msg']         = Constant::RESULT_MSG_SYSTEM_BUSY;
+	    	}
+	    	Utils::jsonOut($out);
+    }
     
     public function actionChannelTimeLimitView(){
         $chid   = Utils::getBackendParam('chid');
