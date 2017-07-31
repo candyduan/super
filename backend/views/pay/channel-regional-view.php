@@ -29,7 +29,7 @@
 		    			<td><input type='checkbox' id='checkAll' >全选</td>
 		    			<td>省份</td>
 		    			<td>状态</td>
-		    			<td>单省日限额</td>
+		    			<td>单省日限额(元)</td>
 		    			<td>价格点</td>
 		    			<td>时间限制</td>
 		    			<td>解冻时间</td>

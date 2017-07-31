@@ -1226,25 +1226,25 @@ class PayController extends BController{
     			$provinceChannelInfo = [];
     			$provinceAll = Province::find()->all();
     			foreach($provinceAll as $pModel){
-    				$provinceLimitModel = ProvinceLimit::find()->where(['channel'=>$chid,'province'=>$pModel->id])->one();
-    				$channelProvincePriceModel = ChannelProvincePrice::find()->where(['channel'=>$chid,'province'=>$pModel->id])->one();
-    				$timeProvinceLimitModel = TimeProvinceLimit::find()->where(['channel'=>$chid,'province'=>$pModel->id])->one();
+    				$provinceLimitModel = ProvinceLimit::findByChannelAndProvince($chid, $pModel->id);
+    				$channelProvincePriceModel = ChannelProvincePrice::findByChannelAndProvince($chid, $pModel->id);
+    				$timeProvinceLimitModel = TimeProvinceLimit::findbyChannelAndProvince($chid, $pModel->id);
     				$priceStatusArr = [];
     				foreach($channelProvincePriceModel as $priceModel){
-    					$priceStatusArr[] = $priceModel;
+    					$priceStatusArr[] = $priceModel->status;
     				}
     				$provinceChannelInfo[$pModel->id]['chid'] = $chid;
     				$provinceChannelInfo[$pModel->id]['pid'] = $pModel->id;
     				$provinceChannelInfo[$pModel->id]['name'] = $pModel->name;
     				$provinceChannelInfo[$pModel->id]['channelName'] = Channel::findByPk($chid)->name;
     				$provinceChannelInfo[$pModel->id]['status'] = $provinceLimitModel->opened == 1 ? '●' : ($provinceLimitModel->opened == 0 ? '--' : '○');
-    				$provinceChannelInfo[$pModel->id]['dayLimit'] = $provinceChannelInfo->dayLimit . ' / ' . $provinceChannelInfo->dayRequestLimit;
+    				$provinceChannelInfo[$pModel->id]['dayLimit'] = $provinceLimitModel->dayLimit/100 . ' / ' . $provinceLimitModel->dayRequestLimit/100;
     				if(in_array('1', $priceStatusArr) && !in_array('0',$priceStatusArr)){
-    					$provinceChannelInfo[$pModel->id]['priceStatus'] = '--';
-    				}elseif(in_array('0', $priceStatusArr) && !in_array('1', $priceStatusArr)){
     					$provinceChannelInfo[$pModel->id]['priceStatus'] = '●';
-    				}else{
+    				}elseif(in_array('0', $priceStatusArr) && in_array('1', $priceStatusArr)){
     					$provinceChannelInfo[$pModel->id]['priceStatus'] = '○';
+    				}else{
+    					$provinceChannelInfo[$pModel->id]['priceStatus'] = '--';
     				}
     				$provinceChannelInfo[$pModel->id]['timeProvinceLimit'] = '待定';
     				$provinceChannelInfo[$pModel->id]['unfreezeTime'] = empty($provinceLimitModel->unfreezeTime) ? '' : date('Y-m-d H:i:s',$provinceLimitModel->unfreezeTime);
