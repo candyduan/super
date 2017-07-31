@@ -445,7 +445,7 @@
 		todayHighlight:1,
 	});
 
-	//一键启用模板加地域设置
+	//一键启用模板和地域设置
 	
 	$('#checkAll').click(function(){
 		var isChecked = this.checked;
@@ -469,7 +469,7 @@
 	$('#btn_comfirm_ban').click(function(){
 		$(this).addClass('btn-danger');
 		$('#btn_comfirm_open').removeClass('btn-success');
-		$('#allProvinceStatus').val('2');
+		$('#allProvinceStatus').val('0');
 	});
 
 	$('#oneKeyCommit').click(function(){
@@ -489,7 +489,6 @@
 		var templateOn = $('#templateOn').prop('checked') ? 1 : 0;
 		var url = '/pay/channel-province-one-key-sync';
 		var data = 'chid='+Utils.getQueryString('chid')+'&province='+province+'&allProvinceStatus='+allProvinceStatus+'&templateOn='+templateOn;
-		alert(data);
 		var succ = function(resJson){
 			if(parseInt(resJson.resultCode) == 1){
 				Utils.tipBar('success','一键同步完成',resJson.msg);
